@@ -4,7 +4,7 @@ import { DialogTitle } from "@mui/material";
 import { ConditionalWrap, UniformList, View } from "trabecula/components";
 import { CSS, makeClasses } from "trabecula/utils/client";
 
-interface HeaderProps {
+export interface HeaderProps {
   children: JSX.Element | JSX.Element[];
   className?: string;
   justify?: CSS["justifyContent"];

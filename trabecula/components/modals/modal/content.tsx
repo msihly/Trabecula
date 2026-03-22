@@ -4,7 +4,7 @@ import { DialogContent } from "@mui/material";
 import { View, ViewProps } from "trabecula/components";
 import { CSS, makeClasses, Padding } from "trabecula/utils/client";
 
-interface ContentProps extends ViewProps {
+export interface ContentProps extends ViewProps {
   children: ReactNode | ReactNode[];
   className?: string;
   dividers?: boolean;

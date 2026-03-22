@@ -13,12 +13,12 @@
   ],
   "exports": {
     "./components": {
-      "types": "./dist/trabecula/components/index.d.ts",
-      "default": "./dist/trabecula/components/index.js"
+      "types": "./dist/components/index.d.ts",
+      "default": "./dist/components/index.js"
     },
     "./utils": {
-      "types": "./dist/trabecula/utils/index.d.ts",
-      "default": "./dist/trabecula/utils/index.js"
+      "types": "./dist/utils/index.d.ts",
+      "default": "./dist/utils/index.js"
     }
   },
   "scripts": {
@@ -26,7 +26,7 @@
     "check": "pnpm run ts-check && pnpm run lint && pnpm run prettier",
     "check-fix": "pnpm run lint-fix && pnpm run prettier-fix",
     "dev": "SET BUILD_DEV=true&& pnpm run pre-build && vite build --mode development --config ./vite.config.watch.ts",
-    "dist": "tspc -p tsconfig.build.json",
+    "dist": "tsc -p tsconfig.build.json",
     "gen": "pnpx tsx trabecula/generator/generator.ts",
     "hmr": "SET HMR=true&& SET BROWSER=none&& pnpm run pre-build && vite --config ./vite.config.hmr.ts",
     "lint": "eslint trabecula/{components,generator,utils}/**/*{.ts,.tsx}",

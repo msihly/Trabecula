@@ -2,7 +2,7 @@
 import { DialogActions } from "@mui/material";
 import { UniformList, UniformListProps } from "trabecula/components";
 
-interface FooterProps extends UniformListProps {}
+export interface FooterProps extends UniformListProps {}
 
 export const Footer = ({ children, uniformWidth = "10rem", ...props }: FooterProps) => {
   return (

@@ -6,14 +6,13 @@
     },
     "declaration": true,
     "emitDeclarationOnly": false,
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
+    "noEmit": false,
+    "module": "commonjs",
+    "moduleResolution": "node",
     "outDir": "dist",
-    "rootDir": ".",
-    "skipLibCheck": true,
+    "rootDir": "trabecula",
     "stripInternal": true,
-    "target": "ES2020",
-    "types": ["node"]
+    "target": "ES2020"
   },
   "extends": "./tsconfig.base.json",
   "include": ["./trabecula"]
