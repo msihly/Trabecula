@@ -1,0 +1,23 @@
+import { Comp, ListItem, MenuButton } from "trabecula/components";
+import { RatingChip } from "trabecula/components/files/file-base/rating-chip";
+export const RatingButton = Comp((props) => {
+    return (<MenuButton menuWidth="5rem" button={(onOpen) => (<RatingChip onClick={onOpen} rating={props.rating} height="1.5em" noHide/>)}>
+      <OptionRow value={0} setRating={props.setRating}/>
+      <OptionRow value={1} setRating={props.setRating}/>
+      <OptionRow value={2} setRating={props.setRating}/>
+      <OptionRow value={3} setRating={props.setRating}/>
+      <OptionRow value={4} setRating={props.setRating}/>
+      <OptionRow value={5} setRating={props.setRating}/>
+      <OptionRow value={6} setRating={props.setRating}/>
+      <OptionRow value={7} setRating={props.setRating}/>
+      <OptionRow value={8} setRating={props.setRating}/>
+      <OptionRow value={9} setRating={props.setRating}/>
+    </MenuButton>);
+});
+const OptionRow = Comp(({ icon = "Star", ...props }) => {
+    const handleClick = (event) => {
+        event.stopPropagation();
+        props.setRating(props.value);
+    };
+    return <ListItem icon={icon} text={props.value} onClick={handleClick}/>;
+});

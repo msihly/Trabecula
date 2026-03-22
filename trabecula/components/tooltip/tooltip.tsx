@@ -57,18 +57,17 @@ export const Tooltip = ({
   );
 };
 
-interface ClassesProps
-  extends Pick<
-    TooltipProps,
-    | "bgColor"
-    | "borderColor"
-    | "color"
-    | "flexShrink"
-    | "fontSize"
-    | "padding"
-    | "maxWidth"
-    | "minWidth"
-  > {}
+interface ClassesProps extends Pick<
+  TooltipProps,
+  | "bgColor"
+  | "borderColor"
+  | "color"
+  | "flexShrink"
+  | "fontSize"
+  | "padding"
+  | "maxWidth"
+  | "minWidth"
+> {}
 
 const useClasses = makeClasses((props: ClassesProps) => ({
   arrow: {

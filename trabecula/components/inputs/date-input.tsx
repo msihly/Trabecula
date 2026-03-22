@@ -6,8 +6,10 @@ import { HeaderWrapper, Input, InputProps, ViewProps } from "trabecula/component
 import { CSS, makeClasses } from "trabecula/utils/client";
 import { dayjs } from "trabecula/utils/common";
 
-export interface DateInputProps
-  extends Omit<DatePickerProps<dayjs.Dayjs>, "label" | "onChange" | "value"> {
+export interface DateInputProps extends Omit<
+  DatePickerProps<dayjs.Dayjs>,
+  "label" | "onChange" | "value"
+> {
   header?: ReactNode;
   headerProps?: Partial<ViewProps>;
   inputProps?: Partial<InputProps>;

@@ -5,8 +5,10 @@ import { Dialog, DialogProps, Paper, PaperProps } from "@mui/material";
 import { LoadingOverlay } from "trabecula/components";
 import { colors, CSS, makeClasses } from "trabecula/utils/client";
 
-export interface ContainerProps
-  extends Omit<DialogProps, "maxWidth" | "open" | "onClose" | "title"> {
+export interface ContainerProps extends Omit<
+  DialogProps,
+  "maxWidth" | "open" | "onClose" | "title"
+> {
   closeOnBackdrop?: boolean;
   height?: CSS["height"];
   isLoading?: boolean;

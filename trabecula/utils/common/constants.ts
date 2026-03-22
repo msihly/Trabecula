@@ -186,3 +186,23 @@ export type VideoExt = (typeof VIDEO_EXTS)[number];
 
 export const WEB_VIDEO_CODECS = ["h264", "hevc", "vp8", "vp9", "theora", "av1"];
 export const WEB_VIDEO_EXTS = ["mp4", "webm", "ogv", "wav"];
+
+export interface Constants {
+  IMAGE_EXTS: readonly ImageExt[];
+  TOOLTIP: {
+    ENTER_DELAY: number;
+    ENTER_NEXT_DELAY: number;
+  };
+  VIDEO_CODECS: readonly VideoCodec[];
+  VIDEO_EXTS: readonly VideoExt[];
+}
+
+export const CONSTANTS: Constants = {
+  IMAGE_EXTS,
+  TOOLTIP: {
+    ENTER_DELAY: 1000,
+    ENTER_NEXT_DELAY: 500,
+  },
+  VIDEO_CODECS,
+  VIDEO_EXTS,
+};

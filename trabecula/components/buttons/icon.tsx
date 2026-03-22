@@ -1,7 +1,13 @@
 import { ReactNode } from "react";
 // eslint-disable-next-line @typescript-eslint/no-restricted-imports
 import { IconButton as MuiIconButton, IconButtonProps as MuiIconButtonProps } from "@mui/material";
-import { Icon, IconName, IconProps, TooltipWrapper, TooltipWrapperProps } from "trabecula/components";
+import {
+  Icon,
+  IconName,
+  IconProps,
+  TooltipWrapper,
+  TooltipWrapperProps,
+} from "trabecula/components";
 import { makeClasses, makeMargins, Margins } from "trabecula/utils/client";
 
 export interface IconButtonProps extends Omit<MuiIconButtonProps, "color"> {

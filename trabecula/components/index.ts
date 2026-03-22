@@ -8,7 +8,6 @@ export * from "./media";
 export * from "./modals";
 export * from "./progress";
 export * from "./table";
-export * from "./tags";
 export * from "./text";
 export * from "./toggles";
 export * from "./tooltip";

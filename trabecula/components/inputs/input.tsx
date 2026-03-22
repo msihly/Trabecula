@@ -21,8 +21,10 @@ const DEFAULT_HEADER_PROPS: HeaderWrapperProps["headerProps"] = {
   padding: { all: "0.15rem 0.3rem" },
 };
 
-export interface InputProps
-  extends Omit<TextFieldProps, "color" | "fullWidth" | "onChange" | "helperText" | "label"> {
+export interface InputProps extends Omit<
+  TextFieldProps,
+  "color" | "fullWidth" | "onChange" | "helperText" | "label"
+> {
   adornment?: ReactNode;
   adornmentPosition?: "end" | "start";
   borders?: Borders;

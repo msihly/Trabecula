@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "generator/*": ["./*"],
+      "trabecula/*": ["../*"]
+    },
+    "types": ["node"]
+  },
+  "extends": "../../tsconfig.base.json",
+  "include": [".", "../utils/generator/globals.d.ts"]
+}

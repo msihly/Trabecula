@@ -1,0 +1,42 @@
+import { useEffect, useRef } from "react";
+import { Comp, MultiInputList, sortTags, TagInputRow, } from "trabecula/components";
+import { tagToOption, useStores } from "trabecula/store";
+import { socket } from "trabecula/utils/server";
+export const TagList = Comp(({ hasDelete, hasDeleteAll, hasEditor, hasInput, hasSearchMenu, onTagClick, rightNode, search, }) => {
+    const stores = useStores();
+    const ref = useRef(null);
+    const tags = sortTags(search.value);
+    useEffect(() => {
+        if (!socket?.isConnected || !search?.onChange)
+            return;
+        const onTagDeleted = (args) => {
+            search.onChange(search.value.filter((tag) => !args.ids.includes(tag.id)));
+            rerender();
+        };
+        const onTagMerged = async (args) => {
+            const ids = [
+                ...new Set(search.value.map((t) => (t.id === args.oldTagId ? args.newTagId : t.id))),
+            ];
+            const newValue = (await stores.tag.listByIds({ ids })).data.map(tagToOption);
+            search.onChange(newValue);
+            rerender();
+        };
+        const onTagsUpdated = (args) => {
+            for (const { tagId, updates } of args.tags) {
+                const tagToUpdate = search.value.find((t) => t.id === tagId);
+                if (tagToUpdate)
+                    search.onChange(search.value.map((t) => (t.id === tagId ? { ...t, ...updates } : { ...t })));
+            }
+        };
+        const rerender = () => ref?.current?.forceUpdate();
+        socket.on("onTagDeleted", onTagDeleted);
+        socket.on("onTagMerged", onTagMerged);
+        socket.on("onTagsUpdated", onTagsUpdated);
+        return () => {
+            socket.off("onTagDeleted", onTagDeleted);
+            socket.off("onTagMerged", onTagMerged);
+            socket.off("onTagsUpdated", onTagsUpdated);
+        };
+    }, [socket?.isConnected, search?.value]);
+    return (<MultiInputList ref={ref} hasDeleteAll={hasDeleteAll} hasInput={hasInput} search={{ onChange: search.onChange, value: tags }} renderRow={(index, style) => (<TagInputRow {...{ hasDelete, hasEditor, hasSearchMenu, rightNode, style }} key={index} search={{ onChange: search.onChange, value: tags }} tag={tags[index]} onClick={onTagClick}/>)}/>);
+});

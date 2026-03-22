@@ -27,7 +27,7 @@ export const Pagination = ({
   const handleChange = (_, page: number) => onChange(page);
 
   const handleLastPageClick = (event: React.MouseEvent, item: PaginationRenderItemParams) => {
-    if (onFullLoad) event.preventDefault(), onFullLoad();
+    if (onFullLoad) (event.preventDefault(), onFullLoad());
     else item.onClick?.(event);
   };
 

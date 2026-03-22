@@ -1,0 +1,96 @@
+// eslint-disable-next-line @typescript-eslint/no-restricted-imports
+import { InputAdornment, TextField } from "@mui/material";
+import Color from "color";
+import { Comp, HeaderWrapper, Text } from "trabecula/components";
+import { colors, makeBorderRadiuses, makeBorders, makeClasses, makeMargins, } from "trabecula/utils/client";
+import { deepMerge } from "trabecula/utils/common";
+const DEFAULT_HEADER_PROPS = {
+    fontSize: "0.8em",
+    padding: { all: "0.15rem 0.3rem" },
+};
+export const Input = Comp(({ adornment, adornmentPosition = "end", borders, borderRadiuses, children, className, color, dense = false, flex, hasHelper = false, header, headerProps = {}, helperText, inputProps, margins = {}, maxLength, minWidth, onClick, onKeyDown, setValue, textAlign, value, variant = "outlined", width = "100%", ...props }, ref) => {
+    headerProps = deepMerge(DEFAULT_HEADER_PROPS, headerProps);
+    const { css, cx } = useClasses({
+        borders,
+        borderRadiuses,
+        color,
+        dense,
+        flex,
+        hasHeader: header !== undefined,
+        hasHelper,
+        hasHelperText: !!helperText,
+        hasOnClick: !!onClick,
+        margins,
+        minWidth,
+        textAlign,
+        width,
+    });
+    const handleChange = (event) => setValue?.(event.target.value);
+    const handleKeyDown = (event) => {
+        event.stopPropagation();
+        onKeyDown?.(event);
+    };
+    return (<HeaderWrapper {...{ flex, header, headerProps, width }} overflow="initial" aria-label="input-wrapper">
+        <TextField {...props} {...{ onClick, ref, value, variant }} onChange={handleChange} onKeyDown={handleKeyDown} helperText={helperText ? (typeof helperText === "string" ? (<Text>{helperText}</Text>) : (helperText)) : undefined} 
+    // @ts-expect-error
+    FormHelperTextProps={{ component: "div" }} inputProps={{ ...inputProps, maxLength, value: value ?? "" }} InputProps={{
+            endAdornment: adornmentPosition === "end" && adornment ? (<InputAdornment position="end">
+                  {typeof adornment === "string" ? (<Text fontSize="0.9em" color={colors.custom.grey}>
+                      {adornment}
+                    </Text>) : (adornment)}
+                </InputAdornment>) : null,
+            startAdornment: adornmentPosition === "start" ? adornment : null,
+            ...props.InputProps,
+        }} size="small" className={cx(css.input, className)} aria-label="input">
+          {children}
+        </TextField>
+      </HeaderWrapper>);
+});
+const useClasses = makeClasses((props) => ({
+    input: {
+        flex: props.flex,
+        ...makeMargins({
+            ...props.margins,
+            bottom: props.margins?.bottom ?? (props.hasHelper && !props.hasHelperText ? "1.3em" : 0),
+        }),
+        minWidth: props.minWidth,
+        width: "100%",
+        "& input": {
+            borderRadius: "inherit",
+            padding: props.dense ? "0.2em 0.5em" : undefined,
+            textAlign: props.textAlign,
+            cursor: props.hasOnClick ? "pointer" : undefined,
+        },
+        "& .MuiTypography-root": {
+            display: "inline-grid",
+            width: "100%",
+            textAlign: props.textAlign,
+        },
+        "& .MuiOutlinedInput-root": {
+            background: "rgb(0 0 0 / 0.2)",
+            "& fieldset": {
+                transition: "all 200ms ease-in-out",
+                borderColor: props.color,
+                borderStyle: "dotted",
+                ...makeBorders(props.borders),
+                ...makeBorderRadiuses(deepMerge(props.hasHeader ? { top: 0 } : {}, props.borderRadiuses ?? {})),
+            },
+            "&:hover fieldset": {
+                borderColor: props.color ? Color(props.color).lighten(0.3).toString() : undefined,
+            },
+            "&.Mui-focused fieldset": {
+                borderColor: props.color,
+            },
+        },
+        "& .MuiSelect-select": {
+            fontSize: "0.9em",
+        },
+        "& .MuiFormHelperText-root": {
+            margin: "0.3em 0 0 0",
+            color: props.color,
+            fontSize: "0.75em",
+            lineHeight: 1,
+            textAlign: "center",
+        },
+    },
+}));

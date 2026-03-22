@@ -27,11 +27,10 @@ import {
   Padding,
 } from "trabecula/utils/client";
 
-export interface ButtonProps
-  extends Omit<
-    MuiButtonProps,
-    "color" | "endIcon" | "fullWidth" | "startIcon" | "type" | "variant"
-  > {
+export interface ButtonProps extends Omit<
+  MuiButtonProps,
+  "color" | "endIcon" | "fullWidth" | "startIcon" | "type" | "variant"
+> {
   borderRadiuses?: BorderRadiuses;
   boxShadow?: CSS["boxShadow"];
   color?: string;
@@ -163,20 +162,19 @@ export const Button = ({
   );
 };
 
-interface ClassesProps
-  extends Pick<
-    ButtonProps,
-    | "borderRadiuses"
-    | "boxShadow"
-    | "color"
-    | "colorOnHover"
-    | "outlined"
-    | "outlineFill"
-    | "padding"
-    | "textColor"
-    | "textTransform"
-    | "width"
-  > {
+interface ClassesProps extends Pick<
+  ButtonProps,
+  | "borderRadiuses"
+  | "boxShadow"
+  | "color"
+  | "colorOnHover"
+  | "outlined"
+  | "outlineFill"
+  | "padding"
+  | "textColor"
+  | "textTransform"
+  | "width"
+> {
   isLink: boolean;
   justify: CSS["justifyContent"];
   margins: Margins;

@@ -41,11 +41,10 @@ const PRESETS: Record<TextPreset, CSS> = {
   },
 };
 
-export interface TextProps
-  extends Omit<
-    TypographyProps,
-    "color" | "component" | "fontSize" | "fontWeight" | "overflow" | "title"
-  > {
+export interface TextProps extends Omit<
+  TypographyProps,
+  "color" | "component" | "fontSize" | "fontWeight" | "overflow" | "title"
+> {
   color?: string;
   component?: ElementType;
   fontSize?: CSS["fontSize"];
