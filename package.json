@@ -16,6 +16,19 @@
     "./components/*": "./dist/trabecula/components/*/index.js",
     "./utils/*": "./dist/trabecula/utils/*/index.js"
   },
+  "typesVersions": {
+    "*": {
+      "components/*": [
+        "./dist/trabecula/components/*/index.d.ts"
+      ],
+      "utils/*": [
+        "./dist/trabecula/utils/*/index.d.ts"
+      ],
+      "_generated/client": [
+        "./dist/trabecula/_generated/client/index.d.ts"
+      ]
+    }
+  },
   "scripts": {
     "build": "pnpm run pre-build && vite build",
     "check": "pnpm run ts-check && pnpm run lint && pnpm run prettier",
