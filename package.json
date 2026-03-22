@@ -43,7 +43,6 @@
     "@mui/x-date-pickers": "6.19.9",
     "color": "^4.2.3",
     "dayjs": "^1.11.0",
-    "electron": "^41.0.3",
     "es-toolkit": "^1.16.0",
     "fdir": "^6.4.6",
     "ligatures": "^0.0.3",
