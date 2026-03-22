@@ -1,6 +1,6 @@
 import fs from "fs/promises";
 import path from "path";
-import chalk from "chalk";
+import chalk from "picocolors";
 import prettier from "prettier";
 
 export const ROOT_PATH = path.resolve(".", "trabecula");

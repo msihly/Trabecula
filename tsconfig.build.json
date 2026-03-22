@@ -5,8 +5,8 @@
     "declaration": true,
     "emitDeclarationOnly": false,
     "noEmit": false,
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "Node16",
+    "moduleResolution": "Node16",
     "outDir": "dist",
     "rootDir": ".",
     "target": "ES2020"

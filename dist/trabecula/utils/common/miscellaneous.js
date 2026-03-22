@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.uuid = exports.throttle = exports.sleep = exports.setObj = exports.rng = exports.isObject = exports.isDeepEqual = exports.handleErrors = exports.deepMerge = exports.deepClone = exports.debounce = exports.convertNestedKeys = exports.attempt = void 0;
 const es_toolkit_1 = require("es-toolkit");
 const compat_1 = require("es-toolkit/compat");
-const uuid_1 = require("uuid");
 const attempt = async (fn, retries = 2, delay = 1000) => retries > 0
     ? await fn().catch(async (error) => {
         console.error(`Function failed, error: ${error}. Retrying after ${delay}ms...`);
@@ -43,5 +42,5 @@ exports.setObj = compat_1.set;
 const sleep = (min, max) => new Promise((resolve) => setTimeout(resolve, max > 0 ? (0, exports.rng)(min, max) : min));
 exports.sleep = sleep;
 exports.throttle = es_toolkit_1.throttle;
-const uuid = () => (0, uuid_1.v4)();
+const uuid = () => crypto.randomUUID();
 exports.uuid = uuid;

@@ -23,5 +23,5 @@ export declare const rng: (min: number, max: number) => number;
 export declare const setObj: typeof _set;
 export declare const sleep: (min: number, max?: number) => Promise<unknown>;
 export declare const throttle: typeof _throttle;
-export declare const uuid: () => string;
+export declare const uuid: () => `${string}-${string}-${string}-${string}-${string}`;
 export {};

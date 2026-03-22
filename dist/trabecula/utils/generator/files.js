@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.parseExportsFromIndex = exports.parseExports = exports.makeSectionComment = exports.makeIndexDef = exports.formatFile = exports.createFiles = exports.ROOT_PATH = void 0;
 const promises_1 = __importDefault(require("fs/promises"));
 const path_1 = __importDefault(require("path"));
-const chalk_1 = __importDefault(require("chalk"));
+const picocolors_1 = __importDefault(require("picocolors"));
 const prettier_1 = __importDefault(require("prettier"));
 exports.ROOT_PATH = path_1.default.resolve(".", "trabecula");
 const createFiles = async (folder, fileDefs) => {
@@ -22,10 +22,10 @@ const createFiles = async (folder, fileDefs) => {
             const filePath = path_1.default.resolve(folder, `${fileDef.name}.ts`);
             const file = await (0, exports.formatFile)(`${(0, exports.makeSectionComment)("THIS IS A GENERATED FILE. DO NOT EDIT.")}\n${await fileDef.makeFile()}`);
             await promises_1.default.writeFile(filePath, file);
-            console.log(chalk_1.default.green(`Created ${filePath}`));
+            console.log(picocolors_1.default.green(`Created ${filePath}`));
         }
         catch (err) {
-            console.error(chalk_1.default.red(`\n[ERROR] '${fileDef.name}': ${err.message}\n\n${err.stack}\n`));
+            console.error(picocolors_1.default.red(`\n[ERROR] '${fileDef.name}': ${err.message}\n\n${err.stack}\n`));
         }
     }
 };

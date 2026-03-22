@@ -6,7 +6,6 @@ import {
   toMerged as _toMerged,
 } from "es-toolkit";
 import { set as _set } from "es-toolkit/compat";
-import { v4 as uuidv4 } from "uuid";
 
 type IsPlainObject<T> = T extends object
   ? T extends any[]
@@ -75,4 +74,4 @@ export const sleep = (min: number, max?: number) =>
 
 export const throttle = _throttle;
 
-export const uuid = () => uuidv4();
+export const uuid = () => crypto.randomUUID();

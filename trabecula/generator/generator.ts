@@ -1,4 +1,4 @@
-import chalk from "chalk";
+import chalk from "picocolors";
 import { CLIENT_FILE_DEFS } from "trabecula/generator/file-defs";
 import { createFiles, ROOT_PATH } from "trabecula/utils/generator";
 
