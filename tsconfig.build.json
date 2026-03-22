@@ -10,7 +10,7 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "outDir": "dist",
-    "rootDir": "trabecula",
+    "rootDir": ".",
     "stripInternal": true,
     "target": "ES2020"
   },

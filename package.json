@@ -13,12 +13,12 @@
   ],
   "exports": {
     "./components": {
-      "types": "./dist/components/index.d.ts",
-      "default": "./dist/components/index.js"
+      "types": "./dist/trabecula/components/index.d.ts",
+      "default": "./dist/trabecula/components/index.js"
     },
     "./utils": {
-      "types": "./dist/utils/index.d.ts",
-      "default": "./dist/utils/index.js"
+      "types": "./dist/trabecula/utils/index.d.ts",
+      "default": "./dist/trabecula/utils/index.js"
     }
   },
   "scripts": {
