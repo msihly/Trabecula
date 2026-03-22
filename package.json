@@ -14,17 +14,15 @@
   "exports": {
     "./_generated/client": "./dist/trabecula/_generated/client/index.js",
     "./components": "./dist/trabecula/components/index.js",
-    "./utils/client": "./dist/trabecula/utils/client/index.js",
-    "./utils/common": "./dist/trabecula/utils/common/index.js",
-    "./utils/generator": "./dist/trabecula/utils/generator/index.js",
-    "./utils/server": "./dist/trabecula/utils/server/index.js"
+    "./components/*": "./dist/trabecula/components/*/index.js",
+    "./utils/*": "./dist/trabecula/utils/*/index.js"
   },
   "scripts": {
     "build": "pnpm run pre-build && vite build",
     "check": "pnpm run ts-check && pnpm run lint && pnpm run prettier",
     "check-fix": "pnpm run lint-fix && pnpm run prettier-fix",
     "dev": "SET BUILD_DEV=true&& pnpm run pre-build && vite build --mode development --config ./vite.config.watch.ts",
-    "dist": "rimraf dist && tsc -p tsconfig.build.json",
+    "dist": "rimraf dist && tspc -p tsconfig.build.json",
     "gen": "pnpx tsx trabecula/generator/generator.ts",
     "hmr": "SET HMR=true&& SET BROWSER=none&& pnpm run pre-build && vite --config ./vite.config.hmr.ts",
     "lint": "eslint trabecula/{components,generator,utils}/**/*{.ts,.tsx}",
@@ -85,7 +83,6 @@
     "ts-plugin-sort-import-suggestions": "github:saschavhd/ts-plugin-sort-import-suggestions",
     "tsconfig-paths": "^4.2.0",
     "typescript": "5.3.x",
-    "typescript-transform-paths": "^3.5.3",
     "vite": "4.5.1",
     "vite-plugin-svgr": "^3.2.0",
     "vite-tsconfig-paths": "4.2.0"
