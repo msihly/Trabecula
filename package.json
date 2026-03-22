@@ -14,10 +14,8 @@
   "exports": {
     "./_generated/client": "./dist/trabecula/_generated/client/index.js",
     "./components": "./dist/trabecula/components/index.js",
-    "./utils/client": "./dist/trabecula/utils/client/index.js",
-    "./utils/common": "./dist/trabecula/utils/common/index.js",
-    "./utils/generator": "./dist/trabecula/utils/generator/index.js",
-    "./utils/server": "./dist/trabecula/utils/server/index.js"
+    "./components/*": "./dist/trabecula/components/*/index.js",
+    "./utils/*": "./dist/trabecula/utils/*/index.js"
   },
   "scripts": {
     "build": "pnpm run pre-build && vite build",
@@ -85,7 +83,6 @@
     "ts-plugin-sort-import-suggestions": "github:saschavhd/ts-plugin-sort-import-suggestions",
     "tsconfig-paths": "^4.2.0",
     "typescript": "5.3.x",
-    "typescript-transform-paths": "^3.5.3",
     "vite": "4.5.1",
     "vite-plugin-svgr": "^3.2.0",
     "vite-tsconfig-paths": "4.2.0"

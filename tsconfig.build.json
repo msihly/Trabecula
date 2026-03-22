@@ -1,9 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "paths": {
-      "trabecula/*": ["./trabecula/*"]
-    },
+    "paths": { "trabecula/*": ["./trabecula/*"] },
     "declaration": true,
     "emitDeclarationOnly": false,
     "noEmit": false,
@@ -11,7 +9,6 @@
     "moduleResolution": "node",
     "outDir": "dist",
     "rootDir": ".",
-    "stripInternal": true,
     "target": "ES2020"
   },
   "extends": "./tsconfig.base.json",
