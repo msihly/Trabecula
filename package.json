@@ -1,5 +1,5 @@
 {
-  "name": "Trabecula",
+  "name": "trabecula",
   "description": "The Skeleton",
   "author": "msihly",
   "version": "0.0.1",
@@ -12,8 +12,14 @@
     "dist"
   ],
   "exports": {
-    "./components": "./dist/trabecula/components/index.js",
-    "./utils": "./dist/trabecula/utils/index.js"
+    "./components": {
+      "types": "./dist/trabecula/components/index.d.ts",
+      "default": "./dist/trabecula/components/index.js"
+    },
+    "./utils": {
+      "types": "./dist/trabecula/utils/index.d.ts",
+      "default": "./dist/trabecula/utils/index.js"
+    }
   },
   "scripts": {
     "build": "pnpm run pre-build && vite build",
