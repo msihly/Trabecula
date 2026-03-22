@@ -12,7 +12,8 @@
     "dist"
   ],
   "exports": {
-    "./components": "./dist/trabecula/components/index.d.ts",
+    "./_generated/client": "./dist/trabecula/_generated/client/index.js",
+    "./components": "./dist/trabecula/components/index.js",
     "./utils/client": "./dist/trabecula/utils/client/index.js",
     "./utils/common": "./dist/trabecula/utils/common/index.js",
     "./utils/generator": "./dist/trabecula/utils/generator/index.js",
