@@ -3,3 +3,4 @@
 *.env.*
 *.exe
 *node_modules
+_assets

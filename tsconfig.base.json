@@ -8,12 +8,21 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "module": "ESNext",
-    "moduleResolution": "Node",
+    "moduleResolution": "bundler",
     "noEmit": true,
     "noFallthroughCasesInSwitch": false,
     "noImplicitAny": false,
     "noUnusedLocals": true,
-    "plugins": [{ "name": "ts-plugin-sort-import-suggestions" }],
+    "paths": {
+      "ts-sort-imports": ["plugins/ts-sort-imports"]
+    },
+    "plugins": [
+      {
+        "name": "ts-sort-imports",
+        "moveUpPatterns": ["@/", "^react$"],
+        "moveDownPatterns": ["dist"]
+      }
+    ],
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": false,

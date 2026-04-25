@@ -2,50 +2,81 @@
   "name": "trabecula",
   "description": "The Skeleton",
   "author": "msihly",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "private": true,
   "homepage": "./",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "patches"
   ],
   "exports": {
-    "./_generated/client": "./dist/trabecula/_generated/client/index.js",
-    "./components": "./dist/trabecula/components/index.js",
-    "./components/*": "./dist/trabecula/components/*/index.js",
-    "./utils/*": "./dist/trabecula/utils/*/index.js"
+    "./_generated/client": {
+      "types": "./dist/trabecula/_generated/client/index.d.ts",
+      "default": "./dist/trabecula/_generated/client/index.js"
+    },
+    "./components": {
+      "types": "./dist/trabecula/components/index.d.ts",
+      "default": "./dist/trabecula/components/index.js"
+    },
+    "./components/*": {
+      "types": "./dist/trabecula/components/*/index.d.ts",
+      "default": "./dist/trabecula/components/*/index.js"
+    },
+    "./css/fonts.css": {
+      "types": "./dist/css/fonts.css.d.ts",
+      "default": "./dist/css/fonts.css"
+    },
+    "./utils/*": {
+      "types": "./dist/trabecula/utils/*/index.d.ts",
+      "default": "./dist/trabecula/utils/*/index.js"
+    }
   },
   "typesVersions": {
     "*": {
+      "_generated/client": [
+        "./dist/trabecula/_generated/client/index.d.ts"
+      ],
       "components/*": [
         "./dist/trabecula/components/*/index.d.ts"
       ],
+      "css/fonts.css": [
+        "./dist/css/fonts.css.d.ts"
+      ],
       "utils/*": [
         "./dist/trabecula/utils/*/index.d.ts"
-      ],
-      "_generated/client": [
-        "./dist/trabecula/_generated/client/index.d.ts"
       ]
     }
   },
   "scripts": {
-    "build": "pnpm run pre-build && vite build",
     "check": "pnpm run ts-check && pnpm run lint && pnpm run prettier",
     "check-fix": "pnpm run lint-fix && pnpm run prettier-fix",
-    "dev": "SET BUILD_DEV=true&& pnpm run pre-build && vite build --mode development --config ./vite.config.watch.ts",
-    "dist": "rimraf dist && tsc -p tsconfig.build.json",
+    "dist": "pnpm run gen && rimraf dist && tsup",
     "gen": "pnpx tsx trabecula/generator/generator.ts",
-    "hmr": "SET HMR=true&& SET BROWSER=none&& pnpm run pre-build && vite --config ./vite.config.hmr.ts",
+    "hmr": "SET HMR=true&& SET BROWSER=none&& pnpm run gen && vite --config ./vite.config.hmr.ts",
     "lint": "eslint trabecula/{components,generator,utils}/**/*{.ts,.tsx}",
     "lint-fix": "pnpm run lint --fix",
-    "postinstall": "patch-package",
-    "pre-build": "pnpm run gen",
+    "postinstall": "node -e \"require('fs').existsSync('.git') && require('child_process').execSync('patch-package', {stdio:'inherit'})\"",
+    "prepare": "husky",
     "prettier": "prettier --check trabecula --config ./.prettierrc --ignore-path ./.prettierignore",
     "prettier-fix": "pnpm run prettier --write",
     "ts-check": "tspc --noEmit"
   },
+  "peerDependencies": {
+    "@emotion/cache": "^11.7.1",
+    "@emotion/react": "^11.8.2",
+    "@emotion/styled": "^11.8.1",
+    "mobx-keystone": "^1.21.0",
+    "react": "^17.0.0 || ^18.0.0",
+    "react-dom": "^17.0.0 || ^18.0.0",
+    "tss-react": "^4.9.20"
+  },
   "dependencies": {
+    "mobx-react-lite": "^4.1.1",
+    "patch-package": "^6.4.7"
+  },
+  "devDependencies": {
     "@emotion/cache": "^11.7.1",
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
@@ -55,47 +86,48 @@
     "@mui/material": "5.13.6",
     "@mui/styles": "5.5.1",
     "@mui/x-date-pickers": "6.19.9",
+    "@types/color": "^3.0.3",
+    "@types/node": "^18.19.44",
+    "@types/react-dom": "^17.0.14",
+    "@types/react-router-dom": "^5.3.3",
+    "@types/react-virtualized-auto-sizer": "^1.0.1",
+    "@types/react-window": "^1.8.5",
+    "@types/react": "^17.0.43",
+    "@typescript-eslint/eslint-plugin": "^6.12.0",
+    "@vitejs/plugin-react": "^4.0.3",
     "color": "^4.2.3",
     "dayjs": "^1.11.0",
     "es-toolkit": "^1.16.0",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-prettier": "^5.2.6",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "eslint-plugin-tss-unused-classes": "^1.0.2",
+    "eslint": "8.54.0",
     "fdir": "^6.4.6",
+    "husky": "^9.1.7",
     "ligatures": "^0.0.3",
     "md5-file": "^5.0.0",
     "mobx-react-lite": "^4.1.1",
+    "mobx-keystone": "^1.21.0",
+    "patch-package": "^6.4.7",
     "picocolors": "^1.1.1",
-    "react": "^17.0.2",
+    "prettier": "^3.3.1",
     "react-dom": "^17.0.2",
     "react-draggable": "^4.4.5",
     "react-router-dom": "^5.3.0",
     "react-toastify": "^9.0.8",
     "react-virtualized-auto-sizer": "^1.0.6",
     "react-window": "^1.8.7",
-    "tss-react": "^3.6.0"
-  },
-  "devDependencies": {
-    "@types/color": "^3.0.3",
-    "@types/node": "^18.19.44",
-    "@types/react": "^17.0.43",
-    "@types/react-dom": "^17.0.14",
-    "@types/react-router-dom": "^5.3.3",
-    "@types/react-virtualized-auto-sizer": "^1.0.1",
-    "@types/react-window": "^1.8.5",
-    "@typescript-eslint/eslint-plugin": "^6.12.0",
-    "@vitejs/plugin-react": "^4.0.3",
-    "eslint": "8.54.0",
-    "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-prettier": "^5.2.6",
-    "eslint-plugin-simple-import-sort": "^12.1.1",
-    "eslint-plugin-tss-unused-classes": "^1.0.2",
-    "patch-package": "^6.4.7",
-    "prettier": "^3.3.1",
+    "react": "^17.0.2",
     "rimraf": "^5.0.7",
     "ts-patch": "^3.3.0",
-    "ts-plugin-sort-import-suggestions": "github:saschavhd/ts-plugin-sort-import-suggestions",
     "tsconfig-paths": "^4.2.0",
+    "tss-react": "^3.6.0",
+    "tsup": "^8.5.1",
     "typescript": "5.3.x",
-    "vite": "4.5.1",
+    "typescript-transform-paths": "^3.5.6",
     "vite-plugin-svgr": "^3.2.0",
-    "vite-tsconfig-paths": "4.2.0"
+    "vite-tsconfig-paths": "4.2.0",
+    "vite": "4.5.1"
   }
 }

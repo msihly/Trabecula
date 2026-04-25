@@ -1,0 +1,9 @@
+#!/bin/sh
+pnpm run dist
+
+if [ $? -ne 0 ]; then
+  echo "Pre-commit failed, aborting commit"
+  exit 1
+fi
+
+git add dist

@@ -1,0 +1,10 @@
+declare const LOGICAL_OPS: readonly ["=", "!=", ">", ">=", "<", "<="];
+type LogicalOp = (typeof LOGICAL_OPS)[number];
+declare const compareLogicOps: (operator: LogicalOp, a: number, b: number) => boolean;
+declare const compareLogic: (type: "AND" | "OR", ...items: any[]) => boolean;
+declare const durationToSeconds: (input: string) => number;
+declare const fractionStringToNumber: (str: string) => number;
+declare const logicOpsToMongo: (op: LogicalOp | "") => "$eq" | "$ne" | "$gt" | "$gte" | "$lt" | "$lte";
+declare const round: (num: number, decimals?: number) => number;
+
+export { LOGICAL_OPS as L, type LogicalOp as a, compareLogicOps as b, compareLogic as c, durationToSeconds as d, fractionStringToNumber as f, logicOpsToMongo as l, round as r };
