@@ -9,8 +9,12 @@ dayjs.extend(duration);
 dayjs.extend(relativeTime);
 
 export { dayjs };
-
 export type DayJsInput = string | number | Date | dayjs.Dayjs;
+
+// These exports are required for the consuming repo to see the types from the plugins
+export type { default as customParseFormat } from "dayjs/plugin/customParseFormat";
+export type { default as duration } from "dayjs/plugin/duration";
+export type { default as relativeTime } from "dayjs/plugin/relativeTime";
 
 export const dateWithTzToIso = (dateStr: string) => {
   const timezone = dateStr.split(" ")[4];

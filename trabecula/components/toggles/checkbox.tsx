@@ -5,6 +5,7 @@ import Color from "color";
 import {
   colors,
   CSS,
+  CssColor,
   makeClasses,
   makeMargins,
   makePadding,
@@ -16,7 +17,7 @@ export interface CheckboxProps {
   center?: boolean;
   checked: boolean;
   className?: string;
-  color?: string;
+  color?: CssColor;
   disabled?: boolean;
   flex?: CSS["flex"];
   fullWidth?: boolean;
@@ -62,7 +63,7 @@ export const Checkbox = ({
 
 interface ClassesProps {
   center: boolean;
-  color: string;
+  color: CssColor;
   disabled: boolean;
   flex: CSS["flex"];
   fullWidth: boolean;

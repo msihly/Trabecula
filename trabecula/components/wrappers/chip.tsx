@@ -2,15 +2,15 @@ import { ReactNode } from "react";
 // eslint-disable-next-line @typescript-eslint/no-restricted-imports
 import { Chip as MuiChip, ChipProps as MuiChipProps } from "@mui/material";
 import { Icon, IconName, IconProps } from "trabecula/components";
-import { CSS, makeClasses, makePadding, Padding } from "trabecula/utils/client";
+import { CSS, CssColor, makeClasses, makePadding, Padding } from "trabecula/utils/client";
 
 export interface ChipProps extends Omit<MuiChipProps, "color" | "icon"> {
-  bgColor?: CSS["backgroundColor"];
+  bgColor?: CssColor;
   className?: string;
-  color?: CSS["color"];
+  color?: CssColor;
   height?: CSS["height"];
   icon?: IconName;
-  iconColor?: string;
+  iconColor?: CssColor;
   iconProps?: Partial<IconProps>;
   label: ReactNode;
   padding?: Padding;
@@ -52,13 +52,10 @@ export const Chip = ({
   );
 };
 
-interface ClassesProps {
-  bgColor: CSS["backgroundColor"];
-  color: CSS["color"];
-  height: CSS["height"];
-  padding: Padding;
-  width: CSS["width"];
-}
+interface ClassesProps extends Pick<
+  ChipProps,
+  "bgColor" | "color" | "height" | "padding" | "width"
+> {}
 
 const useClasses = makeClasses((props: ClassesProps) => ({
   chip: {

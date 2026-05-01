@@ -8,6 +8,7 @@ import {
   Borders,
   colors,
   CSS,
+  CssColor,
   makeBorderRadiuses,
   makeBorders,
   makeClasses,
@@ -30,7 +31,7 @@ export interface InputProps extends Omit<
   borders?: Borders;
   borderRadiuses?: BorderRadiuses;
   className?: string;
-  color?: string;
+  color?: CssColor;
   dense?: boolean;
   flex?: CSS["flex"];
   hasHelper?: boolean;
@@ -156,7 +157,7 @@ export const Input = Comp(
 interface ClassesProps {
   borders: Borders;
   borderRadiuses: BorderRadiuses;
-  color: string;
+  color: CssColor;
   dense: boolean;
   flex: CSS["flex"];
   hasHeader: boolean;

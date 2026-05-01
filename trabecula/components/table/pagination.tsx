@@ -5,21 +5,23 @@ import {
   PaginationProps as PaginationBaseProps,
   PaginationRenderItemParams,
 } from "@mui/material";
-import { LoadingOverlay, View } from "trabecula/components";
+import { LoadingOverlay, View, ViewProps } from "trabecula/components";
 import { colors, makeClasses } from "trabecula/utils/client";
 
 export interface PaginationProps extends Omit<PaginationBaseProps, "onChange"> {
   isLoading?: boolean;
   onChange: (page: number) => void;
   onFullLoad?: () => void;
+  viewProps?: Partial<ViewProps>;
 }
 
 export const Pagination = ({
   className,
+  count,
   isLoading,
   onChange,
   onFullLoad,
-  count,
+  viewProps = {},
   ...props
 }: PaginationProps) => {
   const { css, cx } = useClasses(null);
@@ -32,7 +34,7 @@ export const Pagination = ({
   };
 
   return (
-    <View className={css.root}>
+    <View {...viewProps} className={cx(css.root, viewProps?.className)}>
       <View position="relative" overflow="hidden">
         <LoadingOverlay isLoading={isLoading} />
 

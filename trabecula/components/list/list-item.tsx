@@ -9,11 +9,11 @@ import {
 } from "@mui/material";
 import Color from "color";
 import { Icon, IconName, IconProps, TooltipWrapper } from "trabecula/components";
-import { colors, makeClasses, Margins } from "trabecula/utils/client";
+import { colors, CssColor, makeClasses, Margins } from "trabecula/utils/client";
 
 export interface ListItemProps extends Omit<MuiListItemProps, "children"> {
   children?: ReactNode;
-  color?: string;
+  color?: CssColor;
   icon?: IconName;
   iconProps?: Partial<IconProps>;
   iconEnd?: IconName;
@@ -48,7 +48,7 @@ export const ListItem = ({
       tooltip={children}
       tooltipProps={{
         arrow: false,
-        bgColor: Color(colors.custom.black).fade(0.03).string(),
+        bgColor: Color(colors.custom.black).fade(0.03).hex() as CssColor,
         classes: { tooltip: css.tooltip },
         placement: "right-start",
         PopperProps: { className: css.tooltipPopper },
@@ -80,7 +80,7 @@ export const ListItem = ({
 };
 
 interface ClassesProps {
-  color: string;
+  color: CssColor;
 }
 
 const useClasses = makeClasses((props: ClassesProps) => ({

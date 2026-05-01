@@ -10,16 +10,16 @@ import {
   View,
   ViewProps,
 } from "trabecula/components";
-import { colors, CSS } from "trabecula/utils/client";
+import { colors, CSS, CssColor } from "trabecula/utils/client";
 
 export interface ColorPickerProps extends Omit<ButtonProps, "onChange" | "value"> {
-  color?: string;
+  color?: CssColor;
   label?: string;
   menuProps?: Partial<MenuButtonProps>;
   noIcon?: boolean;
-  setValue: (val: string | null) => void;
-  swatches: string[][];
-  value: string | null;
+  setValue: (val: CssColor | null) => void;
+  swatches: CssColor[][];
+  value: CssColor | null;
   viewProps?: ViewProps;
   width?: CSS["width"];
 }

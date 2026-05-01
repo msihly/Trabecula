@@ -4,6 +4,7 @@ import {
   BorderRadiuses,
   Borders,
   CSS,
+  CssColor,
   makeBorderRadiuses,
   makeBorders,
   makeClasses,
@@ -15,7 +16,7 @@ import {
 
 export interface ViewProps extends HTMLAttributes<HTMLDivElement> {
   align?: CSS["alignItems"];
-  bgColor?: CSS["backgroundColor"];
+  bgColor?: CssColor;
   borders?: Borders;
   borderRadiuses?: BorderRadiuses;
   children?: ReactNode | ReactNode[];
@@ -96,7 +97,7 @@ export const View = Comp(
 
 interface ClassesProps {
   align: CSS["alignItems"];
-  bgColor: CSS["backgroundColor"];
+  bgColor: CssColor;
   borders: Borders;
   borderRadiuses: BorderRadiuses;
   column: boolean;

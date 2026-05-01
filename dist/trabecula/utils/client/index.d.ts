@@ -1,5 +1,5 @@
-export { B as BorderRadiuses, a as Borders, C as CSS, M as Margins, P as Padding, c as colors, m as makeBorderRadiuses, b as makeBorders, d as makeClasses, e as makeMargins, f as makePadding } from '../../css-ndT17w6x.js';
-import { MutableRefObject, ReactNode } from 'react';
+export { B as BorderRadiuses, a as Borders, C as CSS, b as CssColor, c as CssNamedColor, M as Margins, P as Padding, d as colors, m as makeBorderRadiuses, e as makeBorders, f as makeClasses, g as makeMargins, h as makePadding } from '../../css-uztVyb2s.js';
+import { EffectCallback, DependencyList, MutableRefObject, ReactNode } from 'react';
 import * as mobx_keystone from 'mobx-keystone';
 import { P as PromiseQueue } from '../../queue-CNnYljaI.js';
 import { FixedSizeList, VariableSizeList } from 'react-window';
@@ -11,6 +11,8 @@ import '@mui/material';
 import '@mui/material/styles';
 import 'tss-react';
 
+declare const useDeepEffect: (cb: EffectCallback, deps: DependencyList) => void;
+declare const useDeepMemo: <T>(value: T) => T;
 declare const useElementResize: (ref: MutableRefObject<any>, condition?: any) => {
     top: number;
     left: number;
@@ -96,4 +98,4 @@ declare class Toaster {
 }
 declare const ToastContainer: (props: ToastContainerProps) => react_jsx_runtime.JSX.Element;
 
-export { ToastContainer, Toaster, asyncAction, attachTouchedTracker, clearTouched, copyToClipboard, derefMobx, getMobx, initMobx, makeQueue, makeTouchedProp, toast, triggerAllTouched, useDragScroll, useElementResize, useForceUpdate, useLazyLoad, validateProp };
+export { ToastContainer, Toaster, asyncAction, attachTouchedTracker, clearTouched, copyToClipboard, derefMobx, getMobx, initMobx, makeQueue, makeTouchedProp, toast, triggerAllTouched, useDeepEffect, useDeepMemo, useDragScroll, useElementResize, useForceUpdate, useLazyLoad, validateProp };

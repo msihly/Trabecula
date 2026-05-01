@@ -2,7 +2,7 @@ import { ElementType } from "react";
 // eslint-disable-next-line @typescript-eslint/no-restricted-imports
 import { Typography, TypographyProps } from "@mui/material";
 import { TooltipProps, TooltipWrapper } from "trabecula/components";
-import { colors, CSS, makeClasses } from "trabecula/utils/client";
+import { colors, CSS, CssColor, makeClasses } from "trabecula/utils/client";
 
 export type TextPreset = "default" | "detail-label" | "label-glow" | "sub-text" | "title";
 
@@ -45,7 +45,7 @@ export interface TextProps extends Omit<
   TypographyProps,
   "color" | "component" | "fontSize" | "fontWeight" | "overflow" | "title"
 > {
-  color?: string;
+  color?: CssColor;
   component?: ElementType;
   fontSize?: CSS["fontSize"];
   fontWeight?: CSS["fontWeight"];
@@ -80,7 +80,7 @@ export const Text = ({
 };
 
 interface ClassesProps {
-  color: string;
+  color: CssColor;
   fontSize: CSS["fontSize"];
   fontWeight: CSS["fontWeight"];
   overflow: CSS["overflow"];

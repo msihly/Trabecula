@@ -2,7 +2,6 @@ export * from "./button";
 export * from "./color-picker";
 export * from "./icon";
 export * from "./icon-picker";
-export * from "./id-button";
 export * from "./menu-button";
 export * from "./sort-menu";
 export * from "./sort-row";

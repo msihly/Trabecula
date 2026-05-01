@@ -10,7 +10,7 @@ import {
 // eslint-disable-next-line @typescript-eslint/no-restricted-imports
 import { Icon as MuiIcon } from "@mui/material";
 import { IconName } from "trabecula/_generated/client/icons";
-import { colors, makeClasses } from "trabecula/utils/client";
+import { colors, CssColor, makeClasses } from "trabecula/utils/client";
 
 export const toast = {
   error: _toast.error,
@@ -58,7 +58,7 @@ export const ToastContainer = (props: ToastContainerProps) => {
   );
 };
 
-const STATUSES: { [key in TypeOptions]: { color: string; icon: IconName } } = {
+const STATUSES: { [key in TypeOptions]: { color: CssColor; icon: IconName } } = {
   default: {
     color: colors.custom.blue,
     icon: "CircleNotifications",

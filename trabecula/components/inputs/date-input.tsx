@@ -46,7 +46,12 @@ export const DateInput = ({
           onChange={handleChange}
           slots={{
             textField: (props) => (
-              <Input {...props} {...inputProps} value={props?.value as string} />
+              <Input
+                {...props}
+                {...inputProps}
+                color={inputProps.color}
+                value={props?.value as string}
+              />
             ),
           }}
           slotProps={{ actionBar: { actions: ["cancel", "clear", "today"] } }}

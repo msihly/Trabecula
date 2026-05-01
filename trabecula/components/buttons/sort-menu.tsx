@@ -1,9 +1,9 @@
 import { Button, Icon, IconName, IconProps, Text, View } from "trabecula/components";
 import { ButtonProps, MenuButton, SortRow } from "trabecula/components/buttons";
-import { colors, CSS, makeBorderRadiuses, makeClasses } from "trabecula/utils/client";
+import { colors, CSS, CssColor, makeBorderRadiuses, makeClasses } from "trabecula/utils/client";
 
 export interface SortMenuProps extends Omit<ButtonProps, "onChange" | "value"> {
-  color?: string;
+  color?: CssColor;
   hasHeader?: boolean;
   rows: {
     attribute: string;

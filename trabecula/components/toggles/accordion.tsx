@@ -2,11 +2,11 @@ import { ReactNode, useState } from "react";
 // eslint-disable-next-line @typescript-eslint/no-restricted-imports
 import { Accordion as MuiAccordion, AccordionProps as MuiAccordionProps } from "@mui/material";
 import { Button, Icon, View } from "trabecula/components";
-import { makeClasses } from "trabecula/utils/client";
+import { CssColor, makeClasses } from "trabecula/utils/client";
 
 export interface AccordionProps extends MuiAccordionProps {
   children: ReactNode | ReactNode[];
-  color?: string;
+  color?: CssColor;
   dense?: boolean;
   expanded?: boolean;
   fullWidth?: boolean;

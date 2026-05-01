@@ -20,6 +20,7 @@ import {
   BorderRadiuses,
   colors,
   CSS,
+  CssColor,
   makeBorderRadiuses,
   makeClasses,
   makeMargins,
@@ -33,8 +34,8 @@ export interface ButtonProps extends Omit<
 > {
   borderRadiuses?: BorderRadiuses;
   boxShadow?: CSS["boxShadow"];
-  color?: string;
-  colorOnHover?: string;
+  color?: CssColor;
+  colorOnHover?: CssColor;
   endNode?: ReactNode;
   fontSize?: CSS["fontSize"];
   fontWeight?: CSS["fontWeight"];
@@ -50,7 +51,7 @@ export interface ButtonProps extends Omit<
   padding?: Padding;
   startNode?: ReactNode;
   text?: string;
-  textColor?: string;
+  textColor?: CssColor;
   textClassName?: string;
   textTransform?: CSS["textTransform"];
   tooltip?: TooltipProps["title"];
@@ -168,6 +169,8 @@ interface ClassesProps extends Pick<
   | "boxShadow"
   | "color"
   | "colorOnHover"
+  | "justify"
+  | "margins"
   | "outlined"
   | "outlineFill"
   | "padding"
@@ -176,8 +179,6 @@ interface ClassesProps extends Pick<
   | "width"
 > {
   isLink: boolean;
-  justify: CSS["justifyContent"];
-  margins: Margins;
 }
 
 const useClasses = makeClasses((props: ClassesProps) => ({

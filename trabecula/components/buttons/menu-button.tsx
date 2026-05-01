@@ -2,13 +2,13 @@ import { MouseEvent, ReactNode, useState } from "react";
 import { Menu } from "@mui/material";
 import { IconName } from "trabecula/components";
 import { IconButton, IconButtonProps } from "trabecula/components/buttons";
-import { colors, CSS, makeClasses } from "trabecula/utils/client";
+import { colors, CSS, CssColor, makeClasses } from "trabecula/utils/client";
 
 export interface MenuButtonProps extends IconButtonProps {
-  bgColor?: CSS["backgroundColor"];
+  bgColor?: CssColor;
   button?: (onOpen: (event: MouseEvent) => void) => ReactNode;
   children: ReactNode;
-  color?: string;
+  color?: CssColor;
   icon?: IconName;
   keepMounted?: boolean;
   menuWidth?: CSS["width"];
@@ -58,7 +58,7 @@ export const MenuButton = ({
 };
 
 interface ClassesProps {
-  bgColor: CSS["backgroundColor"];
+  bgColor: CssColor;
   menuWidth: CSS["width"];
 }
 

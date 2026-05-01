@@ -14,23 +14,31 @@
   "exports": {
     "./_generated/client": {
       "types": "./dist/trabecula/_generated/client/index.d.ts",
-      "default": "./dist/trabecula/_generated/client/index.js"
+      "import": "./dist/trabecula/_generated/client/index.mjs",
+      "require": "./dist/trabecula/_generated/client/index.js"
     },
     "./components": {
       "types": "./dist/trabecula/components/index.d.ts",
-      "default": "./dist/trabecula/components/index.js"
+      "import": "./dist/trabecula/components/index.mjs",
+      "require": "./dist/trabecula/components/index.js"
     },
     "./components/*": {
       "types": "./dist/trabecula/components/*/index.d.ts",
-      "default": "./dist/trabecula/components/*/index.js"
+      "import": "./dist/trabecula/components/*/index.mjs",
+      "require": "./dist/trabecula/components/*/index.js"
     },
     "./css/fonts.css": {
       "types": "./dist/css/fonts.css.d.ts",
       "default": "./dist/css/fonts.css"
     },
+    "./css/react-toastify.css": {
+      "types": "./dist/css/react-toastify.css.d.ts",
+      "default": "./dist/css/react-toastify.css"
+    },
     "./utils/*": {
       "types": "./dist/trabecula/utils/*/index.d.ts",
-      "default": "./dist/trabecula/utils/*/index.js"
+      "import": "./dist/trabecula/utils/*/index.mjs",
+      "require": "./dist/trabecula/utils/*/index.js"
     }
   },
   "typesVersions": {
@@ -43,6 +51,9 @@
       ],
       "css/fonts.css": [
         "./dist/css/fonts.css.d.ts"
+      ],
+      "css/react-toastify.css": [
+        "./dist/css/react-toastify.css.d.ts"
       ],
       "utils/*": [
         "./dist/trabecula/utils/*/index.d.ts"
@@ -67,12 +78,20 @@
     "@emotion/cache": "^11.7.1",
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
+    "@mui/base": "^5.0.0-beta.5",
+    "@mui/icons-material": "5.14.19",
+    "@mui/lab": "5.0.0-alpha.134",
+    "@mui/material": "5.13.6",
+    "@mui/styles": "5.5.1",
+    "@mui/x-date-pickers": "6.19.9",
     "mobx-keystone": "^1.21.0",
     "react": "^17.0.0 || ^18.0.0",
+    "react-draggable": "^4.4.5",
     "react-dom": "^17.0.0 || ^18.0.0",
     "tss-react": "^4.9.20"
   },
   "dependencies": {
+    "dayjs": "^1.11.0",
     "mobx-react-lite": "^4.1.1",
     "patch-package": "^6.4.7"
   },
@@ -93,7 +112,8 @@
     "@types/react-virtualized-auto-sizer": "^1.0.1",
     "@types/react-window": "^1.8.5",
     "@types/react": "^17.0.43",
-    "@typescript-eslint/eslint-plugin": "^6.12.0",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
     "@vitejs/plugin-react": "^4.0.3",
     "color": "^4.2.3",
     "dayjs": "^1.11.0",

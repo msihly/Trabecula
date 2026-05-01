@@ -2,10 +2,10 @@ import { ReactNode, useState } from "react";
 import { Menu } from "@mui/material";
 import Color from "color";
 import { Divider, IconName, IconProps, ListItem, View, ViewProps } from "trabecula/components";
-import { colors, makeClasses } from "trabecula/utils/client";
+import { colors, CssColor, makeClasses } from "trabecula/utils/client";
 
 interface MenuItem {
-  color?: string;
+  color?: CssColor;
   divider?: "bottom" | "top";
   icon: IconName;
   iconProps?: Partial<IconProps>;

@@ -1,13 +1,13 @@
 import { Dispatch, ReactNode, SetStateAction, useState } from "react";
 import { Button, Icon, IconName, Modal, Text } from "trabecula/components";
-import { colors, CSS } from "trabecula/utils/client";
+import { colors, CSS, CssColor } from "trabecula/utils/client";
 
 export interface ConfirmModalProps {
-  cancelColor?: string;
+  cancelColor?: CssColor;
   cancelIcon?: IconName;
   cancelText?: string;
   children?: ReactNode | ReactNode[];
-  confirmColor?: string;
+  confirmColor?: CssColor;
   confirmIcon?: IconName;
   confirmText?: string;
   headerText?: string;

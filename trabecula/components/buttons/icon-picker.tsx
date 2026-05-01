@@ -17,7 +17,7 @@ import {
   View,
   ViewProps,
 } from "trabecula/components";
-import { colors, CSS } from "trabecula/utils/client";
+import { colors, CSS, CssColor } from "trabecula/utils/client";
 import { chunkArray } from "trabecula/utils/common";
 
 const SEARCH_STYLES = ["Filled", "Outlined", "Rounded", "TwoTone", "Sharp"] as const;
@@ -27,7 +27,7 @@ const SEARCH_STYLES_UNFILLED = SEARCH_STYLES.filter((s) => s !== "Filled");
 type SearchStyle = (typeof SEARCH_STYLES)[number];
 
 export interface IconPickerProps extends Omit<ButtonProps, "onChange" | "value"> {
-  color?: string;
+  color?: CssColor;
   label?: string;
   menuProps?: Partial<MenuButtonProps>;
   setValue: (val: IconName | null) => void;

@@ -2,13 +2,13 @@
 import { Icon as MuiIcon, IconProps as MuiIconProps } from "@mui/material";
 import { IconName as MuiIconName } from "trabecula/_generated/client/icons";
 import { View, ViewProps } from "trabecula/components";
-import { makeClasses, Margins } from "trabecula/utils/client";
+import { CssColor, makeClasses, Margins } from "trabecula/utils/client";
 import { Fmt } from "trabecula/utils/common";
 
 export type IconName = MuiIconName;
 
 export interface IconProps extends Omit<MuiIconProps, "color" | "fontSize"> {
-  color?: string;
+  color?: CssColor;
   name: IconName & string;
   rotation?: number;
   margins?: Margins;

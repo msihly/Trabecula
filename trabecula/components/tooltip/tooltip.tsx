@@ -2,13 +2,13 @@
 import { Tooltip as MuiTooltip, TooltipProps as MuiTooltipProps } from "@mui/material";
 import Color from "color";
 import { View, ViewProps } from "trabecula/components";
-import { colors, CSS, makeClasses } from "trabecula/utils/client";
+import { colors, CSS, CssColor, makeClasses } from "trabecula/utils/client";
 
 export interface TooltipProps extends Omit<MuiTooltipProps, "children" | "color"> {
-  borderColor?: CSS["color"];
-  bgColor?: CSS["backgroundColor"];
+  borderColor?: CssColor;
+  bgColor?: CssColor;
   children: JSX.Element | JSX.Element[];
-  color?: CSS["color"];
+  color?: CssColor;
   flexShrink?: CSS["flexShrink"];
   fontSize?: CSS["fontSize"];
   maxWidth?: CSS["maxWidth"];

@@ -1,6 +1,6 @@
 import { Button, Text, View } from "trabecula/components";
-import { colors, makeClasses } from "trabecula/utils/client";
-import { CONSTANTS } from "trabecula/utils/common";
+import { colors, CssColor, makeClasses } from "trabecula/utils/client";
+import { _CONSTANTS } from "trabecula/utils/common";
 
 export const MULTI_INPUT_ROW_HEIGHT = 35;
 
@@ -10,7 +10,7 @@ export type MultiInputRowOption<T = string> = {
 };
 
 export interface MultiInputRowProps<T> {
-  bgColor?: string;
+  bgColor?: CssColor;
   hasDelete?: boolean;
   leftNode?: React.ReactNode;
   onClick?: (value: T) => void;
@@ -52,8 +52,8 @@ export const MultiInputRow = <T,>({ bgColor, ...props }: MultiInputRowProps<T>) 
         <Text
           tooltip={value}
           tooltipProps={{
-            enterDelay: CONSTANTS.TOOLTIP.ENTER_DELAY,
-            enterNextDelay: CONSTANTS.TOOLTIP.ENTER_NEXT_DELAY,
+            enterDelay: _CONSTANTS.TOOLTIP.ENTER_DELAY,
+            enterNextDelay: _CONSTANTS.TOOLTIP.ENTER_NEXT_DELAY,
             flexShrink: 1,
           }}
           className={css.label}
@@ -78,7 +78,7 @@ export const MultiInputRow = <T,>({ bgColor, ...props }: MultiInputRowProps<T>) 
 };
 
 interface ClassesProps {
-  bgColor: string;
+  bgColor: CssColor;
   hasClick: boolean;
 }
 

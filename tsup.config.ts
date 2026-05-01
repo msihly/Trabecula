@@ -21,6 +21,8 @@ export default defineConfig({
     "components/index": "trabecula/components/index.ts",
     "utils/client/index": "trabecula/utils/client/index.ts",
     "utils/common/index": "trabecula/utils/common/index.ts",
+    "utils/generator/index": "trabecula/utils/generator/index.ts",
+    "utils/server/index": "trabecula/utils/server/index.ts",
   },
   external: [
     "@emotion/cache",
@@ -31,21 +33,29 @@ export default defineConfig({
     "react",
     "tss-react",
   ],
-  format: ["cjs"],
+  format: ["cjs", "esm"],
   target: "es2015",
   bundle: true,
   dts: true,
   outDir: "dist/trabecula",
   sourcemap: true,
+  outExtension: ({ format }) => ({ js: format === "esm" ? ".mjs" : ".js" }),
   onSuccess: async () => {
     await cp("plugins", "dist/plugins", { recursive: true });
+
     await cp("patches", "dist/patches", { recursive: true });
 
-    await cp(CSS_SRC, CSS_DEST, { recursive: true });
-    await writeFile(
-      `${CSS_DEST}/fonts.css.d.ts`,
-      "declare const styles: string;\nexport default styles;\n",
+    await cp(
+      "node_modules/react-toastify/dist/ReactToastify.css",
+      `${CSS_DEST}/react-toastify.css`,
+      { recursive: true },
     );
+
+    await cp(CSS_SRC, CSS_DEST, { recursive: true });
+
+    const cssDtsStub = "declare const styles: string;\nexport default styles;\n";
+    await writeFile(`${CSS_DEST}/fonts.css.d.ts`, cssDtsStub);
+    await writeFile(`${CSS_DEST}/react-toastify.css.d.ts`, cssDtsStub);
     await inlineFonts();
   },
 });

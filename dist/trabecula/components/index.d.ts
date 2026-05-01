@@ -2,7 +2,7 @@ import * as react from 'react';
 import { Ref, ForwardRefExoticComponent, PropsWithoutRef, RefAttributes, ReactNode, MouseEvent, Dispatch, SetStateAction, ElementType, HTMLAttributes } from 'react';
 import * as react_jsx_runtime from 'react/jsx-runtime';
 import { ButtonProps as ButtonProps$1, IconButtonProps as IconButtonProps$1, TextFieldProps, ListItemProps as ListItemProps$1, IconProps as IconProps$1, DialogProps, PaginationProps as PaginationProps$1, TypographyProps, AccordionProps as AccordionProps$1, TooltipProps as TooltipProps$1, ChipProps as ChipProps$1, DividerProps as DividerProps$1 } from '@mui/material';
-import { B as BorderRadiuses, C as CSS, M as Margins, P as Padding, a as Borders } from '../css-ndT17w6x.js';
+import { B as BorderRadiuses, C as CSS, b as CssColor, M as Margins, P as Padding, a as Borders } from '../css-uztVyb2s.js';
 import { IconName as IconName$1 } from '../_generated/client/index.js';
 import { DatePickerProps } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
@@ -18,8 +18,8 @@ declare function Comp<P, R = HTMLDivElement>(component: Forwarded<P, R>): Forwar
 interface ButtonProps extends Omit<ButtonProps$1, "color" | "endIcon" | "fullWidth" | "startIcon" | "type" | "variant"> {
     borderRadiuses?: BorderRadiuses;
     boxShadow?: CSS["boxShadow"];
-    color?: string;
-    colorOnHover?: string;
+    color?: CssColor;
+    colorOnHover?: CssColor;
     endNode?: ReactNode;
     fontSize?: CSS["fontSize"];
     fontWeight?: CSS["fontWeight"];
@@ -35,7 +35,7 @@ interface ButtonProps extends Omit<ButtonProps$1, "color" | "endIcon" | "fullWid
     padding?: Padding;
     startNode?: ReactNode;
     text?: string;
-    textColor?: string;
+    textColor?: CssColor;
     textClassName?: string;
     textTransform?: CSS["textTransform"];
     tooltip?: TooltipProps["title"];
@@ -46,13 +46,13 @@ interface ButtonProps extends Omit<ButtonProps$1, "color" | "endIcon" | "fullWid
 declare const Button: ({ borderRadiuses, boxShadow, children, className, color, colorOnHover, endNode, fontSize, fontWeight, href, icon, iconProps, iconRight, iconSize, justify, loading, margins, onClick, outlined, outlineFill, padding, size, startNode, text, textColor, textTransform, tooltip, tooltipProps, type, width, ...props }: ButtonProps) => react_jsx_runtime.JSX.Element;
 
 interface ColorPickerProps extends Omit<ButtonProps, "onChange" | "value"> {
-    color?: string;
+    color?: CssColor;
     label?: string;
     menuProps?: Partial<MenuButtonProps>;
     noIcon?: boolean;
-    setValue: (val: string | null) => void;
-    swatches: string[][];
-    value: string | null;
+    setValue: (val: CssColor | null) => void;
+    swatches: CssColor[][];
+    value: CssColor | null;
     viewProps?: ViewProps;
     width?: CSS["width"];
 }
@@ -69,7 +69,7 @@ interface IconButtonProps extends Omit<IconButtonProps$1, "color"> {
 declare const IconButton: ({ children, className, disabled, iconProps, margins, name, onClick, size, tooltip, tooltipProps, ...props }: IconButtonProps) => react_jsx_runtime.JSX.Element;
 
 interface IconPickerProps extends Omit<ButtonProps, "onChange" | "value"> {
-    color?: string;
+    color?: CssColor;
     label?: string;
     menuProps?: Partial<MenuButtonProps>;
     setValue: (val: IconName | null) => void;
@@ -80,16 +80,11 @@ interface IconPickerProps extends Omit<ButtonProps, "onChange" | "value"> {
 }
 declare const IconPicker: react.ForwardRefExoticComponent<Omit<IconPickerProps, "ref"> & react.RefAttributes<HTMLDivElement>>;
 
-interface IdButtonProps extends ButtonProps {
-    value: string;
-}
-declare const IdButton: ({ value, ...props }: IdButtonProps) => react_jsx_runtime.JSX.Element;
-
 interface MenuButtonProps extends IconButtonProps {
-    bgColor?: CSS["backgroundColor"];
+    bgColor?: CssColor;
     button?: (onOpen: (event: MouseEvent) => void) => ReactNode;
     children: ReactNode;
-    color?: string;
+    color?: CssColor;
     icon?: IconName;
     keepMounted?: boolean;
     menuWidth?: CSS["width"];
@@ -97,7 +92,7 @@ interface MenuButtonProps extends IconButtonProps {
 declare const MenuButton: ({ bgColor, button, children, color, icon, keepMounted, menuWidth, ...props }: MenuButtonProps) => react_jsx_runtime.JSX.Element;
 
 interface SortMenuProps extends Omit<ButtonProps, "onChange" | "value"> {
-    color?: string;
+    color?: CssColor;
     hasHeader?: boolean;
     rows: {
         attribute: string;
@@ -163,7 +158,7 @@ interface InputProps extends Omit<TextFieldProps, "color" | "fullWidth" | "onCha
     borders?: Borders;
     borderRadiuses?: BorderRadiuses;
     className?: string;
-    color?: string;
+    color?: CssColor;
     dense?: boolean;
     flex?: CSS["flex"];
     hasHelper?: boolean;
@@ -228,7 +223,7 @@ type MultiInputRowOption<T = string> = {
     value: T;
 };
 interface MultiInputRowProps<T> {
-    bgColor?: string;
+    bgColor?: CssColor;
     hasDelete?: boolean;
     leftNode?: React.ReactNode;
     onClick?: (value: T) => void;
@@ -285,7 +280,7 @@ declare const DetailRows: ({ labelWidth, rows }: DetailRowsProps) => react_jsx_r
 
 interface ListItemProps extends Omit<ListItemProps$1, "children"> {
     children?: ReactNode;
-    color?: string;
+    color?: CssColor;
     icon?: IconName;
     iconProps?: Partial<IconProps>;
     iconEnd?: IconName;
@@ -298,7 +293,7 @@ declare const ListItem: ({ children, color, icon, iconProps, iconEnd, iconEndMar
 
 type IconName = IconName$1;
 interface IconProps extends Omit<IconProps$1, "color" | "fontSize"> {
-    color?: string;
+    color?: CssColor;
     name: IconName & string;
     rotation?: number;
     margins?: Margins;
@@ -308,11 +303,11 @@ interface IconProps extends Omit<IconProps$1, "color" | "fontSize"> {
 declare const Icon: ({ className, color, margins, name, rotation, size, viewProps, ...props }: IconProps) => react_jsx_runtime.JSX.Element;
 
 interface ConfirmModalProps {
-    cancelColor?: string;
+    cancelColor?: CssColor;
     cancelIcon?: IconName;
     cancelText?: string;
     children?: ReactNode | ReactNode[];
-    confirmColor?: string;
+    confirmColor?: CssColor;
     confirmIcon?: IconName;
     confirmText?: string;
     headerText?: string;
@@ -374,12 +369,22 @@ interface ProgressBarProps {
 }
 declare const ProgressBar: react.ForwardRefExoticComponent<ProgressBarProps & react.RefAttributes<HTMLDivElement>>;
 
+interface ProgressCircleProps {
+    bgColor?: CssColor;
+    children?: ReactNode | ReactNode[];
+    color?: CssColor;
+    percent: number;
+    size?: number | string;
+}
+declare const ProgressCircle: react.ForwardRefExoticComponent<ProgressCircleProps & react.RefAttributes<HTMLDivElement>>;
+
 interface PaginationProps extends Omit<PaginationProps$1, "onChange"> {
     isLoading?: boolean;
     onChange: (page: number) => void;
     onFullLoad?: () => void;
+    viewProps?: Partial<ViewProps>;
 }
-declare const Pagination: ({ className, isLoading, onChange, onFullLoad, count, ...props }: PaginationProps) => react_jsx_runtime.JSX.Element;
+declare const Pagination: ({ className, count, isLoading, onChange, onFullLoad, viewProps, ...props }: PaginationProps) => react_jsx_runtime.JSX.Element;
 
 interface TableColumn<T> {
     header: string;
@@ -399,7 +404,7 @@ interface TableProps<T> {
 declare const Table: <T extends object>({ className, columns, hasEmptyRows, hasPagination, rowCountOptions, rows, paginationClassName, }: TableProps<T>) => react_jsx_runtime.JSX.Element;
 
 interface CenteredTextProps extends TextProps {
-    color?: string;
+    color?: CssColor;
     text: string;
     viewProps?: Partial<ViewProps>;
 }
@@ -425,7 +430,7 @@ declare const Detail: ({ emptyValueText, label, labelProps, overflowX, overflowY
 
 type TextPreset = "default" | "detail-label" | "label-glow" | "sub-text" | "title";
 interface TextProps extends Omit<TypographyProps, "color" | "component" | "fontSize" | "fontWeight" | "overflow" | "title"> {
-    color?: string;
+    color?: CssColor;
     component?: ElementType;
     fontSize?: CSS["fontSize"];
     fontWeight?: CSS["fontWeight"];
@@ -438,7 +443,7 @@ declare const Text: ({ children, className, color, component, fontSize, fontWeig
 
 interface AccordionProps extends AccordionProps$1 {
     children: ReactNode | ReactNode[];
-    color?: string;
+    color?: CssColor;
     dense?: boolean;
     expanded?: boolean;
     fullWidth?: boolean;
@@ -451,7 +456,7 @@ interface CheckboxProps {
     center?: boolean;
     checked: boolean;
     className?: string;
-    color?: string;
+    color?: CssColor;
     disabled?: boolean;
     flex?: CSS["flex"];
     fullWidth?: boolean;
@@ -464,10 +469,10 @@ interface CheckboxProps {
 declare const Checkbox: ({ center, checked, className, color, disabled, flex, fullWidth, indeterminate, label, margins, padding, setChecked, }: CheckboxProps) => react_jsx_runtime.JSX.Element;
 
 interface TooltipProps extends Omit<TooltipProps$1, "children" | "color"> {
-    borderColor?: CSS["color"];
-    bgColor?: CSS["backgroundColor"];
+    borderColor?: CssColor;
+    bgColor?: CssColor;
     children: JSX.Element | JSX.Element[];
-    color?: CSS["color"];
+    color?: CssColor;
     flexShrink?: CSS["flexShrink"];
     fontSize?: CSS["fontSize"];
     maxWidth?: CSS["maxWidth"];
@@ -502,12 +507,12 @@ interface CardGridProps extends ViewProps {
 declare const CardGrid: react.ForwardRefExoticComponent<CardGridProps & react.RefAttributes<HTMLDivElement>>;
 
 interface ChipProps extends Omit<ChipProps$1, "color" | "icon"> {
-    bgColor?: CSS["backgroundColor"];
+    bgColor?: CssColor;
     className?: string;
-    color?: CSS["color"];
+    color?: CssColor;
     height?: CSS["height"];
     icon?: IconName;
-    iconColor?: string;
+    iconColor?: CssColor;
     iconProps?: Partial<IconProps>;
     label: ReactNode;
     padding?: Padding;
@@ -523,7 +528,7 @@ interface ConditionalWrapProps {
 declare const ConditionalWrap: ({ condition, wrap, children, }: ConditionalWrapProps) => JSX.Element;
 
 interface MenuItem {
-    color?: string;
+    color?: CssColor;
     divider?: "bottom" | "top";
     icon: IconName;
     iconProps?: Partial<IconProps>;
@@ -579,7 +584,7 @@ declare const UniformList: ({ children, uniformWidth, ...props }: UniformListPro
 
 interface ViewProps extends HTMLAttributes<HTMLDivElement> {
     align?: CSS["alignItems"];
-    bgColor?: CSS["backgroundColor"];
+    bgColor?: CssColor;
     borders?: Borders;
     borderRadiuses?: BorderRadiuses;
     children?: ReactNode | ReactNode[];
@@ -601,4 +606,4 @@ interface ViewProps extends HTMLAttributes<HTMLDivElement> {
 }
 declare const View: react.ForwardRefExoticComponent<ViewProps & react.RefAttributes<HTMLDivElement>>;
 
-export { Accordion, type AccordionProps, Button, type ButtonProps, Card, CardGrid, type CardGridProps, type CardProps, CenteredText, type CenteredTextProps, Checkbox, type CheckboxProps, Chip, type ChipProps, ColorPicker, type ColorPickerProps, Comp, ConditionalWrap, ConfirmModal, type ConfirmModalProps, type ContainerProps, type ContentProps, ContextMenu, type ContextMenuProps, DateDetail, type DateDetailProps, DateInput, type DateInputProps, DateRange, type DateRangeProps, Detail, type DetailProps, DetailRows, Divider, type DividerProps, Dropdown, type DropdownOption, type DropdownProps, type FooterProps, type HeaderProps, HeaderWrapper, type HeaderWrapperProps, Icon, IconButton, type IconButtonProps, type IconName, IconPicker, type IconPickerProps, type IconProps, IdButton, type IdButtonProps, Input, type InputProps, ListItem, type ListItemProps, LoadingOverlay, type LoadingOverlayProps, LogOpsInput, type LogOpsInputProps, MULTI_INPUT_ROW_HEIGHT, MenuButton, type MenuButtonProps, Modal, MultiInput, MultiInputList, type MultiInputListProps, type MultiInputProps, MultiInputRow, type MultiInputRowOption, type MultiInputRowProps, NumInput, type NumInputProps, NumRange, type NumRangeProps, Pagination, type PaginationProps, ProgressBar, type ProgressBarProps, RangeWrapper, type RangeWrapperProps, SideScroller, SortMenu, type SortMenuProps, SortRow, type SortRowProps, Table, type TableColumn, type TableProps, Text, type TextPreset, type TextProps, Tooltip, type TooltipProps, TooltipWrapper, type TooltipWrapperProps, UniformList, type UniformListProps, View, type ViewProps };
+export { Accordion, type AccordionProps, Button, type ButtonProps, Card, CardGrid, type CardGridProps, type CardProps, CenteredText, type CenteredTextProps, Checkbox, type CheckboxProps, Chip, type ChipProps, ColorPicker, type ColorPickerProps, Comp, ConditionalWrap, ConfirmModal, type ConfirmModalProps, type ContainerProps, type ContentProps, ContextMenu, type ContextMenuProps, DateDetail, type DateDetailProps, DateInput, type DateInputProps, DateRange, type DateRangeProps, Detail, type DetailProps, DetailRows, Divider, type DividerProps, Dropdown, type DropdownOption, type DropdownProps, type FooterProps, type HeaderProps, HeaderWrapper, type HeaderWrapperProps, Icon, IconButton, type IconButtonProps, type IconName, IconPicker, type IconPickerProps, type IconProps, Input, type InputProps, ListItem, type ListItemProps, LoadingOverlay, type LoadingOverlayProps, LogOpsInput, type LogOpsInputProps, MULTI_INPUT_ROW_HEIGHT, MenuButton, type MenuButtonProps, Modal, MultiInput, MultiInputList, type MultiInputListProps, type MultiInputProps, MultiInputRow, type MultiInputRowOption, type MultiInputRowProps, NumInput, type NumInputProps, NumRange, type NumRangeProps, Pagination, type PaginationProps, ProgressBar, type ProgressBarProps, ProgressCircle, type ProgressCircleProps, RangeWrapper, type RangeWrapperProps, SideScroller, SortMenu, type SortMenuProps, SortRow, type SortRowProps, Table, type TableColumn, type TableProps, Text, type TextPreset, type TextProps, Tooltip, type TooltipProps, TooltipWrapper, type TooltipWrapperProps, UniformList, type UniformListProps, View, type ViewProps };

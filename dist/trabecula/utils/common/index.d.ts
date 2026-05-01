@@ -4,6 +4,9 @@ export { L as LOGICAL_OPS, a as LogicalOp, c as compareLogic, b as compareLogicO
 import { debounce as debounce$1, cloneDeep, toMerged, isEqual, throttle as throttle$1 } from 'es-toolkit';
 import { set } from 'es-toolkit/compat';
 export { P as PromiseQueue, a as PromiseQueueOptions } from '../../queue-CNnYljaI.js';
+export { default as customParseFormat } from 'dayjs/plugin/customParseFormat';
+export { default as duration } from 'dayjs/plugin/duration';
+export { default as relativeTime } from 'dayjs/plugin/relativeTime';
 
 declare const arrayIntersect: <T>(...arrays: T[][]) => T[];
 declare const bisectArrayChanges: <T>(oldArr: T[], newArr: T[]) => {
@@ -46,7 +49,7 @@ declare const VIDEO_EXTS: ("amv" | "3gp" | "avi" | "f4v" | "flv" | "m4v" | "mkv"
 type VideoExt = (typeof VIDEO_EXTS)[number];
 declare const WEB_VIDEO_CODECS: string[];
 declare const WEB_VIDEO_EXTS: string[];
-interface Constants {
+interface _Constants {
     IMAGE_EXTS: readonly ImageExt[];
     TOOLTIP: {
         ENTER_DELAY: number;
@@ -55,9 +58,10 @@ interface Constants {
     VIDEO_CODECS: readonly VideoCodec[];
     VIDEO_EXTS: readonly VideoExt[];
 }
-declare const CONSTANTS: Constants;
+declare const _CONSTANTS: _Constants;
 
 type DayJsInput = string | number | Date | dayjs.Dayjs;
+
 declare const dateWithTzToIso: (dateStr: string) => string;
 
 declare const isArchive: (filePath: string) => boolean;
@@ -107,4 +111,4 @@ declare const sleep: (min: number, max?: number) => Promise<unknown>;
 declare const throttle: typeof throttle$1;
 declare const uuid: () => `${string}-${string}-${string}-${string}-${string}`;
 
-export { AUDIO_CODECS, AUDIO_CODECS_COMMON, AUDIO_CODECS_UNCOMMON, type AudioCodec, CONSTANTS, type Constants, type DayJsInput, type DeepPartial, Fmt, IMAGE_EXTS, IMAGE_EXTS_COMMON, IMAGE_EXTS_UNCOMMON, type ImageExt, type NestedKeys, VIDEO_CODECS, VIDEO_CODECS_COMMON, VIDEO_CODECS_UNCOMMON, VIDEO_EXTS, VIDEO_EXTS_COMMON, VIDEO_EXTS_UNCOMMON, type VideoCodec, type VideoExt, WEB_VIDEO_CODECS, WEB_VIDEO_EXTS, arrayIntersect, attempt, bisectArrayChanges, centeredSlice, chunkArray, convertNestedKeys, countItems, dateWithTzToIso, debounce, deepClone, deepMerge, getArrayDiff, handleErrors, isArchive, isArchiveFirstPart, isArchivePart, isDeepEqual, isObject, objectToFloat32Array, range, rng, rotateArrayPos, setObj, sleep, sortArray, splitArray, sumArray, throttle, uniqueArrayFilter, uniqueArrayMerge, uuid };
+export { AUDIO_CODECS, AUDIO_CODECS_COMMON, AUDIO_CODECS_UNCOMMON, type AudioCodec, type DayJsInput, type DeepPartial, Fmt, IMAGE_EXTS, IMAGE_EXTS_COMMON, IMAGE_EXTS_UNCOMMON, type ImageExt, type NestedKeys, VIDEO_CODECS, VIDEO_CODECS_COMMON, VIDEO_CODECS_UNCOMMON, VIDEO_EXTS, VIDEO_EXTS_COMMON, VIDEO_EXTS_UNCOMMON, type VideoCodec, type VideoExt, WEB_VIDEO_CODECS, WEB_VIDEO_EXTS, _CONSTANTS, type _Constants, arrayIntersect, attempt, bisectArrayChanges, centeredSlice, chunkArray, convertNestedKeys, countItems, dateWithTzToIso, debounce, deepClone, deepMerge, getArrayDiff, handleErrors, isArchive, isArchiveFirstPart, isArchivePart, isDeepEqual, isObject, objectToFloat32Array, range, rng, rotateArrayPos, setObj, sleep, sortArray, splitArray, sumArray, throttle, uniqueArrayFilter, uniqueArrayMerge, uuid };
