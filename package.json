@@ -2,7 +2,7 @@
   "name": "trabecula",
   "description": "The Skeleton",
   "author": "msihly",
-  "version": "1.0.0",
+  "version": "1.1.1",
   "private": true,
   "homepage": "./",
   "main": "./dist/index.js",

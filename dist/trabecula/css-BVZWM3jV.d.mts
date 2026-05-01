@@ -82,7 +82,7 @@ declare const colors: {
     readonly foreground: "#2C2C2C";
     readonly foregroundCard: "#343434";
     readonly mui: typeof colors$1;
-    readonly tagCategories: string[][];
+    readonly tagCategories: CssColor[][];
 };
 
 export { type BorderRadiuses as B, type CSS as C, type Margins as M, type Padding as P, type Borders as a, type CssColor as b, type CssNamedColor as c, colors as d, makeBorders as e, makeClasses as f, makeMargins as g, makePadding as h, makeBorderRadiuses as m };

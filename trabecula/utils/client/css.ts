@@ -275,7 +275,7 @@ const customColors: Record<string, CssColor> = {
   yellow: "#e3c648",
 } as const;
 
-const tagCategories = [
+const tagCategories: CssColor[][] = [
   customColors.red,
   customColors.orange,
   customColors.yellow,
@@ -284,11 +284,11 @@ const tagCategories = [
   customColors.blueGrey,
   customColors.purple,
 ].map((c) => [
-  Color(c).lighten(0.4).hex(),
-  Color(c).lighten(0.2).hex(),
-  Color(c).hex(),
-  Color(c).darken(0.2).hex(),
-  Color(c).darken(0.4).hex(),
+  Color(c).lighten(0.4).hex() as CssColor,
+  Color(c).lighten(0.2).hex() as CssColor,
+  Color(c).hex() as CssColor,
+  Color(c).darken(0.2).hex() as CssColor,
+  Color(c).darken(0.4).hex() as CssColor,
 ]);
 
 export const colors = {
