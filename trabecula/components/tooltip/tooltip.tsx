@@ -81,7 +81,6 @@ const useClasses = makeClasses((props: ClassesProps) => ({
   container: {
     display: "flex",
     flexShrink: props.flexShrink,
-    width: "fit-content",
     overflow: "hidden",
     textOverflow: "ellipsis",
     userSelect: "auto",

@@ -3151,7 +3151,6 @@ var useClasses24 = makeClasses((props) => ({
   container: {
     display: "flex",
     flexShrink: props.flexShrink,
-    width: "fit-content",
     overflow: "hidden",
     textOverflow: "ellipsis",
     userSelect: "auto"
