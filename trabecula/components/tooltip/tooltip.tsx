@@ -7,7 +7,7 @@ import { colors, CSS, CssColor, makeClasses } from "trabecula/utils/client";
 export interface TooltipProps extends Omit<MuiTooltipProps, "children" | "color"> {
   borderColor?: CssColor;
   bgColor?: CssColor;
-  children: JSX.Element | JSX.Element[];
+  children: JSX.Element;
   color?: CssColor;
   flexShrink?: CSS["flexShrink"];
   fontSize?: CSS["fontSize"];
@@ -50,7 +50,12 @@ export const Tooltip = ({
       {...{ arrow, placement, title }}
       classes={{ arrow: css.arrow, popper: css.popper, tooltip: css.tooltip }}
     >
-      <View {...viewProps} className={css.container}>
+      <View
+        {...viewProps}
+        onMouseEnter={props.onMouseEnter}
+        onMouseLeave={props.onMouseLeave}
+        className={css.container}
+      >
         {children}
       </View>
     </MuiTooltip>
@@ -76,6 +81,7 @@ const useClasses = makeClasses((props: ClassesProps) => ({
   container: {
     display: "flex",
     flexShrink: props.flexShrink,
+    width: "fit-content",
     overflow: "hidden",
     textOverflow: "ellipsis",
     userSelect: "auto",

@@ -20,12 +20,12 @@ export interface CheckboxProps {
   color?: CssColor;
   disabled?: boolean;
   flex?: CSS["flex"];
-  fullWidth?: boolean;
   indeterminate?: boolean;
   label?: ReactNode;
   margins?: Margins;
   padding?: Padding;
   setChecked: (checked: boolean) => void;
+  width?: CSS["width"];
 }
 
 export const Checkbox = ({
@@ -35,14 +35,14 @@ export const Checkbox = ({
   color = colors.custom.blue,
   disabled,
   flex = 1,
-  fullWidth = true,
+  width = "100%",
   indeterminate,
   label,
   margins = { left: 0, right: 0 },
   padding = { all: "0.3rem" },
   setChecked,
 }: CheckboxProps) => {
-  const { css, cx } = useClasses({ center, color, disabled, flex, fullWidth, margins, padding });
+  const { css, cx } = useClasses({ center, color, disabled, flex, margins, padding, width });
 
   const toggleChecked = () => !disabled && setChecked(!checked);
 
@@ -61,15 +61,10 @@ export const Checkbox = ({
   );
 };
 
-interface ClassesProps {
-  center: boolean;
-  color: CssColor;
-  disabled: boolean;
-  flex: CSS["flex"];
-  fullWidth: boolean;
-  margins: Margins;
-  padding: Padding;
-}
+interface ClassesProps extends Pick<
+  CheckboxProps,
+  "center" | "color" | "disabled" | "flex" | "margins" | "padding" | "width"
+> {}
 
 const useClasses = makeClasses((props: ClassesProps) => ({
   checkbox: {
@@ -83,12 +78,12 @@ const useClasses = makeClasses((props: ClassesProps) => ({
     justifyContent: props.center ? "center" : undefined,
     borderRadius: "0.5rem",
     ...makeMargins(props.margins),
-    width: props.fullWidth ? "100%" : "auto",
+    width: props.width || "auto",
     whiteSpace: "nowrap",
     transition: "all 200ms ease-in-out",
     userSelect: "none",
     "&:hover": {
-      backgroundColor: Color(colors.custom.blue).fade(0.8).string(),
+      backgroundColor: Color(props.color).fade(0.8).string(),
     },
     "& .MuiFormControlLabel-label": {
       paddingRight: "0.4em",

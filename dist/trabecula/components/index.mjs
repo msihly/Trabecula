@@ -11,7 +11,7 @@ import {
   require_color,
   toast,
   useElementResize
-} from "../chunk-36ZEMWOP.mjs";
+} from "../chunk-43RDECGF.mjs";
 import {
   Fmt,
   LOGICAL_OPS,
@@ -3037,14 +3037,14 @@ var Checkbox = ({
   color = colors.custom.blue,
   disabled,
   flex = 1,
-  fullWidth = true,
+  width = "100%",
   indeterminate,
   label,
   margins = { left: 0, right: 0 },
   padding = { all: "0.3rem" },
   setChecked
 }) => {
-  const { css, cx } = useClasses23({ center, color, disabled, flex, fullWidth, margins, padding });
+  const { css, cx } = useClasses23({ center, color, disabled, flex, margins, padding, width });
   const toggleChecked = () => !disabled && setChecked(!checked);
   return /* @__PURE__ */ jsx36(
     FormControlLabel2,
@@ -3071,12 +3071,12 @@ var useClasses23 = makeClasses((props) => ({
     justifyContent: props.center ? "center" : void 0,
     borderRadius: "0.5rem"
   }, makeMargins(props.margins)), {
-    width: props.fullWidth ? "100%" : "auto",
+    width: props.width || "auto",
     whiteSpace: "nowrap",
     transition: "all 200ms ease-in-out",
     userSelect: "none",
     "&:hover": {
-      backgroundColor: (0, import_color6.default)(colors.custom.blue).fade(0.8).string()
+      backgroundColor: (0, import_color6.default)(props.color).fade(0.8).string()
     },
     "& .MuiFormControlLabel-label": {
       paddingRight: "0.4em"
@@ -3132,7 +3132,15 @@ var Tooltip = (_a) => {
     MuiTooltip,
     __spreadProps(__spreadValues(__spreadValues({}, props), { arrow, placement, title }), {
       classes: { arrow: css.arrow, popper: css.popper, tooltip: css.tooltip },
-      children: /* @__PURE__ */ jsx37(View, __spreadProps(__spreadValues({}, viewProps), { className: css.container, children }))
+      children: /* @__PURE__ */ jsx37(
+        View,
+        __spreadProps(__spreadValues({}, viewProps), {
+          onMouseEnter: props.onMouseEnter,
+          onMouseLeave: props.onMouseLeave,
+          className: css.container,
+          children
+        })
+      )
     })
   );
 };
@@ -3143,6 +3151,7 @@ var useClasses24 = makeClasses((props) => ({
   container: {
     display: "flex",
     flexShrink: props.flexShrink,
+    width: "fit-content",
     overflow: "hidden",
     textOverflow: "ellipsis",
     userSelect: "auto"

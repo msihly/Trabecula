@@ -2,7 +2,7 @@ import * as react from 'react';
 import { Ref, ForwardRefExoticComponent, PropsWithoutRef, RefAttributes, ReactNode, MouseEvent, Dispatch, SetStateAction, ElementType, HTMLAttributes } from 'react';
 import * as react_jsx_runtime from 'react/jsx-runtime';
 import { ButtonProps as ButtonProps$1, IconButtonProps as IconButtonProps$1, TextFieldProps, ListItemProps as ListItemProps$1, IconProps as IconProps$1, DialogProps, PaginationProps as PaginationProps$1, TypographyProps, AccordionProps as AccordionProps$1, TooltipProps as TooltipProps$1, ChipProps as ChipProps$1, DividerProps as DividerProps$1 } from '@mui/material';
-import { B as BorderRadiuses, C as CSS, b as CssColor, M as Margins, P as Padding, a as Borders } from '../css-BVZWM3jV.mjs';
+import { B as BorderRadiuses, C as CSS, b as CssColor, M as Margins, P as Padding, a as Borders } from '../css-B32sWQHL.mjs';
 import { IconName as IconName$1 } from '../_generated/client/index.mjs';
 import { DatePickerProps } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
@@ -459,19 +459,19 @@ interface CheckboxProps {
     color?: CssColor;
     disabled?: boolean;
     flex?: CSS["flex"];
-    fullWidth?: boolean;
     indeterminate?: boolean;
     label?: ReactNode;
     margins?: Margins;
     padding?: Padding;
     setChecked: (checked: boolean) => void;
+    width?: CSS["width"];
 }
-declare const Checkbox: ({ center, checked, className, color, disabled, flex, fullWidth, indeterminate, label, margins, padding, setChecked, }: CheckboxProps) => react_jsx_runtime.JSX.Element;
+declare const Checkbox: ({ center, checked, className, color, disabled, flex, width, indeterminate, label, margins, padding, setChecked, }: CheckboxProps) => react_jsx_runtime.JSX.Element;
 
 interface TooltipProps extends Omit<TooltipProps$1, "children" | "color"> {
     borderColor?: CssColor;
     bgColor?: CssColor;
-    children: JSX.Element | JSX.Element[];
+    children: JSX.Element;
     color?: CssColor;
     flexShrink?: CSS["flexShrink"];
     fontSize?: CSS["fontSize"];

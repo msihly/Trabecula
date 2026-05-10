@@ -7838,14 +7838,14 @@ var Checkbox = ({
   color = colors.custom.blue,
   disabled,
   flex = 1,
-  fullWidth = true,
+  width = "100%",
   indeterminate,
   label,
   margins = { left: 0, right: 0 },
   padding = { all: "0.3rem" },
   setChecked
 }) => {
-  const { css, cx } = useClasses24({ center, color, disabled, flex, fullWidth, margins, padding });
+  const { css, cx } = useClasses24({ center, color, disabled, flex, margins, padding, width });
   const toggleChecked = () => !disabled && setChecked(!checked);
   return /* @__PURE__ */ (0, import_jsx_runtime37.jsx)(
     import_material21.FormControlLabel,
@@ -7872,12 +7872,12 @@ var useClasses24 = makeClasses((props) => ({
     justifyContent: props.center ? "center" : void 0,
     borderRadius: "0.5rem"
   }, makeMargins(props.margins)), {
-    width: props.fullWidth ? "100%" : "auto",
+    width: props.width || "auto",
     whiteSpace: "nowrap",
     transition: "all 200ms ease-in-out",
     userSelect: "none",
     "&:hover": {
-      backgroundColor: (0, import_color7.default)(colors.custom.blue).fade(0.8).string()
+      backgroundColor: (0, import_color7.default)(props.color).fade(0.8).string()
     },
     "& .MuiFormControlLabel-label": {
       paddingRight: "0.4em"
@@ -7933,7 +7933,15 @@ var Tooltip = (_a) => {
     import_material22.Tooltip,
     __spreadProps(__spreadValues(__spreadValues({}, props), { arrow, placement, title }), {
       classes: { arrow: css.arrow, popper: css.popper, tooltip: css.tooltip },
-      children: /* @__PURE__ */ (0, import_jsx_runtime38.jsx)(View, __spreadProps(__spreadValues({}, viewProps), { className: css.container, children }))
+      children: /* @__PURE__ */ (0, import_jsx_runtime38.jsx)(
+        View,
+        __spreadProps(__spreadValues({}, viewProps), {
+          onMouseEnter: props.onMouseEnter,
+          onMouseLeave: props.onMouseLeave,
+          className: css.container,
+          children
+        })
+      )
     })
   );
 };
@@ -7944,6 +7952,7 @@ var useClasses25 = makeClasses((props) => ({
   container: {
     display: "flex",
     flexShrink: props.flexShrink,
+    width: "fit-content",
     overflow: "hidden",
     textOverflow: "ellipsis",
     userSelect: "auto"

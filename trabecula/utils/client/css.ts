@@ -258,7 +258,7 @@ export type CssNamedColor =
 
 export type CssColor = HexColor | RgbColor | HslColor | CssNamedColor;
 
-const customColors: Record<string, CssColor> = {
+const customColors = {
   black: "#131313",
   blue: "#2866c5",
   blueGrey: "#546e7a",
@@ -275,7 +275,7 @@ const customColors: Record<string, CssColor> = {
   yellow: "#e3c648",
 } as const;
 
-const tagCategories: CssColor[][] = [
+const tagCategories = [
   customColors.red,
   customColors.orange,
   customColors.yellow,

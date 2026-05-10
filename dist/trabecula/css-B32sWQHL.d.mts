@@ -78,7 +78,22 @@ type CssNamedColor = "aliceblue" | "antiquewhite" | "aqua" | "aquamarine" | "azu
 type CssColor = HexColor | RgbColor | HslColor | CssNamedColor;
 declare const colors: {
     readonly background: "#1E1E1E";
-    readonly custom: Record<string, CssColor>;
+    readonly custom: {
+        readonly black: "#131313";
+        readonly blue: "#2866c5";
+        readonly blueGrey: "#546e7a";
+        readonly brown: "#6d4c41";
+        readonly darkGrey: "#2b2b2b";
+        readonly green: "#2e7d32";
+        readonly grey: "#4b4b4b";
+        readonly lightBlue: "#578cdd";
+        readonly lightGrey: "#bdbdbd";
+        readonly orange: "#ad6a27";
+        readonly purple: "#683980";
+        readonly red: "#982525";
+        readonly white: "#f5f5f5";
+        readonly yellow: "#e3c648";
+    };
     readonly foreground: "#2C2C2C";
     readonly foregroundCard: "#343434";
     readonly mui: typeof colors$1;
