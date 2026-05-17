@@ -358,12 +358,13 @@ var compareLogic = (type, ...items) => type === "AND" ? items.every(Boolean) : t
 var durationToSeconds = (input) => {
   let total = 0;
   let match;
-  const regex = /(\d+)([hms])/g;
+  const regex = /(\d+)([hmsz])/g;
   while ((match = regex.exec(input)) !== null) {
     const value = Number(match[1]);
     if (match[2] === "h") total += value * 3600;
     else if (match[2] === "m") total += value * 60;
     else if (match[2] === "s") total += value;
+    else if (match[2] === "z") total += value / 1e3;
   }
   return total;
 };
@@ -389,6 +390,18 @@ var logicOpsToMongo = (op) => {
 var round = (num, decimals = 2) => {
   const n = Math.pow(10, decimals);
   return Math.round((num + Number.EPSILON) * n) / n;
+};
+var secondsToDuration = (input) => {
+  const hours = Math.floor(input / 3600);
+  const minutes = Math.floor(input % 3600 / 60);
+  const seconds = Math.floor(input % 60);
+  const milliseconds = Math.round(input % 1 * 1e3);
+  return [
+    hours > 0 ? `${hours}h` : "",
+    minutes > 0 ? `${minutes}m` : "",
+    seconds > 0 ? `${seconds}s` : "",
+    milliseconds > 0 ? `${milliseconds}z` : ""
+  ].filter(Boolean).join("") || "0s";
 };
 
 // node_modules/es-toolkit/dist/compat/predicate/isSymbol.mjs
@@ -1418,6 +1431,7 @@ export {
   fractionStringToNumber,
   logicOpsToMongo,
   round,
+  secondsToDuration,
   attempt,
   convertNestedKeys,
   debounce2 as debounce,
@@ -1433,4 +1447,4 @@ export {
   uuid,
   PromiseQueue
 };
-//# sourceMappingURL=chunk-YRHJFB2R.mjs.map
+//# sourceMappingURL=chunk-PIL5DKBW.mjs.map

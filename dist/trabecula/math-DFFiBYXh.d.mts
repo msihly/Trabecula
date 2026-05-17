@@ -6,5 +6,6 @@ declare const durationToSeconds: (input: string) => number;
 declare const fractionStringToNumber: (str: string) => number;
 declare const logicOpsToMongo: (op: LogicalOp | "") => "$eq" | "$ne" | "$gt" | "$gte" | "$lt" | "$lte";
 declare const round: (num: number, decimals?: number) => number;
+declare const secondsToDuration: (input: number) => string;
 
-export { LOGICAL_OPS as L, type LogicalOp as a, compareLogicOps as b, compareLogic as c, durationToSeconds as d, fractionStringToNumber as f, logicOpsToMongo as l, round as r };
+export { LOGICAL_OPS as L, type LogicalOp as a, compareLogicOps as b, compareLogic as c, durationToSeconds as d, fractionStringToNumber as f, logicOpsToMongo as l, round as r, secondsToDuration as s };

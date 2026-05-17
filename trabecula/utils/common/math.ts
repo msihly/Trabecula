@@ -20,15 +20,14 @@ export const compareLogic = (type: "AND" | "OR", ...items: any[]) =>
 export const durationToSeconds = (input: string) => {
   let total = 0;
   let match: RegExpExecArray;
-  const regex = /(\d+)([hms])/g;
-
+  const regex = /(\d+)([hmsz])/g;
   while ((match = regex.exec(input)) !== null) {
     const value = Number(match[1]);
     if (match[2] === "h") total += value * 3600;
     else if (match[2] === "m") total += value * 60;
     else if (match[2] === "s") total += value;
+    else if (match[2] === "z") total += value / 1000;
   }
-
   return total;
 };
 
@@ -51,4 +50,22 @@ export const logicOpsToMongo = (op: LogicalOp | "") => {
 export const round = (num: number, decimals = 2) => {
   const n = Math.pow(10, decimals);
   return Math.round((num + Number.EPSILON) * n) / n;
+};
+
+export const secondsToDuration = (input: number) => {
+  const hours = Math.floor(input / 3600);
+  const minutes = Math.floor((input % 3600) / 60);
+  const seconds = Math.floor(input % 60);
+  const milliseconds = Math.round((input % 1) * 1000);
+
+  return (
+    [
+      hours > 0 ? `${hours}h` : "",
+      minutes > 0 ? `${minutes}m` : "",
+      seconds > 0 ? `${seconds}s` : "",
+      milliseconds > 0 ? `${milliseconds}z` : "",
+    ]
+      .filter(Boolean)
+      .join("") || "0s"
+  );
 };

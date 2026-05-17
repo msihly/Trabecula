@@ -46,6 +46,7 @@ import {
   rng,
   rotateArrayPos,
   round,
+  secondsToDuration,
   setObj,
   sleep,
   sortArray,
@@ -55,7 +56,7 @@ import {
   uniqueArrayFilter,
   uniqueArrayMerge,
   uuid
-} from "../../chunk-YRHJFB2R.mjs";
+} from "../../chunk-PIL5DKBW.mjs";
 import "../../chunk-A7PY2W7U.mjs";
 export {
   AUDIO_CODECS,
@@ -105,6 +106,7 @@ export {
   rng,
   rotateArrayPos,
   round,
+  secondsToDuration,
   setObj,
   sleep,
   sortArray,
