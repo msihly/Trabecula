@@ -84,6 +84,7 @@ __export(common_exports, {
   debounce: () => debounce2,
   deepClone: () => deepClone,
   deepMerge: () => deepMerge,
+  durationRegex: () => durationRegex,
   durationToSeconds: () => durationToSeconds,
   fractionStringToNumber: () => fractionStringToNumber,
   getArrayDiff: () => getArrayDiff,
@@ -463,11 +464,11 @@ var compareLogicOps = (operator, a, b) => {
   }
 };
 var compareLogic = (type, ...items) => type === "AND" ? items.every(Boolean) : type === "OR" ? items.some(Boolean) : null;
+var durationRegex = /^(?:\d+h)?(?:\d+m)?(?:\d+s)?(?:\d+z)?$/;
 var durationToSeconds = (input) => {
   let total = 0;
   let match;
-  const regex = /(\d+)([hmsz])/g;
-  while ((match = regex.exec(input)) !== null) {
+  while ((match = durationRegex.exec(input)) !== null) {
     const value = Number(match[1]);
     if (match[2] === "h") total += value * 3600;
     else if (match[2] === "m") total += value * 60;
@@ -1529,6 +1530,7 @@ var PromiseQueue = class {
   debounce,
   deepClone,
   deepMerge,
+  durationRegex,
   durationToSeconds,
   fractionStringToNumber,
   getArrayDiff,

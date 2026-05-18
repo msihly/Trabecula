@@ -17,11 +17,12 @@ export const compareLogicOps = (operator: LogicalOp, a: number, b: number) => {
 export const compareLogic = (type: "AND" | "OR", ...items: any[]) =>
   type === "AND" ? items.every(Boolean) : type === "OR" ? items.some(Boolean) : null;
 
+export const durationRegex = /^(?:\d+h)?(?:\d+m)?(?:\d+s)?(?:\d+z)?$/;
+
 export const durationToSeconds = (input: string) => {
   let total = 0;
   let match: RegExpExecArray;
-  const regex = /(\d+)([hmsz])/g;
-  while ((match = regex.exec(input)) !== null) {
+  while ((match = durationRegex.exec(input)) !== null) {
     const value = Number(match[1]);
     if (match[2] === "h") total += value * 3600;
     else if (match[2] === "m") total += value * 60;

@@ -31,6 +31,7 @@ import {
   debounce,
   deepClone,
   deepMerge,
+  durationRegex,
   durationToSeconds,
   fractionStringToNumber,
   getArrayDiff,
@@ -56,7 +57,7 @@ import {
   uniqueArrayFilter,
   uniqueArrayMerge,
   uuid
-} from "../../chunk-PIL5DKBW.mjs";
+} from "../../chunk-AX53XYTF.mjs";
 import "../../chunk-A7PY2W7U.mjs";
 export {
   AUDIO_CODECS,
@@ -91,6 +92,7 @@ export {
   debounce,
   deepClone,
   deepMerge,
+  durationRegex,
   durationToSeconds,
   fractionStringToNumber,
   getArrayDiff,
