@@ -21,14 +21,16 @@ export const durationRegex = /^(?:\d+h)?(?:\d+m)?(?:\d+s)?(?:\d+z)?$/;
 
 export const durationToSeconds = (input: string) => {
   let total = 0;
-  let match: RegExpExecArray;
-  while ((match = durationRegex.exec(input)) !== null) {
-    const value = Number(match[1]);
-    if (match[2] === "h") total += value * 3600;
-    else if (match[2] === "m") total += value * 60;
-    else if (match[2] === "s") total += value;
-    else if (match[2] === "z") total += value / 1000;
+
+  for (const [, valueStr, unit] of input.matchAll(/(\d+)([hmsz])/g)) {
+    const value = Number(valueStr);
+
+    if (unit === "h") total += value * 3600;
+    else if (unit === "m") total += value * 60;
+    else if (unit === "s") total += value;
+    else if (unit === "z") total += value / 1000;
   }
+
   return total;
 };
 
