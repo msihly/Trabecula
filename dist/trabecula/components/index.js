@@ -2757,14 +2757,7 @@ var Button = (_a) => {
       children: [
         startNode,
         icon && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(View, { margins: text || iconRight ? { right: "0.3em" } : void 0, children: !loading ? /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Icon, __spreadValues({ name: icon, size: iconSize, color: textColor }, iconProps)) : /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(import_material3.CircularProgress, { color: "inherit", size: iconSize }) }),
-        text && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
-          Text,
-          __spreadProps(__spreadValues({}, { fontSize, fontWeight, tooltip, tooltipProps }), {
-            color: textColor,
-            className: cx(css.text, className),
-            children: text
-          })
-        ),
+        text && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Text, __spreadProps(__spreadValues({}, { fontSize, fontWeight }), { color: textColor, className: cx(css.text, className), children: text })),
         children,
         iconRight && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(View, { margins: text || icon ? { left: "0.3em" } : void 0, children: !loading ? /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Icon, { name: iconRight, size: iconSize }) : /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(import_material3.CircularProgress, { color: "inherit", size: iconSize }) }),
         endNode

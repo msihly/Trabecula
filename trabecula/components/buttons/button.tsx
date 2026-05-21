@@ -136,11 +136,7 @@ export const Button = ({
         )}
 
         {text && (
-          <Text
-            {...{ fontSize, fontWeight, tooltip, tooltipProps }}
-            color={textColor}
-            className={cx(css.text, className)}
-          >
+          <Text {...{ fontSize, fontWeight }} color={textColor} className={cx(css.text, className)}>
             {text}
           </Text>
         )}

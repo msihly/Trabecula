@@ -136,14 +136,7 @@ var Button = (_a) => {
       children: [
         startNode,
         icon && /* @__PURE__ */ jsx(View, { margins: text || iconRight ? { right: "0.3em" } : void 0, children: !loading ? /* @__PURE__ */ jsx(Icon, __spreadValues({ name: icon, size: iconSize, color: textColor }, iconProps)) : /* @__PURE__ */ jsx(CircularProgress, { color: "inherit", size: iconSize }) }),
-        text && /* @__PURE__ */ jsx(
-          Text,
-          __spreadProps(__spreadValues({}, { fontSize, fontWeight, tooltip, tooltipProps }), {
-            color: textColor,
-            className: cx(css.text, className),
-            children: text
-          })
-        ),
+        text && /* @__PURE__ */ jsx(Text, __spreadProps(__spreadValues({}, { fontSize, fontWeight }), { color: textColor, className: cx(css.text, className), children: text })),
         children,
         iconRight && /* @__PURE__ */ jsx(View, { margins: text || icon ? { left: "0.3em" } : void 0, children: !loading ? /* @__PURE__ */ jsx(Icon, { name: iconRight, size: iconSize }) : /* @__PURE__ */ jsx(CircularProgress, { color: "inherit", size: iconSize }) }),
         endNode
