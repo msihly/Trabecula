@@ -45,7 +45,7 @@ const pascalToSnake = (str: string) =>
 const regexEscape = (string: string, replacementOnly = false) =>
   string
     ? replacementOnly
-      ? String(string).replace(/\\/g, "\\\\")
+      ? String(string).replace(/(^|[^\\])(\/)/g, "$1\\$2")
       : String(string).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
     : string;
 

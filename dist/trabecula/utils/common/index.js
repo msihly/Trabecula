@@ -418,7 +418,7 @@ var htmlEntityRegex = /&(#\d+|#[xX][0-9a-fA-F]+|[a-zA-Z]+);/g;
 var jstr = (val) => JSON.stringify(val, null, 2);
 var leadZeros = (num, places) => String(num).padStart(places, "0");
 var pascalToSnake = (str) => !(str == null ? void 0 : str.length) ? "" : str.split(/(?=[A-Z])/).join("_").toLowerCase();
-var regexEscape = (string, replacementOnly = false) => string ? replacementOnly ? String(string).replace(/\\/g, "\\\\") : String(string).replace(/[.*+?^${}()|[\]\\]/g, "\\$&") : string;
+var regexEscape = (string, replacementOnly = false) => string ? replacementOnly ? String(string).replace(/(^|[^\\])(\/)/g, "$1\\$2") : String(string).replace(/[.*+?^${}()|[\]\\]/g, "\\$&") : string;
 var sanitizeWinPath = (winPath, isBasename = false, isFolderOnly = false) => {
   if (!winPath) return winPath;
   const sanitize = (part, isBase = false) => {
