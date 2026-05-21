@@ -1280,9 +1280,9 @@ var require_color = __commonJS({
       hashedModelKeys[[...convert[model].labels].sort().join("")] = model;
     }
     var limiters = {};
-    function Color10(object, model) {
-      if (!(this instanceof Color10)) {
-        return new Color10(object, model);
+    function Color11(object, model) {
+      if (!(this instanceof Color11)) {
+        return new Color11(object, model);
       }
       if (model && model in skippedModels) {
         model = null;
@@ -1296,7 +1296,7 @@ var require_color = __commonJS({
         this.model = "rgb";
         this.color = [0, 0, 0];
         this.valpha = 1;
-      } else if (object instanceof Color10) {
+      } else if (object instanceof Color11) {
         this.model = object.model;
         this.color = [...object.color];
         this.valpha = object.valpha;
@@ -1356,7 +1356,7 @@ var require_color = __commonJS({
         Object.freeze(this);
       }
     }
-    Color10.prototype = {
+    Color11.prototype = {
       toString() {
         return this.string();
       },
@@ -1411,11 +1411,11 @@ var require_color = __commonJS({
       },
       round(places) {
         places = Math.max(places || 0, 0);
-        return new Color10([...this.color.map(roundToPlace(places)), this.valpha], this.model);
+        return new Color11([...this.color.map(roundToPlace(places)), this.valpha], this.model);
       },
       alpha(value) {
         if (value !== void 0) {
-          return new Color10([...this.color, Math.max(0, Math.min(1, value))], this.model);
+          return new Color11([...this.color, Math.max(0, Math.min(1, value))], this.model);
         }
         return this.valpha;
       },
@@ -1444,19 +1444,19 @@ var require_color = __commonJS({
       b: getset("lab", 2),
       keyword(value) {
         if (value !== void 0) {
-          return new Color10(value);
+          return new Color11(value);
         }
         return convert[this.model].keyword(this.color);
       },
       hex(value) {
         if (value !== void 0) {
-          return new Color10(value);
+          return new Color11(value);
         }
         return colorString.to.hex(this.rgb().round().color);
       },
       hexa(value) {
         if (value !== void 0) {
-          return new Color10(value);
+          return new Color11(value);
         }
         const rgbArray = this.rgb().round().color;
         let alphaHex = Math.round(this.valpha * 255).toString(16).toUpperCase();
@@ -1541,7 +1541,7 @@ var require_color = __commonJS({
       grayscale() {
         const rgb = this.rgb().color;
         const value = rgb[0] * 0.3 + rgb[1] * 0.59 + rgb[2] * 0.11;
-        return Color10.rgb(value, value, value);
+        return Color11.rgb(value, value, value);
       },
       fade(ratio) {
         return this.alpha(this.valpha - this.valpha * ratio);
@@ -1568,7 +1568,7 @@ var require_color = __commonJS({
         const a2 = color1.alpha() - color2.alpha();
         const w1 = ((w2 * a2 === -1 ? w2 : (w2 + a2) / (1 + w2 * a2)) + 1) / 2;
         const w22 = 1 - w1;
-        return Color10.rgb(
+        return Color11.rgb(
           w1 * color1.red() + w22 * color2.red(),
           w1 * color1.green() + w22 * color2.green(),
           w1 * color1.blue() + w22 * color2.blue(),
@@ -1581,21 +1581,21 @@ var require_color = __commonJS({
         continue;
       }
       const { channels } = convert[model];
-      Color10.prototype[model] = function(...args) {
+      Color11.prototype[model] = function(...args) {
         if (this.model === model) {
-          return new Color10(this);
+          return new Color11(this);
         }
         if (args.length > 0) {
-          return new Color10(args, model);
+          return new Color11(args, model);
         }
-        return new Color10([...assertArray(convert[this.model][model].raw(this.color)), this.valpha], model);
+        return new Color11([...assertArray(convert[this.model][model].raw(this.color)), this.valpha], model);
       };
-      Color10[model] = function(...args) {
+      Color11[model] = function(...args) {
         let color = args[0];
         if (typeof color === "number") {
           color = zeroArray(args, channels);
         }
-        return new Color10(color, model);
+        return new Color11(color, model);
       };
     }
     function roundTo(number, places) {
@@ -1645,7 +1645,7 @@ var require_color = __commonJS({
       }
       return array;
     }
-    module2.exports = Color10;
+    module2.exports = Color11;
   }
 });
 
@@ -1656,6 +1656,7 @@ __export(components_exports, {
   Button: () => Button,
   ButtonWithInset: () => ButtonWithInset,
   Card: () => Card,
+  CardBase: () => CardBase,
   CardGrid: () => CardGrid,
   CenteredText: () => CenteredText,
   Checkbox: () => Checkbox,
@@ -2033,6 +2034,7 @@ var sanitizeWinPath = (winPath, isBasename = false, isFolderOnly = false) => {
   ).join("\\");
 };
 var snakeToPascal = (str) => !(str == null ? void 0 : str.length) ? "" : str.split("_").map((s2) => capitalize(s2)).join("");
+var titleCase = (str) => str.split(" ").map((s2) => capitalize(s2)).join(" ");
 var Fmt = {
   abbrevNum,
   bytes,
@@ -2048,7 +2050,8 @@ var Fmt = {
   pascalToSnake,
   regexEscape,
   sanitizeWinPath,
-  snakeToPascal
+  snakeToPascal,
+  titleCase
 };
 
 // trabecula/utils/common/math.ts
@@ -8191,8 +8194,303 @@ var Card = Comp(
   }
 );
 
-// trabecula/components/wrappers/card-grid.tsx
+// trabecula/components/wrappers/card-base/chip.tsx
 var import_jsx_runtime44 = require("react/jsx-runtime");
+var Chip2 = (_a) => {
+  var _b = _a, {
+    bgColor = colors.background,
+    hasFooter,
+    flush = false,
+    opacity = 0.6,
+    position
+  } = _b, props = __objRest(_b, [
+    "bgColor",
+    "hasFooter",
+    "flush",
+    "opacity",
+    "position"
+  ]);
+  const { css } = useClasses27({ hasFooter, flush, opacity, position });
+  return /* @__PURE__ */ (0, import_jsx_runtime44.jsx)(Chip, __spreadProps(__spreadValues(__spreadValues({}, props), { bgColor }), { className: css.chip }));
+};
+var useClasses27 = makeClasses((props) => ({
+  chip: {
+    position: "absolute",
+    top: props.position.includes("top") ? props.flush ? 0 : "0.3rem" : void 0,
+    right: props.position.includes("right") ? props.flush ? 0 : "0.3rem" : void 0,
+    bottom: props.position.includes("bottom") ? props.hasFooter ? "2rem" : props.flush ? 0 : "0.3rem" : void 0,
+    left: props.position.includes("left") ? props.flush ? 0 : "0.3rem" : void 0,
+    cursor: "pointer",
+    opacity: props.opacity,
+    "&:hover": { opacity: Math.min(1, props.opacity + 0.3) }
+  }
+}));
+
+// trabecula/components/wrappers/card-base/container.tsx
+var import_material23 = require("@mui/material");
+var import_color9 = __toESM(require_color());
+var import_jsx_runtime45 = require("react/jsx-runtime");
+var Container2 = (_a) => {
+  var _b = _a, {
+    children,
+    className,
+    disabled,
+    display = "block",
+    height,
+    onClick,
+    onDoubleClick,
+    selected,
+    selectedColor = colors.custom.blue,
+    width
+  } = _b, viewProps = __objRest(_b, [
+    "children",
+    "className",
+    "disabled",
+    "display",
+    "height",
+    "onClick",
+    "onDoubleClick",
+    "selected",
+    "selectedColor",
+    "width"
+  ]);
+  const { css, cx } = useClasses28({ disabled, display, height, selected, selectedColor, width });
+  return /* @__PURE__ */ (0, import_jsx_runtime45.jsx)(View, __spreadProps(__spreadValues({}, viewProps), { className: cx(css.container, className), children: /* @__PURE__ */ (0, import_jsx_runtime45.jsx)(
+    import_material23.Paper,
+    {
+      onClick: !disabled ? onClick : void 0,
+      onDoubleClick: !disabled ? onDoubleClick : void 0,
+      elevation: 3,
+      className: css.paper,
+      children
+    }
+  ) }));
+};
+var useClasses28 = makeClasses((props, theme) => {
+  var _a;
+  return {
+    container: __spreadProps(__spreadValues({
+      position: "relative",
+      display: props.display,
+      border: `2px solid ${colors.background}`,
+      borderRadius: 4,
+      padding: "0.25rem",
+      height: (_a = props.height) != null ? _a : "20rem",
+      [theme.breakpoints.down("xl")]: props.height ? void 0 : { height: "18rem" },
+      [theme.breakpoints.down("lg")]: props.height ? void 0 : { height: "16rem" },
+      [theme.breakpoints.down("md")]: props.height ? void 0 : { height: "14rem" },
+      [theme.breakpoints.down("sm")]: props.height ? void 0 : { height: "12rem" }
+    }, props.width ? { width: props.width } : {}), {
+      background: !props.disabled && props.selected ? `linear-gradient(to bottom right, ${(0, import_color9.default)(props.selectedColor).lighten(0.4).string()}, ${props.selectedColor} 60%)` : "transparent",
+      overflow: "hidden",
+      cursor: "pointer",
+      userSelect: "none"
+    }),
+    paper: {
+      position: "relative",
+      display: "flex",
+      flexDirection: "column",
+      flex: 1,
+      height: "100%",
+      backgroundColor: colors.background,
+      userSelect: "none"
+    }
+  };
+});
+
+// trabecula/components/wrappers/card-base/footer.tsx
+var import_jsx_runtime46 = require("react/jsx-runtime");
+var Footer2 = ({ children }) => {
+  const { css } = useClasses29(null);
+  return /* @__PURE__ */ (0, import_jsx_runtime46.jsx)(View, { className: css.footer, children });
+};
+var useClasses29 = makeClasses({
+  footer: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-end",
+    borderBottomLeftRadius: "inherit",
+    borderBottomRightRadius: "inherit",
+    padding: 0,
+    height: "3rem",
+    background: "linear-gradient(to bottom, transparent, black)"
+  }
+});
+
+// trabecula/components/wrappers/card-base/footer-text.tsx
+var import_jsx_runtime47 = require("react/jsx-runtime");
+var FooterText = (props) => {
+  var _a;
+  const { css } = useClasses30(null);
+  return ((_a = props.text) == null ? void 0 : _a.length) > 0 && /* @__PURE__ */ (0, import_jsx_runtime47.jsx)(Text, { className: css.title, children: props.text });
+};
+var useClasses30 = makeClasses({
+  title: {
+    padding: "0 0.4rem 0.2rem",
+    width: "100%",
+    fontSize: "0.9em",
+    textAlign: "center",
+    textOverflow: "ellipsis",
+    overflow: "hidden",
+    whiteSpace: "nowrap"
+  }
+});
+
+// trabecula/components/wrappers/card-base/image.tsx
+var import_react18 = require("react");
+var import_jsx_runtime48 = require("react/jsx-runtime");
+var Image = ({
+  autoAnimate = false,
+  children,
+  className,
+  disabled,
+  draggable = false,
+  fit = "cover",
+  height,
+  loading = "lazy",
+  onDragEnd,
+  onDragStart,
+  rounded = "all",
+  thumbPaths,
+  title
+}) => {
+  const thumbInterval = (0, import_react18.useRef)(null);
+  const [hasError, setHasError] = (0, import_react18.useState)(false);
+  const [imagePos, setImagePos] = (0, import_react18.useState)(null);
+  const [thumbIndex, setThumbIndex] = (0, import_react18.useState)(0);
+  const { css, cx } = useClasses31({ fit, height, imagePos, rounded });
+  const hasListeners = !disabled && !autoAnimate && (thumbPaths == null ? void 0 : thumbPaths.length) > 1;
+  const createThumbInterval = () => {
+    thumbInterval.current = setInterval(() => {
+      setHasError(false);
+      setThumbIndex((thumbIndex2) => thumbIndex2 + 1 === (thumbPaths == null ? void 0 : thumbPaths.length) ? 0 : thumbIndex2 + 1);
+    }, 300);
+  };
+  (0, import_react18.useEffect)(() => {
+    if (!autoAnimate) return;
+    createThumbInterval();
+    return () => clearInterval(thumbInterval.current);
+  }, []);
+  const handleError = () => {
+    setHasError(true);
+  };
+  const handleMouseEnter = () => {
+    clearInterval(thumbInterval.current);
+    createThumbInterval();
+  };
+  const handleMouseLeave = () => {
+    clearInterval(thumbInterval.current);
+    thumbInterval.current = null;
+    setThumbIndex(0);
+    setImagePos(null);
+    setHasError(false);
+  };
+  const handleMouseMove = (event) => {
+    const { height: height2, left, top, width } = event.currentTarget.getBoundingClientRect();
+    const offsetX = event.pageX - left;
+    const offsetY = event.pageY - top;
+    const pos = `${Math.max(0, offsetX) / width * 100}% ${Math.max(0, offsetY) / height2 * 100}%`;
+    setImagePos(pos);
+  };
+  return /* @__PURE__ */ (0, import_jsx_runtime48.jsxs)(
+    View,
+    {
+      onMouseEnter: hasListeners ? handleMouseEnter : void 0,
+      onMouseLeave: hasListeners ? handleMouseLeave : void 0,
+      className: cx(css.imageContainer, className),
+      children: [
+        hasError ? /* @__PURE__ */ (0, import_jsx_runtime48.jsx)(View, { className: css.image, children: /* @__PURE__ */ (0, import_jsx_runtime48.jsx)(
+          Icon,
+          {
+            name: "ImageNotSupported",
+            size: "4rem",
+            color: colors.custom.grey,
+            viewProps: { align: "center", height: "100%" }
+          }
+        ) }) : (thumbPaths == null ? void 0 : thumbPaths.length) > 0 ? /* @__PURE__ */ (0, import_jsx_runtime48.jsx)(
+          "img",
+          __spreadProps(__spreadValues({}, { draggable, loading, onDragEnd, onDragStart }), {
+            src: thumbPaths[thumbIndex],
+            alt: title,
+            onError: handleError,
+            onMouseMove: fit === "cover" ? handleMouseMove : void 0,
+            onMouseLeave: fit === "cover" ? handleMouseLeave : void 0,
+            className: css.image
+          })
+        ) : /* @__PURE__ */ (0, import_jsx_runtime48.jsx)(View, { className: css.image }),
+        children
+      ]
+    }
+  );
+};
+var useClasses31 = makeClasses((props) => {
+  var _a;
+  return {
+    image: __spreadProps(__spreadValues(__spreadValues({}, ["all", "top"].includes(props.rounded) && {
+      borderTopLeftRadius: "inherit",
+      borderTopRightRadius: "inherit"
+    }), ["all", "bottom"].includes(props.rounded) && {
+      borderBottomLeftRadius: "inherit",
+      borderBottomRightRadius: "inherit"
+    }), {
+      height: (_a = props.height) != null ? _a : "inherit",
+      width: "100%",
+      userSelect: "none",
+      transition: "all 100ms ease",
+      objectFit: props.fit,
+      objectPosition: props.imagePos
+    }),
+    imageContainer: __spreadProps(__spreadValues(__spreadValues({
+      position: "relative",
+      display: "flex",
+      flexDirection: "column",
+      borderRadius: "inherit",
+      height: "100%"
+    }, ["all", "top"].includes(props.rounded) && {
+      borderTopLeftRadius: "inherit",
+      borderTopRightRadius: "inherit"
+    }), ["all", "bottom"].includes(props.rounded) && {
+      borderBottomLeftRadius: "inherit",
+      borderBottomRightRadius: "inherit"
+    }), {
+      backgroundColor: "inherit",
+      overflow: "hidden"
+    })
+  };
+});
+
+// trabecula/components/wrappers/card-base/tooltip.tsx
+var import_jsx_runtime49 = require("react/jsx-runtime");
+var Tooltip2 = ({ children, tooltip }) => {
+  return /* @__PURE__ */ (0, import_jsx_runtime49.jsx)(
+    Tooltip,
+    {
+      enterDelay: 700,
+      enterNextDelay: 300,
+      minWidth: "15rem",
+      title: /* @__PURE__ */ (0, import_jsx_runtime49.jsx)(View, { column: true, padding: { all: "0.3rem" }, spacing: "0.5rem", children: tooltip }),
+      children: /* @__PURE__ */ (0, import_jsx_runtime49.jsx)(View, { column: true, width: "100%", children })
+    }
+  );
+};
+
+// trabecula/components/wrappers/card-base/index.ts
+var CardBase = {
+  Chip: Chip2,
+  Container: Container2,
+  Footer: Footer2,
+  FooterText,
+  Image,
+  Tooltip: Tooltip2
+};
+
+// trabecula/components/wrappers/card-grid.tsx
+var import_jsx_runtime50 = require("react/jsx-runtime");
 var CardGrid = Comp(
   (_a, ref) => {
     var _b = _a, {
@@ -8216,20 +8514,20 @@ var CardGrid = Comp(
       "padding",
       "position"
     ]);
-    const { css, cx } = useClasses27({ hasCards: cards.length > 0, flexFlow, maxCards, position });
-    return /* @__PURE__ */ (0, import_jsx_runtime44.jsxs)(View, __spreadProps(__spreadValues({}, props), { className: cx(css.root, className), children: [
-      cards.length ? /* @__PURE__ */ (0, import_jsx_runtime44.jsx)(
+    const { css, cx } = useClasses32({ hasCards: cards.length > 0, flexFlow, maxCards, position });
+    return /* @__PURE__ */ (0, import_jsx_runtime50.jsxs)(View, __spreadProps(__spreadValues({}, props), { className: cx(css.root, className), children: [
+      cards.length ? /* @__PURE__ */ (0, import_jsx_runtime50.jsx)(
         View,
         __spreadProps(__spreadValues(__spreadValues({}, cardsProps), { padding, ref }), {
           className: cx(css.cards, cardsProps == null ? void 0 : cardsProps.className),
           children: cards
         })
-      ) : /* @__PURE__ */ (0, import_jsx_runtime44.jsx)(View, { column: true, flex: 1, children: /* @__PURE__ */ (0, import_jsx_runtime44.jsx)(CenteredText, { text: noResultsText }) }),
+      ) : /* @__PURE__ */ (0, import_jsx_runtime50.jsx)(View, { column: true, flex: 1, children: /* @__PURE__ */ (0, import_jsx_runtime50.jsx)(CenteredText, { text: noResultsText }) }),
       children
     ] }));
   }
 );
-var useClasses27 = makeClasses((props, theme) => ({
+var useClasses32 = makeClasses((props, theme) => ({
   cards: __spreadProps(__spreadValues({
     display: "flex",
     flexFlow: props.flexFlow,
@@ -8263,8 +8561,8 @@ var useClasses27 = makeClasses((props, theme) => ({
 }));
 
 // trabecula/components/wrappers/chip.tsx
-var import_material23 = require("@mui/material");
-var import_jsx_runtime45 = require("react/jsx-runtime");
+var import_material24 = require("@mui/material");
+var import_jsx_runtime51 = require("react/jsx-runtime");
 var Chip = (_a) => {
   var _b = _a, {
     bgColor,
@@ -8276,6 +8574,7 @@ var Chip = (_a) => {
     iconProps,
     label,
     padding,
+    radiuses,
     width
   } = _b, props = __objRest(_b, [
     "bgColor",
@@ -8287,13 +8586,14 @@ var Chip = (_a) => {
     "iconProps",
     "label",
     "padding",
+    "radiuses",
     "width"
   ]);
-  const { css, cx } = useClasses28({ bgColor, color, height, padding, width });
-  return /* @__PURE__ */ (0, import_jsx_runtime45.jsx)(
-    import_material23.Chip,
+  const { css, cx } = useClasses33({ bgColor, color, height, padding, radiuses, width });
+  return /* @__PURE__ */ (0, import_jsx_runtime51.jsx)(
+    import_material24.Chip,
     __spreadProps(__spreadValues(__spreadValues({}, props), { label }), {
-      icon: icon ? /* @__PURE__ */ (0, import_jsx_runtime45.jsx)(
+      icon: icon ? /* @__PURE__ */ (0, import_jsx_runtime51.jsx)(
         Icon,
         __spreadValues({
           name: icon,
@@ -8306,35 +8606,35 @@ var Chip = (_a) => {
     })
   );
 };
-var useClasses28 = makeClasses((props) => ({
-  chip: {
+var useClasses33 = makeClasses((props) => ({
+  chip: __spreadProps(__spreadValues({}, makeBorderRadiuses(props.radiuses)), {
     height: props.height,
     backgroundColor: props.bgColor,
     color: props.color,
     transition: "all 200ms ease-in-out",
     width: props.width,
     "& > .MuiChip-label": __spreadValues({}, makePadding(props.padding))
-  }
+  })
 }));
 
 // trabecula/components/wrappers/conditional.tsx
-var import_jsx_runtime46 = require("react/jsx-runtime");
+var import_jsx_runtime52 = require("react/jsx-runtime");
 var ConditionalWrap = ({
   condition,
   wrap,
   children
-}) => condition ? wrap(children) : /* @__PURE__ */ (0, import_jsx_runtime46.jsx)(import_jsx_runtime46.Fragment, { children });
+}) => condition ? wrap(children) : /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(import_jsx_runtime52.Fragment, { children });
 
 // trabecula/components/wrappers/context-menu.tsx
-var import_react18 = require("react");
-var import_material24 = require("@mui/material");
-var import_color9 = __toESM(require_color());
-var import_jsx_runtime47 = require("react/jsx-runtime");
+var import_react19 = require("react");
+var import_material25 = require("@mui/material");
+var import_color10 = __toESM(require_color());
+var import_jsx_runtime53 = require("react/jsx-runtime");
 var ContextMenu = (_a) => {
   var _b = _a, { children, disabled, id, menuItems } = _b, props = __objRest(_b, ["children", "disabled", "id", "menuItems"]);
-  const { css } = useClasses29(null);
-  const [mouseX, setMouseX] = (0, import_react18.useState)(null);
-  const [mouseY, setMouseY] = (0, import_react18.useState)(null);
+  const { css } = useClasses34(null);
+  const [mouseX, setMouseX] = (0, import_react19.useState)(null);
+  const [mouseY, setMouseY] = (0, import_react19.useState)(null);
   const handleContext = (event) => {
     event.preventDefault();
     if (disabled) return;
@@ -8345,10 +8645,10 @@ var ContextMenu = (_a) => {
     setMouseX(null);
     setMouseY(null);
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime47.jsxs)(View, __spreadProps(__spreadValues({}, props), { id, onContextMenu: handleContext, children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime53.jsxs)(View, __spreadProps(__spreadValues({}, props), { id, onContextMenu: handleContext, children: [
     children,
-    /* @__PURE__ */ (0, import_jsx_runtime47.jsx)(
-      import_material24.Menu,
+    /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(
+      import_material25.Menu,
       {
         open: mouseY !== null,
         onClose: handleClose,
@@ -8357,9 +8657,9 @@ var ContextMenu = (_a) => {
         PopoverClasses: { paper: css.contextMenu },
         MenuListProps: { className: css.contextMenuInner },
         children: menuItems.filter(Boolean).map((item) => [
-          item.divider === "top" ? /* @__PURE__ */ (0, import_jsx_runtime47.jsx)(Divider, {}) : null,
-          /* @__PURE__ */ (0, import_jsx_runtime47.jsx)(Item, { item, onClose: handleClose }),
-          item.divider === "bottom" ? /* @__PURE__ */ (0, import_jsx_runtime47.jsx)(Divider, {}) : null
+          item.divider === "top" ? /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(Divider, {}) : null,
+          /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(Item, { item, onClose: handleClose }),
+          item.divider === "bottom" ? /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(Divider, {}) : null
         ])
       }
     )
@@ -8370,13 +8670,13 @@ var Item = ({
   onClose
 }) => {
   var _a, _b, _c;
-  const { css } = useClasses29(null);
+  const { css } = useClasses34(null);
   const color = item.color || colors.custom.lightGrey;
   const handleClick = item.onClick ? () => {
     item.onClick();
     onClose();
   } : void 0;
-  return /* @__PURE__ */ (0, import_jsx_runtime47.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(
     ListItem,
     {
       text: item.label,
@@ -8386,7 +8686,7 @@ var Item = ({
       iconEnd: ((_b = item.subItems) == null ? void 0 : _b.length) ? "ChevronRight" : null,
       onClick: handleClick,
       className: css.item,
-      children: ((_c = item.subItems) == null ? void 0 : _c.length) ? /* @__PURE__ */ (0, import_jsx_runtime47.jsx)(View, { column: true, children: item.subItems.map((subItem) => /* @__PURE__ */ (0, import_jsx_runtime47.jsx)(SubItem, __spreadValues({}, { subItem, onClose }), subItem.label)) }) : null
+      children: ((_c = item.subItems) == null ? void 0 : _c.length) ? /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(View, { column: true, children: item.subItems.map((subItem) => /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(SubItem, __spreadValues({}, { subItem, onClose }), subItem.label)) }) : null
     },
     item.label
   );
@@ -8399,11 +8699,11 @@ var SubItem = ({
     subItem.onClick();
     onClose();
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime47.jsx)(ListItem, { text: subItem.label, icon: subItem.icon, onClick: handleClick });
+  return /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(ListItem, { text: subItem.label, icon: subItem.icon, onClick: handleClick });
 };
-var useClasses29 = makeClasses({
+var useClasses34 = makeClasses({
   contextMenu: {
-    background: (0, import_color9.default)(colors.custom.black).fade(0.03).string()
+    background: (0, import_color10.default)(colors.custom.black).fade(0.03).string()
   },
   contextMenuInner: {
     padding: 0
@@ -8414,15 +8714,15 @@ var useClasses29 = makeClasses({
 });
 
 // trabecula/components/wrappers/divider.tsx
-var import_material25 = require("@mui/material");
-var import_jsx_runtime48 = require("react/jsx-runtime");
+var import_material26 = require("@mui/material");
+var import_jsx_runtime54 = require("react/jsx-runtime");
 var Divider = (_a) => {
   var props = __objRest(_a, []);
-  return /* @__PURE__ */ (0, import_jsx_runtime48.jsx)(import_material25.Divider, __spreadValues({ flexItem: true }, props));
+  return /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(import_material26.Divider, __spreadValues({ flexItem: true }, props));
 };
 
 // trabecula/components/wrappers/header.tsx
-var import_jsx_runtime49 = require("react/jsx-runtime");
+var import_jsx_runtime55 = require("react/jsx-runtime");
 var DEFAULT_HEADER_PROPS2 = {
   bgColor: colors.custom.black,
   borderRadiuses: { top: "0.5rem" },
@@ -8452,11 +8752,11 @@ var HeaderWrapper = (_a) => {
     "spacing"
   ]);
   headerProps = deepMerge(DEFAULT_HEADER_PROPS2, headerProps);
-  const wrap = (c) => /* @__PURE__ */ (0, import_jsx_runtime49.jsxs)(View, __spreadProps(__spreadValues({}, viewProps), { column: true, height, "aria-label": "header-wrapper", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime49.jsx)(View, __spreadProps(__spreadValues({}, headerProps), { "aria-label": "header", children: typeof header === "string" ? /* @__PURE__ */ (0, import_jsx_runtime49.jsx)(Text, { flex: 1, fontSize: headerProps.fontSize, textAlign: "center", children: header }) : header })),
+  const wrap = (c) => /* @__PURE__ */ (0, import_jsx_runtime55.jsxs)(View, __spreadProps(__spreadValues({}, viewProps), { column: true, height, "aria-label": "header-wrapper", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime55.jsx)(View, __spreadProps(__spreadValues({}, headerProps), { "aria-label": "header", children: typeof header === "string" ? /* @__PURE__ */ (0, import_jsx_runtime55.jsx)(Text, { flex: 1, fontSize: headerProps.fontSize, textAlign: "center", children: header }) : header })),
     c
   ] }));
-  return /* @__PURE__ */ (0, import_jsx_runtime49.jsx)(ConditionalWrap, { condition: !!header, wrap, children: /* @__PURE__ */ (0, import_jsx_runtime49.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime55.jsx)(ConditionalWrap, { condition: !!header, wrap, children: /* @__PURE__ */ (0, import_jsx_runtime55.jsx)(
     View,
     __spreadProps(__spreadValues(__spreadValues({
       overflow: "auto"
@@ -8468,13 +8768,13 @@ var HeaderWrapper = (_a) => {
 };
 
 // trabecula/components/wrappers/loading-overlay.tsx
-var import_material26 = require("@mui/material");
-var import_jsx_runtime50 = require("react/jsx-runtime");
+var import_material27 = require("@mui/material");
+var import_jsx_runtime56 = require("react/jsx-runtime");
 var LoadingOverlay = ({ children, isLoading, sub }) => {
-  const { css } = useClasses30({ isLoading });
-  return /* @__PURE__ */ (0, import_jsx_runtime50.jsxs)(import_jsx_runtime50.Fragment, { children: [
+  const { css } = useClasses35({ isLoading });
+  return /* @__PURE__ */ (0, import_jsx_runtime56.jsxs)(import_jsx_runtime56.Fragment, { children: [
     children,
-    /* @__PURE__ */ (0, import_jsx_runtime50.jsxs)(
+    /* @__PURE__ */ (0, import_jsx_runtime56.jsxs)(
       View,
       {
         column: true,
@@ -8486,14 +8786,14 @@ var LoadingOverlay = ({ children, isLoading, sub }) => {
         opacity: isLoading ? 1 : 0,
         className: css.loadingOverlay,
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime50.jsx)(import_material26.CircularProgress, { color: "inherit" }),
-          typeof sub === "string" ? /* @__PURE__ */ (0, import_jsx_runtime50.jsx)(Text, { preset: "title", fontSize: "0.9em", children: sub }) : sub
+          /* @__PURE__ */ (0, import_jsx_runtime56.jsx)(import_material27.CircularProgress, { color: "inherit" }),
+          typeof sub === "string" ? /* @__PURE__ */ (0, import_jsx_runtime56.jsx)(Text, { preset: "title", fontSize: "0.9em", children: sub }) : sub
         ]
       }
     )
   ] });
 };
-var useClasses30 = makeClasses((props) => ({
+var useClasses35 = makeClasses((props) => ({
   loadingOverlay: {
     position: "absolute",
     top: 0,
@@ -8506,15 +8806,15 @@ var useClasses30 = makeClasses((props) => ({
 }));
 
 // trabecula/components/wrappers/side-scroller.tsx
-var import_react19 = require("react");
-var import_jsx_runtime51 = require("react/jsx-runtime");
+var import_react20 = require("react");
+var import_jsx_runtime57 = require("react/jsx-runtime");
 var SideScroller = ({ children, className, innerClassName }) => {
-  const ref = (0, import_react19.useRef)(null);
+  const ref = (0, import_react20.useRef)(null);
   const { width } = useElementResize(ref);
-  const [isLeftButtonVisible, setIsLeftButtonVisible] = (0, import_react19.useState)(false);
-  const [isRightButtonVisible, setIsRightButtonVisible] = (0, import_react19.useState)(false);
-  const [scrollPos, setScrollPos] = (0, import_react19.useState)(0);
-  const { css, cx } = useClasses31({ isLeftButtonVisible, isRightButtonVisible });
+  const [isLeftButtonVisible, setIsLeftButtonVisible] = (0, import_react20.useState)(false);
+  const [isRightButtonVisible, setIsRightButtonVisible] = (0, import_react20.useState)(false);
+  const [scrollPos, setScrollPos] = (0, import_react20.useState)(0);
+  const { css, cx } = useClasses36({ isLeftButtonVisible, isRightButtonVisible });
   const getButtonVisibility = () => {
     if (!ref.current) return [false, false];
     const { clientWidth, scrollWidth, scrollLeft } = ref.current;
@@ -8529,19 +8829,19 @@ var SideScroller = ({ children, className, innerClassName }) => {
     ref.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
     setScrollPos(newScrollPos);
   };
-  (0, import_react19.useEffect)(() => {
+  (0, import_react20.useEffect)(() => {
     const node = ref.current;
     const scrollListener = debounce2(setScrollPos.bind(node.scrollLeft), 50);
     node.addEventListener("scroll", scrollListener);
     return () => node.removeEventListener("scroll", scrollListener);
   }, []);
-  (0, import_react19.useEffect)(() => {
+  (0, import_react20.useEffect)(() => {
     const [left, right] = getButtonVisibility();
     setIsLeftButtonVisible(left);
     setIsRightButtonVisible(right);
   }, [scrollPos]);
-  return /* @__PURE__ */ (0, import_jsx_runtime51.jsxs)(View, { className: cx(css.root, className), children: [
-    /* @__PURE__ */ (0, import_jsx_runtime51.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime57.jsxs)(View, { className: cx(css.root, className), children: [
+    /* @__PURE__ */ (0, import_jsx_runtime57.jsx)(
       IconButton,
       {
         name: "ChevronLeft",
@@ -8550,8 +8850,8 @@ var SideScroller = ({ children, className, innerClassName }) => {
         size: "large"
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime51.jsx)(View, { ref, className: cx(css.items, innerClassName), children }),
-    /* @__PURE__ */ (0, import_jsx_runtime51.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime57.jsx)(View, { ref, className: cx(css.items, innerClassName), children }),
+    /* @__PURE__ */ (0, import_jsx_runtime57.jsx)(
       IconButton,
       {
         name: "ChevronRight",
@@ -8562,7 +8862,7 @@ var SideScroller = ({ children, className, innerClassName }) => {
     )
   ] });
 };
-var useClasses31 = makeClasses((props) => ({
+var useClasses36 = makeClasses((props) => ({
   items: {
     display: "flex",
     flexFlow: "row nowrap",
@@ -8609,13 +8909,13 @@ var useClasses31 = makeClasses((props) => ({
 }));
 
 // trabecula/components/wrappers/uniform-list.tsx
-var import_jsx_runtime52 = require("react/jsx-runtime");
+var import_jsx_runtime58 = require("react/jsx-runtime");
 var UniformList = (_a) => {
   var _b = _a, { children, uniformWidth } = _b, props = __objRest(_b, ["children", "uniformWidth"]);
-  const { css, cx } = useClasses32({ uniformWidth });
-  return /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(View, __spreadProps(__spreadValues({}, props), { className: cx(css.uniform, props == null ? void 0 : props.className), children }));
+  const { css, cx } = useClasses37({ uniformWidth });
+  return /* @__PURE__ */ (0, import_jsx_runtime58.jsx)(View, __spreadProps(__spreadValues({}, props), { className: cx(css.uniform, props == null ? void 0 : props.className), children }));
 };
-var useClasses32 = makeClasses((props) => ({
+var useClasses37 = makeClasses((props) => ({
   uniform: {
     "& > *": {
       flexBasis: "100%",
@@ -8625,7 +8925,7 @@ var useClasses32 = makeClasses((props) => ({
 }));
 
 // trabecula/components/wrappers/view.tsx
-var import_jsx_runtime53 = require("react/jsx-runtime");
+var import_jsx_runtime59 = require("react/jsx-runtime");
 var View = Comp(
   (_a, ref) => {
     var _b = _a, {
@@ -8672,7 +8972,7 @@ var View = Comp(
       "wrap"
     ]);
     if (row) column = false;
-    const { css, cx } = useClasses33({
+    const { css, cx } = useClasses38({
       align,
       bgColor,
       borders,
@@ -8692,10 +8992,10 @@ var View = Comp(
       width,
       wrap
     });
-    return /* @__PURE__ */ (0, import_jsx_runtime53.jsx)("div", __spreadProps(__spreadValues({}, props), { ref, className: cx(className, css.view), children }));
+    return /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", __spreadProps(__spreadValues({}, props), { ref, className: cx(className, css.view), children }));
   }
 );
-var useClasses33 = makeClasses((props) => {
+var useClasses38 = makeClasses((props) => {
   var _a;
   return {
     view: __spreadValues(__spreadProps(__spreadValues(__spreadValues(__spreadValues(__spreadValues({
@@ -8725,6 +9025,7 @@ var useClasses33 = makeClasses((props) => {
   Button,
   ButtonWithInset,
   Card,
+  CardBase,
   CardGrid,
   CenteredText,
   Checkbox,

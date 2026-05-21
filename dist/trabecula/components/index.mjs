@@ -11,7 +11,7 @@ import {
   require_color,
   toast,
   useElementResize
-} from "../chunk-KHOIHQN5.mjs";
+} from "../chunk-ORG37ZMO.mjs";
 import {
   Fmt,
   LOGICAL_OPS,
@@ -20,7 +20,7 @@ import {
   dayjs,
   debounce,
   deepMerge
-} from "../chunk-Q2ZSZFMN.mjs";
+} from "../chunk-QZYBZ5OC.mjs";
 import {
   __async,
   __objRest,
@@ -3383,8 +3383,307 @@ var Card = Comp(
   }
 );
 
+// trabecula/components/wrappers/card-base/chip.tsx
+import { jsx as jsx43 } from "react/jsx-runtime";
+var Chip2 = (_a) => {
+  var _b = _a, {
+    bgColor = colors.background,
+    hasFooter,
+    flush = false,
+    opacity = 0.6,
+    position
+  } = _b, props = __objRest(_b, [
+    "bgColor",
+    "hasFooter",
+    "flush",
+    "opacity",
+    "position"
+  ]);
+  const { css } = useClasses26({ hasFooter, flush, opacity, position });
+  return /* @__PURE__ */ jsx43(Chip, __spreadProps(__spreadValues(__spreadValues({}, props), { bgColor }), { className: css.chip }));
+};
+var useClasses26 = makeClasses((props) => ({
+  chip: {
+    position: "absolute",
+    top: props.position.includes("top") ? props.flush ? 0 : "0.3rem" : void 0,
+    right: props.position.includes("right") ? props.flush ? 0 : "0.3rem" : void 0,
+    bottom: props.position.includes("bottom") ? props.hasFooter ? "2rem" : props.flush ? 0 : "0.3rem" : void 0,
+    left: props.position.includes("left") ? props.flush ? 0 : "0.3rem" : void 0,
+    cursor: "pointer",
+    opacity: props.opacity,
+    "&:hover": { opacity: Math.min(1, props.opacity + 0.3) }
+  }
+}));
+
+// trabecula/components/wrappers/card-base/container.tsx
+var import_color8 = __toESM(require_color());
+import { Paper as Paper3 } from "@mui/material";
+import { jsx as jsx44 } from "react/jsx-runtime";
+var Container2 = (_a) => {
+  var _b = _a, {
+    children,
+    className,
+    disabled,
+    display = "block",
+    height,
+    onClick,
+    onDoubleClick,
+    selected,
+    selectedColor = colors.custom.blue,
+    width
+  } = _b, viewProps = __objRest(_b, [
+    "children",
+    "className",
+    "disabled",
+    "display",
+    "height",
+    "onClick",
+    "onDoubleClick",
+    "selected",
+    "selectedColor",
+    "width"
+  ]);
+  const { css, cx } = useClasses27({ disabled, display, height, selected, selectedColor, width });
+  return /* @__PURE__ */ jsx44(View, __spreadProps(__spreadValues({}, viewProps), { className: cx(css.container, className), children: /* @__PURE__ */ jsx44(
+    Paper3,
+    {
+      onClick: !disabled ? onClick : void 0,
+      onDoubleClick: !disabled ? onDoubleClick : void 0,
+      elevation: 3,
+      className: css.paper,
+      children
+    }
+  ) }));
+};
+var useClasses27 = makeClasses((props, theme) => {
+  var _a;
+  return {
+    container: __spreadProps(__spreadValues({
+      position: "relative",
+      display: props.display,
+      border: `2px solid ${colors.background}`,
+      borderRadius: 4,
+      padding: "0.25rem",
+      height: (_a = props.height) != null ? _a : "20rem",
+      [theme.breakpoints.down("xl")]: props.height ? void 0 : { height: "18rem" },
+      [theme.breakpoints.down("lg")]: props.height ? void 0 : { height: "16rem" },
+      [theme.breakpoints.down("md")]: props.height ? void 0 : { height: "14rem" },
+      [theme.breakpoints.down("sm")]: props.height ? void 0 : { height: "12rem" }
+    }, props.width ? { width: props.width } : {}), {
+      background: !props.disabled && props.selected ? `linear-gradient(to bottom right, ${(0, import_color8.default)(props.selectedColor).lighten(0.4).string()}, ${props.selectedColor} 60%)` : "transparent",
+      overflow: "hidden",
+      cursor: "pointer",
+      userSelect: "none"
+    }),
+    paper: {
+      position: "relative",
+      display: "flex",
+      flexDirection: "column",
+      flex: 1,
+      height: "100%",
+      backgroundColor: colors.background,
+      userSelect: "none"
+    }
+  };
+});
+
+// trabecula/components/wrappers/card-base/footer.tsx
+import { jsx as jsx45 } from "react/jsx-runtime";
+var Footer2 = ({ children }) => {
+  const { css } = useClasses28(null);
+  return /* @__PURE__ */ jsx45(View, { className: css.footer, children });
+};
+var useClasses28 = makeClasses({
+  footer: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-end",
+    borderBottomLeftRadius: "inherit",
+    borderBottomRightRadius: "inherit",
+    padding: 0,
+    height: "3rem",
+    background: "linear-gradient(to bottom, transparent, black)"
+  }
+});
+
+// trabecula/components/wrappers/card-base/footer-text.tsx
+import { jsx as jsx46 } from "react/jsx-runtime";
+var FooterText = (props) => {
+  var _a;
+  const { css } = useClasses29(null);
+  return ((_a = props.text) == null ? void 0 : _a.length) > 0 && /* @__PURE__ */ jsx46(Text, { className: css.title, children: props.text });
+};
+var useClasses29 = makeClasses({
+  title: {
+    padding: "0 0.4rem 0.2rem",
+    width: "100%",
+    fontSize: "0.9em",
+    textAlign: "center",
+    textOverflow: "ellipsis",
+    overflow: "hidden",
+    whiteSpace: "nowrap"
+  }
+});
+
+// trabecula/components/wrappers/card-base/image.tsx
+import {
+  useEffect as useEffect3,
+  useRef as useRef2,
+  useState as useState9
+} from "react";
+import { jsx as jsx47, jsxs as jsxs25 } from "react/jsx-runtime";
+var Image = ({
+  autoAnimate = false,
+  children,
+  className,
+  disabled,
+  draggable = false,
+  fit = "cover",
+  height,
+  loading = "lazy",
+  onDragEnd,
+  onDragStart,
+  rounded = "all",
+  thumbPaths,
+  title
+}) => {
+  const thumbInterval = useRef2(null);
+  const [hasError, setHasError] = useState9(false);
+  const [imagePos, setImagePos] = useState9(null);
+  const [thumbIndex, setThumbIndex] = useState9(0);
+  const { css, cx } = useClasses30({ fit, height, imagePos, rounded });
+  const hasListeners = !disabled && !autoAnimate && (thumbPaths == null ? void 0 : thumbPaths.length) > 1;
+  const createThumbInterval = () => {
+    thumbInterval.current = setInterval(() => {
+      setHasError(false);
+      setThumbIndex((thumbIndex2) => thumbIndex2 + 1 === (thumbPaths == null ? void 0 : thumbPaths.length) ? 0 : thumbIndex2 + 1);
+    }, 300);
+  };
+  useEffect3(() => {
+    if (!autoAnimate) return;
+    createThumbInterval();
+    return () => clearInterval(thumbInterval.current);
+  }, []);
+  const handleError = () => {
+    setHasError(true);
+  };
+  const handleMouseEnter = () => {
+    clearInterval(thumbInterval.current);
+    createThumbInterval();
+  };
+  const handleMouseLeave = () => {
+    clearInterval(thumbInterval.current);
+    thumbInterval.current = null;
+    setThumbIndex(0);
+    setImagePos(null);
+    setHasError(false);
+  };
+  const handleMouseMove = (event) => {
+    const { height: height2, left, top, width } = event.currentTarget.getBoundingClientRect();
+    const offsetX = event.pageX - left;
+    const offsetY = event.pageY - top;
+    const pos = `${Math.max(0, offsetX) / width * 100}% ${Math.max(0, offsetY) / height2 * 100}%`;
+    setImagePos(pos);
+  };
+  return /* @__PURE__ */ jsxs25(
+    View,
+    {
+      onMouseEnter: hasListeners ? handleMouseEnter : void 0,
+      onMouseLeave: hasListeners ? handleMouseLeave : void 0,
+      className: cx(css.imageContainer, className),
+      children: [
+        hasError ? /* @__PURE__ */ jsx47(View, { className: css.image, children: /* @__PURE__ */ jsx47(
+          Icon,
+          {
+            name: "ImageNotSupported",
+            size: "4rem",
+            color: colors.custom.grey,
+            viewProps: { align: "center", height: "100%" }
+          }
+        ) }) : (thumbPaths == null ? void 0 : thumbPaths.length) > 0 ? /* @__PURE__ */ jsx47(
+          "img",
+          __spreadProps(__spreadValues({}, { draggable, loading, onDragEnd, onDragStart }), {
+            src: thumbPaths[thumbIndex],
+            alt: title,
+            onError: handleError,
+            onMouseMove: fit === "cover" ? handleMouseMove : void 0,
+            onMouseLeave: fit === "cover" ? handleMouseLeave : void 0,
+            className: css.image
+          })
+        ) : /* @__PURE__ */ jsx47(View, { className: css.image }),
+        children
+      ]
+    }
+  );
+};
+var useClasses30 = makeClasses((props) => {
+  var _a;
+  return {
+    image: __spreadProps(__spreadValues(__spreadValues({}, ["all", "top"].includes(props.rounded) && {
+      borderTopLeftRadius: "inherit",
+      borderTopRightRadius: "inherit"
+    }), ["all", "bottom"].includes(props.rounded) && {
+      borderBottomLeftRadius: "inherit",
+      borderBottomRightRadius: "inherit"
+    }), {
+      height: (_a = props.height) != null ? _a : "inherit",
+      width: "100%",
+      userSelect: "none",
+      transition: "all 100ms ease",
+      objectFit: props.fit,
+      objectPosition: props.imagePos
+    }),
+    imageContainer: __spreadProps(__spreadValues(__spreadValues({
+      position: "relative",
+      display: "flex",
+      flexDirection: "column",
+      borderRadius: "inherit",
+      height: "100%"
+    }, ["all", "top"].includes(props.rounded) && {
+      borderTopLeftRadius: "inherit",
+      borderTopRightRadius: "inherit"
+    }), ["all", "bottom"].includes(props.rounded) && {
+      borderBottomLeftRadius: "inherit",
+      borderBottomRightRadius: "inherit"
+    }), {
+      backgroundColor: "inherit",
+      overflow: "hidden"
+    })
+  };
+});
+
+// trabecula/components/wrappers/card-base/tooltip.tsx
+import { jsx as jsx48 } from "react/jsx-runtime";
+var Tooltip2 = ({ children, tooltip }) => {
+  return /* @__PURE__ */ jsx48(
+    Tooltip,
+    {
+      enterDelay: 700,
+      enterNextDelay: 300,
+      minWidth: "15rem",
+      title: /* @__PURE__ */ jsx48(View, { column: true, padding: { all: "0.3rem" }, spacing: "0.5rem", children: tooltip }),
+      children: /* @__PURE__ */ jsx48(View, { column: true, width: "100%", children })
+    }
+  );
+};
+
+// trabecula/components/wrappers/card-base/index.ts
+var CardBase = {
+  Chip: Chip2,
+  Container: Container2,
+  Footer: Footer2,
+  FooterText,
+  Image,
+  Tooltip: Tooltip2
+};
+
 // trabecula/components/wrappers/card-grid.tsx
-import { jsx as jsx43, jsxs as jsxs25 } from "react/jsx-runtime";
+import { jsx as jsx49, jsxs as jsxs26 } from "react/jsx-runtime";
 var CardGrid = Comp(
   (_a, ref) => {
     var _b = _a, {
@@ -3408,20 +3707,20 @@ var CardGrid = Comp(
       "padding",
       "position"
     ]);
-    const { css, cx } = useClasses26({ hasCards: cards.length > 0, flexFlow, maxCards, position });
-    return /* @__PURE__ */ jsxs25(View, __spreadProps(__spreadValues({}, props), { className: cx(css.root, className), children: [
-      cards.length ? /* @__PURE__ */ jsx43(
+    const { css, cx } = useClasses31({ hasCards: cards.length > 0, flexFlow, maxCards, position });
+    return /* @__PURE__ */ jsxs26(View, __spreadProps(__spreadValues({}, props), { className: cx(css.root, className), children: [
+      cards.length ? /* @__PURE__ */ jsx49(
         View,
         __spreadProps(__spreadValues(__spreadValues({}, cardsProps), { padding, ref }), {
           className: cx(css.cards, cardsProps == null ? void 0 : cardsProps.className),
           children: cards
         })
-      ) : /* @__PURE__ */ jsx43(View, { column: true, flex: 1, children: /* @__PURE__ */ jsx43(CenteredText, { text: noResultsText }) }),
+      ) : /* @__PURE__ */ jsx49(View, { column: true, flex: 1, children: /* @__PURE__ */ jsx49(CenteredText, { text: noResultsText }) }),
       children
     ] }));
   }
 );
-var useClasses26 = makeClasses((props, theme) => ({
+var useClasses31 = makeClasses((props, theme) => ({
   cards: __spreadProps(__spreadValues({
     display: "flex",
     flexFlow: props.flexFlow,
@@ -3456,7 +3755,7 @@ var useClasses26 = makeClasses((props, theme) => ({
 
 // trabecula/components/wrappers/chip.tsx
 import { Chip as MuiChip } from "@mui/material";
-import { jsx as jsx44 } from "react/jsx-runtime";
+import { jsx as jsx50 } from "react/jsx-runtime";
 var Chip = (_a) => {
   var _b = _a, {
     bgColor,
@@ -3468,6 +3767,7 @@ var Chip = (_a) => {
     iconProps,
     label,
     padding,
+    radiuses,
     width
   } = _b, props = __objRest(_b, [
     "bgColor",
@@ -3479,13 +3779,14 @@ var Chip = (_a) => {
     "iconProps",
     "label",
     "padding",
+    "radiuses",
     "width"
   ]);
-  const { css, cx } = useClasses27({ bgColor, color, height, padding, width });
-  return /* @__PURE__ */ jsx44(
+  const { css, cx } = useClasses32({ bgColor, color, height, padding, radiuses, width });
+  return /* @__PURE__ */ jsx50(
     MuiChip,
     __spreadProps(__spreadValues(__spreadValues({}, props), { label }), {
-      icon: icon ? /* @__PURE__ */ jsx44(
+      icon: icon ? /* @__PURE__ */ jsx50(
         Icon,
         __spreadValues({
           name: icon,
@@ -3498,35 +3799,35 @@ var Chip = (_a) => {
     })
   );
 };
-var useClasses27 = makeClasses((props) => ({
-  chip: {
+var useClasses32 = makeClasses((props) => ({
+  chip: __spreadProps(__spreadValues({}, makeBorderRadiuses(props.radiuses)), {
     height: props.height,
     backgroundColor: props.bgColor,
     color: props.color,
     transition: "all 200ms ease-in-out",
     width: props.width,
     "& > .MuiChip-label": __spreadValues({}, makePadding(props.padding))
-  }
+  })
 }));
 
 // trabecula/components/wrappers/conditional.tsx
-import { Fragment as Fragment4, jsx as jsx45 } from "react/jsx-runtime";
+import { Fragment as Fragment4, jsx as jsx51 } from "react/jsx-runtime";
 var ConditionalWrap = ({
   condition,
   wrap,
   children
-}) => condition ? wrap(children) : /* @__PURE__ */ jsx45(Fragment4, { children });
+}) => condition ? wrap(children) : /* @__PURE__ */ jsx51(Fragment4, { children });
 
 // trabecula/components/wrappers/context-menu.tsx
-var import_color8 = __toESM(require_color());
-import { useState as useState9 } from "react";
+var import_color9 = __toESM(require_color());
+import { useState as useState10 } from "react";
 import { Menu as Menu2 } from "@mui/material";
-import { jsx as jsx46, jsxs as jsxs26 } from "react/jsx-runtime";
+import { jsx as jsx52, jsxs as jsxs27 } from "react/jsx-runtime";
 var ContextMenu = (_a) => {
   var _b = _a, { children, disabled, id, menuItems } = _b, props = __objRest(_b, ["children", "disabled", "id", "menuItems"]);
-  const { css } = useClasses28(null);
-  const [mouseX, setMouseX] = useState9(null);
-  const [mouseY, setMouseY] = useState9(null);
+  const { css } = useClasses33(null);
+  const [mouseX, setMouseX] = useState10(null);
+  const [mouseY, setMouseY] = useState10(null);
   const handleContext = (event) => {
     event.preventDefault();
     if (disabled) return;
@@ -3537,9 +3838,9 @@ var ContextMenu = (_a) => {
     setMouseX(null);
     setMouseY(null);
   };
-  return /* @__PURE__ */ jsxs26(View, __spreadProps(__spreadValues({}, props), { id, onContextMenu: handleContext, children: [
+  return /* @__PURE__ */ jsxs27(View, __spreadProps(__spreadValues({}, props), { id, onContextMenu: handleContext, children: [
     children,
-    /* @__PURE__ */ jsx46(
+    /* @__PURE__ */ jsx52(
       Menu2,
       {
         open: mouseY !== null,
@@ -3549,9 +3850,9 @@ var ContextMenu = (_a) => {
         PopoverClasses: { paper: css.contextMenu },
         MenuListProps: { className: css.contextMenuInner },
         children: menuItems.filter(Boolean).map((item) => [
-          item.divider === "top" ? /* @__PURE__ */ jsx46(Divider, {}) : null,
-          /* @__PURE__ */ jsx46(Item, { item, onClose: handleClose }),
-          item.divider === "bottom" ? /* @__PURE__ */ jsx46(Divider, {}) : null
+          item.divider === "top" ? /* @__PURE__ */ jsx52(Divider, {}) : null,
+          /* @__PURE__ */ jsx52(Item, { item, onClose: handleClose }),
+          item.divider === "bottom" ? /* @__PURE__ */ jsx52(Divider, {}) : null
         ])
       }
     )
@@ -3562,13 +3863,13 @@ var Item = ({
   onClose
 }) => {
   var _a, _b, _c;
-  const { css } = useClasses28(null);
+  const { css } = useClasses33(null);
   const color = item.color || colors.custom.lightGrey;
   const handleClick = item.onClick ? () => {
     item.onClick();
     onClose();
   } : void 0;
-  return /* @__PURE__ */ jsx46(
+  return /* @__PURE__ */ jsx52(
     ListItem,
     {
       text: item.label,
@@ -3578,7 +3879,7 @@ var Item = ({
       iconEnd: ((_b = item.subItems) == null ? void 0 : _b.length) ? "ChevronRight" : null,
       onClick: handleClick,
       className: css.item,
-      children: ((_c = item.subItems) == null ? void 0 : _c.length) ? /* @__PURE__ */ jsx46(View, { column: true, children: item.subItems.map((subItem) => /* @__PURE__ */ jsx46(SubItem, __spreadValues({}, { subItem, onClose }), subItem.label)) }) : null
+      children: ((_c = item.subItems) == null ? void 0 : _c.length) ? /* @__PURE__ */ jsx52(View, { column: true, children: item.subItems.map((subItem) => /* @__PURE__ */ jsx52(SubItem, __spreadValues({}, { subItem, onClose }), subItem.label)) }) : null
     },
     item.label
   );
@@ -3591,11 +3892,11 @@ var SubItem = ({
     subItem.onClick();
     onClose();
   };
-  return /* @__PURE__ */ jsx46(ListItem, { text: subItem.label, icon: subItem.icon, onClick: handleClick });
+  return /* @__PURE__ */ jsx52(ListItem, { text: subItem.label, icon: subItem.icon, onClick: handleClick });
 };
-var useClasses28 = makeClasses({
+var useClasses33 = makeClasses({
   contextMenu: {
-    background: (0, import_color8.default)(colors.custom.black).fade(0.03).string()
+    background: (0, import_color9.default)(colors.custom.black).fade(0.03).string()
   },
   contextMenuInner: {
     padding: 0
@@ -3607,14 +3908,14 @@ var useClasses28 = makeClasses({
 
 // trabecula/components/wrappers/divider.tsx
 import { Divider as DividerBase } from "@mui/material";
-import { jsx as jsx47 } from "react/jsx-runtime";
+import { jsx as jsx53 } from "react/jsx-runtime";
 var Divider = (_a) => {
   var props = __objRest(_a, []);
-  return /* @__PURE__ */ jsx47(DividerBase, __spreadValues({ flexItem: true }, props));
+  return /* @__PURE__ */ jsx53(DividerBase, __spreadValues({ flexItem: true }, props));
 };
 
 // trabecula/components/wrappers/header.tsx
-import { jsx as jsx48, jsxs as jsxs27 } from "react/jsx-runtime";
+import { jsx as jsx54, jsxs as jsxs28 } from "react/jsx-runtime";
 var DEFAULT_HEADER_PROPS2 = {
   bgColor: colors.custom.black,
   borderRadiuses: { top: "0.5rem" },
@@ -3644,11 +3945,11 @@ var HeaderWrapper = (_a) => {
     "spacing"
   ]);
   headerProps = deepMerge(DEFAULT_HEADER_PROPS2, headerProps);
-  const wrap = (c) => /* @__PURE__ */ jsxs27(View, __spreadProps(__spreadValues({}, viewProps), { column: true, height, "aria-label": "header-wrapper", children: [
-    /* @__PURE__ */ jsx48(View, __spreadProps(__spreadValues({}, headerProps), { "aria-label": "header", children: typeof header === "string" ? /* @__PURE__ */ jsx48(Text, { flex: 1, fontSize: headerProps.fontSize, textAlign: "center", children: header }) : header })),
+  const wrap = (c) => /* @__PURE__ */ jsxs28(View, __spreadProps(__spreadValues({}, viewProps), { column: true, height, "aria-label": "header-wrapper", children: [
+    /* @__PURE__ */ jsx54(View, __spreadProps(__spreadValues({}, headerProps), { "aria-label": "header", children: typeof header === "string" ? /* @__PURE__ */ jsx54(Text, { flex: 1, fontSize: headerProps.fontSize, textAlign: "center", children: header }) : header })),
     c
   ] }));
-  return /* @__PURE__ */ jsx48(ConditionalWrap, { condition: !!header, wrap, children: /* @__PURE__ */ jsx48(
+  return /* @__PURE__ */ jsx54(ConditionalWrap, { condition: !!header, wrap, children: /* @__PURE__ */ jsx54(
     View,
     __spreadProps(__spreadValues(__spreadValues({
       overflow: "auto"
@@ -3661,12 +3962,12 @@ var HeaderWrapper = (_a) => {
 
 // trabecula/components/wrappers/loading-overlay.tsx
 import { CircularProgress as CircularProgress3 } from "@mui/material";
-import { Fragment as Fragment5, jsx as jsx49, jsxs as jsxs28 } from "react/jsx-runtime";
+import { Fragment as Fragment5, jsx as jsx55, jsxs as jsxs29 } from "react/jsx-runtime";
 var LoadingOverlay = ({ children, isLoading, sub }) => {
-  const { css } = useClasses29({ isLoading });
-  return /* @__PURE__ */ jsxs28(Fragment5, { children: [
+  const { css } = useClasses34({ isLoading });
+  return /* @__PURE__ */ jsxs29(Fragment5, { children: [
     children,
-    /* @__PURE__ */ jsxs28(
+    /* @__PURE__ */ jsxs29(
       View,
       {
         column: true,
@@ -3678,14 +3979,14 @@ var LoadingOverlay = ({ children, isLoading, sub }) => {
         opacity: isLoading ? 1 : 0,
         className: css.loadingOverlay,
         children: [
-          /* @__PURE__ */ jsx49(CircularProgress3, { color: "inherit" }),
-          typeof sub === "string" ? /* @__PURE__ */ jsx49(Text, { preset: "title", fontSize: "0.9em", children: sub }) : sub
+          /* @__PURE__ */ jsx55(CircularProgress3, { color: "inherit" }),
+          typeof sub === "string" ? /* @__PURE__ */ jsx55(Text, { preset: "title", fontSize: "0.9em", children: sub }) : sub
         ]
       }
     )
   ] });
 };
-var useClasses29 = makeClasses((props) => ({
+var useClasses34 = makeClasses((props) => ({
   loadingOverlay: {
     position: "absolute",
     top: 0,
@@ -3698,15 +3999,15 @@ var useClasses29 = makeClasses((props) => ({
 }));
 
 // trabecula/components/wrappers/side-scroller.tsx
-import { useEffect as useEffect3, useRef as useRef2, useState as useState10 } from "react";
-import { jsx as jsx50, jsxs as jsxs29 } from "react/jsx-runtime";
+import { useEffect as useEffect4, useRef as useRef3, useState as useState11 } from "react";
+import { jsx as jsx56, jsxs as jsxs30 } from "react/jsx-runtime";
 var SideScroller = ({ children, className, innerClassName }) => {
-  const ref = useRef2(null);
+  const ref = useRef3(null);
   const { width } = useElementResize(ref);
-  const [isLeftButtonVisible, setIsLeftButtonVisible] = useState10(false);
-  const [isRightButtonVisible, setIsRightButtonVisible] = useState10(false);
-  const [scrollPos, setScrollPos] = useState10(0);
-  const { css, cx } = useClasses30({ isLeftButtonVisible, isRightButtonVisible });
+  const [isLeftButtonVisible, setIsLeftButtonVisible] = useState11(false);
+  const [isRightButtonVisible, setIsRightButtonVisible] = useState11(false);
+  const [scrollPos, setScrollPos] = useState11(0);
+  const { css, cx } = useClasses35({ isLeftButtonVisible, isRightButtonVisible });
   const getButtonVisibility = () => {
     if (!ref.current) return [false, false];
     const { clientWidth, scrollWidth, scrollLeft } = ref.current;
@@ -3721,19 +4022,19 @@ var SideScroller = ({ children, className, innerClassName }) => {
     ref.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
     setScrollPos(newScrollPos);
   };
-  useEffect3(() => {
+  useEffect4(() => {
     const node = ref.current;
     const scrollListener = debounce(setScrollPos.bind(node.scrollLeft), 50);
     node.addEventListener("scroll", scrollListener);
     return () => node.removeEventListener("scroll", scrollListener);
   }, []);
-  useEffect3(() => {
+  useEffect4(() => {
     const [left, right] = getButtonVisibility();
     setIsLeftButtonVisible(left);
     setIsRightButtonVisible(right);
   }, [scrollPos]);
-  return /* @__PURE__ */ jsxs29(View, { className: cx(css.root, className), children: [
-    /* @__PURE__ */ jsx50(
+  return /* @__PURE__ */ jsxs30(View, { className: cx(css.root, className), children: [
+    /* @__PURE__ */ jsx56(
       IconButton,
       {
         name: "ChevronLeft",
@@ -3742,8 +4043,8 @@ var SideScroller = ({ children, className, innerClassName }) => {
         size: "large"
       }
     ),
-    /* @__PURE__ */ jsx50(View, { ref, className: cx(css.items, innerClassName), children }),
-    /* @__PURE__ */ jsx50(
+    /* @__PURE__ */ jsx56(View, { ref, className: cx(css.items, innerClassName), children }),
+    /* @__PURE__ */ jsx56(
       IconButton,
       {
         name: "ChevronRight",
@@ -3754,7 +4055,7 @@ var SideScroller = ({ children, className, innerClassName }) => {
     )
   ] });
 };
-var useClasses30 = makeClasses((props) => ({
+var useClasses35 = makeClasses((props) => ({
   items: {
     display: "flex",
     flexFlow: "row nowrap",
@@ -3801,13 +4102,13 @@ var useClasses30 = makeClasses((props) => ({
 }));
 
 // trabecula/components/wrappers/uniform-list.tsx
-import { jsx as jsx51 } from "react/jsx-runtime";
+import { jsx as jsx57 } from "react/jsx-runtime";
 var UniformList = (_a) => {
   var _b = _a, { children, uniformWidth } = _b, props = __objRest(_b, ["children", "uniformWidth"]);
-  const { css, cx } = useClasses31({ uniformWidth });
-  return /* @__PURE__ */ jsx51(View, __spreadProps(__spreadValues({}, props), { className: cx(css.uniform, props == null ? void 0 : props.className), children }));
+  const { css, cx } = useClasses36({ uniformWidth });
+  return /* @__PURE__ */ jsx57(View, __spreadProps(__spreadValues({}, props), { className: cx(css.uniform, props == null ? void 0 : props.className), children }));
 };
-var useClasses31 = makeClasses((props) => ({
+var useClasses36 = makeClasses((props) => ({
   uniform: {
     "& > *": {
       flexBasis: "100%",
@@ -3817,7 +4118,7 @@ var useClasses31 = makeClasses((props) => ({
 }));
 
 // trabecula/components/wrappers/view.tsx
-import { jsx as jsx52 } from "react/jsx-runtime";
+import { jsx as jsx58 } from "react/jsx-runtime";
 var View = Comp(
   (_a, ref) => {
     var _b = _a, {
@@ -3864,7 +4165,7 @@ var View = Comp(
       "wrap"
     ]);
     if (row) column = false;
-    const { css, cx } = useClasses32({
+    const { css, cx } = useClasses37({
       align,
       bgColor,
       borders,
@@ -3884,10 +4185,10 @@ var View = Comp(
       width,
       wrap
     });
-    return /* @__PURE__ */ jsx52("div", __spreadProps(__spreadValues({}, props), { ref, className: cx(className, css.view), children }));
+    return /* @__PURE__ */ jsx58("div", __spreadProps(__spreadValues({}, props), { ref, className: cx(className, css.view), children }));
   }
 );
-var useClasses32 = makeClasses((props) => {
+var useClasses37 = makeClasses((props) => {
   var _a;
   return {
     view: __spreadValues(__spreadProps(__spreadValues(__spreadValues(__spreadValues(__spreadValues({
@@ -3916,6 +4217,7 @@ export {
   Button,
   ButtonWithInset,
   Card,
+  CardBase,
   CardGrid,
   CenteredText,
   Checkbox,

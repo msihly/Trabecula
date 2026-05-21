@@ -429,6 +429,7 @@ var sanitizeWinPath = (winPath, isBasename = false, isFolderOnly = false) => {
   ).join("\\");
 };
 var snakeToPascal = (str) => !(str == null ? void 0 : str.length) ? "" : str.split("_").map((s) => capitalize(s)).join("");
+var titleCase = (str) => str.split(" ").map((s) => capitalize(s)).join(" ");
 var Fmt = {
   abbrevNum,
   bytes,
@@ -444,7 +445,8 @@ var Fmt = {
   pascalToSnake,
   regexEscape,
   sanitizeWinPath,
-  snakeToPascal
+  snakeToPascal,
+  titleCase
 };
 
 // trabecula/utils/common/math.ts

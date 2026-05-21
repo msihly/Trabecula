@@ -2,7 +2,15 @@ import { ReactNode } from "react";
 // eslint-disable-next-line @typescript-eslint/no-restricted-imports
 import { Chip as MuiChip, ChipProps as MuiChipProps } from "@mui/material";
 import { Icon, IconName, IconProps } from "trabecula/components";
-import { CSS, CssColor, makeClasses, makePadding, Padding } from "trabecula/utils/client";
+import {
+  BorderRadiuses,
+  CSS,
+  CssColor,
+  makeBorderRadiuses,
+  makeClasses,
+  makePadding,
+  Padding,
+} from "trabecula/utils/client";
 
 export interface ChipProps extends Omit<MuiChipProps, "color" | "icon"> {
   bgColor?: CssColor;
@@ -14,6 +22,7 @@ export interface ChipProps extends Omit<MuiChipProps, "color" | "icon"> {
   iconProps?: Partial<IconProps>;
   label: ReactNode;
   padding?: Padding;
+  radiuses?: BorderRadiuses;
   width?: CSS["width"];
 }
 
@@ -27,10 +36,11 @@ export const Chip = ({
   iconProps,
   label,
   padding,
+  radiuses,
   width,
   ...props
 }: ChipProps) => {
-  const { css, cx } = useClasses({ bgColor, color, height, padding, width });
+  const { css, cx } = useClasses({ bgColor, color, height, padding, radiuses, width });
 
   return (
     <MuiChip
@@ -54,11 +64,12 @@ export const Chip = ({
 
 interface ClassesProps extends Pick<
   ChipProps,
-  "bgColor" | "color" | "height" | "padding" | "width"
+  "bgColor" | "color" | "height" | "padding" | "radiuses" | "width"
 > {}
 
 const useClasses = makeClasses((props: ClassesProps) => ({
   chip: {
+    ...makeBorderRadiuses(props.radiuses),
     height: props.height,
     backgroundColor: props.bgColor,
     color: props.color,

@@ -1,7 +1,7 @@
 import * as react from 'react';
-import { Ref, ForwardRefExoticComponent, PropsWithoutRef, RefAttributes, ReactNode, MouseEvent, Dispatch, SetStateAction, ElementType, HTMLAttributes } from 'react';
+import { Ref, ForwardRefExoticComponent, PropsWithoutRef, RefAttributes, ReactNode, MouseEvent, Dispatch, SetStateAction, ElementType, DetailedHTMLProps, ImgHTMLAttributes, HTMLAttributes } from 'react';
 import * as react_jsx_runtime from 'react/jsx-runtime';
-import { ButtonProps as ButtonProps$1, IconButtonProps as IconButtonProps$1, TextFieldProps, ListItemProps as ListItemProps$1, IconProps as IconProps$1, DialogProps, PaginationProps as PaginationProps$1, TypographyProps, AccordionProps as AccordionProps$1, TooltipProps as TooltipProps$1, ChipProps as ChipProps$1, DividerProps as DividerProps$1 } from '@mui/material';
+import { ButtonProps as ButtonProps$1, IconButtonProps as IconButtonProps$1, TextFieldProps, ListItemProps as ListItemProps$1, IconProps as IconProps$1, DialogProps, PaginationProps as PaginationProps$1, TypographyProps, AccordionProps as AccordionProps$1, TooltipProps as TooltipProps$2, ChipProps as ChipProps$2, DividerProps as DividerProps$1 } from '@mui/material';
 import { B as BorderRadiuses, C as CSS, b as CssColor, M as Margins, P as Padding, a as Borders } from '../css-B32sWQHL.mjs';
 import { IconName as IconName$1 } from '../_generated/client/index.mjs';
 import { DatePickerProps } from '@mui/x-date-pickers/DatePicker';
@@ -38,8 +38,8 @@ interface ButtonProps extends Omit<ButtonProps$1, "color" | "endIcon" | "fullWid
     textColor?: CssColor;
     textClassName?: string;
     textTransform?: CSS["textTransform"];
-    tooltip?: TooltipProps["title"];
-    tooltipProps?: Partial<TooltipProps>;
+    tooltip?: TooltipProps$1["title"];
+    tooltipProps?: Partial<TooltipProps$1>;
     type?: "button" | "link";
     width?: CSS["width"];
 }
@@ -367,7 +367,7 @@ interface HeaderProps {
     rightNode?: ReactNode;
 }
 
-interface FooterProps extends UniformListProps {
+interface FooterProps$1 extends UniformListProps {
 }
 
 interface ContentProps extends ViewProps {
@@ -379,7 +379,7 @@ interface ContentProps extends ViewProps {
     position?: CSS["position"];
 }
 
-interface ContainerProps extends Omit<DialogProps, "maxWidth" | "open" | "onClose" | "title"> {
+interface ContainerProps$1 extends Omit<DialogProps, "maxWidth" | "open" | "onClose" | "title"> {
     closeOnBackdrop?: boolean;
     height?: CSS["height"];
     isLoading?: boolean;
@@ -391,9 +391,9 @@ interface ContainerProps extends Omit<DialogProps, "maxWidth" | "open" | "onClos
 }
 
 declare const Modal: {
-    Container: ({ children, className, closeOnBackdrop, draggable, height, isLoading, maxHeight, maxWidth, onClose, scroll, visible, width, ...props }: ContainerProps) => react_jsx_runtime.JSX.Element;
+    Container: ({ children, className, closeOnBackdrop, draggable, height, isLoading, maxHeight, maxWidth, onClose, scroll, visible, width, ...props }: ContainerProps$1) => react_jsx_runtime.JSX.Element;
     Content: ({ children, className, dividers, overflow, padding, position, ...viewProps }: ContentProps) => react_jsx_runtime.JSX.Element;
-    Footer: ({ children, uniformWidth, ...props }: FooterProps) => react_jsx_runtime.JSX.Element;
+    Footer: ({ children, uniformWidth, ...props }: FooterProps$1) => react_jsx_runtime.JSX.Element;
     Header: ({ children, className, justify, leftNode, rightNode, }: HeaderProps) => react_jsx_runtime.JSX.Element;
 };
 
@@ -475,8 +475,8 @@ interface TextProps extends Omit<TypographyProps, "color" | "component" | "fontS
     fontWeight?: CSS["fontWeight"];
     overflow?: CSS["overflow"];
     preset?: TextPreset;
-    tooltip?: TooltipProps["title"];
-    tooltipProps?: Partial<TooltipProps>;
+    tooltip?: TooltipProps$1["title"];
+    tooltipProps?: Partial<TooltipProps$1>;
 }
 declare const Text: ({ children, className, color, component, fontSize, fontWeight, overflow, preset, tooltip, tooltipProps, ...props }: TextProps) => react_jsx_runtime.JSX.Element;
 
@@ -508,7 +508,7 @@ interface CheckboxProps {
 }
 declare const Checkbox: ({ center, checked, className, color, disabled, flex, indeterminate, indeterminateColor, label, margins, padding, setChecked, width, }: CheckboxProps) => react_jsx_runtime.JSX.Element;
 
-interface TooltipProps extends Omit<TooltipProps$1, "children" | "color"> {
+interface TooltipProps$1 extends Omit<TooltipProps$2, "children" | "color"> {
     borderColor?: CssColor;
     bgColor?: CssColor;
     children: JSX.Element;
@@ -520,12 +520,12 @@ interface TooltipProps extends Omit<TooltipProps$1, "children" | "color"> {
     padding?: CSS["padding"];
     viewProps?: Partial<ViewProps>;
 }
-declare const Tooltip: ({ arrow, bgColor, borderColor, children, color, flexShrink, fontSize, minWidth, maxWidth, padding, placement, title, viewProps, ...props }: TooltipProps) => react_jsx_runtime.JSX.Element;
+declare const Tooltip: ({ arrow, bgColor, borderColor, children, color, flexShrink, fontSize, minWidth, maxWidth, padding, placement, title, viewProps, ...props }: TooltipProps$1) => react_jsx_runtime.JSX.Element;
 
 interface TooltipWrapperProps {
     children: JSX.Element | JSX.Element[];
-    tooltip?: TooltipProps["title"];
-    tooltipProps?: Partial<TooltipProps>;
+    tooltip?: TooltipProps$1["title"];
+    tooltipProps?: Partial<TooltipProps$1>;
 }
 declare const TooltipWrapper: ({ children, tooltip, tooltipProps }: TooltipWrapperProps) => react_jsx_runtime.JSX.Element;
 
@@ -534,6 +534,61 @@ interface CardProps extends ViewProps {
     headerProps?: Partial<ViewProps>;
 }
 declare const Card: react.ForwardRefExoticComponent<CardProps & react.RefAttributes<HTMLDivElement>>;
+
+interface TooltipProps {
+    children: JSX.Element;
+    disabled?: boolean;
+    tooltip: JSX.Element | JSX.Element[];
+}
+
+interface ImageProps extends Omit<DetailedHTMLProps<ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>, "alt" | "height" | "src" | "title" | "width"> {
+    autoAnimate?: boolean;
+    children?: ReactNode | ReactNode[];
+    disabled?: boolean;
+    draggable?: boolean;
+    fit?: "contain" | "cover";
+    height?: CSS["height"];
+    rounded?: "all" | "bottom" | "top";
+    title?: string;
+    thumbPaths: string[];
+}
+
+interface FooterTextProps {
+    text: string;
+}
+
+interface FooterProps {
+    children?: ReactNode | ReactNode[];
+}
+
+interface ContainerProps extends ViewProps {
+    children: ReactNode | ReactNode[];
+    className?: string;
+    disabled?: boolean;
+    display?: CSS["display"];
+    height?: CSS["height"];
+    onClick?: (event: MouseEvent) => void;
+    onDoubleClick?: () => void;
+    selected?: boolean;
+    selectedColor?: CssColor;
+    width?: CSS["width"];
+}
+
+interface ChipProps$1 extends ChipProps {
+    hasFooter?: boolean;
+    flush?: boolean;
+    opacity?: number;
+    position: "top-left" | "top-right" | "bottom-left" | "bottom-right";
+}
+
+declare const CardBase: {
+    Chip: ({ bgColor, hasFooter, flush, opacity, position, ...props }: ChipProps$1) => react_jsx_runtime.JSX.Element;
+    Container: ({ children, className, disabled, display, height, onClick, onDoubleClick, selected, selectedColor, width, ...viewProps }: ContainerProps) => react_jsx_runtime.JSX.Element;
+    Footer: ({ children }: FooterProps) => react_jsx_runtime.JSX.Element;
+    FooterText: (props: FooterTextProps) => react_jsx_runtime.JSX.Element;
+    Image: ({ autoAnimate, children, className, disabled, draggable, fit, height, loading, onDragEnd, onDragStart, rounded, thumbPaths, title, }: ImageProps) => react_jsx_runtime.JSX.Element;
+    Tooltip: ({ children, tooltip }: TooltipProps) => react_jsx_runtime.JSX.Element;
+};
 
 interface CardGridProps extends ViewProps {
     cards: ReactNode[];
@@ -546,7 +601,7 @@ interface CardGridProps extends ViewProps {
 }
 declare const CardGrid: react.ForwardRefExoticComponent<CardGridProps & react.RefAttributes<HTMLDivElement>>;
 
-interface ChipProps extends Omit<ChipProps$1, "color" | "icon"> {
+interface ChipProps extends Omit<ChipProps$2, "color" | "icon"> {
     bgColor?: CssColor;
     className?: string;
     color?: CssColor;
@@ -556,9 +611,10 @@ interface ChipProps extends Omit<ChipProps$1, "color" | "icon"> {
     iconProps?: Partial<IconProps>;
     label: ReactNode;
     padding?: Padding;
+    radiuses?: BorderRadiuses;
     width?: CSS["width"];
 }
-declare const Chip: ({ bgColor, className, color, height, icon, iconColor, iconProps, label, padding, width, ...props }: ChipProps) => react_jsx_runtime.JSX.Element;
+declare const Chip: ({ bgColor, className, color, height, icon, iconColor, iconProps, label, padding, radiuses, width, ...props }: ChipProps) => react_jsx_runtime.JSX.Element;
 
 interface ConditionalWrapProps {
     children: JSX.Element | JSX.Element[];
@@ -646,4 +702,4 @@ interface ViewProps extends HTMLAttributes<HTMLDivElement> {
 }
 declare const View: react.ForwardRefExoticComponent<ViewProps & react.RefAttributes<HTMLDivElement>>;
 
-export { Accordion, type AccordionProps, Button, type ButtonProps, ButtonWithInset, type ButtonWithInsetProps, Card, CardGrid, type CardGridProps, type CardProps, CenteredText, type CenteredTextProps, Checkbox, type CheckboxProps, Chip, type ChipProps, ColorPicker, type ColorPickerProps, Comp, ConditionalWrap, ConfirmModal, type ConfirmModalProps, type ContainerProps, type ContentProps, ContextMenu, type ContextMenuProps, DateDetail, type DateDetailProps, DateInput, type DateInputProps, DateRange, type DateRangeProps, Detail, type DetailProps, DetailRows, Divider, type DividerProps, Dropdown, type DropdownOption, type DropdownProps, FilterMenu, type FilterMenuProps, type FooterProps, type HeaderProps, HeaderWrapper, type HeaderWrapperProps, Icon, IconButton, type IconButtonProps, type IconName, IconPicker, type IconPickerProps, type IconProps, Input, type InputProps, ListItem, type ListItemProps, LoadingOverlay, type LoadingOverlayProps, LogOpsInput, type LogOpsInputProps, MULTI_INPUT_ROW_HEIGHT, MenuButton, type MenuButtonProps, Modal, MultiActionButton, type MultiActionButtonProps, MultiInput, MultiInputList, type MultiInputListProps, type MultiInputProps, MultiInputRow, type MultiInputRowOption, type MultiInputRowProps, NumInput, type NumInputProps, NumRange, type NumRangeProps, Pagination, type PaginationProps, ProgressBar, type ProgressBarProps, ProgressCircle, type ProgressCircleProps, RangeWrapper, type RangeWrapperProps, SideScroller, SortMenu, type SortMenuProps, SortRow, type SortRowProps, Table, type TableColumn, type TableProps, Text, type TextPreset, type TextProps, Tooltip, type TooltipProps, TooltipWrapper, type TooltipWrapperProps, UniformList, type UniformListProps, View, type ViewProps };
+export { Accordion, type AccordionProps, Button, type ButtonProps, ButtonWithInset, type ButtonWithInsetProps, Card, CardBase, CardGrid, type CardGridProps, type CardProps, CenteredText, type CenteredTextProps, Checkbox, type CheckboxProps, Chip, type ChipProps, ColorPicker, type ColorPickerProps, Comp, ConditionalWrap, ConfirmModal, type ConfirmModalProps, type ContainerProps$1 as ContainerProps, type ContentProps, ContextMenu, type ContextMenuProps, DateDetail, type DateDetailProps, DateInput, type DateInputProps, DateRange, type DateRangeProps, Detail, type DetailProps, DetailRows, Divider, type DividerProps, Dropdown, type DropdownOption, type DropdownProps, FilterMenu, type FilterMenuProps, type FooterProps$1 as FooterProps, type HeaderProps, HeaderWrapper, type HeaderWrapperProps, Icon, IconButton, type IconButtonProps, type IconName, IconPicker, type IconPickerProps, type IconProps, Input, type InputProps, ListItem, type ListItemProps, LoadingOverlay, type LoadingOverlayProps, LogOpsInput, type LogOpsInputProps, MULTI_INPUT_ROW_HEIGHT, MenuButton, type MenuButtonProps, Modal, MultiActionButton, type MultiActionButtonProps, MultiInput, MultiInputList, type MultiInputListProps, type MultiInputProps, MultiInputRow, type MultiInputRowOption, type MultiInputRowProps, NumInput, type NumInputProps, NumRange, type NumRangeProps, Pagination, type PaginationProps, ProgressBar, type ProgressBarProps, ProgressCircle, type ProgressCircleProps, RangeWrapper, type RangeWrapperProps, SideScroller, SortMenu, type SortMenuProps, SortRow, type SortRowProps, Table, type TableColumn, type TableProps, Text, type TextPreset, type TextProps, Tooltip, type TooltipProps$1 as TooltipProps, TooltipWrapper, type TooltipWrapperProps, UniformList, type UniformListProps, View, type ViewProps };

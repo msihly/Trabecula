@@ -49,11 +49,7 @@ const regexEscape = (string: string, replacementOnly = false) =>
       : String(string).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
     : string;
 
-const sanitizeWinPath = (
-  winPath: string,
-  isBasename = false,
-  isFolderOnly = false,
-): string => {
+const sanitizeWinPath = (winPath: string, isBasename = false, isFolderOnly = false): string => {
   if (!winPath) return winPath;
 
   const sanitize = (part: string, isBase = false) => {
@@ -82,7 +78,6 @@ const sanitizeWinPath = (
         .join("\\");
 };
 
-
 const snakeToPascal = (str: string) =>
   !str?.length
     ? ""
@@ -90,6 +85,12 @@ const snakeToPascal = (str: string) =>
         .split("_")
         .map((s) => capitalize(s))
         .join("");
+
+const titleCase = (str: string) =>
+  str
+    .split(" ")
+    .map((s) => capitalize(s))
+    .join(" ");
 
 export const Fmt = {
   abbrevNum,
@@ -107,4 +108,5 @@ export const Fmt = {
   regexEscape,
   sanitizeWinPath,
   snakeToPascal,
+  titleCase,
 };

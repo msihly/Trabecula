@@ -84,6 +84,7 @@ declare const Fmt: {
     regexEscape: (string: string, replacementOnly?: boolean) => string;
     sanitizeWinPath: (winPath: string, isBasename?: boolean, isFolderOnly?: boolean) => string;
     snakeToPascal: (str: string) => string;
+    titleCase: (str: string) => string;
 };
 
 type IsPlainObject<T> = T extends object ? T extends any[] ? false : T extends Function ? false : true : false;
