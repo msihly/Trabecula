@@ -49,23 +49,39 @@ const regexEscape = (string: string, replacementOnly = false) =>
       : String(string).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
     : string;
 
-const sanitizeWinPath = (winPath: string, isBasename = false): string => {
+const sanitizeWinPath = (
+  winPath: string,
+  isBasename = false,
+  isFolderOnly = false,
+): string => {
   if (!winPath) return winPath;
 
-  const sanitize = (part: string) =>
-    part
-      .replace(/[\\:*?"<>|]/g, "-")
-      .replace(/[. ]+$/, "")
-      .replace(isBasename ? "/" : "", "")
+  const sanitize = (part: string, isBase = false) => {
+    return part
+      .replaceAll(".", isBase ? "." : "․")
+      .replaceAll("<", "﹤")
+      .replaceAll(">", "﹥")
+      .replaceAll(":", " ː ")
+      .replaceAll('"', "“")
+      .replaceAll("/", " ⁄ ")
+      .replaceAll("|", "⼁")
+      .replaceAll("?", "﹖")
+      .replaceAll("*", "﹡")
       .trim();
+  };
 
   return isBasename
-    ? sanitize(winPath)
+    ? sanitize(winPath, true)
     : winPath
         .split(/[/\\]/)
-        .map((part, idx) => (idx === 0 && /^[a-zA-Z]:$/.test(part) ? part : sanitize(part)))
+        .map((part, idx, parts) =>
+          idx === 0 && /^[a-zA-Z]:$/.test(part)
+            ? part
+            : sanitize(part, isFolderOnly ? false : idx === parts.length - 1),
+        )
         .join("\\");
 };
+
 
 const snakeToPascal = (str: string) =>
   !str?.length

@@ -49,8 +49,8 @@ export const makeQueue = <T>({
       (document.title =
         completedCount >= totalCount
           ? hasError
-            ? "ERROR"
-            : "Done!"
+            ? "\u274c Error!"
+            : "\u2705 Done!"
           : `[${completedCount}/${totalCount}] Downloading`);
 
     const updateToast = () =>
@@ -60,6 +60,8 @@ export const makeQueue = <T>({
       });
 
     if (withTabTitle) updateTabTitle();
+
+    if (!items?.length) return onEscape();
 
     for (const item of items) {
       queue.add(async () => {

@@ -22,7 +22,7 @@ interface CountItemsResult<T> {
 declare const countItems: <T>(arr: T[]) => CountItemsResult<T>[];
 declare const getArrayDiff: <T>(a: T[], b: T[]) => T[];
 declare const objectToFloat32Array: (obj: object) => Float32Array;
-declare const range: (length: number) => number[];
+declare const range: (length: number, start?: number) => number[];
 declare const rotateArrayPos: (direction: "prev" | "next", current: number, length: number) => number;
 declare const sortArray: <T>(arr: T[], key: string, isDesc?: boolean, isNumber?: boolean) => T[];
 /** @return [falsy values, truthy values] */
@@ -82,7 +82,7 @@ declare const Fmt: {
     leadZeros: (num: number, places: number) => string;
     pascalToSnake: (str: string) => string;
     regexEscape: (string: string, replacementOnly?: boolean) => string;
-    sanitizeWinPath: (winPath: string, isBasename?: boolean) => string;
+    sanitizeWinPath: (winPath: string, isBasename?: boolean, isFolderOnly?: boolean) => string;
     snakeToPascal: (str: string) => string;
 };
 

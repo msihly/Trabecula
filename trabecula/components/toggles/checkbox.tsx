@@ -21,6 +21,7 @@ export interface CheckboxProps {
   disabled?: boolean;
   flex?: CSS["flex"];
   indeterminate?: boolean;
+  indeterminateColor?: CssColor;
   label?: ReactNode;
   margins?: Margins;
   padding?: Padding;
@@ -35,14 +36,23 @@ export const Checkbox = ({
   color = colors.custom.blue,
   disabled,
   flex = 1,
-  width = "100%",
   indeterminate,
+  indeterminateColor,
   label,
   margins = { left: 0, right: 0 },
   padding = { all: "0.3rem" },
   setChecked,
+  width = "100%",
 }: CheckboxProps) => {
-  const { css, cx } = useClasses({ center, color, disabled, flex, margins, padding, width });
+  const { css, cx } = useClasses({
+    center,
+    color: indeterminate ? indeterminateColor : color,
+    disabled,
+    flex,
+    margins,
+    padding,
+    width,
+  });
 
   const toggleChecked = () => !disabled && setChecked(!checked);
 

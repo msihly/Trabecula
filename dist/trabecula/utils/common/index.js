@@ -155,7 +155,7 @@ var getArrayDiff = (a, b) => [
   ...b.filter((e) => !a.includes(e))
 ];
 var objectToFloat32Array = (obj) => new Float32Array(Object.values(obj));
-var range = (length) => [...Array(length).keys()];
+var range = (length, start = 0) => Array(length).fill("").map((_, i) => start + i);
 var rotateArrayPos = (direction, current, length) => {
   if (direction === "next") return current + 1 < length ? current + 1 : 0;
   else if (direction === "prev") return current - 1 >= 0 ? current - 1 : length - 1;
@@ -419,10 +419,14 @@ var jstr = (val) => JSON.stringify(val, null, 2);
 var leadZeros = (num, places) => String(num).padStart(places, "0");
 var pascalToSnake = (str) => !(str == null ? void 0 : str.length) ? "" : str.split(/(?=[A-Z])/).join("_").toLowerCase();
 var regexEscape = (string, replacementOnly = false) => string ? replacementOnly ? String(string).replace(/\\/g, "\\\\") : String(string).replace(/[.*+?^${}()|[\]\\]/g, "\\$&") : string;
-var sanitizeWinPath = (winPath, isBasename = false) => {
+var sanitizeWinPath = (winPath, isBasename = false, isFolderOnly = false) => {
   if (!winPath) return winPath;
-  const sanitize = (part) => part.replace(/[\\:*?"<>|]/g, "-").replace(/[. ]+$/, "").replace(isBasename ? "/" : "", "").trim();
-  return isBasename ? sanitize(winPath) : winPath.split(/[/\\]/).map((part, idx) => idx === 0 && /^[a-zA-Z]:$/.test(part) ? part : sanitize(part)).join("\\");
+  const sanitize = (part, isBase = false) => {
+    return part.replaceAll(".", isBase ? "." : "\u2024").replaceAll("<", "\uFE64").replaceAll(">", "\uFE65").replaceAll(":", " \u02D0 ").replaceAll('"', "\u201C").replaceAll("/", " \u2044 ").replaceAll("|", "\u2F01").replaceAll("?", "\uFE56").replaceAll("*", "\uFE61").trim();
+  };
+  return isBasename ? sanitize(winPath, true) : winPath.split(/[/\\]/).map(
+    (part, idx, parts) => idx === 0 && /^[a-zA-Z]:$/.test(part) ? part : sanitize(part, isFolderOnly ? false : idx === parts.length - 1)
+  ).join("\\");
 };
 var snakeToPascal = (str) => !(str == null ? void 0 : str.length) ? "" : str.split("_").map((s) => capitalize(s)).join("");
 var Fmt = {

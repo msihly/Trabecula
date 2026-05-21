@@ -45,6 +45,12 @@ interface ButtonProps extends Omit<ButtonProps$1, "color" | "endIcon" | "fullWid
 }
 declare const Button: ({ borderRadiuses, boxShadow, children, className, color, colorOnHover, endNode, fontSize, fontWeight, href, icon, iconProps, iconRight, iconSize, justify, loading, margins, onClick, outlined, outlineFill, padding, size, startNode, text, textColor, textTransform, tooltip, tooltipProps, type, width, ...props }: ButtonProps) => react_jsx_runtime.JSX.Element;
 
+interface ButtonWithInsetProps extends ButtonProps {
+    insetText: string;
+    insetWidth?: CSS["width"];
+}
+declare const ButtonWithInset: react.ForwardRefExoticComponent<Omit<ButtonWithInsetProps, "ref"> & react.RefAttributes<HTMLDivElement>>;
+
 interface ColorPickerProps extends Omit<ButtonProps, "onChange" | "value"> {
     color?: CssColor;
     label?: string;
@@ -90,6 +96,10 @@ interface MenuButtonProps extends IconButtonProps {
     menuWidth?: CSS["width"];
 }
 declare const MenuButton: ({ bgColor, button, children, color, icon, keepMounted, menuWidth, ...props }: MenuButtonProps) => react_jsx_runtime.JSX.Element;
+
+interface MultiActionButtonProps extends IconButtonProps {
+}
+declare const MultiActionButton: ({ tooltipProps, ...props }: MultiActionButtonProps) => react_jsx_runtime.JSX.Element;
 
 interface SortMenuProps extends Omit<ButtonProps, "onChange" | "value"> {
     color?: CssColor;
@@ -151,6 +161,35 @@ interface DropdownProps extends InputProps {
     options: DropdownOption[];
 }
 declare const Dropdown: ({ options, value, ...props }: DropdownProps) => react_jsx_runtime.JSX.Element;
+
+interface FilterMenuProps extends Omit<ButtonProps, "onChange" | "value"> {
+    color?: CssColor;
+    menuProps?: Partial<MenuButtonProps>;
+    resetFn?: () => void;
+    sortOptions: SortMenuProps["rows"];
+    store: {
+        hasChanges: boolean;
+        isLoading: boolean;
+        loadFiltered: (options?: {
+            noCache?: boolean;
+            page?: number;
+        }) => void;
+        numOfFilters: number;
+        reset: () => void;
+        setPageCount: (count: number) => void;
+        setSortValue: (val: {
+            isDesc: boolean;
+            key: string;
+        }) => void;
+        sortValue: {
+            isDesc: boolean;
+            key: string;
+        };
+    };
+    viewProps?: ViewProps;
+    width?: CSS["width"];
+}
+declare const FilterMenu: react.ForwardRefExoticComponent<Omit<FilterMenuProps, "ref"> & react.RefAttributes<HTMLDivElement>>;
 
 interface InputProps extends Omit<TextFieldProps, "color" | "fullWidth" | "onChange" | "helperText" | "label"> {
     adornment?: ReactNode;
@@ -460,13 +499,14 @@ interface CheckboxProps {
     disabled?: boolean;
     flex?: CSS["flex"];
     indeterminate?: boolean;
+    indeterminateColor?: CssColor;
     label?: ReactNode;
     margins?: Margins;
     padding?: Padding;
     setChecked: (checked: boolean) => void;
     width?: CSS["width"];
 }
-declare const Checkbox: ({ center, checked, className, color, disabled, flex, width, indeterminate, label, margins, padding, setChecked, }: CheckboxProps) => react_jsx_runtime.JSX.Element;
+declare const Checkbox: ({ center, checked, className, color, disabled, flex, indeterminate, indeterminateColor, label, margins, padding, setChecked, width, }: CheckboxProps) => react_jsx_runtime.JSX.Element;
 
 interface TooltipProps extends Omit<TooltipProps$1, "children" | "color"> {
     borderColor?: CssColor;
@@ -606,4 +646,4 @@ interface ViewProps extends HTMLAttributes<HTMLDivElement> {
 }
 declare const View: react.ForwardRefExoticComponent<ViewProps & react.RefAttributes<HTMLDivElement>>;
 
-export { Accordion, type AccordionProps, Button, type ButtonProps, Card, CardGrid, type CardGridProps, type CardProps, CenteredText, type CenteredTextProps, Checkbox, type CheckboxProps, Chip, type ChipProps, ColorPicker, type ColorPickerProps, Comp, ConditionalWrap, ConfirmModal, type ConfirmModalProps, type ContainerProps, type ContentProps, ContextMenu, type ContextMenuProps, DateDetail, type DateDetailProps, DateInput, type DateInputProps, DateRange, type DateRangeProps, Detail, type DetailProps, DetailRows, Divider, type DividerProps, Dropdown, type DropdownOption, type DropdownProps, type FooterProps, type HeaderProps, HeaderWrapper, type HeaderWrapperProps, Icon, IconButton, type IconButtonProps, type IconName, IconPicker, type IconPickerProps, type IconProps, Input, type InputProps, ListItem, type ListItemProps, LoadingOverlay, type LoadingOverlayProps, LogOpsInput, type LogOpsInputProps, MULTI_INPUT_ROW_HEIGHT, MenuButton, type MenuButtonProps, Modal, MultiInput, MultiInputList, type MultiInputListProps, type MultiInputProps, MultiInputRow, type MultiInputRowOption, type MultiInputRowProps, NumInput, type NumInputProps, NumRange, type NumRangeProps, Pagination, type PaginationProps, ProgressBar, type ProgressBarProps, ProgressCircle, type ProgressCircleProps, RangeWrapper, type RangeWrapperProps, SideScroller, SortMenu, type SortMenuProps, SortRow, type SortRowProps, Table, type TableColumn, type TableProps, Text, type TextPreset, type TextProps, Tooltip, type TooltipProps, TooltipWrapper, type TooltipWrapperProps, UniformList, type UniformListProps, View, type ViewProps };
+export { Accordion, type AccordionProps, Button, type ButtonProps, ButtonWithInset, type ButtonWithInsetProps, Card, CardGrid, type CardGridProps, type CardProps, CenteredText, type CenteredTextProps, Checkbox, type CheckboxProps, Chip, type ChipProps, ColorPicker, type ColorPickerProps, Comp, ConditionalWrap, ConfirmModal, type ConfirmModalProps, type ContainerProps, type ContentProps, ContextMenu, type ContextMenuProps, DateDetail, type DateDetailProps, DateInput, type DateInputProps, DateRange, type DateRangeProps, Detail, type DetailProps, DetailRows, Divider, type DividerProps, Dropdown, type DropdownOption, type DropdownProps, FilterMenu, type FilterMenuProps, type FooterProps, type HeaderProps, HeaderWrapper, type HeaderWrapperProps, Icon, IconButton, type IconButtonProps, type IconName, IconPicker, type IconPickerProps, type IconProps, Input, type InputProps, ListItem, type ListItemProps, LoadingOverlay, type LoadingOverlayProps, LogOpsInput, type LogOpsInputProps, MULTI_INPUT_ROW_HEIGHT, MenuButton, type MenuButtonProps, Modal, MultiActionButton, type MultiActionButtonProps, MultiInput, MultiInputList, type MultiInputListProps, type MultiInputProps, MultiInputRow, type MultiInputRowOption, type MultiInputRowProps, NumInput, type NumInputProps, NumRange, type NumRangeProps, Pagination, type PaginationProps, ProgressBar, type ProgressBarProps, ProgressCircle, type ProgressCircleProps, RangeWrapper, type RangeWrapperProps, SideScroller, SortMenu, type SortMenuProps, SortRow, type SortRowProps, Table, type TableColumn, type TableProps, Text, type TextPreset, type TextProps, Tooltip, type TooltipProps, TooltipWrapper, type TooltipWrapperProps, UniformList, type UniformListProps, View, type ViewProps };

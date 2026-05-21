@@ -6933,12 +6933,13 @@ var makeQueue = ({
       updateToast();
       if (withTabTitle) updateTabTitle();
     };
-    const updateTabTitle = () => document.title = completedCount >= totalCount ? hasError ? "ERROR" : "Done!" : `[${completedCount}/${totalCount}] Downloading`;
+    const updateTabTitle = () => document.title = completedCount >= totalCount ? hasError ? "\u274C Error!" : "\u2705 Done!" : `[${completedCount}/${totalCount}] Downloading`;
     const updateToast = () => toaster.toast(getToastText(), {
       autoClose: isComplete ? 3e3 : false,
       type: isComplete ? "success" : void 0
     });
     if (withTabTitle) updateTabTitle();
+    if (!(items == null ? void 0 : items.length)) return onEscape();
     for (const item of items) {
       queue.add(() => __async(null, null, function* () {
         try {
