@@ -23,6 +23,7 @@ interface ButtonProps extends Omit<ButtonProps$1, "color" | "endIcon" | "fullWid
     endNode?: ReactNode;
     fontSize?: CSS["fontSize"];
     fontWeight?: CSS["fontWeight"];
+    height?: CSS["height"];
     icon?: IconName;
     iconProps?: Partial<IconProps>;
     iconRight?: IconName;
@@ -43,7 +44,7 @@ interface ButtonProps extends Omit<ButtonProps$1, "color" | "endIcon" | "fullWid
     type?: "button" | "link";
     width?: CSS["width"];
 }
-declare const Button: ({ borderRadiuses, boxShadow, children, className, color, colorOnHover, endNode, fontSize, fontWeight, href, icon, iconProps, iconRight, iconSize, justify, loading, margins, onClick, outlined, outlineFill, padding, size, startNode, text, textColor, textTransform, tooltip, tooltipProps, type, width, ...props }: ButtonProps) => react_jsx_runtime.JSX.Element;
+declare const Button: ({ borderRadiuses, boxShadow, children, className, color, colorOnHover, endNode, fontSize, fontWeight, height, href, icon, iconProps, iconRight, iconSize, justify, loading, margins, onClick, outlined, outlineFill, padding, size, startNode, text, textColor, textTransform, tooltip, tooltipProps, type, width, ...props }: ButtonProps) => react_jsx_runtime.JSX.Element;
 
 interface ButtonWithInsetProps extends ButtonProps {
     insetText: string;

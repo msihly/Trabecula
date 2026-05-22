@@ -39,6 +39,7 @@ export interface ButtonProps extends Omit<
   endNode?: ReactNode;
   fontSize?: CSS["fontSize"];
   fontWeight?: CSS["fontWeight"];
+  height?: CSS["height"];
   icon?: IconName;
   iconProps?: Partial<IconProps>;
   iconRight?: IconName;
@@ -70,6 +71,7 @@ export const Button = ({
   endNode,
   fontSize = "1.15em",
   fontWeight = 400,
+  height,
   href,
   icon,
   iconProps,
@@ -98,6 +100,7 @@ export const Button = ({
     boxShadow,
     color,
     colorOnHover,
+    height,
     isLink: type === "link",
     justify,
     margins,
@@ -165,6 +168,7 @@ interface ClassesProps extends Pick<
   | "boxShadow"
   | "color"
   | "colorOnHover"
+  | "height"
   | "justify"
   | "margins"
   | "outlined"
@@ -192,6 +196,7 @@ const useClasses = makeClasses((props: ClassesProps) => ({
     paddingRight: props.padding?.right ?? (props.isLink ? 0 : undefined),
     paddingLeft: props.padding?.left ?? (props.isLink ? 0 : undefined),
     minWidth: "fit-content",
+    height: props.height,
     width: props.width,
     backgroundColor: props.isLink
       ? "transparent"

@@ -11,7 +11,7 @@ import {
   require_color,
   toast,
   useElementResize
-} from "../chunk-KY5BAR2D.mjs";
+} from "../chunk-ACVZFQ6U.mjs";
 import {
   Fmt,
   LOGICAL_OPS,
@@ -55,6 +55,7 @@ var Button = (_a) => {
     endNode,
     fontSize = "1.15em",
     fontWeight = 400,
+    height,
     href,
     icon,
     iconProps,
@@ -86,6 +87,7 @@ var Button = (_a) => {
     "endNode",
     "fontSize",
     "fontWeight",
+    "height",
     "href",
     "icon",
     "iconProps",
@@ -113,6 +115,7 @@ var Button = (_a) => {
     boxShadow,
     color,
     colorOnHover,
+    height,
     isLink: type === "link",
     justify,
     margins,
@@ -160,6 +163,7 @@ var useClasses = makeClasses((props) => {
       paddingRight: (_g = (_f = props.padding) == null ? void 0 : _f.right) != null ? _g : props.isLink ? 0 : void 0,
       paddingLeft: (_i = (_h = props.padding) == null ? void 0 : _h.left) != null ? _i : props.isLink ? 0 : void 0,
       minWidth: "fit-content",
+      height: props.height,
       width: props.width,
       backgroundColor: props.isLink ? "transparent" : props.outlined ? props.outlineFill : props.color,
       boxShadow: (_j = props.boxShadow) != null ? _j : "none",

@@ -7476,7 +7476,7 @@ var useClasses = makeClasses({
         display: "flex",
         alignItems: "center",
         fontFamily: "Roboto",
-        fontSize: "1.1em",
+        fontSize: "1.1rem",
         fontWeight: 400,
         whiteSpace: "break-spaces"
       },
