@@ -54,7 +54,7 @@ export const handleErrors = async <T>(
   try {
     return { success: true, data: await fn() };
   } catch (err) {
-    const errorStr = err instanceof Error ? (err.stack ?? err.message) : String(err);
+    const errorStr = err instanceof Error ? err.message : String(err);
     console.error(errorStr);
     return { success: false, error: errorStr };
   }

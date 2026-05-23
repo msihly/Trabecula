@@ -1307,11 +1307,10 @@ var debounce2 = debounce;
 var deepClone = cloneDeep;
 var deepMerge = toMerged;
 var handleErrors = (fn) => __async(null, null, function* () {
-  var _a;
   try {
     return { success: true, data: yield fn() };
   } catch (err) {
-    const errorStr = err instanceof Error ? (_a = err.stack) != null ? _a : err.message : String(err);
+    const errorStr = err instanceof Error ? err.message : String(err);
     console.error(errorStr);
     return { success: false, error: errorStr };
   }
@@ -1453,4 +1452,4 @@ export {
   uuid,
   PromiseQueue
 };
-//# sourceMappingURL=chunk-MEJMXHSM.mjs.map
+//# sourceMappingURL=chunk-NDZ73THA.mjs.map
