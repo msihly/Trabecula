@@ -947,7 +947,7 @@ var useClasses8 = makeClasses((props) => {
       width: "100%",
       "& input": {
         borderRadius: "inherit",
-        padding: props.dense ? "0.2em 0.5em" : void 0,
+        padding: props.dense ? "0.25rem 0.5rem" : void 0,
         textAlign: props.textAlign,
         cursor: props.hasOnClick ? "pointer" : void 0
       },
@@ -973,6 +973,7 @@ var useClasses8 = makeClasses((props) => {
         }
       },
       "& .MuiSelect-select": {
+        padding: props.dense ? "0.25rem 0.5rem" : void 0,
         fontSize: "0.9em"
       },
       "& .MuiFormHelperText-root": {
