@@ -3180,7 +3180,7 @@ var Checkbox = ({
 }) => {
   const { css, cx } = useClasses24({
     center,
-    color: indeterminate ? indeterminateColor : color,
+    color: indeterminate ? indeterminateColor || color : color,
     disabled,
     flex,
     margins,

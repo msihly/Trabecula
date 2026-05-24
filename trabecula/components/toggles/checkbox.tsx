@@ -46,7 +46,7 @@ export const Checkbox = ({
 }: CheckboxProps) => {
   const { css, cx } = useClasses({
     center,
-    color: indeterminate ? indeterminateColor : color,
+    color: indeterminate ? indeterminateColor || color : color,
     disabled,
     flex,
     margins,
