@@ -1,13 +1,13 @@
 @font-face {
   font-family: "Avenir";
-  font-weight: 400;
+  font-weight: 300;
   font-style: normal;
   src: url("./fonts/avenir-book.woff2") format("woff2");
 }
 
 @font-face {
   font-family: "Avenir";
-  font-weight: 500;
+  font-weight: 400, 500;
   font-style: normal;
   src: url("./fonts/avenir-medium.woff2") format("woff2");
 }

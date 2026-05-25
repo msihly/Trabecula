@@ -569,7 +569,7 @@ var useClasses = makeClasses({
         alignItems: "center",
         fontFamily: "Avenir",
         fontSize: "1.1rem",
-        fontWeight: 400,
+        fontWeight: 500,
         whiteSpace: "break-spaces"
       },
       "&-icon": { marginRight: "1em" },
