@@ -1,14 +1,15 @@
+import { ReactNode } from "react";
 import { Text, TextProps, View, ViewProps } from "trabecula/components";
 import { CSS, makeClasses } from "trabecula/utils/client";
 
 export interface DetailProps extends ViewProps {
   emptyValueText?: string;
-  label: string | JSX.Element;
+  label: ReactNode;
   labelProps?: Partial<TextProps>;
   overflowX?: CSS["overflowX"];
   overflowY?: CSS["overflowY"];
-  tooltip?: string | JSX.Element;
-  value: string | JSX.Element;
+  tooltip?: ReactNode;
+  value: ReactNode;
   valueProps?: Partial<TextProps>;
   withTooltip?: boolean;
 }
@@ -30,7 +31,7 @@ export const Detail = ({
 
   return (
     <View column={!row} row={row} spacing={row ? "0.5rem" : null} {...props}>
-      {typeof label === "string" ? (
+      {["number", "string"].includes(typeof label) ? (
         <Text preset="detail-label" {...labelProps}>
           {label}
         </Text>
@@ -38,7 +39,7 @@ export const Detail = ({
         label
       )}
 
-      {!value || typeof value === "string" ? (
+      {!value || ["number", "string"].includes(typeof value) ? (
         <Text
           tooltip={tooltip ?? (withTooltip ? value : undefined)}
           className={cx(css.value, valueProps?.className)}

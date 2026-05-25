@@ -2080,8 +2080,8 @@ var Detail = (_a) => {
   ]);
   const { css, cx } = useClasses21({ overflowX, overflowY });
   return /* @__PURE__ */ jsxs23(View, __spreadProps(__spreadValues({ column: !row, row, spacing: row ? "0.5rem" : null }, props), { children: [
-    typeof label === "string" ? /* @__PURE__ */ jsx36(Text, __spreadProps(__spreadValues({ preset: "detail-label" }, labelProps), { children: label })) : label,
-    !value || typeof value === "string" ? /* @__PURE__ */ jsx36(
+    ["number", "string"].includes(typeof label) ? /* @__PURE__ */ jsx36(Text, __spreadProps(__spreadValues({ preset: "detail-label" }, labelProps), { children: label })) : label,
+    !value || ["number", "string"].includes(typeof value) ? /* @__PURE__ */ jsx36(
       Text,
       __spreadProps(__spreadValues({
         tooltip: tooltip != null ? tooltip : withTooltip ? value : void 0,

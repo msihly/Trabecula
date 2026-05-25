@@ -459,12 +459,12 @@ declare const DateDetail: (props: DateDetailProps) => react_jsx_runtime.JSX.Elem
 
 interface DetailProps extends ViewProps {
     emptyValueText?: string;
-    label: string | JSX.Element;
+    label: ReactNode;
     labelProps?: Partial<TextProps>;
     overflowX?: CSS["overflowX"];
     overflowY?: CSS["overflowY"];
-    tooltip?: string | JSX.Element;
-    value: string | JSX.Element;
+    tooltip?: ReactNode;
+    value: ReactNode;
     valueProps?: Partial<TextProps>;
     withTooltip?: boolean;
 }

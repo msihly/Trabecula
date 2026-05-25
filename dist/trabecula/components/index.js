@@ -4822,8 +4822,8 @@ var Detail = (_a) => {
   ]);
   const { css, cx } = useClasses22({ overflowX, overflowY });
   return /* @__PURE__ */ (0, import_jsx_runtime37.jsxs)(View, __spreadProps(__spreadValues({ column: !row, row, spacing: row ? "0.5rem" : null }, props), { children: [
-    typeof label === "string" ? /* @__PURE__ */ (0, import_jsx_runtime37.jsx)(Text, __spreadProps(__spreadValues({ preset: "detail-label" }, labelProps), { children: label })) : label,
-    !value || typeof value === "string" ? /* @__PURE__ */ (0, import_jsx_runtime37.jsx)(
+    ["number", "string"].includes(typeof label) ? /* @__PURE__ */ (0, import_jsx_runtime37.jsx)(Text, __spreadProps(__spreadValues({ preset: "detail-label" }, labelProps), { children: label })) : label,
+    !value || ["number", "string"].includes(typeof value) ? /* @__PURE__ */ (0, import_jsx_runtime37.jsx)(
       Text,
       __spreadProps(__spreadValues({
         tooltip: tooltip != null ? tooltip : withTooltip ? value : void 0,
