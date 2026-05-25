@@ -1,15 +1,14 @@
-import { ReactNode } from "react";
 import { Text, TextProps, View, ViewProps } from "trabecula/components";
 import { CSS, makeClasses } from "trabecula/utils/client";
 
 export interface DetailProps extends ViewProps {
   emptyValueText?: string;
-  label: ReactNode;
+  label: string | JSX.Element;
   labelProps?: Partial<TextProps>;
   overflowX?: CSS["overflowX"];
   overflowY?: CSS["overflowY"];
-  tooltip?: ReactNode;
-  value: ReactNode;
+  tooltip?: string | JSX.Element;
+  value: string | JSX.Element;
   valueProps?: Partial<TextProps>;
   withTooltip?: boolean;
 }
@@ -54,10 +53,7 @@ export const Detail = ({
   );
 };
 
-interface ClassesProps {
-  overflowX: CSS["overflowX"];
-  overflowY: CSS["overflowY"];
-}
+interface ClassesProps extends Pick<DetailProps, "overflowX" | "overflowY"> {}
 
 const useClasses = makeClasses((props: ClassesProps) => ({
   value: {
