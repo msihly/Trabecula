@@ -102,7 +102,7 @@ const useClasses = makeClasses((props: ClassesProps) => {
       color: props.color ?? preset?.color,
       fontSize: props.fontSize ?? preset?.fontSize,
       fontWeight: props.fontWeight ?? preset?.fontWeight,
-      lineHeight: 1.1,
+      lineHeight: 1.2,
       overflow: props.overflow ?? preset?.overflow,
       textOverflow: "ellipsis",
       whiteSpace: props.whiteSpace ?? preset?.whiteSpace,

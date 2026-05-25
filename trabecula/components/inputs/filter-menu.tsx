@@ -67,7 +67,7 @@ export const FilterMenu = Comp(
         padding={{ left: "0.5em", right: "0.5em" }}
         width={width}
         text={
-          <View row spacing="0.5rem">
+          <View row align="center" spacing="0.5rem">
             <Icon name="FilterAlt" size="1.15em" />
 
             <Text>{"Filter Results"}</Text>

@@ -777,7 +777,7 @@ var FilterMenu = Comp(
         justify: "space-between",
         padding: { left: "0.5em", right: "0.5em" },
         width,
-        text: /* @__PURE__ */ jsxs8(View, { row: true, spacing: "0.5rem", children: [
+        text: /* @__PURE__ */ jsxs8(View, { row: true, align: "center", spacing: "0.5rem", children: [
           /* @__PURE__ */ jsx13(Icon, { name: "FilterAlt", size: "1.15em" }),
           /* @__PURE__ */ jsx13(Text, { children: "Filter Results" }),
           /* @__PURE__ */ jsx13(
@@ -2186,7 +2186,7 @@ var useClasses22 = makeClasses((props) => {
       color: (_a = props.color) != null ? _a : preset == null ? void 0 : preset.color,
       fontSize: (_b = props.fontSize) != null ? _b : preset == null ? void 0 : preset.fontSize,
       fontWeight: (_c = props.fontWeight) != null ? _c : preset == null ? void 0 : preset.fontWeight,
-      lineHeight: 1.1,
+      lineHeight: 1.2,
       overflow: (_d = props.overflow) != null ? _d : preset == null ? void 0 : preset.overflow,
       textOverflow: "ellipsis",
       whiteSpace: (_e = props.whiteSpace) != null ? _e : preset == null ? void 0 : preset.whiteSpace
