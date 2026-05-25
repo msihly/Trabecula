@@ -67,12 +67,10 @@ const DraggablePaper = (props: PaperProps) => {
   );
 };
 
-interface ClassesProps {
-  height: CSS["height"];
-  maxHeight: CSS["maxHeight"];
-  maxWidth: CSS["maxWidth"];
-  width: CSS["width"];
-}
+interface ClassesProps extends Pick<
+  ContainerProps,
+  "height" | "maxHeight" | "maxWidth" | "width"
+> {}
 
 const useClasses = makeClasses((props: ClassesProps) => ({
   modal: {
@@ -83,6 +81,7 @@ const useClasses = makeClasses((props: ClassesProps) => ({
       height: props.height,
       width: props.width,
       background: colors.background,
+      overflow: "hidden",
     },
   },
 }));

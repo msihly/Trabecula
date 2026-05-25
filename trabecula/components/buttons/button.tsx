@@ -212,6 +212,7 @@ const useClasses = makeClasses((props: ClassesProps) => ({
             ? props.color
             : colors.custom.white)),
     textTransform: props.textTransform,
+    overflow: "hidden",
     "&:hover": {
       background: props.isLink
         ? "transparent"

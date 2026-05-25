@@ -178,6 +178,7 @@ var useClasses = makeClasses((props) => {
       boxShadow: (_j = props.boxShadow) != null ? _j : "none",
       color: props.outlined ? props.color : (_k = props.textColor) != null ? _k : props.isLink ? colors.custom.lightBlue : props.outlined ? props.color : colors.custom.white,
       textTransform: props.textTransform,
+      overflow: "hidden",
       "&:hover": {
         background: props.isLink ? "transparent" : props.colorOnHover || Color(props.outlined ? props.outlineFill : props.color).lighten(0.1).string(),
         boxShadow: props.isLink ? "none" : void 0,
@@ -1644,7 +1645,8 @@ var useClasses14 = makeClasses((props) => ({
       maxWidth: props.maxWidth,
       height: props.height,
       width: props.width,
-      background: colors.background
+      background: colors.background,
+      overflow: "hidden"
     }
   }
 }));
