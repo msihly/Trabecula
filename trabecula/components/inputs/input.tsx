@@ -181,7 +181,7 @@ const useClasses = makeClasses((props: ClassesProps) => ({
     minWidth: props.minWidth,
     width: "100%",
     "& input": {
-      fontFamily: "Avenir",
+      fontFamily: "Roboto",
       borderRadius: "inherit",
       padding: props.dense ? "0.25rem 0.5rem" : undefined,
       textAlign: props.textAlign,
@@ -212,7 +212,7 @@ const useClasses = makeClasses((props: ClassesProps) => ({
     },
     "& .MuiSelect-select": {
       padding: props.dense ? "0.25rem 0.5rem" : undefined,
-      fontFamily: "Avenir",
+      fontFamily: "Roboto",
       fontSize: "0.9em",
     },
     "& .MuiFormHelperText-root": {

@@ -63,7 +63,7 @@ export const Text = ({
   className,
   color,
   component = "span",
-  fontFamily = "Avenir",
+  fontFamily = "Roboto",
   fontSize,
   fontWeight,
   overflow,

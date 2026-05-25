@@ -97,7 +97,7 @@ const useClasses = makeClasses((props: ClassesProps) => ({
     },
     "& .MuiFormControlLabel-label": {
       paddingRight: "0.4em",
-      fontFamily: "Avenir",
+      fontFamily: "Roboto",
     },
   },
 }));

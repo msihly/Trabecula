@@ -459,7 +459,7 @@ var useClasses = makeClasses({
       "&-body": {
         display: "flex",
         alignItems: "center",
-        fontFamily: "Avenir",
+        fontFamily: "Roboto",
         fontSize: "1.1rem",
         fontWeight: 500,
         whiteSpace: "break-spaces"
@@ -511,4 +511,4 @@ export {
   Toaster,
   ToastContainer
 };
-//# sourceMappingURL=chunk-A6OM3OAS.mjs.map
+//# sourceMappingURL=chunk-WDV74U2Y.mjs.map

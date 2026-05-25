@@ -76,7 +76,7 @@ const useClasses = makeClasses((props: ClassesProps) => ({
       padding: "0.2rem",
     },
     "& input": {
-      fontFamily: "Avenir",
+      fontFamily: "Roboto",
       fontSize: "0.9em",
     },
   },
