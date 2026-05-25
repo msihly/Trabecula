@@ -41,14 +41,13 @@ export const Accordion = ({
       className={cx(css.accordion, className)}
     >
       <Button
+        text={header}
         onClick={handleClick}
         endNode={<Icon name="ExpandMore" rotation={expanded ? 180 : 0} />}
         color={color}
         width="100%"
         className={css.button}
-      >
-        {header}
-      </Button>
+      />
 
       <View column>{children}</View>
     </MuiAccordion>

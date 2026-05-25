@@ -15,7 +15,7 @@ import 'tss-react';
 type Forwarded<P, R> = (props: P, ref: Ref<R>) => JSX.Element;
 declare function Comp<P, R = HTMLDivElement>(component: Forwarded<P, R>): ForwardRefExoticComponent<PropsWithoutRef<P> & RefAttributes<R>>;
 
-interface ButtonProps extends Omit<ButtonProps$1, "color" | "endIcon" | "fullWidth" | "startIcon" | "type" | "variant"> {
+interface ButtonProps extends Omit<ButtonProps$1, "children" | "color" | "endIcon" | "fullWidth" | "startIcon" | "type" | "variant"> {
     borderRadiuses?: BorderRadiuses;
     boxShadow?: CSS["boxShadow"];
     color?: CssColor;
@@ -35,7 +35,7 @@ interface ButtonProps extends Omit<ButtonProps$1, "color" | "endIcon" | "fullWid
     outlineFill?: string;
     padding?: Padding;
     startNode?: ReactNode;
-    text?: string;
+    text?: ReactNode;
     textColor?: CssColor;
     textClassName?: string;
     textTransform?: CSS["textTransform"];
@@ -45,7 +45,7 @@ interface ButtonProps extends Omit<ButtonProps$1, "color" | "endIcon" | "fullWid
     width?: CSS["width"];
     whiteSpace?: CSS["whiteSpace"];
 }
-declare const Button: ({ borderRadiuses, boxShadow, children, className, color, colorOnHover, endNode, fontSize, fontWeight, height, href, icon, iconProps, iconRight, iconSize, justify, loading, margins, onClick, outlined, outlineFill, padding, size, startNode, text, textColor, textTransform, tooltip, tooltipProps, type, width, whiteSpace, ...props }: ButtonProps) => react_jsx_runtime.JSX.Element;
+declare const Button: ({ borderRadiuses, boxShadow, className, color, colorOnHover, endNode, fontSize, fontWeight, height, href, icon, iconProps, iconRight, iconSize, justify, loading, margins, onClick, outlined, outlineFill, padding, size, startNode, text, textColor, textTransform, tooltip, tooltipProps, type, width, whiteSpace, ...props }: ButtonProps) => react_jsx_runtime.JSX.Element;
 
 interface ButtonWithInsetProps extends ButtonProps {
     insetText: string;
@@ -165,6 +165,7 @@ interface DropdownProps extends InputProps {
 declare const Dropdown: ({ options, value, ...props }: DropdownProps) => react_jsx_runtime.JSX.Element;
 
 interface FilterMenuProps extends Omit<ButtonProps, "onChange" | "value"> {
+    children: ReactNode | ReactNode[];
     color?: CssColor;
     menuProps?: Partial<MenuButtonProps>;
     resetFn?: () => void;
@@ -470,7 +471,7 @@ interface DetailProps extends ViewProps {
 declare const Detail: ({ emptyValueText, label, labelProps, overflowX, overflowY, row, tooltip, value, valueProps, withTooltip, ...props }: DetailProps) => react_jsx_runtime.JSX.Element;
 
 type TextPreset = "default" | "detail-label" | "label-glow" | "sub-text" | "title";
-interface TextProps extends Omit<TypographyProps, "color" | "component" | "fontSize" | "fontWeight" | "overflow" | "title"> {
+interface TextProps extends Omit<TypographyProps, "color" | "component" | "fontSize" | "fontWeight" | "overflow" | "title" | "whiteSpace"> {
     color?: CssColor;
     component?: ElementType;
     fontSize?: CSS["fontSize"];
@@ -479,8 +480,9 @@ interface TextProps extends Omit<TypographyProps, "color" | "component" | "fontS
     preset?: TextPreset;
     tooltip?: TooltipProps$1["title"];
     tooltipProps?: Partial<TooltipProps$1>;
+    whiteSpace?: CSS["whiteSpace"];
 }
-declare const Text: ({ children, className, color, component, fontFamily, fontSize, fontWeight, overflow, preset, tooltip, tooltipProps, ...props }: TextProps) => react_jsx_runtime.JSX.Element;
+declare const Text: ({ children, className, color, component, fontFamily, fontSize, fontWeight, overflow, preset, tooltip, tooltipProps, whiteSpace, ...props }: TextProps) => react_jsx_runtime.JSX.Element;
 
 interface AccordionProps extends AccordionProps$1 {
     children: ReactNode | ReactNode[];

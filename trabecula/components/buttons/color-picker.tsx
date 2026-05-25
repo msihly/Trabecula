@@ -41,21 +41,22 @@ export const ColorPicker = Comp(
 
     const renderButton = (onOpen: (event: React.MouseEvent<HTMLButtonElement>) => void) => (
       <Button
+        {...buttonProps}
         onClick={onOpen}
         color={color}
         justify="space-between"
         padding={{ left: "0.5em", right: "0.5em" }}
         width={width}
-        {...buttonProps}
-      >
-        <View row spacing="0.5rem" align="center">
-          {noIcon ? <View /> : <Icon name="Palette" size="1.15em" />}
+        text={
+          <View row spacing="0.5rem" align="center">
+            {noIcon ? <View /> : <Icon name="Palette" size="1.15em" />}
 
-          <Text lineHeight={1}>{label}</Text>
+            <Text lineHeight={1}>{label}</Text>
 
-          <Icon name="Circle" color={value === null ? "transparent" : value} />
-        </View>
-      </Button>
+            <Icon name="Circle" color={value === null ? "transparent" : value} />
+          </View>
+        }
+      />
     );
 
     return (

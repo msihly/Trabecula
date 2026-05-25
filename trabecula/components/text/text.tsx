@@ -43,7 +43,7 @@ const PRESETS: Record<TextPreset, CSS> = {
 
 export interface TextProps extends Omit<
   TypographyProps,
-  "color" | "component" | "fontSize" | "fontWeight" | "overflow" | "title"
+  "color" | "component" | "fontSize" | "fontWeight" | "overflow" | "title" | "whiteSpace"
 > {
   color?: CssColor;
   component?: ElementType;
@@ -53,6 +53,7 @@ export interface TextProps extends Omit<
   preset?: TextPreset;
   tooltip?: TooltipProps["title"];
   tooltipProps?: Partial<TooltipProps>;
+  whiteSpace?: CSS["whiteSpace"];
 }
 
 export const Text = ({
@@ -67,9 +68,10 @@ export const Text = ({
   preset = "default",
   tooltip,
   tooltipProps,
+  whiteSpace = "nowrap",
   ...props
 }: TextProps) => {
-  const { css, cx } = useClasses({ color, fontSize, fontWeight, overflow, preset });
+  const { css, cx } = useClasses({ color, fontSize, fontWeight, overflow, preset, whiteSpace });
 
   return (
     <TooltipWrapper {...{ tooltip, tooltipProps }}>
@@ -87,7 +89,7 @@ export const Text = ({
 
 interface ClassesProps extends Pick<
   TextProps,
-  "color" | "fontSize" | "fontWeight" | "overflow" | "preset"
+  "color" | "fontSize" | "fontWeight" | "overflow" | "preset" | "whiteSpace"
 > {}
 
 const useClasses = makeClasses((props: ClassesProps) => {
@@ -99,6 +101,8 @@ const useClasses = makeClasses((props: ClassesProps) => {
       fontSize: props.fontSize ?? preset?.fontSize,
       fontWeight: props.fontWeight ?? preset?.fontWeight,
       overflow: props.overflow ?? preset?.overflow,
+      textOverflow: "ellipsis",
+      whiteSpace: props.whiteSpace ?? preset?.whiteSpace,
     },
   };
 });

@@ -4,13 +4,13 @@ import {
   Button as MuiButton,
   // eslint-disable-next-line @typescript-eslint/no-restricted-imports
   ButtonProps as MuiButtonProps,
-  CircularProgress,
 } from "@mui/material";
 import Color from "color";
 import {
   Icon,
   IconName,
   IconProps,
+  LoadingOverlay,
   Text,
   TooltipProps,
   TooltipWrapper,
@@ -24,13 +24,14 @@ import {
   makeBorderRadiuses,
   makeClasses,
   makeMargins,
+  makePadding,
   Margins,
   Padding,
 } from "trabecula/utils/client";
 
 export interface ButtonProps extends Omit<
   MuiButtonProps,
-  "color" | "endIcon" | "fullWidth" | "startIcon" | "type" | "variant"
+  "children" | "color" | "endIcon" | "fullWidth" | "startIcon" | "type" | "variant"
 > {
   borderRadiuses?: BorderRadiuses;
   boxShadow?: CSS["boxShadow"];
@@ -51,7 +52,7 @@ export interface ButtonProps extends Omit<
   outlineFill?: string;
   padding?: Padding;
   startNode?: ReactNode;
-  text?: string;
+  text?: ReactNode;
   textColor?: CssColor;
   textClassName?: string;
   textTransform?: CSS["textTransform"];
@@ -65,7 +66,6 @@ export interface ButtonProps extends Omit<
 export const Button = ({
   borderRadiuses = { all: "0.3rem" },
   boxShadow,
-  children,
   className,
   color = colors.custom.grey,
   colorOnHover,
@@ -108,7 +108,7 @@ export const Button = ({
     margins,
     outlined,
     outlineFill,
-    padding: { all: !text?.length ? "0.4em" : "0.4em 0.8em", ...padding },
+    padding: { all: !text ? "0.4em" : "0.4em 0.8em", ...padding },
     textColor,
     textTransform,
     width,
@@ -129,37 +129,29 @@ export const Button = ({
         variant="contained"
         className={cx(css.root, className)}
       >
-        {startNode}
+        <LoadingOverlay isLoading={loading} />
 
-        {icon && (
-          <View margins={text || iconRight ? { right: "0.3em" } : undefined}>
-            {!loading ? (
-              <Icon name={icon} size={iconSize} color={textColor} {...iconProps} />
-            ) : (
-              <CircularProgress color="inherit" size={iconSize} />
-            )}
-          </View>
-        )}
+        <View row spacing="0.25em">
+          {startNode}
 
-        {text && (
-          <Text {...{ fontSize, fontWeight }} color={textColor} className={cx(css.text, className)}>
-            {text}
-          </Text>
-        )}
+          {icon && <Icon name={icon} size={iconSize} color={textColor} {...iconProps} />}
 
-        {children}
+          {typeof text === "string" ? (
+            <Text
+              {...{ fontSize, fontWeight }}
+              color={textColor}
+              className={cx(css.text, className)}
+            >
+              {text}
+            </Text>
+          ) : (
+            text
+          )}
 
-        {iconRight && (
-          <View margins={text || icon ? { left: "0.3em" } : undefined}>
-            {!loading ? (
-              <Icon name={iconRight} size={iconSize} />
-            ) : (
-              <CircularProgress color="inherit" size={iconSize} />
-            )}
-          </View>
-        )}
+          {iconRight && <Icon name={iconRight} size={iconSize} color={textColor} {...iconProps} />}
 
-        {endNode}
+          {endNode}
+        </View>
       </MuiButton>
     </TooltipWrapper>
   );
@@ -187,6 +179,7 @@ interface ClassesProps extends Pick<
 
 const useClasses = makeClasses((props: ClassesProps) => ({
   root: {
+    position: "relative",
     display: "flex",
     flexDirection: "row",
     justifyContent: props.justify,
@@ -194,11 +187,13 @@ const useClasses = makeClasses((props: ClassesProps) => ({
     border: `1px solid ${props.outlined ? props.color : "transparent"}`,
     ...makeBorderRadiuses(props.borderRadiuses),
     ...makeMargins(props.margins),
-    padding: props.padding?.all,
-    paddingTop: props.padding?.top ?? (props.isLink ? 0 : undefined),
-    paddingBottom: props.padding?.bottom ?? (props.isLink ? 0 : undefined),
-    paddingRight: props.padding?.right ?? (props.isLink ? 0 : undefined),
-    paddingLeft: props.padding?.left ?? (props.isLink ? 0 : undefined),
+    ...makePadding({
+      all: props.padding?.all,
+      top: props.padding?.top ?? (props.isLink ? 0 : undefined),
+      bottom: props.padding?.bottom ?? (props.isLink ? 0 : undefined),
+      right: props.padding?.right ?? (props.isLink ? 0 : undefined),
+      left: props.padding?.left ?? (props.isLink ? 0 : undefined),
+    }),
     minWidth: "fit-content",
     height: props.height,
     width: props.width,

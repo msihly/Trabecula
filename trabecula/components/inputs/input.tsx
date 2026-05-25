@@ -154,20 +154,22 @@ export const Input = Comp(
   },
 );
 
-interface ClassesProps {
-  borders: Borders;
-  borderRadiuses: BorderRadiuses;
-  color: CssColor;
-  dense: boolean;
-  flex: CSS["flex"];
+interface ClassesProps extends Pick<
+  InputProps,
+  | "borders"
+  | "borderRadiuses"
+  | "color"
+  | "dense"
+  | "flex"
+  | "hasHelper"
+  | "margins"
+  | "minWidth"
+  | "textAlign"
+  | "width"
+> {
   hasHeader: boolean;
-  hasHelper: boolean;
   hasHelperText: boolean;
   hasOnClick: boolean;
-  margins: Margins;
-  minWidth: CSS["minWidth"];
-  textAlign: CSS["textAlign"];
-  width: CSS["width"];
 }
 
 const useClasses = makeClasses((props: ClassesProps) => ({
@@ -210,6 +212,7 @@ const useClasses = makeClasses((props: ClassesProps) => ({
     },
     "& .MuiSelect-select": {
       padding: props.dense ? "0.25rem 0.5rem" : undefined,
+      fontFamily: "Avenir",
       fontSize: "0.9em",
     },
     "& .MuiFormHelperText-root": {

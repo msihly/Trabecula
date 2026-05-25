@@ -1,4 +1,4 @@
-import { Button, Icon, IconName, IconProps, Text, View } from "trabecula/components";
+import { Button, IconName, IconProps, Text, View } from "trabecula/components";
 import { ButtonProps, MenuButton, SortRow } from "trabecula/components/buttons";
 import { colors, CSS, CssColor, makeBorderRadiuses, makeClasses } from "trabecula/utils/client";
 
@@ -31,25 +31,22 @@ export const SortMenu = ({
 
   const renderButton = (onOpen: (event: React.MouseEvent<HTMLButtonElement>) => void) => (
     <Button
+      {...buttonProps}
       onClick={onOpen}
       color={color}
       justify="space-between"
       padding={{ left: "0.5em", right: "0.5em" }}
       className={cx(css.button, buttonProps?.className)}
-      {...buttonProps}
-    >
-      <View row>
-        <Icon name="Sort" size="1.15em" />
-
-        <View column align="flex-start" margins={{ left: "0.5em", right: "0.5em" }}>
+      icon="Sort"
+      iconRight={value?.isDesc ? "ArrowDownward" : "ArrowUpward"}
+      iconProps={{ size: "1.15em" }}
+      text={
+        <View column align="flex-start">
           <Text className={css.topText}>{"Sort By"}</Text>
-
           <Text className={css.label}>{activeRow?.label}</Text>
         </View>
-      </View>
-
-      <Icon name={value?.isDesc ? "ArrowDownward" : "ArrowUpward"} size="1.15em" />
-    </Button>
+      }
+    />
   );
 
   return (

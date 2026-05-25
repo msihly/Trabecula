@@ -85,19 +85,20 @@ export const IconPicker = Comp(
 
     const renderButton = (onOpen: (event: React.MouseEvent<HTMLButtonElement>) => void) => (
       <Button
+        {...buttonProps}
         onClick={onOpen}
         color={color}
         justify="space-between"
         padding={{ left: "0.5em", right: "0.5em" }}
         width={width}
-        {...buttonProps}
-      >
-        <View row spacing="0.5rem" align="center" padding={{ left: "0.5rem" }}>
-          <Text lineHeight={1}>{label}</Text>
+        text={
+          <View row spacing="0.5rem" align="center" padding={{ left: "0.5rem" }}>
+            <Text lineHeight={1}>{label}</Text>
 
-          <Icon name={value} />
-        </View>
-      </Button>
+            <Icon name={value} />
+          </View>
+        }
+      />
     );
 
     return (
