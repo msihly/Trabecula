@@ -36,7 +36,7 @@ var dirToFilePaths = (dirPath, filterFn) => __async(null, null, function* () {
   return yield filterFn ? new fdir().withFullPaths().filter(filterFn).crawl(dirPath).withPromise() : new fdir().withFullPaths().crawl(dirPath).withPromise();
 });
 var dirToFolderPaths = (dirPath) => __async(null, null, function* () {
-  return yield new fdir().onlyDirs().withFullPaths().crawl(dirPath).withPromise();
+  return (yield new fdir().onlyDirs().withFullPaths().crawl(dirPath).withPromise()).map((dir) => dir.split(path.sep).slice(0, -1).join(path.sep)).filter((dir) => path.normalize(dir) !== path.normalize(dirPath));
 });
 var extendFileName = (fileName, ext) => `${path.relative(".", fileName).replace(/\.\w+$/, "")}.${ext}`;
 var makeFolder = (path2) => __async(null, null, function* () {

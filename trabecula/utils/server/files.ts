@@ -43,7 +43,9 @@ export const dirToFilePaths = async (
 };
 
 export const dirToFolderPaths = async (dirPath: string): Promise<string[]> => {
-  return await new fdir().onlyDirs().withFullPaths().crawl(dirPath).withPromise();
+  return (await new fdir().onlyDirs().withFullPaths().crawl(dirPath).withPromise())
+    .map((dir) => dir.split(path.sep).slice(0, -1).join(path.sep))
+    .filter((dir) => path.normalize(dir) !== path.normalize(dirPath));
 };
 
 export const extendFileName = (fileName: string, ext: string) =>
