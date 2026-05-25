@@ -2,14 +2,21 @@
   font-family: "Avenir";
   font-weight: 400;
   font-style: normal;
-  src: url("./fonts/avenir-regular.woff2") format("woff2");
+  src: url("./fonts/avenir-book.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Avenir";
+  font-weight: 500;
+  font-style: normal;
+  src: url("./fonts/avenir-medium.woff2") format("woff2");
 }
 
 @font-face {
   font-family: "Avenir";
   font-weight: 600;
   font-style: normal;
-  src: url("./fonts/avenir-bold.woff2") format("woff2");
+  src: url("./fonts/avenir-heavy.woff2") format("woff2");
 }
 
 @font-face {
