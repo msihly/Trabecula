@@ -689,7 +689,7 @@ var Button = (_a) => {
       className: cx(css.root, className),
       children: [
         /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(LoadingOverlay, { isLoading: loading }),
-        /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(View, { row: true, justify, spacing: "0.3rem", width: "100%", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(View, { row: true, justify, spacing: "0.3rem", height: "100%", width: "100%", children: [
           startNode,
           icon && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Icon, __spreadValues({ name: icon, size: iconSize, color: textColor }, iconProps)),
           typeof text === "string" ? /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(

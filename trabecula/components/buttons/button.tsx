@@ -131,7 +131,7 @@ export const Button = ({
       >
         <LoadingOverlay isLoading={loading} />
 
-        <View row justify={justify} spacing="0.3rem" width="100%">
+        <View row justify={justify} spacing="0.3rem" height="100%" width="100%">
           {startNode}
 
           {icon && <Icon name={icon} size={iconSize} color={textColor} {...iconProps} />}

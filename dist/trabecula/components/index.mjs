@@ -137,7 +137,7 @@ var Button = (_a) => {
       className: cx(css.root, className),
       children: [
         /* @__PURE__ */ jsx(LoadingOverlay, { isLoading: loading }),
-        /* @__PURE__ */ jsxs(View, { row: true, justify, spacing: "0.3rem", width: "100%", children: [
+        /* @__PURE__ */ jsxs(View, { row: true, justify, spacing: "0.3rem", height: "100%", width: "100%", children: [
           startNode,
           icon && /* @__PURE__ */ jsx(Icon, __spreadValues({ name: icon, size: iconSize, color: textColor }, iconProps)),
           typeof text === "string" ? /* @__PURE__ */ jsx(
