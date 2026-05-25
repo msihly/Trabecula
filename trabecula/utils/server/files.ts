@@ -1,6 +1,8 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { fdir } from "fdir";
+import _md5File from "md5-file";
+import trash from "trash";
 
 export const checkFileExists = async (path: string) => !!(await fs.stat(path).catch(() => false));
 
@@ -33,9 +35,11 @@ export const dirToFolderPaths = async (dirPath: string): Promise<string[]> => {
 
 export const makeFolder = async (path: string) => await fs.mkdir(path, { recursive: true });
 
+export const md5File = _md5File;
+
 export const removeEmptyFolders = async (
   dirPath: string = ".",
-  options: { excludedPaths?: string[] } = {},
+  options: { excludedPaths?: string[]; hardDelete?: boolean } = {},
 ) => {
   const dirPathsParts = [...new Set([dirPath, ...(await dirToFolderPaths(dirPath))])]
     .filter((p) => !options.excludedPaths?.includes(p))
@@ -62,5 +66,9 @@ export const removeEmptyFolders = async (
     }
   }
 
-  await Promise.all([...rootDirsToEmpty].map((dir) => fs.rmdir(dir, { recursive: true })));
+  await Promise.all(
+    [...rootDirsToEmpty].map((dir) =>
+      options.hardDelete ? fs.rm(dir, { recursive: true }) : trash(dir),
+    ),
+  );
 };

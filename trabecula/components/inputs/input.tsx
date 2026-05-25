@@ -124,7 +124,6 @@ export const Input = Comp(
               )
             ) : undefined
           }
-          // @ts-expect-error
           FormHelperTextProps={{ component: "div" }}
           inputProps={{ ...inputProps, maxLength, value: value ?? "" }}
           InputProps={{

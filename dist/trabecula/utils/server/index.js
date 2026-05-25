@@ -18,6 +18,9 @@ var __spreadValues = (a, b) => {
     }
   return a;
 };
+var __commonJS = (cb, mod) => function __require2() {
+  return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
+};
 var __export = (target, all) => {
   for (var name in all)
     __defProp(target, name, { get: all[name], enumerable: true });
@@ -61,6 +64,45 @@ var __async = (__this, __arguments, generator) => {
   });
 };
 
+// node_modules/md5-file/index.js
+var require_md5_file = __commonJS({
+  "node_modules/md5-file/index.js"(exports2, module2) {
+    var crypto = require("crypto");
+    var fs2 = require("fs");
+    var BUFFER_SIZE = 8192;
+    function md5FileSync(path2) {
+      const fd = fs2.openSync(path2, "r");
+      const hash = crypto.createHash("md5");
+      const buffer = Buffer.alloc(BUFFER_SIZE);
+      try {
+        let bytesRead;
+        do {
+          bytesRead = fs2.readSync(fd, buffer, 0, BUFFER_SIZE);
+          hash.update(buffer.slice(0, bytesRead));
+        } while (bytesRead === BUFFER_SIZE);
+      } finally {
+        fs2.closeSync(fd);
+      }
+      return hash.digest("hex");
+    }
+    function md5File2(path2) {
+      return new Promise((resolve2, reject) => {
+        const output = crypto.createHash("md5");
+        const input = fs2.createReadStream(path2);
+        input.on("error", (err) => {
+          reject(err);
+        });
+        output.once("readable", () => {
+          resolve2(output.read().toString("hex"));
+        });
+        input.pipe(output);
+      });
+    }
+    module2.exports = md5File2;
+    module2.exports.sync = md5FileSync;
+  }
+});
+
 // trabecula/utils/server/index.ts
 var server_exports = {};
 __export(server_exports, {
@@ -69,6 +111,7 @@ __export(server_exports, {
   dirToFilePaths: () => dirToFilePaths,
   dirToFolderPaths: () => dirToFolderPaths,
   makeFolder: () => makeFolder,
+  md5File: () => md5File,
   removeEmptyFolders: () => removeEmptyFolders
 });
 module.exports = __toCommonJS(server_exports);
@@ -586,6 +629,8 @@ var Builder = class {
 };
 
 // trabecula/utils/server/files.ts
+var import_md5_file = __toESM(require_md5_file());
+var import_trash = __toESM(require("trash"));
 var checkFileExists = (path2) => __async(null, null, function* () {
   return !!(yield import_fs.promises.stat(path2).catch(() => false));
 });
@@ -607,6 +652,7 @@ var dirToFolderPaths = (dirPath) => __async(null, null, function* () {
 var makeFolder = (path2) => __async(null, null, function* () {
   return yield import_fs.promises.mkdir(path2, { recursive: true });
 });
+var md5File = import_md5_file.default;
 var removeEmptyFolders = (..._0) => __async(null, [..._0], function* (dirPath = ".", options = {}) {
   const dirPathsParts = [.../* @__PURE__ */ new Set([dirPath, ...yield dirToFolderPaths(dirPath)])].filter((p) => {
     var _a;
@@ -628,7 +674,11 @@ var removeEmptyFolders = (..._0) => __async(null, [..._0], function* (dirPath = 
       if (!ancestors.some((a) => emptyFolders.has(a))) rootDirsToEmpty.add(dir);
     }
   }
-  yield Promise.all([...rootDirsToEmpty].map((dir) => import_fs.promises.rmdir(dir, { recursive: true })));
+  yield Promise.all(
+    [...rootDirsToEmpty].map(
+      (dir) => options.hardDelete ? import_fs.promises.rm(dir, { recursive: true }) : (0, import_trash.default)(dir)
+    )
+  );
 });
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
@@ -637,6 +687,7 @@ var removeEmptyFolders = (..._0) => __async(null, [..._0], function* (dirPath = 
   dirToFilePaths,
   dirToFolderPaths,
   makeFolder,
+  md5File,
   removeEmptyFolders
 });
 //# sourceMappingURL=index.js.map

@@ -2,7 +2,7 @@ import {
   __publicField,
   __spreadProps,
   __spreadValues
-} from "./chunk-A7PY2W7U.mjs";
+} from "./chunk-UKKUKST7.mjs";
 
 // node_modules/prettier/plugins/angular.mjs
 var Ci = Object.defineProperty;
@@ -2939,4 +2939,4 @@ export {
   Ei as default,
   sn as parsers
 };
-//# sourceMappingURL=angular-LVV5MRCY.mjs.map
+//# sourceMappingURL=angular-LKE4U4MN.mjs.map
