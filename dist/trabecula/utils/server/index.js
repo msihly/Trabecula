@@ -55,9 +55,12 @@ __export(server_exports, {
   dirToFilePaths: () => dirToFilePaths,
   dirToFolderPaths: () => dirToFolderPaths,
   extendFileName: () => extendFileName,
+  fileLog: () => fileLog,
   makeFolder: () => makeFolder,
+  makePerfLog: () => makePerfLog,
   md5File: () => md5File,
-  removeEmptyFolders: () => removeEmptyFolders
+  removeEmptyFolders: () => removeEmptyFolders,
+  setLogsPath: () => setLogsPath
 });
 module.exports = __toCommonJS(server_exports);
 
@@ -249,6 +252,12 @@ import_dayjs.default.extend(import_customParseFormat.default);
 import_dayjs.default.extend(import_duration.default);
 import_dayjs.default.extend(import_relativeTime.default);
 
+// trabecula/utils/common/math.ts
+var round = (num, decimals = 2) => {
+  const n = Math.pow(10, decimals);
+  return Math.round((num + Number.EPSILON) * n) / n;
+};
+
 // trabecula/utils/common/miscellaneous.ts
 var import_es_toolkit = require("es-toolkit");
 var import_compat = require("es-toolkit/compat");
@@ -263,8 +272,8 @@ var handleErrors = (fn) => __async(null, null, function* () {
 });
 
 // trabecula/utils/server/files.ts
-var checkFileExists = (path2) => __async(null, null, function* () {
-  return !!(yield import_fs.promises.stat(path2).catch(() => false));
+var checkFileExists = (path3) => __async(null, null, function* () {
+  return !!(yield import_fs.promises.stat(path3).catch(() => false));
 });
 var createTreeNode = (dirPath, tree) => {
   const dirNames = import_path.default.normalize(dirPath).split(import_path.default.sep);
@@ -275,13 +284,13 @@ var createTreeNode = (dirPath, tree) => {
     createTreeNode(import_path.default.join(...remainingDirNames), (treeNode != null ? treeNode : tree[tree.length - 1]).children);
 };
 var createTree = (paths) => paths.reduce((acc, cur) => (createTreeNode(cur, acc), acc), []);
-var deleteFile = (path2, copiedPath) => handleErrors(() => __async(null, null, function* () {
-  if (!(yield checkFileExists(path2))) return false;
+var deleteFile = (path3, copiedPath) => handleErrors(() => __async(null, null, function* () {
+  if (!(yield checkFileExists(path3))) return false;
   if (copiedPath && !(yield checkFileExists(copiedPath)))
     throw new Error(
-      `Failed to delete ${path2}. File does not exist at copied path ${copiedPath}.`
+      `Failed to delete ${path3}. File does not exist at copied path ${copiedPath}.`
     );
-  yield import_fs.promises.unlink(path2);
+  yield import_fs.promises.unlink(path3);
   return true;
 }));
 var dirToFilePaths = (dirPath, filterFn) => __async(null, null, function* () {
@@ -291,8 +300,8 @@ var dirToFolderPaths = (dirPath) => __async(null, null, function* () {
   return (yield new import_fdir.fdir().onlyDirs().withFullPaths().crawl(dirPath).withPromise()).map((dir) => dir.split(import_path.default.sep).slice(0, -1).join(import_path.default.sep)).filter((dir) => import_path.default.normalize(dir) !== import_path.default.normalize(dirPath));
 });
 var extendFileName = (fileName, ext) => `${import_path.default.relative(".", fileName).replace(/\.\w+$/, "")}.${ext}`;
-var makeFolder = (path2) => __async(null, null, function* () {
-  return yield import_fs.promises.mkdir(path2, { recursive: true });
+var makeFolder = (path3) => __async(null, null, function* () {
+  return yield import_fs.promises.mkdir(path3, { recursive: true });
 });
 var md5File = import_md5_file.default;
 var removeEmptyFolders = (..._0) => __async(null, [..._0], function* (dirPath = ".", options = {}) {
@@ -322,6 +331,63 @@ var removeEmptyFolders = (..._0) => __async(null, [..._0], function* (dirPath = 
     )
   );
 });
+
+// trabecula/utils/server/logging.ts
+var import_fs2 = __toESM(require("fs"));
+var import_promises = __toESM(require("fs/promises"));
+var import_path2 = __toESM(require("path"));
+var logsPath;
+var logStream = null;
+var setLogsPath = (filePath) => __async(null, null, function* () {
+  logsPath = import_path2.default.resolve(filePath);
+  yield import_promises.default.mkdir(import_path2.default.dirname(logsPath), { recursive: true });
+  if (logStream) {
+    logStream.end();
+    logStream = null;
+  }
+  logStream = import_fs2.default.createWriteStream(logsPath, { flags: "a", encoding: "utf8" });
+  logStream.on("error", (err) => {
+    console.error("Log stream error:", err);
+    logStream = null;
+  });
+});
+var stringify = (args) => {
+  try {
+    if (Array.isArray(args)) return args.map((arg) => JSON.stringify(arg, null, 2)).join(" ");
+    return JSON.stringify(args, null, 2);
+  } catch (e) {
+    return String(args);
+  }
+};
+var fileLog = (args, options) => __async(null, null, function* () {
+  var _a, _b;
+  try {
+    if (!logsPath) return console[(_a = options == null ? void 0 : options.type) != null ? _a : "debug"]("[LOG]", args);
+    const timestamp = (0, import_dayjs.default)().format("YYYY-MM-DD HH:mm:ss");
+    const logType = ((_b = options == null ? void 0 : options.type) != null ? _b : "debug").toUpperCase();
+    const logContent = `[${timestamp}] [${logType}] ${stringify(args)}
+`;
+    if (!logStream) yield setLogsPath(logsPath);
+    if (!logStream.write(logContent))
+      yield new Promise((resolve) => logStream.once("drain", () => resolve()));
+  } catch (err) {
+    console.error("Failed to log to file:", err);
+  }
+});
+var makePerfLog = (logTag, toFile = false) => {
+  const funcPerfStart = performance.now();
+  let perfStart = performance.now();
+  const perfLog = (logStr) => {
+    const str = `${logTag} ${round(performance.now() - perfStart, 0)} ms - ${logStr}`;
+    toFile ? fileLog(str) : console.debug(str);
+    perfStart = performance.now();
+  };
+  const perfLogTotal = (logStr) => {
+    const str = `${logTag} Total: ${round(performance.now() - funcPerfStart, 0)} ms - ${logStr}`;
+    toFile ? fileLog(str) : console.debug(str);
+  };
+  return { perfLog, perfLogTotal, perfStart };
+};
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   checkFileExists,
@@ -330,8 +396,11 @@ var removeEmptyFolders = (..._0) => __async(null, [..._0], function* (dirPath = 
   dirToFilePaths,
   dirToFolderPaths,
   extendFileName,
+  fileLog,
   makeFolder,
+  makePerfLog,
   md5File,
-  removeEmptyFolders
+  removeEmptyFolders,
+  setLogsPath
 });
 //# sourceMappingURL=index.js.map

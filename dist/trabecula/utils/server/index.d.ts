@@ -21,4 +21,14 @@ declare const removeEmptyFolders: (dirPath?: string, options?: {
     hardDelete?: boolean;
 }) => Promise<void>;
 
-export { type TreeNode, checkFileExists, createTree, deleteFile, dirToFilePaths, dirToFolderPaths, extendFileName, makeFolder, md5File, removeEmptyFolders };
+declare const setLogsPath: (filePath: string) => Promise<void>;
+declare const fileLog: (args: any | any[], options?: {
+    type: "debug" | "error" | "warn";
+}) => Promise<void>;
+declare const makePerfLog: (logTag: string, toFile?: boolean) => {
+    perfLog: (logStr: string) => void;
+    perfLogTotal: (logStr: string) => void;
+    perfStart: number;
+};
+
+export { type TreeNode, checkFileExists, createTree, deleteFile, dirToFilePaths, dirToFolderPaths, extendFileName, fileLog, makeFolder, makePerfLog, md5File, removeEmptyFolders, setLogsPath };
