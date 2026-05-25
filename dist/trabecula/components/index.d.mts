@@ -43,8 +43,9 @@ interface ButtonProps extends Omit<ButtonProps$1, "color" | "endIcon" | "fullWid
     tooltipProps?: Partial<TooltipProps$1>;
     type?: "button" | "link";
     width?: CSS["width"];
+    whiteSpace?: CSS["whiteSpace"];
 }
-declare const Button: ({ borderRadiuses, boxShadow, children, className, color, colorOnHover, endNode, fontSize, fontWeight, height, href, icon, iconProps, iconRight, iconSize, justify, loading, margins, onClick, outlined, outlineFill, padding, size, startNode, text, textColor, textTransform, tooltip, tooltipProps, type, width, ...props }: ButtonProps) => react_jsx_runtime.JSX.Element;
+declare const Button: ({ borderRadiuses, boxShadow, children, className, color, colorOnHover, endNode, fontSize, fontWeight, height, href, icon, iconProps, iconRight, iconSize, justify, loading, margins, onClick, outlined, outlineFill, padding, size, startNode, text, textColor, textTransform, tooltip, tooltipProps, type, width, whiteSpace, ...props }: ButtonProps) => react_jsx_runtime.JSX.Element;
 
 interface ButtonWithInsetProps extends ButtonProps {
     insetText: string;
@@ -479,7 +480,7 @@ interface TextProps extends Omit<TypographyProps, "color" | "component" | "fontS
     tooltip?: TooltipProps$1["title"];
     tooltipProps?: Partial<TooltipProps$1>;
 }
-declare const Text: ({ children, className, color, component, fontSize, fontWeight, overflow, preset, tooltip, tooltipProps, ...props }: TextProps) => react_jsx_runtime.JSX.Element;
+declare const Text: ({ children, className, color, component, fontFamily, fontSize, fontWeight, overflow, preset, tooltip, tooltipProps, ...props }: TextProps) => react_jsx_runtime.JSX.Element;
 
 interface AccordionProps extends AccordionProps$1 {
     children: ReactNode | ReactNode[];

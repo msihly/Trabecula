@@ -1,15 +1,15 @@
 @font-face {
-  font-family: "Roboto";
+  font-family: "Avenir";
   font-weight: 400;
   font-style: normal;
-  src: url("./fonts/roboto-400.woff2") format("woff2");
+  src: url("./fonts/avenir-regular.woff2") format("woff2");
 }
 
 @font-face {
-  font-family: "Roboto";
-  font-weight: 500;
+  font-family: "Avenir";
+  font-weight: 600;
   font-style: normal;
-  src: url("./fonts/roboto-500.woff2") format("woff2");
+  src: url("./fonts/avenir-bold.woff2") format("woff2");
 }
 
 @font-face {

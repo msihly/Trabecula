@@ -59,6 +59,7 @@ export interface ButtonProps extends Omit<
   tooltipProps?: Partial<TooltipProps>;
   type?: "button" | "link";
   width?: CSS["width"];
+  whiteSpace?: CSS["whiteSpace"];
 }
 
 export const Button = ({
@@ -93,6 +94,7 @@ export const Button = ({
   tooltipProps,
   type = "button",
   width,
+  whiteSpace = "nowrap",
   ...props
 }: ButtonProps) => {
   const { css, cx } = useClasses({
@@ -110,6 +112,7 @@ export const Button = ({
     textColor,
     textTransform,
     width,
+    whiteSpace,
   });
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
@@ -177,6 +180,7 @@ interface ClassesProps extends Pick<
   | "textColor"
   | "textTransform"
   | "width"
+  | "whiteSpace"
 > {
   isLink: boolean;
 }
@@ -230,5 +234,6 @@ const useClasses = makeClasses((props: ClassesProps) => ({
     textOverflow: "ellipsis",
     transition: "all 100ms ease-in-out",
     textTransform: props.textTransform,
+    whiteSpace: props.whiteSpace,
   },
 }));

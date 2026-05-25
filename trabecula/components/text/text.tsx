@@ -60,6 +60,7 @@ export const Text = ({
   className,
   color,
   component = "span",
+  fontFamily = "Avenir",
   fontSize,
   fontWeight,
   overflow,
@@ -72,20 +73,22 @@ export const Text = ({
 
   return (
     <TooltipWrapper {...{ tooltip, tooltipProps }}>
-      <Typography {...{ component }} {...props} className={cx(css.root, className)}>
+      <Typography
+        {...props}
+        component={component}
+        fontFamily={fontFamily}
+        className={cx(css.root, className)}
+      >
         {children}
       </Typography>
     </TooltipWrapper>
   );
 };
 
-interface ClassesProps {
-  color: CssColor;
-  fontSize: CSS["fontSize"];
-  fontWeight: CSS["fontWeight"];
-  overflow: CSS["overflow"];
-  preset: TextProps["preset"];
-}
+interface ClassesProps extends Pick<
+  TextProps,
+  "color" | "fontSize" | "fontWeight" | "overflow" | "preset"
+> {}
 
 const useClasses = makeClasses((props: ClassesProps) => {
   const preset = PRESETS[props.preset];

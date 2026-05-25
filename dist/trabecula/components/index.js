@@ -10,18 +10,18 @@ var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __propIsEnum = Object.prototype.propertyIsEnumerable;
 var __pow = Math.pow;
 var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __spreadValues = (a2, b2) => {
-  for (var prop2 in b2 || (b2 = {}))
-    if (__hasOwnProp.call(b2, prop2))
-      __defNormalProp(a2, prop2, b2[prop2]);
+var __spreadValues = (a, b) => {
+  for (var prop2 in b || (b = {}))
+    if (__hasOwnProp.call(b, prop2))
+      __defNormalProp(a, prop2, b[prop2]);
   if (__getOwnPropSymbols)
-    for (var prop2 of __getOwnPropSymbols(b2)) {
-      if (__propIsEnum.call(b2, prop2))
-        __defNormalProp(a2, prop2, b2[prop2]);
+    for (var prop2 of __getOwnPropSymbols(b)) {
+      if (__propIsEnum.call(b, prop2))
+        __defNormalProp(a, prop2, b[prop2]);
     }
-  return a2;
+  return a;
 };
-var __spreadProps = (a2, b2) => __defProps(a2, __getOwnPropDescs(b2));
+var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
 var __objRest = (source, exclude) => {
   var target = {};
   for (var prop2 in source)
@@ -63,18 +63,18 @@ var __async = (__this, __arguments, generator) => {
     var fulfilled = (value) => {
       try {
         step(generator.next(value));
-      } catch (e2) {
-        reject(e2);
+      } catch (e) {
+        reject(e);
       }
     };
     var rejected = (value) => {
       try {
         step(generator.throw(value));
-      } catch (e2) {
-        reject(e2);
+      } catch (e) {
+        reject(e);
       }
     };
-    var step = (x2) => x2.done ? resolve(x2.value) : Promise.resolve(x2.value).then(fulfilled, rejected);
+    var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
     step((generator = generator.apply(__this, __arguments)).next());
   });
 };
@@ -257,8 +257,8 @@ var require_simple_swizzle = __commonJS({
     var slice = Array.prototype.slice;
     var swizzle = module2.exports = function swizzle2(args) {
       var results = [];
-      for (var i2 = 0, len = args.length; i2 < len; i2++) {
-        var arg = args[i2];
+      for (var i = 0, len = args.length; i < len; i++) {
+        var arg = args[i];
         if (isArrayish(arg)) {
           results = concat.call(results, slice.call(arg));
         } else {
@@ -326,14 +326,14 @@ var require_color_string = __commonJS({
       var keyword = /^(\w+)$/;
       var rgb = [0, 0, 0, 1];
       var match;
-      var i2;
+      var i;
       var hexAlpha;
       if (match = string.match(hex)) {
         hexAlpha = match[2];
         match = match[1];
-        for (i2 = 0; i2 < 3; i2++) {
-          var i22 = i2 * 2;
-          rgb[i2] = parseInt(match.slice(i22, i22 + 2), 16);
+        for (i = 0; i < 3; i++) {
+          var i2 = i * 2;
+          rgb[i] = parseInt(match.slice(i2, i2 + 2), 16);
         }
         if (hexAlpha) {
           rgb[3] = parseInt(hexAlpha, 16) / 255;
@@ -341,15 +341,15 @@ var require_color_string = __commonJS({
       } else if (match = string.match(abbr)) {
         match = match[1];
         hexAlpha = match[3];
-        for (i2 = 0; i2 < 3; i2++) {
-          rgb[i2] = parseInt(match[i2] + match[i2], 16);
+        for (i = 0; i < 3; i++) {
+          rgb[i] = parseInt(match[i] + match[i], 16);
         }
         if (hexAlpha) {
           rgb[3] = parseInt(hexAlpha + hexAlpha, 16) / 255;
         }
       } else if (match = string.match(rgba)) {
-        for (i2 = 0; i2 < 3; i2++) {
-          rgb[i2] = parseInt(match[i2 + 1], 0);
+        for (i = 0; i < 3; i++) {
+          rgb[i] = parseInt(match[i + 1], 0);
         }
         if (match[4]) {
           if (match[5]) {
@@ -359,8 +359,8 @@ var require_color_string = __commonJS({
           }
         }
       } else if (match = string.match(per)) {
-        for (i2 = 0; i2 < 3; i2++) {
-          rgb[i2] = Math.round(parseFloat(match[i2 + 1]) * 2.55);
+        for (i = 0; i < 3; i++) {
+          rgb[i] = Math.round(parseFloat(match[i + 1]) * 2.55);
         }
         if (match[4]) {
           if (match[5]) {
@@ -382,8 +382,8 @@ var require_color_string = __commonJS({
       } else {
         return null;
       }
-      for (i2 = 0; i2 < 3; i2++) {
-        rgb[i2] = clamp(rgb[i2], 0, 255);
+      for (i = 0; i < 3; i++) {
+        rgb[i] = clamp(rgb[i], 0, 255);
       }
       rgb[3] = clamp(rgb[3], 0, 1);
       return rgb;
@@ -396,11 +396,11 @@ var require_color_string = __commonJS({
       var match = string.match(hsl);
       if (match) {
         var alpha = parseFloat(match[4]);
-        var h2 = (parseFloat(match[1]) % 360 + 360) % 360;
-        var s2 = clamp(parseFloat(match[2]), 0, 100);
-        var l2 = clamp(parseFloat(match[3]), 0, 100);
-        var a2 = clamp(isNaN(alpha) ? 1 : alpha, 0, 1);
-        return [h2, s2, l2, a2];
+        var h = (parseFloat(match[1]) % 360 + 360) % 360;
+        var s = clamp(parseFloat(match[2]), 0, 100);
+        var l = clamp(parseFloat(match[3]), 0, 100);
+        var a = clamp(isNaN(alpha) ? 1 : alpha, 0, 1);
+        return [h, s, l, a];
       }
       return null;
     };
@@ -412,11 +412,11 @@ var require_color_string = __commonJS({
       var match = string.match(hwb);
       if (match) {
         var alpha = parseFloat(match[4]);
-        var h2 = (parseFloat(match[1]) % 360 + 360) % 360;
-        var w2 = clamp(parseFloat(match[2]), 0, 100);
-        var b2 = clamp(parseFloat(match[3]), 0, 100);
-        var a2 = clamp(isNaN(alpha) ? 1 : alpha, 0, 1);
-        return [h2, w2, b2, a2];
+        var h = (parseFloat(match[1]) % 360 + 360) % 360;
+        var w = clamp(parseFloat(match[2]), 0, 100);
+        var b = clamp(parseFloat(match[3]), 0, 100);
+        var a = clamp(isNaN(alpha) ? 1 : alpha, 0, 1);
+        return [h, w, b, a];
       }
       return null;
     };
@@ -430,10 +430,10 @@ var require_color_string = __commonJS({
     };
     cs.to.rgb.percent = function() {
       var rgba = swizzle(arguments);
-      var r3 = Math.round(rgba[0] / 255 * 100);
-      var g2 = Math.round(rgba[1] / 255 * 100);
-      var b2 = Math.round(rgba[2] / 255 * 100);
-      return rgba.length < 4 || rgba[3] === 1 ? "rgb(" + r3 + "%, " + g2 + "%, " + b2 + "%)" : "rgba(" + r3 + "%, " + g2 + "%, " + b2 + "%, " + rgba[3] + ")";
+      var r = Math.round(rgba[0] / 255 * 100);
+      var g = Math.round(rgba[1] / 255 * 100);
+      var b = Math.round(rgba[2] / 255 * 100);
+      return rgba.length < 4 || rgba[3] === 1 ? "rgb(" + r + "%, " + g + "%, " + b + "%)" : "rgba(" + r + "%, " + g + "%, " + b + "%, " + rgba[3] + ")";
     };
     cs.to.hsl = function() {
       var hsla = swizzle(arguments);
@@ -441,11 +441,11 @@ var require_color_string = __commonJS({
     };
     cs.to.hwb = function() {
       var hwba = swizzle(arguments);
-      var a2 = "";
+      var a = "";
       if (hwba.length >= 4 && hwba[3] !== 1) {
-        a2 = ", " + hwba[3];
+        a = ", " + hwba[3];
       }
-      return "hwb(" + hwba[0] + ", " + hwba[1] + "%, " + hwba[2] + "%" + a2 + ")";
+      return "hwb(" + hwba[0] + ", " + hwba[1] + "%, " + hwba[2] + "%" + a + ")";
     };
     cs.to.keyword = function(rgb) {
       return reverseNames[rgb.slice(0, 3)];
@@ -503,99 +503,99 @@ var require_conversions = __commonJS({
       Object.defineProperty(convert[model], "labels", { value: labels });
     }
     convert.rgb.hsl = function(rgb) {
-      const r3 = rgb[0] / 255;
-      const g2 = rgb[1] / 255;
-      const b2 = rgb[2] / 255;
-      const min = Math.min(r3, g2, b2);
-      const max = Math.max(r3, g2, b2);
+      const r = rgb[0] / 255;
+      const g = rgb[1] / 255;
+      const b = rgb[2] / 255;
+      const min = Math.min(r, g, b);
+      const max = Math.max(r, g, b);
       const delta = max - min;
-      let h2;
-      let s2;
+      let h;
+      let s;
       if (max === min) {
-        h2 = 0;
-      } else if (r3 === max) {
-        h2 = (g2 - b2) / delta;
-      } else if (g2 === max) {
-        h2 = 2 + (b2 - r3) / delta;
-      } else if (b2 === max) {
-        h2 = 4 + (r3 - g2) / delta;
+        h = 0;
+      } else if (r === max) {
+        h = (g - b) / delta;
+      } else if (g === max) {
+        h = 2 + (b - r) / delta;
+      } else if (b === max) {
+        h = 4 + (r - g) / delta;
       }
-      h2 = Math.min(h2 * 60, 360);
-      if (h2 < 0) {
-        h2 += 360;
+      h = Math.min(h * 60, 360);
+      if (h < 0) {
+        h += 360;
       }
-      const l2 = (min + max) / 2;
+      const l = (min + max) / 2;
       if (max === min) {
-        s2 = 0;
-      } else if (l2 <= 0.5) {
-        s2 = delta / (max + min);
+        s = 0;
+      } else if (l <= 0.5) {
+        s = delta / (max + min);
       } else {
-        s2 = delta / (2 - max - min);
+        s = delta / (2 - max - min);
       }
-      return [h2, s2 * 100, l2 * 100];
+      return [h, s * 100, l * 100];
     };
     convert.rgb.hsv = function(rgb) {
       let rdif;
       let gdif;
       let bdif;
-      let h2;
-      let s2;
-      const r3 = rgb[0] / 255;
-      const g2 = rgb[1] / 255;
-      const b2 = rgb[2] / 255;
-      const v2 = Math.max(r3, g2, b2);
-      const diff = v2 - Math.min(r3, g2, b2);
+      let h;
+      let s;
+      const r = rgb[0] / 255;
+      const g = rgb[1] / 255;
+      const b = rgb[2] / 255;
+      const v = Math.max(r, g, b);
+      const diff = v - Math.min(r, g, b);
       const diffc = function(c) {
-        return (v2 - c) / 6 / diff + 1 / 2;
+        return (v - c) / 6 / diff + 1 / 2;
       };
       if (diff === 0) {
-        h2 = 0;
-        s2 = 0;
+        h = 0;
+        s = 0;
       } else {
-        s2 = diff / v2;
-        rdif = diffc(r3);
-        gdif = diffc(g2);
-        bdif = diffc(b2);
-        if (r3 === v2) {
-          h2 = bdif - gdif;
-        } else if (g2 === v2) {
-          h2 = 1 / 3 + rdif - bdif;
-        } else if (b2 === v2) {
-          h2 = 2 / 3 + gdif - rdif;
+        s = diff / v;
+        rdif = diffc(r);
+        gdif = diffc(g);
+        bdif = diffc(b);
+        if (r === v) {
+          h = bdif - gdif;
+        } else if (g === v) {
+          h = 1 / 3 + rdif - bdif;
+        } else if (b === v) {
+          h = 2 / 3 + gdif - rdif;
         }
-        if (h2 < 0) {
-          h2 += 1;
-        } else if (h2 > 1) {
-          h2 -= 1;
+        if (h < 0) {
+          h += 1;
+        } else if (h > 1) {
+          h -= 1;
         }
       }
       return [
-        h2 * 360,
-        s2 * 100,
-        v2 * 100
+        h * 360,
+        s * 100,
+        v * 100
       ];
     };
     convert.rgb.hwb = function(rgb) {
-      const r3 = rgb[0];
-      const g2 = rgb[1];
-      let b2 = rgb[2];
-      const h2 = convert.rgb.hsl(rgb)[0];
-      const w2 = 1 / 255 * Math.min(r3, Math.min(g2, b2));
-      b2 = 1 - 1 / 255 * Math.max(r3, Math.max(g2, b2));
-      return [h2, w2 * 100, b2 * 100];
+      const r = rgb[0];
+      const g = rgb[1];
+      let b = rgb[2];
+      const h = convert.rgb.hsl(rgb)[0];
+      const w = 1 / 255 * Math.min(r, Math.min(g, b));
+      b = 1 - 1 / 255 * Math.max(r, Math.max(g, b));
+      return [h, w * 100, b * 100];
     };
     convert.rgb.cmyk = function(rgb) {
-      const r3 = rgb[0] / 255;
-      const g2 = rgb[1] / 255;
-      const b2 = rgb[2] / 255;
-      const k2 = Math.min(1 - r3, 1 - g2, 1 - b2);
-      const c = (1 - r3 - k2) / (1 - k2) || 0;
-      const m2 = (1 - g2 - k2) / (1 - k2) || 0;
-      const y2 = (1 - b2 - k2) / (1 - k2) || 0;
-      return [c * 100, m2 * 100, y2 * 100, k2 * 100];
+      const r = rgb[0] / 255;
+      const g = rgb[1] / 255;
+      const b = rgb[2] / 255;
+      const k = Math.min(1 - r, 1 - g, 1 - b);
+      const c = (1 - r - k) / (1 - k) || 0;
+      const m = (1 - g - k) / (1 - k) || 0;
+      const y = (1 - b - k) / (1 - k) || 0;
+      return [c * 100, m * 100, y * 100, k * 100];
     };
-    function comparativeDistance(x2, y2) {
-      return __pow(x2[0] - y2[0], 2) + __pow(x2[1] - y2[1], 2) + __pow(x2[2] - y2[2], 2);
+    function comparativeDistance(x, y) {
+      return __pow(x[0] - y[0], 2) + __pow(x[1] - y[1], 2) + __pow(x[2] - y[2], 2);
     }
     convert.rgb.keyword = function(rgb) {
       const reversed = reverseKeywords[rgb];
@@ -618,53 +618,53 @@ var require_conversions = __commonJS({
       return cssKeywords[keyword];
     };
     convert.rgb.xyz = function(rgb) {
-      let r3 = rgb[0] / 255;
-      let g2 = rgb[1] / 255;
-      let b2 = rgb[2] / 255;
-      r3 = r3 > 0.04045 ? __pow((r3 + 0.055) / 1.055, 2.4) : r3 / 12.92;
-      g2 = g2 > 0.04045 ? __pow((g2 + 0.055) / 1.055, 2.4) : g2 / 12.92;
-      b2 = b2 > 0.04045 ? __pow((b2 + 0.055) / 1.055, 2.4) : b2 / 12.92;
-      const x2 = r3 * 0.4124 + g2 * 0.3576 + b2 * 0.1805;
-      const y2 = r3 * 0.2126 + g2 * 0.7152 + b2 * 0.0722;
-      const z2 = r3 * 0.0193 + g2 * 0.1192 + b2 * 0.9505;
-      return [x2 * 100, y2 * 100, z2 * 100];
+      let r = rgb[0] / 255;
+      let g = rgb[1] / 255;
+      let b = rgb[2] / 255;
+      r = r > 0.04045 ? __pow((r + 0.055) / 1.055, 2.4) : r / 12.92;
+      g = g > 0.04045 ? __pow((g + 0.055) / 1.055, 2.4) : g / 12.92;
+      b = b > 0.04045 ? __pow((b + 0.055) / 1.055, 2.4) : b / 12.92;
+      const x = r * 0.4124 + g * 0.3576 + b * 0.1805;
+      const y = r * 0.2126 + g * 0.7152 + b * 0.0722;
+      const z = r * 0.0193 + g * 0.1192 + b * 0.9505;
+      return [x * 100, y * 100, z * 100];
     };
     convert.rgb.lab = function(rgb) {
       const xyz = convert.rgb.xyz(rgb);
-      let x2 = xyz[0];
-      let y2 = xyz[1];
-      let z2 = xyz[2];
-      x2 /= 95.047;
-      y2 /= 100;
-      z2 /= 108.883;
-      x2 = x2 > 8856e-6 ? __pow(x2, 1 / 3) : 7.787 * x2 + 16 / 116;
-      y2 = y2 > 8856e-6 ? __pow(y2, 1 / 3) : 7.787 * y2 + 16 / 116;
-      z2 = z2 > 8856e-6 ? __pow(z2, 1 / 3) : 7.787 * z2 + 16 / 116;
-      const l2 = 116 * y2 - 16;
-      const a2 = 500 * (x2 - y2);
-      const b2 = 200 * (y2 - z2);
-      return [l2, a2, b2];
+      let x = xyz[0];
+      let y = xyz[1];
+      let z = xyz[2];
+      x /= 95.047;
+      y /= 100;
+      z /= 108.883;
+      x = x > 8856e-6 ? __pow(x, 1 / 3) : 7.787 * x + 16 / 116;
+      y = y > 8856e-6 ? __pow(y, 1 / 3) : 7.787 * y + 16 / 116;
+      z = z > 8856e-6 ? __pow(z, 1 / 3) : 7.787 * z + 16 / 116;
+      const l = 116 * y - 16;
+      const a = 500 * (x - y);
+      const b = 200 * (y - z);
+      return [l, a, b];
     };
     convert.hsl.rgb = function(hsl) {
-      const h2 = hsl[0] / 360;
-      const s2 = hsl[1] / 100;
-      const l2 = hsl[2] / 100;
+      const h = hsl[0] / 360;
+      const s = hsl[1] / 100;
+      const l = hsl[2] / 100;
       let t2;
       let t3;
       let val;
-      if (s2 === 0) {
-        val = l2 * 255;
+      if (s === 0) {
+        val = l * 255;
         return [val, val, val];
       }
-      if (l2 < 0.5) {
-        t2 = l2 * (1 + s2);
+      if (l < 0.5) {
+        t2 = l * (1 + s);
       } else {
-        t2 = l2 + s2 - l2 * s2;
+        t2 = l + s - l * s;
       }
-      const t1 = 2 * l2 - t2;
+      const t1 = 2 * l - t2;
       const rgb = [0, 0, 0];
-      for (let i2 = 0; i2 < 3; i2++) {
-        t3 = h2 + 1 / 3 * -(i2 - 1);
+      for (let i = 0; i < 3; i++) {
+        t3 = h + 1 / 3 * -(i - 1);
         if (t3 < 0) {
           t3++;
         }
@@ -680,213 +680,213 @@ var require_conversions = __commonJS({
         } else {
           val = t1;
         }
-        rgb[i2] = val * 255;
+        rgb[i] = val * 255;
       }
       return rgb;
     };
     convert.hsl.hsv = function(hsl) {
-      const h2 = hsl[0];
-      let s2 = hsl[1] / 100;
-      let l2 = hsl[2] / 100;
-      let smin = s2;
-      const lmin = Math.max(l2, 0.01);
-      l2 *= 2;
-      s2 *= l2 <= 1 ? l2 : 2 - l2;
+      const h = hsl[0];
+      let s = hsl[1] / 100;
+      let l = hsl[2] / 100;
+      let smin = s;
+      const lmin = Math.max(l, 0.01);
+      l *= 2;
+      s *= l <= 1 ? l : 2 - l;
       smin *= lmin <= 1 ? lmin : 2 - lmin;
-      const v2 = (l2 + s2) / 2;
-      const sv = l2 === 0 ? 2 * smin / (lmin + smin) : 2 * s2 / (l2 + s2);
-      return [h2, sv * 100, v2 * 100];
+      const v = (l + s) / 2;
+      const sv = l === 0 ? 2 * smin / (lmin + smin) : 2 * s / (l + s);
+      return [h, sv * 100, v * 100];
     };
     convert.hsv.rgb = function(hsv) {
-      const h2 = hsv[0] / 60;
-      const s2 = hsv[1] / 100;
-      let v2 = hsv[2] / 100;
-      const hi = Math.floor(h2) % 6;
-      const f2 = h2 - Math.floor(h2);
-      const p2 = 255 * v2 * (1 - s2);
-      const q2 = 255 * v2 * (1 - s2 * f2);
-      const t2 = 255 * v2 * (1 - s2 * (1 - f2));
-      v2 *= 255;
+      const h = hsv[0] / 60;
+      const s = hsv[1] / 100;
+      let v = hsv[2] / 100;
+      const hi = Math.floor(h) % 6;
+      const f = h - Math.floor(h);
+      const p = 255 * v * (1 - s);
+      const q = 255 * v * (1 - s * f);
+      const t = 255 * v * (1 - s * (1 - f));
+      v *= 255;
       switch (hi) {
         case 0:
-          return [v2, t2, p2];
+          return [v, t, p];
         case 1:
-          return [q2, v2, p2];
+          return [q, v, p];
         case 2:
-          return [p2, v2, t2];
+          return [p, v, t];
         case 3:
-          return [p2, q2, v2];
+          return [p, q, v];
         case 4:
-          return [t2, p2, v2];
+          return [t, p, v];
         case 5:
-          return [v2, p2, q2];
+          return [v, p, q];
       }
     };
     convert.hsv.hsl = function(hsv) {
-      const h2 = hsv[0];
-      const s2 = hsv[1] / 100;
-      const v2 = hsv[2] / 100;
-      const vmin = Math.max(v2, 0.01);
+      const h = hsv[0];
+      const s = hsv[1] / 100;
+      const v = hsv[2] / 100;
+      const vmin = Math.max(v, 0.01);
       let sl;
-      let l2;
-      l2 = (2 - s2) * v2;
-      const lmin = (2 - s2) * vmin;
-      sl = s2 * vmin;
+      let l;
+      l = (2 - s) * v;
+      const lmin = (2 - s) * vmin;
+      sl = s * vmin;
       sl /= lmin <= 1 ? lmin : 2 - lmin;
       sl = sl || 0;
-      l2 /= 2;
-      return [h2, sl * 100, l2 * 100];
+      l /= 2;
+      return [h, sl * 100, l * 100];
     };
     convert.hwb.rgb = function(hwb) {
-      const h2 = hwb[0] / 360;
+      const h = hwb[0] / 360;
       let wh = hwb[1] / 100;
       let bl = hwb[2] / 100;
       const ratio = wh + bl;
-      let f2;
+      let f;
       if (ratio > 1) {
         wh /= ratio;
         bl /= ratio;
       }
-      const i2 = Math.floor(6 * h2);
-      const v2 = 1 - bl;
-      f2 = 6 * h2 - i2;
-      if ((i2 & 1) !== 0) {
-        f2 = 1 - f2;
+      const i = Math.floor(6 * h);
+      const v = 1 - bl;
+      f = 6 * h - i;
+      if ((i & 1) !== 0) {
+        f = 1 - f;
       }
-      const n2 = wh + f2 * (v2 - wh);
-      let r3;
-      let g2;
-      let b2;
-      switch (i2) {
+      const n = wh + f * (v - wh);
+      let r;
+      let g;
+      let b;
+      switch (i) {
         default:
         case 6:
         case 0:
-          r3 = v2;
-          g2 = n2;
-          b2 = wh;
+          r = v;
+          g = n;
+          b = wh;
           break;
         case 1:
-          r3 = n2;
-          g2 = v2;
-          b2 = wh;
+          r = n;
+          g = v;
+          b = wh;
           break;
         case 2:
-          r3 = wh;
-          g2 = v2;
-          b2 = n2;
+          r = wh;
+          g = v;
+          b = n;
           break;
         case 3:
-          r3 = wh;
-          g2 = n2;
-          b2 = v2;
+          r = wh;
+          g = n;
+          b = v;
           break;
         case 4:
-          r3 = n2;
-          g2 = wh;
-          b2 = v2;
+          r = n;
+          g = wh;
+          b = v;
           break;
         case 5:
-          r3 = v2;
-          g2 = wh;
-          b2 = n2;
+          r = v;
+          g = wh;
+          b = n;
           break;
       }
-      return [r3 * 255, g2 * 255, b2 * 255];
+      return [r * 255, g * 255, b * 255];
     };
     convert.cmyk.rgb = function(cmyk) {
       const c = cmyk[0] / 100;
-      const m2 = cmyk[1] / 100;
-      const y2 = cmyk[2] / 100;
-      const k2 = cmyk[3] / 100;
-      const r3 = 1 - Math.min(1, c * (1 - k2) + k2);
-      const g2 = 1 - Math.min(1, m2 * (1 - k2) + k2);
-      const b2 = 1 - Math.min(1, y2 * (1 - k2) + k2);
-      return [r3 * 255, g2 * 255, b2 * 255];
+      const m = cmyk[1] / 100;
+      const y = cmyk[2] / 100;
+      const k = cmyk[3] / 100;
+      const r = 1 - Math.min(1, c * (1 - k) + k);
+      const g = 1 - Math.min(1, m * (1 - k) + k);
+      const b = 1 - Math.min(1, y * (1 - k) + k);
+      return [r * 255, g * 255, b * 255];
     };
     convert.xyz.rgb = function(xyz) {
-      const x2 = xyz[0] / 100;
-      const y2 = xyz[1] / 100;
-      const z2 = xyz[2] / 100;
-      let r3;
-      let g2;
-      let b2;
-      r3 = x2 * 3.2406 + y2 * -1.5372 + z2 * -0.4986;
-      g2 = x2 * -0.9689 + y2 * 1.8758 + z2 * 0.0415;
-      b2 = x2 * 0.0557 + y2 * -0.204 + z2 * 1.057;
-      r3 = r3 > 31308e-7 ? 1.055 * __pow(r3, 1 / 2.4) - 0.055 : r3 * 12.92;
-      g2 = g2 > 31308e-7 ? 1.055 * __pow(g2, 1 / 2.4) - 0.055 : g2 * 12.92;
-      b2 = b2 > 31308e-7 ? 1.055 * __pow(b2, 1 / 2.4) - 0.055 : b2 * 12.92;
-      r3 = Math.min(Math.max(0, r3), 1);
-      g2 = Math.min(Math.max(0, g2), 1);
-      b2 = Math.min(Math.max(0, b2), 1);
-      return [r3 * 255, g2 * 255, b2 * 255];
+      const x = xyz[0] / 100;
+      const y = xyz[1] / 100;
+      const z = xyz[2] / 100;
+      let r;
+      let g;
+      let b;
+      r = x * 3.2406 + y * -1.5372 + z * -0.4986;
+      g = x * -0.9689 + y * 1.8758 + z * 0.0415;
+      b = x * 0.0557 + y * -0.204 + z * 1.057;
+      r = r > 31308e-7 ? 1.055 * __pow(r, 1 / 2.4) - 0.055 : r * 12.92;
+      g = g > 31308e-7 ? 1.055 * __pow(g, 1 / 2.4) - 0.055 : g * 12.92;
+      b = b > 31308e-7 ? 1.055 * __pow(b, 1 / 2.4) - 0.055 : b * 12.92;
+      r = Math.min(Math.max(0, r), 1);
+      g = Math.min(Math.max(0, g), 1);
+      b = Math.min(Math.max(0, b), 1);
+      return [r * 255, g * 255, b * 255];
     };
     convert.xyz.lab = function(xyz) {
-      let x2 = xyz[0];
-      let y2 = xyz[1];
-      let z2 = xyz[2];
-      x2 /= 95.047;
-      y2 /= 100;
-      z2 /= 108.883;
-      x2 = x2 > 8856e-6 ? __pow(x2, 1 / 3) : 7.787 * x2 + 16 / 116;
-      y2 = y2 > 8856e-6 ? __pow(y2, 1 / 3) : 7.787 * y2 + 16 / 116;
-      z2 = z2 > 8856e-6 ? __pow(z2, 1 / 3) : 7.787 * z2 + 16 / 116;
-      const l2 = 116 * y2 - 16;
-      const a2 = 500 * (x2 - y2);
-      const b2 = 200 * (y2 - z2);
-      return [l2, a2, b2];
+      let x = xyz[0];
+      let y = xyz[1];
+      let z = xyz[2];
+      x /= 95.047;
+      y /= 100;
+      z /= 108.883;
+      x = x > 8856e-6 ? __pow(x, 1 / 3) : 7.787 * x + 16 / 116;
+      y = y > 8856e-6 ? __pow(y, 1 / 3) : 7.787 * y + 16 / 116;
+      z = z > 8856e-6 ? __pow(z, 1 / 3) : 7.787 * z + 16 / 116;
+      const l = 116 * y - 16;
+      const a = 500 * (x - y);
+      const b = 200 * (y - z);
+      return [l, a, b];
     };
     convert.lab.xyz = function(lab) {
-      const l2 = lab[0];
-      const a2 = lab[1];
-      const b2 = lab[2];
-      let x2;
-      let y2;
-      let z2;
-      y2 = (l2 + 16) / 116;
-      x2 = a2 / 500 + y2;
-      z2 = y2 - b2 / 200;
-      const y22 = __pow(y2, 3);
-      const x22 = __pow(x2, 3);
-      const z22 = __pow(z2, 3);
-      y2 = y22 > 8856e-6 ? y22 : (y2 - 16 / 116) / 7.787;
-      x2 = x22 > 8856e-6 ? x22 : (x2 - 16 / 116) / 7.787;
-      z2 = z22 > 8856e-6 ? z22 : (z2 - 16 / 116) / 7.787;
-      x2 *= 95.047;
-      y2 *= 100;
-      z2 *= 108.883;
-      return [x2, y2, z2];
+      const l = lab[0];
+      const a = lab[1];
+      const b = lab[2];
+      let x;
+      let y;
+      let z;
+      y = (l + 16) / 116;
+      x = a / 500 + y;
+      z = y - b / 200;
+      const y2 = __pow(y, 3);
+      const x2 = __pow(x, 3);
+      const z2 = __pow(z, 3);
+      y = y2 > 8856e-6 ? y2 : (y - 16 / 116) / 7.787;
+      x = x2 > 8856e-6 ? x2 : (x - 16 / 116) / 7.787;
+      z = z2 > 8856e-6 ? z2 : (z - 16 / 116) / 7.787;
+      x *= 95.047;
+      y *= 100;
+      z *= 108.883;
+      return [x, y, z];
     };
     convert.lab.lch = function(lab) {
-      const l2 = lab[0];
-      const a2 = lab[1];
-      const b2 = lab[2];
-      let h2;
-      const hr = Math.atan2(b2, a2);
-      h2 = hr * 360 / 2 / Math.PI;
-      if (h2 < 0) {
-        h2 += 360;
+      const l = lab[0];
+      const a = lab[1];
+      const b = lab[2];
+      let h;
+      const hr = Math.atan2(b, a);
+      h = hr * 360 / 2 / Math.PI;
+      if (h < 0) {
+        h += 360;
       }
-      const c = Math.sqrt(a2 * a2 + b2 * b2);
-      return [l2, c, h2];
+      const c = Math.sqrt(a * a + b * b);
+      return [l, c, h];
     };
     convert.lch.lab = function(lch) {
-      const l2 = lch[0];
+      const l = lch[0];
       const c = lch[1];
-      const h2 = lch[2];
-      const hr = h2 / 360 * 2 * Math.PI;
-      const a2 = c * Math.cos(hr);
-      const b2 = c * Math.sin(hr);
-      return [l2, a2, b2];
+      const h = lch[2];
+      const hr = h / 360 * 2 * Math.PI;
+      const a = c * Math.cos(hr);
+      const b = c * Math.sin(hr);
+      return [l, a, b];
     };
     convert.rgb.ansi16 = function(args, saturation = null) {
-      const [r3, g2, b2] = args;
+      const [r, g, b] = args;
       let value = saturation === null ? convert.rgb.hsv(args)[2] : saturation;
       value = Math.round(value / 50);
       if (value === 0) {
         return 30;
       }
-      let ansi = 30 + (Math.round(b2 / 255) << 2 | Math.round(g2 / 255) << 1 | Math.round(r3 / 255));
+      let ansi = 30 + (Math.round(b / 255) << 2 | Math.round(g / 255) << 1 | Math.round(r / 255));
       if (value === 2) {
         ansi += 60;
       }
@@ -896,19 +896,19 @@ var require_conversions = __commonJS({
       return convert.rgb.ansi16(convert.hsv.rgb(args), args[2]);
     };
     convert.rgb.ansi256 = function(args) {
-      const r3 = args[0];
-      const g2 = args[1];
-      const b2 = args[2];
-      if (r3 === g2 && g2 === b2) {
-        if (r3 < 8) {
+      const r = args[0];
+      const g = args[1];
+      const b = args[2];
+      if (r === g && g === b) {
+        if (r < 8) {
           return 16;
         }
-        if (r3 > 248) {
+        if (r > 248) {
           return 231;
         }
-        return Math.round((r3 - 8) / 247 * 24) + 232;
+        return Math.round((r - 8) / 247 * 24) + 232;
       }
-      const ansi = 16 + 36 * Math.round(r3 / 255 * 5) + 6 * Math.round(g2 / 255 * 5) + Math.round(b2 / 255 * 5);
+      const ansi = 16 + 36 * Math.round(r / 255 * 5) + 6 * Math.round(g / 255 * 5) + Math.round(b / 255 * 5);
       return ansi;
     };
     convert.ansi16.rgb = function(args) {
@@ -921,10 +921,10 @@ var require_conversions = __commonJS({
         return [color, color, color];
       }
       const mult = (~~(args > 50) + 1) * 0.5;
-      const r3 = (color & 1) * mult * 255;
-      const g2 = (color >> 1 & 1) * mult * 255;
-      const b2 = (color >> 2 & 1) * mult * 255;
-      return [r3, g2, b2];
+      const r = (color & 1) * mult * 255;
+      const g = (color >> 1 & 1) * mult * 255;
+      const b = (color >> 2 & 1) * mult * 255;
+      return [r, g, b];
     };
     convert.ansi256.rgb = function(args) {
       if (args >= 232) {
@@ -933,10 +933,10 @@ var require_conversions = __commonJS({
       }
       args -= 16;
       let rem;
-      const r3 = Math.floor(args / 36) / 5 * 255;
-      const g2 = Math.floor((rem = args % 36) / 6) / 5 * 255;
-      const b2 = rem % 6 / 5 * 255;
-      return [r3, g2, b2];
+      const r = Math.floor(args / 36) / 5 * 255;
+      const g = Math.floor((rem = args % 36) / 6) / 5 * 255;
+      const b = rem % 6 / 5 * 255;
+      return [r, g, b];
     };
     convert.rgb.hex = function(args) {
       const integer = ((Math.round(args[0]) & 255) << 16) + ((Math.round(args[1]) & 255) << 8) + (Math.round(args[2]) & 255);
@@ -955,17 +955,17 @@ var require_conversions = __commonJS({
         }).join("");
       }
       const integer = parseInt(colorString, 16);
-      const r3 = integer >> 16 & 255;
-      const g2 = integer >> 8 & 255;
-      const b2 = integer & 255;
-      return [r3, g2, b2];
+      const r = integer >> 16 & 255;
+      const g = integer >> 8 & 255;
+      const b = integer & 255;
+      return [r, g, b];
     };
     convert.rgb.hcg = function(rgb) {
-      const r3 = rgb[0] / 255;
-      const g2 = rgb[1] / 255;
-      const b2 = rgb[2] / 255;
-      const max = Math.max(Math.max(r3, g2), b2);
-      const min = Math.min(Math.min(r3, g2), b2);
+      const r = rgb[0] / 255;
+      const g = rgb[1] / 255;
+      const b = rgb[2] / 255;
+      const max = Math.max(Math.max(r, g), b);
+      const min = Math.min(Math.min(r, g), b);
       const chroma = max - min;
       let grayscale;
       let hue;
@@ -976,81 +976,81 @@ var require_conversions = __commonJS({
       }
       if (chroma <= 0) {
         hue = 0;
-      } else if (max === r3) {
-        hue = (g2 - b2) / chroma % 6;
-      } else if (max === g2) {
-        hue = 2 + (b2 - r3) / chroma;
+      } else if (max === r) {
+        hue = (g - b) / chroma % 6;
+      } else if (max === g) {
+        hue = 2 + (b - r) / chroma;
       } else {
-        hue = 4 + (r3 - g2) / chroma;
+        hue = 4 + (r - g) / chroma;
       }
       hue /= 6;
       hue %= 1;
       return [hue * 360, chroma * 100, grayscale * 100];
     };
     convert.hsl.hcg = function(hsl) {
-      const s2 = hsl[1] / 100;
-      const l2 = hsl[2] / 100;
-      const c = l2 < 0.5 ? 2 * s2 * l2 : 2 * s2 * (1 - l2);
-      let f2 = 0;
+      const s = hsl[1] / 100;
+      const l = hsl[2] / 100;
+      const c = l < 0.5 ? 2 * s * l : 2 * s * (1 - l);
+      let f = 0;
       if (c < 1) {
-        f2 = (l2 - 0.5 * c) / (1 - c);
+        f = (l - 0.5 * c) / (1 - c);
       }
-      return [hsl[0], c * 100, f2 * 100];
+      return [hsl[0], c * 100, f * 100];
     };
     convert.hsv.hcg = function(hsv) {
-      const s2 = hsv[1] / 100;
-      const v2 = hsv[2] / 100;
-      const c = s2 * v2;
-      let f2 = 0;
+      const s = hsv[1] / 100;
+      const v = hsv[2] / 100;
+      const c = s * v;
+      let f = 0;
       if (c < 1) {
-        f2 = (v2 - c) / (1 - c);
+        f = (v - c) / (1 - c);
       }
-      return [hsv[0], c * 100, f2 * 100];
+      return [hsv[0], c * 100, f * 100];
     };
     convert.hcg.rgb = function(hcg) {
-      const h2 = hcg[0] / 360;
+      const h = hcg[0] / 360;
       const c = hcg[1] / 100;
-      const g2 = hcg[2] / 100;
+      const g = hcg[2] / 100;
       if (c === 0) {
-        return [g2 * 255, g2 * 255, g2 * 255];
+        return [g * 255, g * 255, g * 255];
       }
       const pure = [0, 0, 0];
-      const hi = h2 % 1 * 6;
-      const v2 = hi % 1;
-      const w2 = 1 - v2;
+      const hi = h % 1 * 6;
+      const v = hi % 1;
+      const w = 1 - v;
       let mg = 0;
       switch (Math.floor(hi)) {
         case 0:
           pure[0] = 1;
-          pure[1] = v2;
+          pure[1] = v;
           pure[2] = 0;
           break;
         case 1:
-          pure[0] = w2;
+          pure[0] = w;
           pure[1] = 1;
           pure[2] = 0;
           break;
         case 2:
           pure[0] = 0;
           pure[1] = 1;
-          pure[2] = v2;
+          pure[2] = v;
           break;
         case 3:
           pure[0] = 0;
-          pure[1] = w2;
+          pure[1] = w;
           pure[2] = 1;
           break;
         case 4:
-          pure[0] = v2;
+          pure[0] = v;
           pure[1] = 0;
           pure[2] = 1;
           break;
         default:
           pure[0] = 1;
           pure[1] = 0;
-          pure[2] = w2;
+          pure[2] = w;
       }
-      mg = (1 - c) * g2;
+      mg = (1 - c) * g;
       return [
         (c * pure[0] + mg) * 255,
         (c * pure[1] + mg) * 255,
@@ -1059,42 +1059,42 @@ var require_conversions = __commonJS({
     };
     convert.hcg.hsv = function(hcg) {
       const c = hcg[1] / 100;
-      const g2 = hcg[2] / 100;
-      const v2 = c + g2 * (1 - c);
-      let f2 = 0;
-      if (v2 > 0) {
-        f2 = c / v2;
+      const g = hcg[2] / 100;
+      const v = c + g * (1 - c);
+      let f = 0;
+      if (v > 0) {
+        f = c / v;
       }
-      return [hcg[0], f2 * 100, v2 * 100];
+      return [hcg[0], f * 100, v * 100];
     };
     convert.hcg.hsl = function(hcg) {
       const c = hcg[1] / 100;
-      const g2 = hcg[2] / 100;
-      const l2 = g2 * (1 - c) + 0.5 * c;
-      let s2 = 0;
-      if (l2 > 0 && l2 < 0.5) {
-        s2 = c / (2 * l2);
-      } else if (l2 >= 0.5 && l2 < 1) {
-        s2 = c / (2 * (1 - l2));
+      const g = hcg[2] / 100;
+      const l = g * (1 - c) + 0.5 * c;
+      let s = 0;
+      if (l > 0 && l < 0.5) {
+        s = c / (2 * l);
+      } else if (l >= 0.5 && l < 1) {
+        s = c / (2 * (1 - l));
       }
-      return [hcg[0], s2 * 100, l2 * 100];
+      return [hcg[0], s * 100, l * 100];
     };
     convert.hcg.hwb = function(hcg) {
       const c = hcg[1] / 100;
-      const g2 = hcg[2] / 100;
-      const v2 = c + g2 * (1 - c);
-      return [hcg[0], (v2 - c) * 100, (1 - v2) * 100];
+      const g = hcg[2] / 100;
+      const v = c + g * (1 - c);
+      return [hcg[0], (v - c) * 100, (1 - v) * 100];
     };
     convert.hwb.hcg = function(hwb) {
-      const w2 = hwb[1] / 100;
-      const b2 = hwb[2] / 100;
-      const v2 = 1 - b2;
-      const c = v2 - w2;
-      let g2 = 0;
+      const w = hwb[1] / 100;
+      const b = hwb[2] / 100;
+      const v = 1 - b;
+      const c = v - w;
+      let g = 0;
       if (c < 1) {
-        g2 = (v2 - c) / (1 - c);
+        g = (v - c) / (1 - c);
       }
-      return [hwb[0], c * 100, g2 * 100];
+      return [hwb[0], c * 100, g * 100];
     };
     convert.apple.rgb = function(apple) {
       return [apple[0] / 65535 * 255, apple[1] / 65535 * 255, apple[2] / 65535 * 255];
@@ -1138,8 +1138,8 @@ var require_route = __commonJS({
     function buildGraph() {
       const graph = {};
       const models = Object.keys(conversions);
-      for (let len = models.length, i2 = 0; i2 < len; i2++) {
-        graph[models[i2]] = {
+      for (let len = models.length, i = 0; i < len; i++) {
+        graph[models[i]] = {
           // http://jsperf.com/1-vs-infinity
           // micro-opt, but this is simple.
           distance: -1,
@@ -1155,8 +1155,8 @@ var require_route = __commonJS({
       while (queue.length) {
         const current = queue.pop();
         const adjacents = Object.keys(conversions[current]);
-        for (let len = adjacents.length, i2 = 0; i2 < len; i2++) {
-          const adjacent = adjacents[i2];
+        for (let len = adjacents.length, i = 0; i < len; i++) {
+          const adjacent = adjacents[i];
           const node = graph[adjacent];
           if (node.distance === -1) {
             node.distance = graph[current].distance + 1;
@@ -1188,8 +1188,8 @@ var require_route = __commonJS({
       const graph = deriveBFS(fromModel);
       const conversion = {};
       const models = Object.keys(graph);
-      for (let len = models.length, i2 = 0; i2 < len; i2++) {
-        const toModel = models[i2];
+      for (let len = models.length, i = 0; i < len; i++) {
+        const toModel = models[i];
         const node = graph[toModel];
         if (node.parent === null) {
           continue;
@@ -1235,8 +1235,8 @@ var require_color_convert = __commonJS({
         }
         const result = fn(args);
         if (typeof result === "object") {
-          for (let len = result.length, i2 = 0; i2 < len; i2++) {
-            result[i2] = Math.round(result[i2]);
+          for (let len = result.length, i = 0; i < len; i++) {
+            result[i] = Math.round(result[i]);
           }
         }
         return result;
@@ -1290,7 +1290,7 @@ var require_color = __commonJS({
       if (model && !(model in convert)) {
         throw new Error("Unknown model: " + model);
       }
-      let i2;
+      let i;
       let channels;
       if (object == null) {
         this.model = "rgb";
@@ -1337,17 +1337,17 @@ var require_color = __commonJS({
         this.model = hashedModelKeys[hashedKeys];
         const { labels } = convert[this.model];
         const color = [];
-        for (i2 = 0; i2 < labels.length; i2++) {
-          color.push(object[labels[i2]]);
+        for (i = 0; i < labels.length; i++) {
+          color.push(object[labels[i]]);
         }
         this.color = zeroArray(color);
       }
       if (limiters[this.model]) {
         channels = convert[this.model].channels;
-        for (i2 = 0; i2 < channels; i2++) {
-          const limit = limiters[this.model][i2];
+        for (i = 0; i < channels; i++) {
+          const limit = limiters[this.model][i];
           if (limit) {
-            this.color[i2] = limit(this.color[i2]);
+            this.color[i] = limit(this.color[i]);
           }
         }
       }
@@ -1381,8 +1381,8 @@ var require_color = __commonJS({
         const result = {};
         const { channels } = convert[this.model];
         const { labels } = convert[this.model];
-        for (let i2 = 0; i2 < channels; i2++) {
-          result[labels[i2]] = this.color[i2];
+        for (let i = 0; i < channels; i++) {
+          result[labels[i]] = this.color[i];
         }
         if (this.valpha !== 1) {
           result.alpha = this.valpha;
@@ -1472,9 +1472,9 @@ var require_color = __commonJS({
       luminosity() {
         const rgb = this.rgb().color;
         const lum = [];
-        for (const [i2, element] of rgb.entries()) {
+        for (const [i, element] of rgb.entries()) {
           const chan = element / 255;
-          lum[i2] = chan <= 0.04045 ? chan / 12.92 : __pow((chan + 0.055) / 1.055, 2.4);
+          lum[i] = chan <= 0.04045 ? chan / 12.92 : __pow((chan + 0.055) / 1.055, 2.4);
         }
         return 0.2126 * lum[0] + 0.7152 * lum[1] + 0.0722 * lum[2];
       },
@@ -1503,8 +1503,8 @@ var require_color = __commonJS({
       },
       negate() {
         const rgb = this.rgb();
-        for (let i2 = 0; i2 < 3; i2++) {
-          rgb.color[i2] = 255 - rgb.color[i2];
+        for (let i = 0; i < 3; i++) {
+          rgb.color[i] = 255 - rgb.color[i];
         }
         return rgb;
       },
@@ -1563,16 +1563,16 @@ var require_color = __commonJS({
         }
         const color1 = mixinColor.rgb();
         const color2 = this.rgb();
-        const p2 = weight === void 0 ? 0.5 : weight;
-        const w2 = 2 * p2 - 1;
-        const a2 = color1.alpha() - color2.alpha();
-        const w1 = ((w2 * a2 === -1 ? w2 : (w2 + a2) / (1 + w2 * a2)) + 1) / 2;
-        const w22 = 1 - w1;
+        const p = weight === void 0 ? 0.5 : weight;
+        const w = 2 * p - 1;
+        const a = color1.alpha() - color2.alpha();
+        const w1 = ((w * a === -1 ? w : (w + a) / (1 + w * a)) + 1) / 2;
+        const w2 = 1 - w1;
         return Color11.rgb(
-          w1 * color1.red() + w22 * color2.red(),
-          w1 * color1.green() + w22 * color2.green(),
-          w1 * color1.blue() + w22 * color2.blue(),
-          color1.alpha() * p2 + color2.alpha() * (1 - p2)
+          w1 * color1.red() + w2 * color2.red(),
+          w1 * color1.green() + w2 * color2.green(),
+          w1 * color1.blue() + w2 * color2.blue(),
+          color1.alpha() * p + color2.alpha() * (1 - p)
         );
       }
     };
@@ -1608,8 +1608,8 @@ var require_color = __commonJS({
     }
     function getset(model, channel, modifier) {
       model = Array.isArray(model) ? model : [model];
-      for (const m2 of model) {
-        (limiters[m2] || (limiters[m2] = []))[channel] = modifier;
+      for (const m of model) {
+        (limiters[m] || (limiters[m] = []))[channel] = modifier;
       }
       model = model[0];
       return function(value) {
@@ -1630,17 +1630,17 @@ var require_color = __commonJS({
       };
     }
     function maxfn(max) {
-      return function(v2) {
-        return Math.max(0, Math.min(max, v2));
+      return function(v) {
+        return Math.max(0, Math.min(max, v));
       };
     }
     function assertArray(value) {
       return Array.isArray(value) ? value : [value];
     }
     function zeroArray(array, length) {
-      for (let i2 = 0; i2 < length; i2++) {
-        if (typeof array[i2] !== "number") {
-          array[i2] = 0;
+      for (let i = 0; i < length; i++) {
+        if (typeof array[i] !== "number") {
+          array[i] = 0;
         }
       }
       return array;
@@ -1808,7 +1808,7 @@ var import_react2 = require("react");
 var import_mobx_keystone = require("mobx-keystone");
 
 // trabecula/utils/common/arrays.ts
-var chunkArray = (arr, size2) => [...Array(Math.ceil(arr.length / size2))].map((_2, i2) => arr.slice(i2 * size2, i2 * size2 + size2));
+var chunkArray = (arr, size2) => [...Array(Math.ceil(arr.length / size2))].map((_, i) => arr.slice(i * size2, i * size2 + size2));
 
 // trabecula/utils/common/constants.ts
 var AUDIO_CODECS_COMMON = [
@@ -2010,12 +2010,12 @@ var bytes = (bytes2) => {
 var camelCase = (str) => `${str[0].toLowerCase()}${str.slice(1)}`;
 var capitalize = (str, restLower = false) => str[0].toUpperCase() + (restLower ? str.substring(1).toLocaleLowerCase() : str.substring(1));
 var commas = (num) => Intl.NumberFormat().format(num);
-var decodeHtmlEntities = (s2) => s2.replace(htmlEntityRegex, (m2) => {
+var decodeHtmlEntities = (s) => s.replace(htmlEntityRegex, (m) => {
   var _a;
-  if (m2.startsWith("&#x") || m2.startsWith("&#X"))
-    return String.fromCharCode(parseInt(m2.slice(3, -1), 16));
-  if (m2.startsWith("&#")) return String.fromCharCode(parseInt(m2.slice(2, -1), 10));
-  return (_a = { amp: "&", lt: "<", gt: ">", quot: '"', apos: "'" }[m2.slice(1, -1)]) != null ? _a : m2;
+  if (m.startsWith("&#x") || m.startsWith("&#X"))
+    return String.fromCharCode(parseInt(m.slice(3, -1), 16));
+  if (m.startsWith("&#")) return String.fromCharCode(parseInt(m.slice(2, -1), 10));
+  return (_a = { amp: "&", lt: "<", gt: ">", quot: '"', apos: "'" }[m.slice(1, -1)]) != null ? _a : m;
 });
 var duration2 = (val, isMs = false) => !isNaN(val) ? import_dayjs.default.duration(val, isMs ? "ms" : "s").format("HH:mm:ss") : null;
 var frameToSec = (frame, frameRate) => round(frame / frameRate, 3);
@@ -2033,8 +2033,8 @@ var sanitizeWinPath = (winPath, isBasename = false, isFolderOnly = false) => {
     (part, idx, parts) => idx === 0 && /^[a-zA-Z]:$/.test(part) ? part : sanitize(part, isFolderOnly ? false : idx === parts.length - 1)
   ).join("\\");
 };
-var snakeToPascal = (str) => !(str == null ? void 0 : str.length) ? "" : str.split("_").map((s2) => capitalize(s2)).join("");
-var titleCase = (str) => str.split(" ").map((s2) => capitalize(s2)).join(" ");
+var snakeToPascal = (str) => !(str == null ? void 0 : str.length) ? "" : str.split("_").map((s) => capitalize(s)).join("");
+var titleCase = (str) => str.split(" ").map((s) => capitalize(s)).join(" ");
 var Fmt = {
   abbrevNum,
   bytes,
@@ -2057,8 +2057,8 @@ var Fmt = {
 // trabecula/utils/common/math.ts
 var LOGICAL_OPS = ["=", "!=", ">", ">=", "<", "<="];
 var round = (num, decimals = 2) => {
-  const n2 = Math.pow(10, decimals);
-  return Math.round((num + Number.EPSILON) * n2) / n2;
+  const n = Math.pow(10, decimals);
+  return Math.round((num + Number.EPSILON) * n) / n;
 };
 
 // node_modules/es-toolkit/dist/function/debounce.mjs
@@ -2129,8 +2129,8 @@ function isPrimitive(value) {
 }
 
 // node_modules/es-toolkit/dist/predicate/isTypedArray.mjs
-function isTypedArray(x2) {
-  return ArrayBuffer.isView(x2) && !(x2 instanceof DataView);
+function isTypedArray(x) {
+  return ArrayBuffer.isView(x) && !(x instanceof DataView);
 }
 
 // node_modules/es-toolkit/dist/object/clone.mjs
@@ -2200,8 +2200,8 @@ function isUnsafeProperty(key) {
 // node_modules/es-toolkit/dist/object/mergeWith.mjs
 function mergeWith(target, source, merge) {
   const sourceKeys = Object.keys(source);
-  for (let i2 = 0; i2 < sourceKeys.length; i2++) {
-    const key = sourceKeys[i2];
+  for (let i = 0; i < sourceKeys.length; i++) {
+    const key = sourceKeys[i];
     if (isUnsafeProperty(key)) {
       continue;
     }
@@ -2284,330 +2284,15 @@ var import_react3 = require("react");
 // trabecula/utils/client/store.ts
 var import_mobx_keystone2 = require("mobx-keystone");
 
-// node_modules/react-toastify/dist/react-toastify.esm.mjs
-var import_react4 = __toESM(require("react"), 1);
-
-// node_modules/react-toastify/node_modules/clsx/dist/clsx.m.js
-function r(e2) {
-  var t2, f2, n2 = "";
-  if ("string" == typeof e2 || "number" == typeof e2) n2 += e2;
-  else if ("object" == typeof e2) if (Array.isArray(e2)) for (t2 = 0; t2 < e2.length; t2++) e2[t2] && (f2 = r(e2[t2])) && (n2 && (n2 += " "), n2 += f2);
-  else for (t2 in e2) e2[t2] && (n2 && (n2 += " "), n2 += t2);
-  return n2;
-}
-function clsx() {
-  for (var e2, t2, f2 = 0, n2 = ""; f2 < arguments.length; ) (e2 = arguments[f2++]) && (t2 = r(e2)) && (n2 && (n2 += " "), n2 += t2);
-  return n2;
-}
-var clsx_m_default = clsx;
-
-// node_modules/react-toastify/dist/react-toastify.esm.mjs
-var u = (t2) => "number" == typeof t2 && !isNaN(t2);
-var d = (t2) => "string" == typeof t2;
-var p = (t2) => "function" == typeof t2;
-var m = (t2) => d(t2) || p(t2) ? t2 : null;
-var f = (t2) => (0, import_react4.isValidElement)(t2) || d(t2) || p(t2) || u(t2);
-function g(t2, e2, n2) {
-  void 0 === n2 && (n2 = 300);
-  const { scrollHeight: o2, style: s2 } = t2;
-  requestAnimationFrame(() => {
-    s2.minHeight = "initial", s2.height = o2 + "px", s2.transition = `all ${n2}ms`, requestAnimationFrame(() => {
-      s2.height = "0", s2.padding = "0", s2.margin = "0", setTimeout(e2, n2);
-    });
-  });
-}
-function h(e2) {
-  let { enter: a2, exit: r3, appendPosition: i2 = false, collapse: l2 = true, collapseDuration: c = 300 } = e2;
-  return function(e3) {
-    let { children: u2, position: d2, preventExitTransition: p2, done: m2, nodeRef: f2, isIn: h2 } = e3;
-    const y2 = i2 ? `${a2}--${d2}` : a2, v2 = i2 ? `${r3}--${d2}` : r3, T2 = (0, import_react4.useRef)(0);
-    return (0, import_react4.useLayoutEffect)(() => {
-      const t2 = f2.current, e4 = y2.split(" "), n2 = (o2) => {
-        o2.target === f2.current && (t2.dispatchEvent(new Event("d")), t2.removeEventListener("animationend", n2), t2.removeEventListener("animationcancel", n2), 0 === T2.current && "animationcancel" !== o2.type && t2.classList.remove(...e4));
-      };
-      t2.classList.add(...e4), t2.addEventListener("animationend", n2), t2.addEventListener("animationcancel", n2);
-    }, []), (0, import_react4.useEffect)(() => {
-      const t2 = f2.current, e4 = () => {
-        t2.removeEventListener("animationend", e4), l2 ? g(t2, m2, c) : m2();
-      };
-      h2 || (p2 ? e4() : (T2.current = 1, t2.className += ` ${v2}`, t2.addEventListener("animationend", e4)));
-    }, [h2]), import_react4.default.createElement(import_react4.default.Fragment, null, u2);
-  };
-}
-function y(t2, e2) {
-  return null != t2 ? { content: t2.content, containerId: t2.props.containerId, id: t2.props.toastId, theme: t2.props.theme, type: t2.props.type, data: t2.props.data || {}, isLoading: t2.props.isLoading, icon: t2.props.icon, status: e2 } : {};
-}
-var v = { list: /* @__PURE__ */ new Map(), emitQueue: /* @__PURE__ */ new Map(), on(t2, e2) {
-  return this.list.has(t2) || this.list.set(t2, []), this.list.get(t2).push(e2), this;
-}, off(t2, e2) {
-  if (e2) {
-    const n2 = this.list.get(t2).filter((t3) => t3 !== e2);
-    return this.list.set(t2, n2), this;
-  }
-  return this.list.delete(t2), this;
-}, cancelEmit(t2) {
-  const e2 = this.emitQueue.get(t2);
-  return e2 && (e2.forEach(clearTimeout), this.emitQueue.delete(t2)), this;
-}, emit(t2) {
-  this.list.has(t2) && this.list.get(t2).forEach((e2) => {
-    const n2 = setTimeout(() => {
-      e2(...[].slice.call(arguments, 1));
-    }, 0);
-    this.emitQueue.has(t2) || this.emitQueue.set(t2, []), this.emitQueue.get(t2).push(n2);
-  });
-} };
-var T = (e2) => {
-  let _a = e2, { theme: n2, type: o2 } = _a, s2 = __objRest(_a, ["theme", "type"]);
-  return import_react4.default.createElement("svg", __spreadValues({ viewBox: "0 0 24 24", width: "100%", height: "100%", fill: "colored" === n2 ? "currentColor" : `var(--toastify-icon-color-${o2})` }, s2));
-};
-var E = { info: function(e2) {
-  return import_react4.default.createElement(T, __spreadValues({}, e2), import_react4.default.createElement("path", { d: "M12 0a12 12 0 1012 12A12.013 12.013 0 0012 0zm.25 5a1.5 1.5 0 11-1.5 1.5 1.5 1.5 0 011.5-1.5zm2.25 13.5h-4a1 1 0 010-2h.75a.25.25 0 00.25-.25v-4.5a.25.25 0 00-.25-.25h-.75a1 1 0 010-2h1a2 2 0 012 2v4.75a.25.25 0 00.25.25h.75a1 1 0 110 2z" }));
-}, warning: function(e2) {
-  return import_react4.default.createElement(T, __spreadValues({}, e2), import_react4.default.createElement("path", { d: "M23.32 17.191L15.438 2.184C14.728.833 13.416 0 11.996 0c-1.42 0-2.733.833-3.443 2.184L.533 17.448a4.744 4.744 0 000 4.368C1.243 23.167 2.555 24 3.975 24h16.05C22.22 24 24 22.044 24 19.632c0-.904-.251-1.746-.68-2.44zm-9.622 1.46c0 1.033-.724 1.823-1.698 1.823s-1.698-.79-1.698-1.822v-.043c0-1.028.724-1.822 1.698-1.822s1.698.79 1.698 1.822v.043zm.039-12.285l-.84 8.06c-.057.581-.408.943-.897.943-.49 0-.84-.367-.896-.942l-.84-8.065c-.057-.624.25-1.095.779-1.095h1.91c.528.005.84.476.784 1.1z" }));
-}, success: function(e2) {
-  return import_react4.default.createElement(T, __spreadValues({}, e2), import_react4.default.createElement("path", { d: "M12 0a12 12 0 1012 12A12.014 12.014 0 0012 0zm6.927 8.2l-6.845 9.289a1.011 1.011 0 01-1.43.188l-4.888-3.908a1 1 0 111.25-1.562l4.076 3.261 6.227-8.451a1 1 0 111.61 1.183z" }));
-}, error: function(e2) {
-  return import_react4.default.createElement(T, __spreadValues({}, e2), import_react4.default.createElement("path", { d: "M11.983 0a12.206 12.206 0 00-8.51 3.653A11.8 11.8 0 000 12.207 11.779 11.779 0 0011.8 24h.214A12.111 12.111 0 0024 11.791 11.766 11.766 0 0011.983 0zM10.5 16.542a1.476 1.476 0 011.449-1.53h.027a1.527 1.527 0 011.523 1.47 1.475 1.475 0 01-1.449 1.53h-.027a1.529 1.529 0 01-1.523-1.47zM11 12.5v-6a1 1 0 012 0v6a1 1 0 11-2 0z" }));
-}, spinner: function() {
-  return import_react4.default.createElement("div", { className: "Toastify__spinner" });
-} };
-function C(t2) {
-  const [, o2] = (0, import_react4.useReducer)((t3) => t3 + 1, 0), [l2, c] = (0, import_react4.useState)([]), g2 = (0, import_react4.useRef)(null), h2 = (0, import_react4.useRef)(/* @__PURE__ */ new Map()).current, T2 = (t3) => -1 !== l2.indexOf(t3), C2 = (0, import_react4.useRef)({ toastKey: 1, displayedToast: 0, count: 0, queue: [], props: t2, containerId: null, isToastActive: T2, getToast: (t3) => h2.get(t3) }).current;
-  function b2(t3) {
-    let { containerId: e2 } = t3;
-    const { limit: n2 } = C2.props;
-    !n2 || e2 && C2.containerId !== e2 || (C2.count -= C2.queue.length, C2.queue = []);
-  }
-  function I2(t3) {
-    c((e2) => null == t3 ? [] : e2.filter((e3) => e3 !== t3));
-  }
-  function _2() {
-    const { toastContent: t3, toastProps: e2, staleId: n2 } = C2.queue.shift();
-    O2(t3, e2, n2);
-  }
-  function L2(t3, n2) {
-    let _a = n2, { delay: s2, staleId: r3 } = _a, i2 = __objRest(_a, ["delay", "staleId"]);
-    if (!f(t3) || (function(t4) {
-      return !g2.current || C2.props.enableMultiContainer && t4.containerId !== C2.props.containerId || h2.has(t4.toastId) && null == t4.updateId;
-    })(i2)) return;
-    const { toastId: l3, updateId: c2, data: T3 } = i2, { props: b3 } = C2, L3 = () => I2(l3), N2 = null == c2;
-    N2 && C2.count++;
-    const M2 = __spreadProps(__spreadValues(__spreadProps(__spreadValues({}, b3), { style: b3.toastStyle, key: C2.toastKey++ }), Object.fromEntries(Object.entries(i2).filter((t4) => {
-      let [e2, n3] = t4;
-      return null != n3;
-    }))), { toastId: l3, updateId: c2, data: T3, closeToast: L3, isIn: false, className: m(i2.className || b3.toastClassName), bodyClassName: m(i2.bodyClassName || b3.bodyClassName), progressClassName: m(i2.progressClassName || b3.progressClassName), autoClose: !i2.isLoading && (R2 = i2.autoClose, w2 = b3.autoClose, false === R2 || u(R2) && R2 > 0 ? R2 : w2), deleteToast() {
-      const t4 = y(h2.get(l3), "removed");
-      h2.delete(l3), v.emit(4, t4);
-      const e2 = C2.queue.length;
-      if (C2.count = null == l3 ? C2.count - C2.displayedToast : C2.count - 1, C2.count < 0 && (C2.count = 0), e2 > 0) {
-        const t5 = null == l3 ? C2.props.limit : 1;
-        if (1 === e2 || 1 === t5) C2.displayedToast++, _2();
-        else {
-          const n3 = t5 > e2 ? e2 : t5;
-          C2.displayedToast = n3;
-          for (let t6 = 0; t6 < n3; t6++) _2();
-        }
-      } else o2();
-    } });
-    var R2, w2;
-    M2.iconOut = (function(t4) {
-      let { theme: n3, type: o3, isLoading: s3, icon: r4 } = t4, i3 = null;
-      const l4 = { theme: n3, type: o3 };
-      return false === r4 || (p(r4) ? i3 = r4(l4) : (0, import_react4.isValidElement)(r4) ? i3 = (0, import_react4.cloneElement)(r4, l4) : d(r4) || u(r4) ? i3 = r4 : s3 ? i3 = E.spinner() : ((t5) => t5 in E)(o3) && (i3 = E[o3](l4))), i3;
-    })(M2), p(i2.onOpen) && (M2.onOpen = i2.onOpen), p(i2.onClose) && (M2.onClose = i2.onClose), M2.closeButton = b3.closeButton, false === i2.closeButton || f(i2.closeButton) ? M2.closeButton = i2.closeButton : true === i2.closeButton && (M2.closeButton = !f(b3.closeButton) || b3.closeButton);
-    let x2 = t3;
-    (0, import_react4.isValidElement)(t3) && !d(t3.type) ? x2 = (0, import_react4.cloneElement)(t3, { closeToast: L3, toastProps: M2, data: T3 }) : p(t3) && (x2 = t3({ closeToast: L3, toastProps: M2, data: T3 })), b3.limit && b3.limit > 0 && C2.count > b3.limit && N2 ? C2.queue.push({ toastContent: x2, toastProps: M2, staleId: r3 }) : u(s2) ? setTimeout(() => {
-      O2(x2, M2, r3);
-    }, s2) : O2(x2, M2, r3);
-  }
-  function O2(t3, e2, n2) {
-    const { toastId: o3 } = e2;
-    n2 && h2.delete(n2);
-    const s2 = { content: t3, props: e2 };
-    h2.set(o3, s2), c((t4) => [...t4, o3].filter((t5) => t5 !== n2)), v.emit(4, y(s2, null == s2.props.updateId ? "added" : "updated"));
-  }
-  return (0, import_react4.useEffect)(() => (C2.containerId = t2.containerId, v.cancelEmit(3).on(0, L2).on(1, (t3) => g2.current && I2(t3)).on(5, b2).emit(2, C2), () => {
-    h2.clear(), v.emit(3, C2);
-  }), []), (0, import_react4.useEffect)(() => {
-    C2.props = t2, C2.isToastActive = T2, C2.displayedToast = l2.length;
-  }), { getToastToRender: function(e2) {
-    const n2 = /* @__PURE__ */ new Map(), o3 = Array.from(h2.values());
-    return t2.newestOnTop && o3.reverse(), o3.forEach((t3) => {
-      const { position: e3 } = t3.props;
-      n2.has(e3) || n2.set(e3, []), n2.get(e3).push(t3);
-    }), Array.from(n2, (t3) => e2(t3[0], t3[1]));
-  }, containerRef: g2, isToastActive: T2 };
-}
-function b(t2) {
-  return t2.targetTouches && t2.targetTouches.length >= 1 ? t2.targetTouches[0].clientX : t2.clientX;
-}
-function I(t2) {
-  return t2.targetTouches && t2.targetTouches.length >= 1 ? t2.targetTouches[0].clientY : t2.clientY;
-}
-function _(t2) {
-  const [o2, a2] = (0, import_react4.useState)(false), [r3, l2] = (0, import_react4.useState)(false), c = (0, import_react4.useRef)(null), u2 = (0, import_react4.useRef)({ start: 0, x: 0, y: 0, delta: 0, removalDistance: 0, canCloseOnClick: true, canDrag: false, boundingRect: null, didMove: false }).current, d2 = (0, import_react4.useRef)(t2), { autoClose: m2, pauseOnHover: f2, closeToast: g2, onClick: h2, closeOnClick: y2 } = t2;
-  function v2(e2) {
-    if (t2.draggable) {
-      "touchstart" === e2.nativeEvent.type && e2.nativeEvent.preventDefault(), u2.didMove = false, document.addEventListener("mousemove", _2), document.addEventListener("mouseup", L2), document.addEventListener("touchmove", _2), document.addEventListener("touchend", L2);
-      const n2 = c.current;
-      u2.canCloseOnClick = true, u2.canDrag = true, u2.boundingRect = n2.getBoundingClientRect(), n2.style.transition = "", u2.x = b(e2.nativeEvent), u2.y = I(e2.nativeEvent), "x" === t2.draggableDirection ? (u2.start = u2.x, u2.removalDistance = n2.offsetWidth * (t2.draggablePercent / 100)) : (u2.start = u2.y, u2.removalDistance = n2.offsetHeight * (80 === t2.draggablePercent ? 1.5 * t2.draggablePercent : t2.draggablePercent / 100));
-    }
-  }
-  function T2(e2) {
-    if (u2.boundingRect) {
-      const { top: n2, bottom: o3, left: s2, right: a3 } = u2.boundingRect;
-      "touchend" !== e2.nativeEvent.type && t2.pauseOnHover && u2.x >= s2 && u2.x <= a3 && u2.y >= n2 && u2.y <= o3 ? C2() : E2();
-    }
-  }
-  function E2() {
-    a2(true);
-  }
-  function C2() {
-    a2(false);
-  }
-  function _2(e2) {
-    const n2 = c.current;
-    u2.canDrag && n2 && (u2.didMove = true, o2 && C2(), u2.x = b(e2), u2.y = I(e2), u2.delta = "x" === t2.draggableDirection ? u2.x - u2.start : u2.y - u2.start, u2.start !== u2.x && (u2.canCloseOnClick = false), n2.style.transform = `translate${t2.draggableDirection}(${u2.delta}px)`, n2.style.opacity = "" + (1 - Math.abs(u2.delta / u2.removalDistance)));
-  }
-  function L2() {
-    document.removeEventListener("mousemove", _2), document.removeEventListener("mouseup", L2), document.removeEventListener("touchmove", _2), document.removeEventListener("touchend", L2);
-    const e2 = c.current;
-    if (u2.canDrag && u2.didMove && e2) {
-      if (u2.canDrag = false, Math.abs(u2.delta) > u2.removalDistance) return l2(true), void t2.closeToast();
-      e2.style.transition = "transform 0.2s, opacity 0.2s", e2.style.transform = `translate${t2.draggableDirection}(0)`, e2.style.opacity = "1";
-    }
-  }
-  (0, import_react4.useEffect)(() => {
-    d2.current = t2;
-  }), (0, import_react4.useEffect)(() => (c.current && c.current.addEventListener("d", E2, { once: true }), p(t2.onOpen) && t2.onOpen((0, import_react4.isValidElement)(t2.children) && t2.children.props), () => {
-    const t3 = d2.current;
-    p(t3.onClose) && t3.onClose((0, import_react4.isValidElement)(t3.children) && t3.children.props);
-  }), []), (0, import_react4.useEffect)(() => (t2.pauseOnFocusLoss && (document.hasFocus() || C2(), window.addEventListener("focus", E2), window.addEventListener("blur", C2)), () => {
-    t2.pauseOnFocusLoss && (window.removeEventListener("focus", E2), window.removeEventListener("blur", C2));
-  }), [t2.pauseOnFocusLoss]);
-  const O2 = { onMouseDown: v2, onTouchStart: v2, onMouseUp: T2, onTouchEnd: T2 };
-  return m2 && f2 && (O2.onMouseEnter = C2, O2.onMouseLeave = E2), y2 && (O2.onClick = (t3) => {
-    h2 && h2(t3), u2.canCloseOnClick && g2();
-  }), { playToast: E2, pauseToast: C2, isRunning: o2, preventExitTransition: r3, toastRef: c, eventHandlers: O2 };
-}
-function L(e2) {
-  let { closeToast: n2, theme: o2, ariaLabel: s2 = "close" } = e2;
-  return import_react4.default.createElement("button", { className: `Toastify__close-button Toastify__close-button--${o2}`, type: "button", onClick: (t2) => {
-    t2.stopPropagation(), n2(t2);
-  }, "aria-label": s2 }, import_react4.default.createElement("svg", { "aria-hidden": "true", viewBox: "0 0 14 16" }, import_react4.default.createElement("path", { fillRule: "evenodd", d: "M7.71 8.23l3.75 3.75-1.48 1.48-3.75-3.75-3.75 3.75L1 11.98l3.75-3.75L1 4.48 2.48 3l3.75 3.75L9.98 3l1.48 1.48-3.75 3.75z" })));
-}
-function O(e2) {
-  let { delay: n2, isRunning: o2, closeToast: s2, type: a2 = "default", hide: r3, className: i2, style: l2, controlledProgress: u2, progress: d2, rtl: m2, isIn: f2, theme: g2 } = e2;
-  const h2 = r3 || u2 && 0 === d2, y2 = __spreadProps(__spreadValues({}, l2), { animationDuration: `${n2}ms`, animationPlayState: o2 ? "running" : "paused", opacity: h2 ? 0 : 1 });
-  u2 && (y2.transform = `scaleX(${d2})`);
-  const v2 = clsx_m_default("Toastify__progress-bar", u2 ? "Toastify__progress-bar--controlled" : "Toastify__progress-bar--animated", `Toastify__progress-bar-theme--${g2}`, `Toastify__progress-bar--${a2}`, { "Toastify__progress-bar--rtl": m2 }), T2 = p(i2) ? i2({ rtl: m2, type: a2, defaultClassName: v2 }) : clsx_m_default(v2, i2);
-  return import_react4.default.createElement("div", { role: "progressbar", "aria-hidden": h2 ? "true" : "false", "aria-label": "notification timer", className: T2, style: y2, [u2 && d2 >= 1 ? "onTransitionEnd" : "onAnimationEnd"]: u2 && d2 < 1 ? null : () => {
-    f2 && s2();
-  } });
-}
-var N = (n2) => {
-  const { isRunning: o2, preventExitTransition: s2, toastRef: r3, eventHandlers: i2 } = _(n2), { closeButton: l2, children: u2, autoClose: d2, onClick: m2, type: f2, hideProgressBar: g2, closeToast: h2, transition: y2, position: v2, className: T2, style: E2, bodyClassName: C2, bodyStyle: b2, progressClassName: I2, progressStyle: N2, updateId: M2, role: R2, progress: w2, rtl: x2, toastId: $2, deleteToast: k2, isIn: P2, isLoading: B2, iconOut: D2, closeOnClick: A2, theme: z2 } = n2, F2 = clsx_m_default("Toastify__toast", `Toastify__toast-theme--${z2}`, `Toastify__toast--${f2}`, { "Toastify__toast--rtl": x2 }, { "Toastify__toast--close-on-click": A2 }), H2 = p(T2) ? T2({ rtl: x2, position: v2, type: f2, defaultClassName: F2 }) : clsx_m_default(F2, T2), S2 = !!w2 || !d2, q2 = { closeToast: h2, type: f2, theme: z2 };
-  let Q2 = null;
-  return false === l2 || (Q2 = p(l2) ? l2(q2) : (0, import_react4.isValidElement)(l2) ? (0, import_react4.cloneElement)(l2, q2) : L(q2)), import_react4.default.createElement(y2, { isIn: P2, done: k2, position: v2, preventExitTransition: s2, nodeRef: r3 }, import_react4.default.createElement("div", __spreadProps(__spreadValues({ id: $2, onClick: m2, className: H2 }, i2), { style: E2, ref: r3 }), import_react4.default.createElement("div", __spreadProps(__spreadValues({}, P2 && { role: R2 }), { className: p(C2) ? C2({ type: f2 }) : clsx_m_default("Toastify__toast-body", C2), style: b2 }), null != D2 && import_react4.default.createElement("div", { className: clsx_m_default("Toastify__toast-icon", { "Toastify--animate-icon Toastify__zoom-enter": !B2 }) }, D2), import_react4.default.createElement("div", null, u2)), Q2, import_react4.default.createElement(O, __spreadProps(__spreadValues({}, M2 && !S2 ? { key: `pb-${M2}` } : {}), { rtl: x2, theme: z2, delay: d2, isRunning: o2, isIn: P2, closeToast: h2, hide: g2, type: f2, style: N2, className: I2, controlledProgress: S2, progress: w2 || 0 }))));
-};
-var M = function(t2, e2) {
-  return void 0 === e2 && (e2 = false), { enter: `Toastify--animate Toastify__${t2}-enter`, exit: `Toastify--animate Toastify__${t2}-exit`, appendPosition: e2 };
-};
-var R = h(M("bounce", true));
-var w = h(M("slide", true));
-var x = h(M("zoom"));
-var $ = h(M("flip"));
-var k = (0, import_react4.forwardRef)((e2, n2) => {
-  const { getToastToRender: o2, containerRef: a2, isToastActive: r3 } = C(e2), { className: i2, style: l2, rtl: u2, containerId: d2 } = e2;
-  function f2(t2) {
-    const e3 = clsx_m_default("Toastify__toast-container", `Toastify__toast-container--${t2}`, { "Toastify__toast-container--rtl": u2 });
-    return p(i2) ? i2({ position: t2, rtl: u2, defaultClassName: e3 }) : clsx_m_default(e3, m(i2));
-  }
-  return (0, import_react4.useEffect)(() => {
-    n2 && (n2.current = a2.current);
-  }, []), import_react4.default.createElement("div", { ref: a2, className: "Toastify", id: d2 }, o2((e3, n3) => {
-    const o3 = n3.length ? __spreadValues({}, l2) : __spreadProps(__spreadValues({}, l2), { pointerEvents: "none" });
-    return import_react4.default.createElement("div", { className: f2(e3), style: o3, key: `container-${e3}` }, n3.map((e4, o4) => {
-      let { content: s2, props: a3 } = e4;
-      return import_react4.default.createElement(N, __spreadProps(__spreadValues({}, a3), { isIn: r3(a3.toastId), style: __spreadProps(__spreadValues({}, a3.style), { "--nth": o4 + 1, "--len": n3.length }), key: `toast-${a3.key}` }), s2);
-    }));
-  }));
-});
-k.displayName = "ToastContainer", k.defaultProps = { position: "top-right", transition: R, autoClose: 5e3, closeButton: L, pauseOnHover: true, pauseOnFocusLoss: true, closeOnClick: true, draggable: true, draggablePercent: 80, draggableDirection: "x", role: "alert", theme: "light" };
-var P;
-var B = /* @__PURE__ */ new Map();
-var D = [];
-var A = 1;
-function z() {
-  return "" + A++;
-}
-function F(t2) {
-  return t2 && (d(t2.toastId) || u(t2.toastId)) ? t2.toastId : z();
-}
-function H(t2, e2) {
-  return B.size > 0 ? v.emit(0, t2, e2) : D.push({ content: t2, options: e2 }), e2.toastId;
-}
-function S(t2, e2) {
-  return __spreadProps(__spreadValues({}, e2), { type: e2 && e2.type || t2, toastId: F(e2) });
-}
-function q(t2) {
-  return (e2, n2) => H(e2, S(t2, n2));
-}
-function Q(t2, e2) {
-  return H(t2, S("default", e2));
-}
-Q.loading = (t2, e2) => H(t2, S("default", __spreadValues({ isLoading: true, autoClose: false, closeOnClick: false, closeButton: false, draggable: false }, e2))), Q.promise = function(t2, e2, n2) {
-  let o2, { pending: s2, error: a2, success: r3 } = e2;
-  s2 && (o2 = d(s2) ? Q.loading(s2, n2) : Q.loading(s2.render, __spreadValues(__spreadValues({}, n2), s2)));
-  const i2 = { isLoading: null, autoClose: null, closeOnClick: null, closeButton: null, draggable: null }, l2 = (t3, e3, s3) => {
-    if (null == e3) return void Q.dismiss(o2);
-    const a3 = __spreadProps(__spreadValues(__spreadValues({ type: t3 }, i2), n2), { data: s3 }), r4 = d(e3) ? { render: e3 } : e3;
-    return o2 ? Q.update(o2, __spreadValues(__spreadValues({}, a3), r4)) : Q(r4.render, __spreadValues(__spreadValues({}, a3), r4)), s3;
-  }, c = p(t2) ? t2() : t2;
-  return c.then((t3) => l2("success", r3, t3)).catch((t3) => l2("error", a2, t3)), c;
-}, Q.success = q("success"), Q.info = q("info"), Q.error = q("error"), Q.warning = q("warning"), Q.warn = Q.warning, Q.dark = (t2, e2) => H(t2, S("default", __spreadValues({ theme: "dark" }, e2))), Q.dismiss = (t2) => {
-  B.size > 0 ? v.emit(1, t2) : D = D.filter((e2) => null != t2 && e2.options.toastId !== t2);
-}, Q.clearWaitingQueue = function(t2) {
-  return void 0 === t2 && (t2 = {}), v.emit(5, t2);
-}, Q.isActive = (t2) => {
-  let e2 = false;
-  return B.forEach((n2) => {
-    n2.isToastActive && n2.isToastActive(t2) && (e2 = true);
-  }), e2;
-}, Q.update = function(t2, e2) {
-  void 0 === e2 && (e2 = {}), setTimeout(() => {
-    const n2 = (function(t3, e3) {
-      let { containerId: n3 } = e3;
-      const o2 = B.get(n3 || P);
-      return o2 && o2.getToast(t3);
-    })(t2, e2);
-    if (n2) {
-      const { props: o2, content: s2 } = n2, a2 = __spreadProps(__spreadValues(__spreadValues({ delay: 100 }, o2), e2), { toastId: e2.toastId || t2, updateId: z() });
-      a2.toastId !== t2 && (a2.staleId = t2);
-      const r3 = a2.render || s2;
-      delete a2.render, H(r3, a2);
-    }
-  }, 0);
-}, Q.done = (t2) => {
-  Q.update(t2, { progress: 1 });
-}, Q.onChange = (t2) => (v.on(4, t2), () => {
-  v.off(4, t2);
-}), Q.POSITION = { TOP_LEFT: "top-left", TOP_RIGHT: "top-right", TOP_CENTER: "top-center", BOTTOM_LEFT: "bottom-left", BOTTOM_RIGHT: "bottom-right", BOTTOM_CENTER: "bottom-center" }, Q.TYPE = { INFO: "info", SUCCESS: "success", WARNING: "warning", ERROR: "error", DEFAULT: "default" }, v.on(2, (t2) => {
-  P = t2.containerId || t2, B.set(P, t2), D.forEach((t3) => {
-    v.emit(0, t3.content, t3.options);
-  }), D = [];
-}).on(3, (t2) => {
-  B.delete(t2.containerId || t2), 0 === B.size && v.off(0).off(1).off(5);
-});
-
 // trabecula/utils/client/toast.tsx
+var import_react_toastify = require("react-toastify");
 var import_material2 = require("@mui/material");
 var import_jsx_runtime = require("react/jsx-runtime");
 var toast = {
-  error: Q.error,
-  info: Q.info,
-  success: Q.success,
-  warn: Q.warn
+  error: import_react_toastify.toast.error,
+  info: import_react_toastify.toast.info,
+  success: import_react_toastify.toast.success,
+  warn: import_react_toastify.toast.warn
 };
 var STATUSES = {
   default: {
@@ -2639,7 +2324,7 @@ var useClasses = makeClasses({
       "&-body": {
         display: "flex",
         alignItems: "center",
-        fontFamily: "Roboto",
+        fontFamily: "Avenir",
         fontSize: "1.1rem",
         fontWeight: 400,
         whiteSpace: "break-spaces"
@@ -2697,7 +2382,8 @@ var Button = (_a) => {
     tooltip,
     tooltipProps,
     type = "button",
-    width
+    width,
+    whiteSpace = "nowrap"
   } = _b, props = __objRest(_b, [
     "borderRadiuses",
     "boxShadow",
@@ -2729,7 +2415,8 @@ var Button = (_a) => {
     "tooltip",
     "tooltipProps",
     "type",
-    "width"
+    "width",
+    "whiteSpace"
   ]);
   const { css, cx } = useClasses2({
     borderRadiuses,
@@ -2745,7 +2432,8 @@ var Button = (_a) => {
     padding: __spreadValues({ all: !(text == null ? void 0 : text.length) ? "0.4em" : "0.4em 0.8em" }, padding),
     textColor,
     textTransform,
-    width
+    width,
+    whiteSpace
   });
   const handleClick = (event) => {
     onClick == null ? void 0 : onClick(event);
@@ -2801,7 +2489,8 @@ var useClasses2 = makeClasses((props) => {
       overflow: "hidden",
       textOverflow: "ellipsis",
       transition: "all 100ms ease-in-out",
-      textTransform: props.textTransform
+      textTransform: props.textTransform,
+      whiteSpace: props.whiteSpace
     }
   };
 });
@@ -2891,7 +2580,7 @@ var ColorPicker = Comp(
           textColor: value === null ? colors.custom.white : colors.custom.lightGrey
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View, { column: true, children: swatches.map((swatch, i2) => /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View, { row: true, children: swatch.map((c) => /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View, { column: true, children: swatches.map((swatch, i) => /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View, { row: true, children: swatch.map((c) => /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
         IconButton,
         {
           name: "Circle",
@@ -2900,7 +2589,7 @@ var ColorPicker = Comp(
           onClick: () => setValue(c)
         },
         c
-      )) }, i2)) })
+      )) }, i)) })
     ] })) }));
   }
 );
@@ -2952,7 +2641,7 @@ var useClasses4 = makeClasses((props) => ({
 }));
 
 // trabecula/components/buttons/icon-picker.tsx
-var import_react5 = require("react");
+var import_react4 = require("react");
 var import_material5 = require("@mui/material");
 
 // trabecula/_generated/client/icons.ts
@@ -5162,7 +4851,7 @@ var MUI_ICONS = [
 // trabecula/components/buttons/icon-picker.tsx
 var import_jsx_runtime6 = require("react/jsx-runtime");
 var SEARCH_STYLES = ["Filled", "Outlined", "Rounded", "TwoTone", "Sharp"];
-var SEARCH_STYLES_UNFILLED = SEARCH_STYLES.filter((s2) => s2 !== "Filled");
+var SEARCH_STYLES_UNFILLED = SEARCH_STYLES.filter((s) => s !== "Filled");
 var IconPicker = Comp(
   (_a) => {
     var _b = _a, {
@@ -5184,15 +4873,15 @@ var IconPicker = Comp(
       "width",
       "withStylePicker"
     ]);
-    const [page, setPage] = (0, import_react5.useState)(1);
-    const [searchStyle, setSearchStyle] = (0, import_react5.useState)("Filled");
-    const [searchVal, setSearchVal] = (0, import_react5.useState)("");
-    const searchTerms = searchVal.split(" ").filter((t2) => t2.length > 0);
+    const [page, setPage] = (0, import_react4.useState)(1);
+    const [searchStyle, setSearchStyle] = (0, import_react4.useState)("Filled");
+    const [searchVal, setSearchVal] = (0, import_react4.useState)("");
+    const searchTerms = searchVal.split(" ").filter((t) => t.length > 0);
     const filteredIcons = MUI_ICONS.filter((icon) => {
       const name = icon.toLowerCase();
       if ((value == null ? void 0 : value.length) && name.includes(value.toLowerCase())) return false;
       if (searchStyle === "Filled") {
-        if (SEARCH_STYLES_UNFILLED.some((s2) => name.includes(s2.toLowerCase()))) return false;
+        if (SEARCH_STYLES_UNFILLED.some((s) => name.includes(s.toLowerCase()))) return false;
       } else if (!name.includes(searchStyle.toLowerCase())) return false;
       if (!searchTerms.length) return true;
       return searchTerms.every((term) => name.includes(term.toLowerCase()));
@@ -5203,7 +4892,7 @@ var IconPicker = Comp(
       (value == null ? void 0 : value.length) ? value : null,
       ...filteredIcons.slice(pageSize * (page - 1), pageSize * page)
     ].filter(Boolean);
-    (0, import_react5.useEffect)(() => {
+    (0, import_react4.useEffect)(() => {
       if (page > pageCount) setPage(1);
     }, [pageCount, page]);
     const handleNoIcon = () => setValue(null);
@@ -5243,7 +4932,7 @@ var IconPicker = Comp(
           /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_material5.FormControlLabel, { label: "Two Tone", value: "TwoTone", control: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_material5.Radio, {}) }),
           /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_material5.FormControlLabel, { label: "Sharp", value: "Sharp", control: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_material5.Radio, {}) })
         ] }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(View, { column: true, width: "16rem", height: "19rem", children: chunkArray(pageIcons, 5).map((swatch, i2) => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(View, { row: true, children: swatch.map((icon) => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(View, { column: true, width: "16rem", height: "19rem", children: chunkArray(pageIcons, 5).map((swatch, i) => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(View, { row: true, children: swatch.map((icon) => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
           IconButton,
           {
             name: icon,
@@ -5255,7 +4944,7 @@ var IconPicker = Comp(
             onClick: () => setValue(icon)
           },
           icon
-        )) }, i2)) }),
+        )) }, i)) }),
         /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
           Pagination,
           {
@@ -5272,7 +4961,7 @@ var IconPicker = Comp(
 );
 
 // trabecula/components/buttons/menu-button.tsx
-var import_react6 = require("react");
+var import_react5 = require("react");
 var import_material6 = require("@mui/material");
 var import_jsx_runtime7 = require("react/jsx-runtime");
 var MenuButton = (_a) => {
@@ -5294,7 +4983,7 @@ var MenuButton = (_a) => {
     "menuWidth"
   ]);
   const { css } = useClasses5({ bgColor, menuWidth });
-  const [anchorEl, setAnchorEl] = (0, import_react6.useState)(null);
+  const [anchorEl, setAnchorEl] = (0, import_react5.useState)(null);
   const handleClose = () => setAnchorEl(null);
   const handleOpen = (event) => {
     event.stopPropagation();
@@ -5340,7 +5029,7 @@ var MultiActionButton = (_a) => {
 
 // trabecula/components/buttons/sort-menu.tsx
 var import_jsx_runtime9 = require("react/jsx-runtime");
-var import_react7 = require("react");
+var import_react6 = require("react");
 var SortMenu = (_a) => {
   var _b = _a, {
     color = colors.custom.black,
@@ -5380,7 +5069,7 @@ var SortMenu = (_a) => {
       ]
     })
   );
-  return /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(MenuButton, { button: renderButton, children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(View, { column: true, children: rows.map((rowProps) => /* @__PURE__ */ (0, import_react7.createElement)(SortRow, __spreadProps(__spreadValues(__spreadValues({}, rowProps), { setValue, value }), { key: rowProps.attribute }))) }) });
+  return /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(MenuButton, { button: renderButton, children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(View, { column: true, children: rows.map((rowProps) => /* @__PURE__ */ (0, import_react6.createElement)(SortRow, __spreadProps(__spreadValues(__spreadValues({}, rowProps), { setValue, value }), { key: rowProps.attribute }))) }) });
 };
 var useClasses6 = makeClasses((props) => ({
   button: __spreadProps(__spreadValues({}, makeBorderRadiuses(__spreadValues({ all: "0.3rem" }, props.hasHeader ? { top: 0 } : {}))), {
@@ -5452,7 +5141,7 @@ var useClasses7 = makeClasses({
 });
 
 // trabecula/components/inputs/date-input.tsx
-var import_react8 = require("react");
+var import_react7 = require("react");
 var import_AdapterDayjs = require("@mui/x-date-pickers/AdapterDayjs");
 var import_DatePicker = require("@mui/x-date-pickers/DatePicker");
 var import_LocalizationProvider = require("@mui/x-date-pickers/LocalizationProvider");
@@ -5474,8 +5163,8 @@ var DateInput = (_a) => {
     "width"
   ]);
   const { css } = useClasses8({ width });
-  const [dateValue, setDateValue] = (0, import_react8.useState)((value == null ? void 0 : value.length) ? (0, import_dayjs.default)(value) : null);
-  (0, import_react8.useEffect)(() => {
+  const [dateValue, setDateValue] = (0, import_react7.useState)((value == null ? void 0 : value.length) ? (0, import_dayjs.default)(value) : null);
+  (0, import_react7.useEffect)(() => {
     setDateValue((value == null ? void 0 : value.length) ? (0, import_dayjs.default)(value) : null);
   }, [value]);
   const handleChange = (val) => setValue == null ? void 0 : setValue(val == null ? void 0 : val.format("YYYY-MM-DD"));
@@ -5554,7 +5243,7 @@ var import_material7 = require("@mui/material");
 var import_jsx_runtime13 = require("react/jsx-runtime");
 var Dropdown = (_a) => {
   var _b = _a, { options, value } = _b, props = __objRest(_b, ["options", "value"]);
-  return /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Input, __spreadProps(__spreadValues({}, props), { value, select: true, children: options.map((o2, i2) => /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(import_material7.MenuItem, { value: o2.value, children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Text, { children: o2.label }) }, i2)) }));
+  return /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Input, __spreadProps(__spreadValues({}, props), { value, select: true, children: options.map((o, i) => /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(import_material7.MenuItem, { value: o.value, children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Text, { children: o.label }) }, i)) }));
 };
 
 // trabecula/components/inputs/filter-menu.tsx
@@ -5874,13 +5563,13 @@ var LogOpsInput = (_a) => {
 };
 
 // trabecula/components/inputs/multi-input.tsx
-var import_react12 = require("react");
-
-// trabecula/components/inputs/multi-input-list.tsx
 var import_react11 = require("react");
 
+// trabecula/components/inputs/multi-input-list.tsx
+var import_react10 = require("react");
+
 // node_modules/react-virtualized-auto-sizer/dist/react-virtualized-auto-sizer.esm.js
-var import_react9 = require("react");
+var import_react8 = require("react");
 var windowObject;
 if (typeof window !== "undefined") {
   windowObject = window;
@@ -5940,8 +5629,8 @@ function createDetectElementResize(nonce) {
     checkTriggers = function(element) {
       return element.offsetWidth !== element.__resizeLast__.width || element.offsetHeight !== element.__resizeLast__.height;
     };
-    scrollListener = function(e2) {
-      if (e2.target.className && typeof e2.target.className.indexOf === "function" && e2.target.className.indexOf("contract-trigger") < 0 && e2.target.className.indexOf("expand-trigger") < 0) {
+    scrollListener = function(e) {
+      if (e.target.className && typeof e.target.className.indexOf === "function" && e.target.className.indexOf("contract-trigger") < 0 && e.target.className.indexOf("expand-trigger") < 0) {
         return;
       }
       const element = this;
@@ -5954,7 +5643,7 @@ function createDetectElementResize(nonce) {
           element.__resizeLast__.width = element.offsetWidth;
           element.__resizeLast__.height = element.offsetHeight;
           element.__resizeListeners__.forEach(function forEachResizeListener(fn) {
-            fn.call(element, e2);
+            fn.call(element, e);
           });
         }
       });
@@ -5971,11 +5660,11 @@ function createDetectElementResize(nonce) {
         animation = true;
       }
       if (animation === false) {
-        for (let i2 = 0; i2 < domPrefixes.length; i2++) {
-          if (elm.style[domPrefixes[i2] + "AnimationName"] !== void 0) {
-            pfx = domPrefixes[i2];
+        for (let i = 0; i < domPrefixes.length; i++) {
+          if (elm.style[domPrefixes[i] + "AnimationName"] !== void 0) {
+            pfx = domPrefixes[i];
             keyframeprefix = "-" + pfx.toLowerCase() + "-";
-            animationStartEvent = startEvents[i2];
+            animationStartEvent = startEvents[i];
             animation = true;
             break;
           }
@@ -6027,8 +5716,8 @@ function createDetectElementResize(nonce) {
         resetTriggers(element);
         element.addEventListener("scroll", scrollListener, true);
         if (animationStartEvent) {
-          element.__resizeTriggers__.__animationListener__ = function animationListener(e2) {
-            if (e2.animationName === animationName) {
+          element.__resizeTriggers__.__animationListener__ = function animationListener(e) {
+            if (e.animationName === animationName) {
               resetTriggers(element);
             }
           };
@@ -6051,7 +5740,7 @@ function createDetectElementResize(nonce) {
         }
         try {
           element.__resizeTriggers__ = !element.removeChild(element.__resizeTriggers__);
-        } catch (e2) {
+        } catch (e) {
         }
       }
     }
@@ -6061,7 +5750,7 @@ function createDetectElementResize(nonce) {
     removeResizeListener
   };
 }
-var AutoSizer = class extends import_react9.Component {
+var AutoSizer = class extends import_react8.Component {
   constructor(...args) {
     super(...args);
     this.state = {
@@ -6208,7 +5897,7 @@ var AutoSizer = class extends import_react9.Component {
     if (doNotBailOutOnEmptyChildren) {
       bailoutOnChildren = false;
     }
-    return (0, import_react9.createElement)(tagName, __spreadValues({
+    return (0, import_react8.createElement)(tagName, __spreadValues({
       ref: this._setRef,
       style: __spreadValues(__spreadValues({}, outerStyle), style)
     }, rest), !bailoutOnChildren && children(childParams));
@@ -6217,31 +5906,31 @@ var AutoSizer = class extends import_react9.Component {
 
 // node_modules/@babel/runtime/helpers/esm/extends.js
 function _extends() {
-  return _extends = Object.assign ? Object.assign.bind() : function(n2) {
-    for (var e2 = 1; e2 < arguments.length; e2++) {
-      var t2 = arguments[e2];
-      for (var r3 in t2) ({}).hasOwnProperty.call(t2, r3) && (n2[r3] = t2[r3]);
+  return _extends = Object.assign ? Object.assign.bind() : function(n) {
+    for (var e = 1; e < arguments.length; e++) {
+      var t = arguments[e];
+      for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
-    return n2;
+    return n;
   }, _extends.apply(null, arguments);
 }
 
 // node_modules/@babel/runtime/helpers/esm/assertThisInitialized.js
-function _assertThisInitialized(e2) {
-  if (void 0 === e2) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-  return e2;
+function _assertThisInitialized(e) {
+  if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  return e;
 }
 
 // node_modules/@babel/runtime/helpers/esm/setPrototypeOf.js
-function _setPrototypeOf(t2, e2) {
-  return _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function(t3, e3) {
-    return t3.__proto__ = e3, t3;
-  }, _setPrototypeOf(t2, e2);
+function _setPrototypeOf(t, e) {
+  return _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function(t2, e2) {
+    return t2.__proto__ = e2, t2;
+  }, _setPrototypeOf(t, e);
 }
 
 // node_modules/@babel/runtime/helpers/esm/inheritsLoose.js
-function _inheritsLoose(t2, o2) {
-  t2.prototype = Object.create(o2.prototype), t2.prototype.constructor = t2, _setPrototypeOf(t2, o2);
+function _inheritsLoose(t, o) {
+  t.prototype = Object.create(o.prototype), t.prototype.constructor = t, _setPrototypeOf(t, o);
 }
 
 // node_modules/memoize-one/dist/memoize-one.esm.js
@@ -6261,8 +5950,8 @@ function areInputsEqual(newInputs, lastInputs) {
   if (newInputs.length !== lastInputs.length) {
     return false;
   }
-  for (var i2 = 0; i2 < newInputs.length; i2++) {
-    if (!isEqual2(newInputs[i2], lastInputs[i2])) {
+  for (var i = 0; i < newInputs.length; i++) {
+    if (!isEqual2(newInputs[i], lastInputs[i])) {
       return false;
     }
   }
@@ -6295,7 +5984,7 @@ function memoizeOne(resultFn, isEqual3) {
 var memoize_one_esm_default = memoizeOne;
 
 // node_modules/react-window/dist/index.esm.js
-var import_react10 = require("react");
+var import_react9 = require("react");
 var hasNativePerformanceNow = typeof performance === "object" && typeof performance.now === "function";
 var now = hasNativePerformanceNow ? function() {
   return performance.now();
@@ -6451,7 +6140,7 @@ function createListComponent(_ref) {
         return style;
       };
       _this._getItemStyleCache = void 0;
-      _this._getItemStyleCache = memoize_one_esm_default(function(_2, __, ___) {
+      _this._getItemStyleCache = memoize_one_esm_default(function(_, __, ___) {
         return {};
       });
       _this._onScrollHorizontal = function(event) {
@@ -6612,7 +6301,7 @@ function createListComponent(_ref) {
       var items = [];
       if (itemCount > 0) {
         for (var _index = startIndex; _index <= stopIndex; _index++) {
-          items.push((0, import_react10.createElement)(children, {
+          items.push((0, import_react9.createElement)(children, {
             data: itemData,
             key: itemKey(_index, itemData),
             index: _index,
@@ -6622,7 +6311,7 @@ function createListComponent(_ref) {
         }
       }
       var estimatedTotalSize = getEstimatedTotalSize2(this.props, this._instanceProps);
-      return (0, import_react10.createElement)(outerElementType || outerTagName || "div", {
+      return (0, import_react9.createElement)(outerElementType || outerTagName || "div", {
         className,
         onScroll,
         ref: this._outerRefSetter,
@@ -6635,7 +6324,7 @@ function createListComponent(_ref) {
           willChange: "transform",
           direction
         }, style)
-      }, (0, import_react10.createElement)(innerElementType || innerTagName || "div", {
+      }, (0, import_react9.createElement)(innerElementType || innerTagName || "div", {
         children: items,
         ref: innerRef,
         style: {
@@ -6671,7 +6360,7 @@ function createListComponent(_ref) {
       return [Math.max(0, startIndex - overscanBackward), Math.max(0, Math.min(itemCount - 1, stopIndex + overscanForward)), startIndex, stopIndex];
     };
     return List;
-  })(import_react10.PureComponent), _class.defaultProps = {
+  })(import_react9.PureComponent), _class.defaultProps = {
     direction: "ltr",
     itemData: void 0,
     layout: "vertical",
@@ -6818,9 +6507,9 @@ var MultiInputRow = (_a) => {
     return (_a3 = props.onClick) == null ? void 0 : _a3.call(props, props.value);
   };
   const handleDelete = () => props.search.onChange(
-    props.search.value.filter((v2) => {
+    props.search.value.filter((v) => {
       var _a3, _b3;
-      return ((_b3 = (_a3 = props.valueExtractor) == null ? void 0 : _a3.call(props, v2)) != null ? _b3 : v2) !== value;
+      return ((_b3 = (_a3 = props.valueExtractor) == null ? void 0 : _a3.call(props, v)) != null ? _b3 : v) !== value;
     })
   );
   return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(View, { row: true, className: css.root, style: props.style, children: [
@@ -6881,7 +6570,7 @@ var useClasses10 = makeClasses((props) => ({
 
 // trabecula/components/inputs/multi-input-list.tsx
 var import_jsx_runtime18 = require("react/jsx-runtime");
-var MultiInputList = (0, import_react11.forwardRef)(
+var MultiInputList = (0, import_react10.forwardRef)(
   (_a, ref) => {
     var _b = _a, {
       hasDeleteAll = false,
@@ -6975,10 +6664,10 @@ var MultiInput = Comp(
   }, inputRef) => {
     const isMax = max > -1 && value.length >= max;
     const disabled = (inputProps == null ? void 0 : inputProps.disabled) || isMax;
-    const [inputValue, setInputValue] = (0, import_react12.useState)("");
-    const onKeyDown = (e2) => {
-      if (e2.key === "Enter" && !isMax) {
-        e2.preventDefault();
+    const [inputValue, setInputValue] = (0, import_react11.useState)("");
+    const onKeyDown = (e) => {
+      if (e.key === "Enter" && !isMax) {
+        e.preventDefault();
         if (!value.includes(inputValue)) onChange([...value, inputValue]);
         setInputValue("");
       }
@@ -7001,7 +6690,7 @@ var MultiInput = Comp(
 );
 
 // trabecula/components/inputs/num-input.tsx
-var import_react13 = require("react");
+var import_react12 = require("react");
 var import_jsx_runtime20 = require("react/jsx-runtime");
 var NumInput = Comp(
   (_a, ref) => {
@@ -7022,7 +6711,7 @@ var NumInput = Comp(
       "value",
       "valueDisplay"
     ]);
-    const [error, setError] = (0, import_react13.useState)(null);
+    const [error, setError] = (0, import_react12.useState)(null);
     const handleChange = (val) => {
       if (!val) {
         setValue == null ? void 0 : setValue(null);
@@ -7123,10 +6812,10 @@ var RangeWrapper = (props) => {
 var import_jsx_runtime23 = require("react/jsx-runtime");
 var DetailRows = ({ labelWidth = "8rem", rows }) => {
   const { css } = useClasses12({ labelWidth });
-  return /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(View, { className: css.table, children: rows.map(({ label, value }, i2) => /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(View, { className: css.row, children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(View, { className: css.table, children: rows.map(({ label, value }, i) => /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(View, { className: css.row, children: [
     typeof label === "string" ? /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(Text, { className: css.label, children: label }) : label,
     typeof value === "string" ? /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(Text, { noWrap: true, tooltip: value, children: value }) : value
-  ] }, `${i2}-${label}`)) });
+  ] }, `${i}-${label}`)) });
 };
 var useClasses12 = makeClasses((props) => ({
   label: {
@@ -7262,7 +6951,7 @@ var useClasses14 = makeClasses((props) => ({
 }));
 
 // trabecula/components/modals/confirm-modal.tsx
-var import_react14 = require("react");
+var import_react13 = require("react");
 var import_jsx_runtime26 = require("react/jsx-runtime");
 var ConfirmModal = ({
   cancelColor = colors.custom.grey,
@@ -7280,7 +6969,7 @@ var ConfirmModal = ({
   subText,
   width = "25rem"
 }) => {
-  const [isLoading, setIsLoading] = (0, import_react14.useState)(false);
+  const [isLoading, setIsLoading] = (0, import_react13.useState)(false);
   const handleClose = () => setVisible(false);
   const handleCancel = () => {
     onCancel == null ? void 0 : onCancel();
@@ -7325,7 +7014,7 @@ var ConfirmModal = ({
 };
 
 // trabecula/components/modals/modal/container.tsx
-var import_react15 = require("react");
+var import_react14 = require("react");
 var import_react_draggable = __toESM(require("react-draggable"));
 var import_material11 = require("@mui/material");
 var import_jsx_runtime27 = require("react/jsx-runtime");
@@ -7358,7 +7047,7 @@ var Container = (_a) => {
     "width"
   ]);
   const { css, cx } = useClasses15({ height, maxHeight, maxWidth, width });
-  const handleClose = (_2, reason) => (reason === "backdropClick" ? closeOnBackdrop : true) && (onClose == null ? void 0 : onClose());
+  const handleClose = (_, reason) => (reason === "backdropClick" ? closeOnBackdrop : true) && (onClose == null ? void 0 : onClose());
   return /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)(
     import_material11.Dialog,
     __spreadProps(__spreadValues(__spreadValues({}, props), { scroll }), {
@@ -7375,7 +7064,7 @@ var Container = (_a) => {
 };
 var DraggablePaper = (props) => {
   const { css, cx } = useDraggableClasses(null);
-  const ref = (0, import_react15.useRef)(null);
+  const ref = (0, import_react14.useRef)(null);
   return /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(import_react_draggable.default, { nodeRef: ref, cancel: '[class*="MuiDialogContent-root"]', children: /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(import_material11.Paper, __spreadProps(__spreadValues({}, props), { ref, className: cx(props.className, css.draggable) })) });
 };
 var useClasses15 = makeClasses((props) => ({
@@ -7598,7 +7287,7 @@ var Pagination = (_a) => {
     "viewProps"
   ]);
   const { css, cx } = useClasses20(null);
-  const handleChange = (_2, page) => onChange(page);
+  const handleChange = (_, page) => onChange(page);
   const handleLastPageClick = (event, item) => {
     var _a2;
     if (onFullLoad) event.preventDefault(), onFullLoad();
@@ -7619,7 +7308,7 @@ var Pagination = (_a) => {
         renderItem: (item) => /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(
           import_material17.PaginationItem,
           __spreadProps(__spreadValues({}, item), {
-            onClick: item.type === "last" ? (e2) => handleLastPageClick(e2, item) : item.onClick
+            onClick: item.type === "last" ? (e) => handleLastPageClick(e, item) : item.onClick
           })
         )
       }, props)
@@ -7648,7 +7337,7 @@ var useClasses20 = makeClasses({
 });
 
 // trabecula/components/table/table.tsx
-var import_react16 = require("react");
+var import_react15 = require("react");
 var import_material18 = require("@mui/material");
 var import_jsx_runtime34 = require("react/jsx-runtime");
 var MUI_TABLE_ROW_HEIGHT = 33;
@@ -7662,20 +7351,20 @@ var Table = ({
   paginationClassName
 }) => {
   const { css, cx } = useClasses21(null);
-  const [page, setPage] = (0, import_react16.useState)(0);
-  const [rowsPerPage, setRowsPerPage] = (0, import_react16.useState)(rowCountOptions[0]);
+  const [page, setPage] = (0, import_react15.useState)(0);
+  const [rowsPerPage, setRowsPerPage] = (0, import_react15.useState)(rowCountOptions[0]);
   const handleRowsPerPageChange = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-  const displayedRows = (0, import_react16.useMemo)(
+  const displayedRows = (0, import_react15.useMemo)(
     () => rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
     [page, rowsPerPage, rows]
   );
   const emptyRows = rowsPerPage - displayedRows.length;
   return /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(import_jsx_runtime34.Fragment, { children: [
     /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(import_material18.TableContainer, { component: import_material18.Paper, className, children: /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(import_material18.Table, { size: "small", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(import_material18.TableHead, { children: /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(import_material18.TableRow, { className: css.tableHeader, children: columns.map((column, i2) => /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(import_material18.TableCell, { className: css.tableHeaderCell, children: column.header }, `${i2}-${column.header}`)) }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(import_material18.TableHead, { children: /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(import_material18.TableRow, { className: css.tableHeader, children: columns.map((column, i) => /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(import_material18.TableCell, { className: css.tableHeaderCell, children: column.header }, `${i}-${column.header}`)) }) }),
       /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(import_material18.TableBody, { children: [
         displayedRows.map((row, rowKey) => /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(import_material18.TableRow, { className: css.tableRowAlt, children: columns.map((column, cellKey) => /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(
           TableCellTrunc,
@@ -7701,7 +7390,7 @@ var Table = ({
       {
         count: rows.length,
         page,
-        onPageChange: (_2, p2) => setPage(p2),
+        onPageChange: (_, p) => setPage(p),
         labelRowsPerPage: "Row count :",
         rowsPerPage,
         rowsPerPageOptions: rowCountOptions,
@@ -7868,6 +7557,7 @@ var Text = (_a) => {
     className,
     color,
     component = "span",
+    fontFamily = "Avenir",
     fontSize,
     fontWeight,
     overflow,
@@ -7879,6 +7569,7 @@ var Text = (_a) => {
     "className",
     "color",
     "component",
+    "fontFamily",
     "fontSize",
     "fontWeight",
     "overflow",
@@ -7887,7 +7578,15 @@ var Text = (_a) => {
     "tooltipProps"
   ]);
   const { css, cx } = useClasses23({ color, fontSize, fontWeight, overflow, preset });
-  return /* @__PURE__ */ (0, import_jsx_runtime38.jsx)(TooltipWrapper, __spreadProps(__spreadValues({}, { tooltip, tooltipProps }), { children: /* @__PURE__ */ (0, import_jsx_runtime38.jsx)(import_material19.Typography, __spreadProps(__spreadValues(__spreadValues({}, { component }), props), { className: cx(css.root, className), children })) }));
+  return /* @__PURE__ */ (0, import_jsx_runtime38.jsx)(TooltipWrapper, __spreadProps(__spreadValues({}, { tooltip, tooltipProps }), { children: /* @__PURE__ */ (0, import_jsx_runtime38.jsx)(
+    import_material19.Typography,
+    __spreadProps(__spreadValues({}, props), {
+      component,
+      fontFamily,
+      className: cx(css.root, className),
+      children
+    })
+  ) }));
 };
 var useClasses23 = makeClasses((props) => {
   var _a, _b, _c, _d;
@@ -7903,7 +7602,7 @@ var useClasses23 = makeClasses((props) => {
 });
 
 // trabecula/components/toggles/accordion.tsx
-var import_react17 = require("react");
+var import_react16 = require("react");
 var import_material20 = require("@mui/material");
 var import_jsx_runtime39 = require("react/jsx-runtime");
 var Accordion = ({
@@ -7916,7 +7615,7 @@ var Accordion = ({
   header,
   setExpanded
 }) => {
-  const [isExpanded, setIsExpanded] = (0, import_react17.useState)(expanded);
+  const [isExpanded, setIsExpanded] = (0, import_react16.useState)(expanded);
   const handleClick = () => {
     setIsExpanded(!isExpanded);
     setExpanded == null ? void 0 : setExpanded(!isExpanded);
@@ -8340,7 +8039,7 @@ var useClasses30 = makeClasses({
 });
 
 // trabecula/components/wrappers/card-base/image.tsx
-var import_react18 = require("react");
+var import_react17 = require("react");
 var import_jsx_runtime48 = require("react/jsx-runtime");
 var Image = ({
   autoAnimate = false,
@@ -8357,10 +8056,10 @@ var Image = ({
   thumbPaths,
   title
 }) => {
-  const thumbInterval = (0, import_react18.useRef)(null);
-  const [hasError, setHasError] = (0, import_react18.useState)(false);
-  const [imagePos, setImagePos] = (0, import_react18.useState)(null);
-  const [thumbIndex, setThumbIndex] = (0, import_react18.useState)(0);
+  const thumbInterval = (0, import_react17.useRef)(null);
+  const [hasError, setHasError] = (0, import_react17.useState)(false);
+  const [imagePos, setImagePos] = (0, import_react17.useState)(null);
+  const [thumbIndex, setThumbIndex] = (0, import_react17.useState)(0);
   const { css, cx } = useClasses31({ fit, height, imagePos, rounded });
   const hasListeners = !disabled && !autoAnimate && (thumbPaths == null ? void 0 : thumbPaths.length) > 1;
   const createThumbInterval = () => {
@@ -8369,7 +8068,7 @@ var Image = ({
       setThumbIndex((thumbIndex2) => thumbIndex2 + 1 === (thumbPaths == null ? void 0 : thumbPaths.length) ? 0 : thumbIndex2 + 1);
     }, 300);
   };
-  (0, import_react18.useEffect)(() => {
+  (0, import_react17.useEffect)(() => {
     if (!autoAnimate) return;
     createThumbInterval();
     return () => clearInterval(thumbInterval.current);
@@ -8624,15 +8323,15 @@ var ConditionalWrap = ({
 }) => condition ? wrap(children) : /* @__PURE__ */ (0, import_jsx_runtime52.jsx)(import_jsx_runtime52.Fragment, { children });
 
 // trabecula/components/wrappers/context-menu.tsx
-var import_react19 = require("react");
+var import_react18 = require("react");
 var import_material25 = require("@mui/material");
 var import_color10 = __toESM(require_color());
 var import_jsx_runtime53 = require("react/jsx-runtime");
 var ContextMenu = (_a) => {
   var _b = _a, { children, disabled, id, menuItems } = _b, props = __objRest(_b, ["children", "disabled", "id", "menuItems"]);
   const { css } = useClasses34(null);
-  const [mouseX, setMouseX] = (0, import_react19.useState)(null);
-  const [mouseY, setMouseY] = (0, import_react19.useState)(null);
+  const [mouseX, setMouseX] = (0, import_react18.useState)(null);
+  const [mouseY, setMouseY] = (0, import_react18.useState)(null);
   const handleContext = (event) => {
     event.preventDefault();
     if (disabled) return;
@@ -8804,14 +8503,14 @@ var useClasses35 = makeClasses((props) => ({
 }));
 
 // trabecula/components/wrappers/side-scroller.tsx
-var import_react20 = require("react");
+var import_react19 = require("react");
 var import_jsx_runtime57 = require("react/jsx-runtime");
 var SideScroller = ({ children, className, innerClassName }) => {
-  const ref = (0, import_react20.useRef)(null);
+  const ref = (0, import_react19.useRef)(null);
   const { width } = useElementResize(ref);
-  const [isLeftButtonVisible, setIsLeftButtonVisible] = (0, import_react20.useState)(false);
-  const [isRightButtonVisible, setIsRightButtonVisible] = (0, import_react20.useState)(false);
-  const [scrollPos, setScrollPos] = (0, import_react20.useState)(0);
+  const [isLeftButtonVisible, setIsLeftButtonVisible] = (0, import_react19.useState)(false);
+  const [isRightButtonVisible, setIsRightButtonVisible] = (0, import_react19.useState)(false);
+  const [scrollPos, setScrollPos] = (0, import_react19.useState)(0);
   const { css, cx } = useClasses36({ isLeftButtonVisible, isRightButtonVisible });
   const getButtonVisibility = () => {
     if (!ref.current) return [false, false];
@@ -8827,13 +8526,13 @@ var SideScroller = ({ children, className, innerClassName }) => {
     ref.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
     setScrollPos(newScrollPos);
   };
-  (0, import_react20.useEffect)(() => {
+  (0, import_react19.useEffect)(() => {
     const node = ref.current;
     const scrollListener = debounce2(setScrollPos.bind(node.scrollLeft), 50);
     node.addEventListener("scroll", scrollListener);
     return () => node.removeEventListener("scroll", scrollListener);
   }, []);
-  (0, import_react20.useEffect)(() => {
+  (0, import_react19.useEffect)(() => {
     const [left, right] = getButtonVisibility();
     setIsLeftButtonVisible(left);
     setIsRightButtonVisible(right);

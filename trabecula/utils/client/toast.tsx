@@ -89,7 +89,7 @@ const useClasses = makeClasses({
       "&-body": {
         display: "flex",
         alignItems: "center",
-        fontFamily: "Roboto",
+        fontFamily: "Avenir",
         fontSize: "1.1rem",
         fontWeight: 400,
         whiteSpace: "break-spaces",

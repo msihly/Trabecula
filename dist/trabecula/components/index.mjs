@@ -11,7 +11,7 @@ import {
   require_color,
   toast,
   useElementResize
-} from "../chunk-PUAU47FZ.mjs";
+} from "../chunk-ISBVWG3A.mjs";
 import {
   Fmt,
   LOGICAL_OPS,
@@ -76,7 +76,8 @@ var Button = (_a) => {
     tooltip,
     tooltipProps,
     type = "button",
-    width
+    width,
+    whiteSpace = "nowrap"
   } = _b, props = __objRest(_b, [
     "borderRadiuses",
     "boxShadow",
@@ -108,7 +109,8 @@ var Button = (_a) => {
     "tooltip",
     "tooltipProps",
     "type",
-    "width"
+    "width",
+    "whiteSpace"
   ]);
   const { css, cx } = useClasses({
     borderRadiuses,
@@ -124,7 +126,8 @@ var Button = (_a) => {
     padding: __spreadValues({ all: !(text == null ? void 0 : text.length) ? "0.4em" : "0.4em 0.8em" }, padding),
     textColor,
     textTransform,
-    width
+    width,
+    whiteSpace
   });
   const handleClick = (event) => {
     onClick == null ? void 0 : onClick(event);
@@ -180,7 +183,8 @@ var useClasses = makeClasses((props) => {
       overflow: "hidden",
       textOverflow: "ellipsis",
       transition: "all 100ms ease-in-out",
-      textTransform: props.textTransform
+      textTransform: props.textTransform,
+      whiteSpace: props.whiteSpace
     }
   };
 });
@@ -3057,6 +3061,7 @@ var Text = (_a) => {
     className,
     color,
     component = "span",
+    fontFamily = "Avenir",
     fontSize,
     fontWeight,
     overflow,
@@ -3068,6 +3073,7 @@ var Text = (_a) => {
     "className",
     "color",
     "component",
+    "fontFamily",
     "fontSize",
     "fontWeight",
     "overflow",
@@ -3076,7 +3082,15 @@ var Text = (_a) => {
     "tooltipProps"
   ]);
   const { css, cx } = useClasses22({ color, fontSize, fontWeight, overflow, preset });
-  return /* @__PURE__ */ jsx37(TooltipWrapper, __spreadProps(__spreadValues({}, { tooltip, tooltipProps }), { children: /* @__PURE__ */ jsx37(Typography, __spreadProps(__spreadValues(__spreadValues({}, { component }), props), { className: cx(css.root, className), children })) }));
+  return /* @__PURE__ */ jsx37(TooltipWrapper, __spreadProps(__spreadValues({}, { tooltip, tooltipProps }), { children: /* @__PURE__ */ jsx37(
+    Typography,
+    __spreadProps(__spreadValues({}, props), {
+      component,
+      fontFamily,
+      className: cx(css.root, className),
+      children
+    })
+  ) }));
 };
 var useClasses22 = makeClasses((props) => {
   var _a, _b, _c, _d;
