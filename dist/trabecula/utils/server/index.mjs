@@ -1,57 +1,15 @@
 import {
   handleErrors
-} from "../../chunk-W2EJFMFX.mjs";
+} from "../../chunk-VYK6HHAI.mjs";
 import {
-  __async,
-  __commonJS,
-  __require,
-  __toESM
-} from "../../chunk-A2APWHWI.mjs";
-
-// node_modules/md5-file/index.js
-var require_md5_file = __commonJS({
-  "node_modules/md5-file/index.js"(exports, module) {
-    var crypto = __require("crypto");
-    var fs2 = __require("fs");
-    var BUFFER_SIZE = 8192;
-    function md5FileSync(path2) {
-      const fd = fs2.openSync(path2, "r");
-      const hash = crypto.createHash("md5");
-      const buffer = Buffer.alloc(BUFFER_SIZE);
-      try {
-        let bytesRead;
-        do {
-          bytesRead = fs2.readSync(fd, buffer, 0, BUFFER_SIZE);
-          hash.update(buffer.slice(0, bytesRead));
-        } while (bytesRead === BUFFER_SIZE);
-      } finally {
-        fs2.closeSync(fd);
-      }
-      return hash.digest("hex");
-    }
-    function md5File2(path2) {
-      return new Promise((resolve, reject) => {
-        const output = crypto.createHash("md5");
-        const input = fs2.createReadStream(path2);
-        input.on("error", (err) => {
-          reject(err);
-        });
-        output.once("readable", () => {
-          resolve(output.read().toString("hex"));
-        });
-        input.pipe(output);
-      });
-    }
-    module.exports = md5File2;
-    module.exports.sync = md5FileSync;
-  }
-});
+  __async
+} from "../../chunk-DM4QYMVJ.mjs";
 
 // trabecula/utils/server/files.ts
-var import_md5_file = __toESM(require_md5_file());
 import { promises as fs } from "fs";
 import path from "path";
 import { fdir } from "fdir";
+import _md5File from "md5-file";
 import trash from "trash";
 var checkFileExists = (path2) => __async(null, null, function* () {
   return !!(yield fs.stat(path2).catch(() => false));
@@ -84,7 +42,7 @@ var extendFileName = (fileName, ext) => `${path.relative(".", fileName).replace(
 var makeFolder = (path2) => __async(null, null, function* () {
   return yield fs.mkdir(path2, { recursive: true });
 });
-var md5File = import_md5_file.default;
+var md5File = _md5File;
 var removeEmptyFolders = (..._0) => __async(null, [..._0], function* (dirPath = ".", options = {}) {
   const dirPathsParts = [.../* @__PURE__ */ new Set([dirPath, ...yield dirToFolderPaths(dirPath)])].filter((p) => {
     var _a;

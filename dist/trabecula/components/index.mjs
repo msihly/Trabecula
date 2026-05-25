@@ -8,10 +8,9 @@ import {
   makeClasses,
   makeMargins,
   makePadding,
-  require_color,
   toast,
   useElementResize
-} from "../chunk-XK7B7M72.mjs";
+} from "../chunk-4R5CFGBU.mjs";
 import {
   Fmt,
   LOGICAL_OPS,
@@ -20,14 +19,13 @@ import {
   dayjs,
   debounce,
   deepMerge
-} from "../chunk-W2EJFMFX.mjs";
+} from "../chunk-VYK6HHAI.mjs";
 import {
   __async,
   __objRest,
   __spreadProps,
-  __spreadValues,
-  __toESM
-} from "../chunk-A2APWHWI.mjs";
+  __spreadValues
+} from "../chunk-DM4QYMVJ.mjs";
 
 // trabecula/components/comp.tsx
 import { forwardRef } from "react";
@@ -38,10 +36,10 @@ function Comp(component) {
 }
 
 // trabecula/components/buttons/button.tsx
-var import_color = __toESM(require_color());
 import {
   Button as MuiButton
 } from "@mui/material";
+import Color from "color";
 import { jsx, jsxs } from "react/jsx-runtime";
 var Button = (_a) => {
   var _b = _a, {
@@ -181,7 +179,7 @@ var useClasses = makeClasses((props) => {
       color: props.outlined ? props.color : (_k = props.textColor) != null ? _k : props.isLink ? colors.custom.lightBlue : props.outlined ? props.color : colors.custom.white,
       textTransform: props.textTransform,
       "&:hover": {
-        background: props.isLink ? "transparent" : props.colorOnHover || (0, import_color.default)(props.outlined ? props.outlineFill : props.color).lighten(0.1).string(),
+        background: props.isLink ? "transparent" : props.colorOnHover || Color(props.outlined ? props.outlineFill : props.color).lighten(0.1).string(),
         boxShadow: props.isLink ? "none" : void 0,
         textDecoration: props.isLink ? "underline" : void 0
       }
@@ -831,8 +829,8 @@ var FilterMenu = Comp(
 );
 
 // trabecula/components/inputs/input.tsx
-var import_color2 = __toESM(require_color());
 import { InputAdornment, TextField } from "@mui/material";
+import Color2 from "color";
 import { jsx as jsx14 } from "react/jsx-runtime";
 var DEFAULT_HEADER_PROPS = {
   fontSize: "0.8em",
@@ -970,7 +968,7 @@ var useClasses8 = makeClasses((props) => {
           deepMerge(props.hasHeader ? { top: 0 } : {}, (_c = props.borderRadiuses) != null ? _c : {})
         )),
         "&:hover fieldset": {
-          borderColor: props.color ? (0, import_color2.default)(props.color).lighten(0.3).toString() : void 0
+          borderColor: props.color ? Color2(props.color).lighten(0.3).toString() : void 0
         },
         "&.Mui-focused fieldset": {
           borderColor: props.color
@@ -1405,12 +1403,12 @@ var useClasses11 = makeClasses((props) => ({
 }));
 
 // trabecula/components/list/list-item.tsx
-var import_color3 = __toESM(require_color());
 import {
   ListItem as MuiListItem,
   ListItemIcon,
   ListItemText
 } from "@mui/material";
+import Color3 from "color";
 import { jsx as jsx23, jsxs as jsxs15 } from "react/jsx-runtime";
 var DEFAULT_ICON_END_MARGINS = { left: "1em" };
 var DEFAULT_ICON_MARGINS = { right: "1em" };
@@ -1445,7 +1443,7 @@ var ListItem = (_a) => {
       tooltip: children,
       tooltipProps: {
         arrow: false,
-        bgColor: (0, import_color3.default)(colors.custom.black).fade(0.03).hex(),
+        bgColor: Color3(colors.custom.black).fade(0.03).hex(),
         classes: { tooltip: css.tooltip },
         placement: "right-start",
         PopperProps: { className: css.tooltipPopper }
@@ -1762,8 +1760,8 @@ var Modal = {
 };
 
 // trabecula/components/progress/bar.tsx
-var import_color4 = __toESM(require_color());
 import { LinearProgress } from "@mui/material";
+import Color4 from "color";
 import { jsx as jsx30, jsxs as jsxs19 } from "react/jsx-runtime";
 var ProgressBar = Comp((props) => {
   var _a, _b, _c, _d;
@@ -1788,7 +1786,7 @@ var ProgressBar = Comp((props) => {
 var useClasses17 = makeClasses({
   progressBar: {
     flex: 1,
-    backgroundColor: (0, import_color4.default)(colors.custom.blue).fade(0.5).string(),
+    backgroundColor: Color4(colors.custom.blue).fade(0.5).string(),
     "& .MuiLinearProgress-bar": {
       backgroundColor: colors.custom.blue
     }
@@ -1796,13 +1794,13 @@ var useClasses17 = makeClasses({
 });
 
 // trabecula/components/progress/circle.tsx
-var import_color5 = __toESM(require_color());
 import { CircularProgress } from "@mui/material";
+import Color5 from "color";
 import { jsx as jsx31, jsxs as jsxs20 } from "react/jsx-runtime";
 var ProgressCircle = Comp((props) => {
   const color = props.color || colors.custom.white;
   const { css } = useClasses18({
-    bgColor: props.bgColor || (0, import_color5.default)(color).fade(0.5).hex(),
+    bgColor: props.bgColor || Color5(color).fade(0.5).hex(),
     color
   });
   return /* @__PURE__ */ jsxs20(View, { column: true, position: "relative", justify: "center", align: "center", children: [
@@ -2257,8 +2255,8 @@ var useClasses23 = makeClasses((props) => ({
 }));
 
 // trabecula/components/toggles/checkbox.tsx
-var import_color6 = __toESM(require_color());
 import { Checkbox as MuiCheckbox, FormControlLabel as FormControlLabel2 } from "@mui/material";
+import Color6 from "color";
 import { jsx as jsx39 } from "react/jsx-runtime";
 var Checkbox = ({
   center,
@@ -2316,7 +2314,7 @@ var useClasses24 = makeClasses((props) => ({
     transition: "all 200ms ease-in-out",
     userSelect: "none",
     "&:hover": {
-      backgroundColor: (0, import_color6.default)(props.color).fade(0.8).string()
+      backgroundColor: Color6(props.color).fade(0.8).string()
     },
     "& .MuiFormControlLabel-label": {
       paddingRight: "0.4em"
@@ -2325,8 +2323,8 @@ var useClasses24 = makeClasses((props) => ({
 }));
 
 // trabecula/components/tooltip/tooltip.tsx
-var import_color7 = __toESM(require_color());
 import { Tooltip as MuiTooltip } from "@mui/material";
+import Color7 from "color";
 import { jsx as jsx40 } from "react/jsx-runtime";
 var Tooltip = (_a) => {
   var _b = _a, {
@@ -2400,7 +2398,7 @@ var useClasses25 = makeClasses((props) => ({
     maxWidth: props.maxWidth,
     minWidth: props.minWidth,
     padding: props.padding,
-    backgroundColor: (0, import_color7.default)(props.bgColor).fade(0.03).string(),
+    backgroundColor: Color7(props.bgColor).fade(0.03).string(),
     color: props.color,
     fontSize: props.fontSize,
     whiteSpace: "pre-wrap",
@@ -2512,8 +2510,8 @@ var useClasses26 = makeClasses((props) => ({
 }));
 
 // trabecula/components/wrappers/card-base/container.tsx
-var import_color8 = __toESM(require_color());
 import { Paper as Paper3 } from "@mui/material";
+import Color8 from "color";
 import { jsx as jsx44 } from "react/jsx-runtime";
 var Container2 = (_a) => {
   var _b = _a, {
@@ -2566,7 +2564,7 @@ var useClasses27 = makeClasses((props, theme) => {
       [theme.breakpoints.down("md")]: props.height ? void 0 : { height: "14rem" },
       [theme.breakpoints.down("sm")]: props.height ? void 0 : { height: "12rem" }
     }, props.width ? { width: props.width } : {}), {
-      background: !props.disabled && props.selected ? `linear-gradient(to bottom right, ${(0, import_color8.default)(props.selectedColor).lighten(0.4).string()}, ${props.selectedColor} 60%)` : "transparent",
+      background: !props.disabled && props.selected ? `linear-gradient(to bottom right, ${Color8(props.selectedColor).lighten(0.4).string()}, ${props.selectedColor} 60%)` : "transparent",
       overflow: "hidden",
       cursor: "pointer",
       userSelect: "none"
@@ -2903,9 +2901,9 @@ var ConditionalWrap = ({
 }) => condition ? wrap(children) : /* @__PURE__ */ jsx51(Fragment4, { children });
 
 // trabecula/components/wrappers/context-menu.tsx
-var import_color9 = __toESM(require_color());
 import { useState as useState10 } from "react";
 import { Menu as Menu2 } from "@mui/material";
+import Color9 from "color";
 import { jsx as jsx52, jsxs as jsxs27 } from "react/jsx-runtime";
 var ContextMenu = (_a) => {
   var _b = _a, { children, disabled, id, menuItems } = _b, props = __objRest(_b, ["children", "disabled", "id", "menuItems"]);
@@ -2980,7 +2978,7 @@ var SubItem = ({
 };
 var useClasses32 = makeClasses({
   contextMenu: {
-    background: (0, import_color9.default)(colors.custom.black).fade(0.03).string()
+    background: Color9(colors.custom.black).fade(0.03).string()
   },
   contextMenuInner: {
     padding: 0

@@ -4,9 +4,6 @@ var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
-var __commonJS = (cb, mod) => function __require() {
-  return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
-};
 var __export = (target, all) => {
   for (var name in all)
     __defProp(target, name, { get: all[name], enumerable: true });
@@ -49,45 +46,6 @@ var __async = (__this, __arguments, generator) => {
   });
 };
 
-// node_modules/md5-file/index.js
-var require_md5_file = __commonJS({
-  "node_modules/md5-file/index.js"(exports2, module2) {
-    var crypto2 = require("crypto");
-    var fs2 = require("fs");
-    var BUFFER_SIZE = 8192;
-    function md5FileSync(path2) {
-      const fd = fs2.openSync(path2, "r");
-      const hash = crypto2.createHash("md5");
-      const buffer = Buffer.alloc(BUFFER_SIZE);
-      try {
-        let bytesRead;
-        do {
-          bytesRead = fs2.readSync(fd, buffer, 0, BUFFER_SIZE);
-          hash.update(buffer.slice(0, bytesRead));
-        } while (bytesRead === BUFFER_SIZE);
-      } finally {
-        fs2.closeSync(fd);
-      }
-      return hash.digest("hex");
-    }
-    function md5File2(path2) {
-      return new Promise((resolve, reject) => {
-        const output = crypto2.createHash("md5");
-        const input = fs2.createReadStream(path2);
-        input.on("error", (err) => {
-          reject(err);
-        });
-        output.once("readable", () => {
-          resolve(output.read().toString("hex"));
-        });
-        input.pipe(output);
-      });
-    }
-    module2.exports = md5File2;
-    module2.exports.sync = md5FileSync;
-  }
-});
-
 // trabecula/utils/server/index.ts
 var server_exports = {};
 __export(server_exports, {
@@ -107,7 +65,7 @@ module.exports = __toCommonJS(server_exports);
 var import_fs = require("fs");
 var import_path = __toESM(require("path"));
 var import_fdir = require("fdir");
-var import_md5_file = __toESM(require_md5_file());
+var import_md5_file = __toESM(require("md5-file"));
 var import_trash = __toESM(require("trash"));
 
 // trabecula/utils/common/constants.ts
@@ -292,6 +250,8 @@ import_dayjs.default.extend(import_duration.default);
 import_dayjs.default.extend(import_relativeTime.default);
 
 // trabecula/utils/common/miscellaneous.ts
+var import_es_toolkit = require("es-toolkit");
+var import_compat = require("es-toolkit/compat");
 var handleErrors = (fn) => __async(null, null, function* () {
   try {
     return { success: true, data: yield fn() };
