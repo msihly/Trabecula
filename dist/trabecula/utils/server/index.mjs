@@ -591,6 +591,7 @@ var dirToFilePaths = (dirPath, filterFn) => __async(null, null, function* () {
 var dirToFolderPaths = (dirPath) => __async(null, null, function* () {
   return yield new Builder().onlyDirs().withFullPaths().crawl(dirPath).withPromise();
 });
+var extendFileName = (fileName, ext) => `${path.relative(".", fileName).replace(/\.\w+$/, "")}.${ext}`;
 var makeFolder = (path2) => __async(null, null, function* () {
   return yield fs.mkdir(path2, { recursive: true });
 });
@@ -628,6 +629,7 @@ export {
   deleteFile,
   dirToFilePaths,
   dirToFolderPaths,
+  extendFileName,
   makeFolder,
   md5File,
   removeEmptyFolders

@@ -111,6 +111,7 @@ __export(server_exports, {
   deleteFile: () => deleteFile,
   dirToFilePaths: () => dirToFilePaths,
   dirToFolderPaths: () => dirToFolderPaths,
+  extendFileName: () => extendFileName,
   makeFolder: () => makeFolder,
   md5File: () => md5File,
   removeEmptyFolders: () => removeEmptyFolders
@@ -853,6 +854,7 @@ var dirToFilePaths = (dirPath, filterFn) => __async(null, null, function* () {
 var dirToFolderPaths = (dirPath) => __async(null, null, function* () {
   return yield new Builder().onlyDirs().withFullPaths().crawl(dirPath).withPromise();
 });
+var extendFileName = (fileName, ext) => `${import_path2.default.relative(".", fileName).replace(/\.\w+$/, "")}.${ext}`;
 var makeFolder = (path2) => __async(null, null, function* () {
   return yield import_fs.promises.mkdir(path2, { recursive: true });
 });
@@ -891,6 +893,7 @@ var removeEmptyFolders = (..._0) => __async(null, [..._0], function* (dirPath = 
   deleteFile,
   dirToFilePaths,
   dirToFolderPaths,
+  extendFileName,
   makeFolder,
   md5File,
   removeEmptyFolders

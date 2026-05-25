@@ -46,6 +46,9 @@ export const dirToFolderPaths = async (dirPath: string): Promise<string[]> => {
   return await new fdir().onlyDirs().withFullPaths().crawl(dirPath).withPromise();
 };
 
+export const extendFileName = (fileName: string, ext: string) =>
+  `${path.relative(".", fileName).replace(/\.\w+$/, "")}.${ext}`;
+
 export const makeFolder = async (path: string) => await fs.mkdir(path, { recursive: true });
 
 export const md5File = _md5File;

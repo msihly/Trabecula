@@ -11,6 +11,7 @@ declare const deleteFile: (path: string, copiedPath?: string) => Promise<{
 }>;
 declare const dirToFilePaths: (dirPath: string, filterFn?: (filePath: string) => boolean) => Promise<string[]>;
 declare const dirToFolderPaths: (dirPath: string) => Promise<string[]>;
+declare const extendFileName: (fileName: string, ext: string) => string;
 declare const makeFolder: (path: string) => Promise<string>;
 declare const md5File: ((path: string) => Promise<string>) & {
     sync: (path: string) => string;
@@ -20,4 +21,4 @@ declare const removeEmptyFolders: (dirPath?: string, options?: {
     hardDelete?: boolean;
 }) => Promise<void>;
 
-export { type TreeNode, checkFileExists, createTree, deleteFile, dirToFilePaths, dirToFolderPaths, makeFolder, md5File, removeEmptyFolders };
+export { type TreeNode, checkFileExists, createTree, deleteFile, dirToFilePaths, dirToFolderPaths, extendFileName, makeFolder, md5File, removeEmptyFolders };
