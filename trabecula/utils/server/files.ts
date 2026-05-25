@@ -3,6 +3,7 @@ import path from "path";
 import { fdir } from "fdir";
 import _md5File from "md5-file";
 import trash from "trash";
+import { handleErrors } from "trabecula/utils/common";
 
 export const checkFileExists = async (path: string) => !!(await fs.stat(path).catch(() => false));
 
@@ -19,6 +20,18 @@ const createTreeNode = (dirPath: string, tree: TreeNode[]) => {
 
 export const createTree = (paths: string[]): TreeNode[] =>
   paths.reduce((acc, cur) => (createTreeNode(cur, acc), acc), []);
+
+export const deleteFile = (path: string, copiedPath?: string) =>
+  handleErrors(async () => {
+    if (!(await checkFileExists(path))) return false;
+    if (copiedPath && !(await checkFileExists(copiedPath)))
+      throw new Error(
+        `Failed to delete ${path}. File does not exist at copied path ${copiedPath}.`,
+      );
+
+    await fs.unlink(path);
+    return true;
+  });
 
 export const dirToFilePaths = async (
   dirPath: string,

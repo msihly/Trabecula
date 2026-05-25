@@ -1,4 +1,7 @@
 import {
+  handleErrors
+} from "../../chunk-PK5J7XZ2.mjs";
+import {
   __async,
   __commonJS,
   __publicField,
@@ -573,6 +576,15 @@ var createTreeNode = (dirPath, tree) => {
     createTreeNode(path.join(...remainingDirNames), (treeNode != null ? treeNode : tree[tree.length - 1]).children);
 };
 var createTree = (paths) => paths.reduce((acc, cur) => (createTreeNode(cur, acc), acc), []);
+var deleteFile = (path2, copiedPath) => handleErrors(() => __async(null, null, function* () {
+  if (!(yield checkFileExists(path2))) return false;
+  if (copiedPath && !(yield checkFileExists(copiedPath)))
+    throw new Error(
+      `Failed to delete ${path2}. File does not exist at copied path ${copiedPath}.`
+    );
+  yield fs.unlink(path2);
+  return true;
+}));
 var dirToFilePaths = (dirPath, filterFn) => __async(null, null, function* () {
   return yield filterFn ? new Builder().withFullPaths().filter(filterFn).crawl(dirPath).withPromise() : new Builder().withFullPaths().crawl(dirPath).withPromise();
 });
@@ -613,6 +625,7 @@ var removeEmptyFolders = (..._0) => __async(null, [..._0], function* (dirPath = 
 export {
   checkFileExists,
   createTree,
+  deleteFile,
   dirToFilePaths,
   dirToFolderPaths,
   makeFolder,

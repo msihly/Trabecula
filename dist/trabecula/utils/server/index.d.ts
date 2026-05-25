@@ -4,6 +4,11 @@ type TreeNode = {
     name: string;
 };
 declare const createTree: (paths: string[]) => TreeNode[];
+declare const deleteFile: (path: string, copiedPath?: string) => Promise<{
+    data?: boolean;
+    error?: string;
+    success: boolean;
+}>;
 declare const dirToFilePaths: (dirPath: string, filterFn?: (filePath: string) => boolean) => Promise<string[]>;
 declare const dirToFolderPaths: (dirPath: string) => Promise<string[]>;
 declare const makeFolder: (path: string) => Promise<string>;
@@ -15,4 +20,4 @@ declare const removeEmptyFolders: (dirPath?: string, options?: {
     hardDelete?: boolean;
 }) => Promise<void>;
 
-export { type TreeNode, checkFileExists, createTree, dirToFilePaths, dirToFolderPaths, makeFolder, md5File, removeEmptyFolders };
+export { type TreeNode, checkFileExists, createTree, deleteFile, dirToFilePaths, dirToFolderPaths, makeFolder, md5File, removeEmptyFolders };

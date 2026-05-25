@@ -67,12 +67,12 @@ var __async = (__this, __arguments, generator) => {
 // node_modules/md5-file/index.js
 var require_md5_file = __commonJS({
   "node_modules/md5-file/index.js"(exports2, module2) {
-    var crypto = require("crypto");
+    var crypto2 = require("crypto");
     var fs2 = require("fs");
     var BUFFER_SIZE = 8192;
     function md5FileSync(path2) {
       const fd = fs2.openSync(path2, "r");
-      const hash = crypto.createHash("md5");
+      const hash = crypto2.createHash("md5");
       const buffer = Buffer.alloc(BUFFER_SIZE);
       try {
         let bytesRead;
@@ -87,7 +87,7 @@ var require_md5_file = __commonJS({
     }
     function md5File2(path2) {
       return new Promise((resolve2, reject) => {
-        const output = crypto.createHash("md5");
+        const output = crypto2.createHash("md5");
         const input = fs2.createReadStream(path2);
         input.on("error", (err) => {
           reject(err);
@@ -108,6 +108,7 @@ var server_exports = {};
 __export(server_exports, {
   checkFileExists: () => checkFileExists,
   createTree: () => createTree,
+  deleteFile: () => deleteFile,
   dirToFilePaths: () => dirToFilePaths,
   dirToFolderPaths: () => dirToFolderPaths,
   makeFolder: () => makeFolder,
@@ -631,6 +632,200 @@ var Builder = class {
 // trabecula/utils/server/files.ts
 var import_md5_file = __toESM(require_md5_file());
 var import_trash = __toESM(require("trash"));
+
+// trabecula/utils/common/constants.ts
+var AUDIO_CODECS_COMMON = [
+  "None",
+  "aac_he",
+  "aac_ld",
+  "aac",
+  "ac3",
+  "aiff",
+  "alac",
+  "avc",
+  "dts",
+  "flac",
+  "mp2",
+  "mp3",
+  "mp4als",
+  "opus",
+  "pcm_alaw",
+  "pcm_bluray",
+  "pcm_dvd",
+  "pcm_s16be",
+  "pcm_s16le",
+  "pcm_s24le",
+  "pcm_s32le",
+  "pcm_u8",
+  "pcm",
+  "tta",
+  "vorbis",
+  "wav",
+  "wmapro",
+  "wmav1",
+  "wmav2"
+];
+var AUDIO_CODECS_UNCOMMON = [
+  "aac_latm",
+  "alac",
+  "ape",
+  "aptx_hd",
+  "aptx",
+  "avs",
+  "binkaudio_dct",
+  "binkaudio_rdft",
+  "cavs",
+  "cook",
+  "hcom",
+  "iac",
+  "mace3",
+  "mace6",
+  "paf_audio",
+  "ra_144",
+  "ra_288",
+  "ralf",
+  "sipr",
+  "tak",
+  "westwood_snd1",
+  "wmalossless",
+  "wmavoice",
+  "xma1",
+  "xma2"
+];
+var AUDIO_CODECS = [...AUDIO_CODECS_COMMON, ...AUDIO_CODECS_UNCOMMON];
+var IMAGE_EXTS_COMMON = ["gif", "heic", "jpeg", "jpg", "png", "webp"];
+var IMAGE_EXTS_UNCOMMON = [
+  "apng",
+  "avif",
+  "bmp",
+  "jfif",
+  "jif",
+  "jiff",
+  "svg",
+  "tiff"
+];
+var IMAGE_EXTS = [...IMAGE_EXTS_COMMON, ...IMAGE_EXTS_UNCOMMON];
+var VIDEO_CODECS_COMMON = [
+  "av1",
+  "h264",
+  "hevc",
+  "mpeg4",
+  "prores",
+  "vp8",
+  "vp9",
+  "wmv1"
+];
+var VIDEO_CODECS_UNCOMMON = [
+  "amv",
+  "asv1",
+  "asv2",
+  "auravision",
+  "binkvideo",
+  "camstudio",
+  "cinepak",
+  "dirac",
+  "dnxhd",
+  "dnxhr",
+  "dvvideo",
+  "ffv1",
+  "flv1",
+  "h263",
+  "h263p",
+  "huffyuv",
+  "indeo3",
+  "indeo5",
+  "jpeg2000",
+  "jpegls",
+  "lagarith",
+  "mjpeg",
+  "mjpegb",
+  "mpeg1video",
+  "mpeg2video",
+  "msmpeg4v1",
+  "msmpeg4v2",
+  "msmpeg4v3",
+  "rawvideo",
+  "rv10",
+  "rv20",
+  "rv30",
+  "rv40",
+  "smacker",
+  "snow",
+  "sp5x",
+  "svq1",
+  "svq3",
+  "theora",
+  "tscc",
+  "utvideo",
+  "uyvy422",
+  "v210",
+  "vixl",
+  "vp6",
+  "vp6f",
+  "wmv2",
+  "wmv3",
+  "yuyv422",
+  "zlib",
+  "zmbv"
+];
+var VIDEO_CODECS = [...VIDEO_CODECS_COMMON, ...VIDEO_CODECS_UNCOMMON];
+var VIDEO_EXTS_COMMON = [
+  "3gp",
+  "avi",
+  "f4v",
+  "flv",
+  "m4v",
+  "mkv",
+  "mov",
+  "mp4",
+  "ts",
+  "webm",
+  "wmv"
+];
+var VIDEO_EXTS_UNCOMMON = [
+  "3gp2",
+  "3gpp",
+  "amv",
+  "asf",
+  "avi",
+  "divx",
+  "m2t",
+  "m2ts",
+  "m2v",
+  "m4b",
+  "m4p",
+  "mpeg",
+  "mpg",
+  "mts",
+  "ogv",
+  "qt",
+  "vob",
+  "wm",
+  "wmp"
+];
+var VIDEO_EXTS = [...VIDEO_EXTS_COMMON, ...VIDEO_EXTS_UNCOMMON];
+
+// trabecula/utils/common/date-and-time.ts
+var import_dayjs = __toESM(require("dayjs"));
+var import_customParseFormat = __toESM(require("dayjs/plugin/customParseFormat"));
+var import_duration = __toESM(require("dayjs/plugin/duration"));
+var import_relativeTime = __toESM(require("dayjs/plugin/relativeTime"));
+import_dayjs.default.extend(import_customParseFormat.default);
+import_dayjs.default.extend(import_duration.default);
+import_dayjs.default.extend(import_relativeTime.default);
+
+// trabecula/utils/common/miscellaneous.ts
+var handleErrors = (fn) => __async(null, null, function* () {
+  try {
+    return { success: true, data: yield fn() };
+  } catch (err) {
+    const errorStr = err instanceof Error ? err.message : String(err);
+    console.error(errorStr);
+    return { success: false, error: errorStr };
+  }
+});
+
+// trabecula/utils/server/files.ts
 var checkFileExists = (path2) => __async(null, null, function* () {
   return !!(yield import_fs.promises.stat(path2).catch(() => false));
 });
@@ -643,6 +838,15 @@ var createTreeNode = (dirPath, tree) => {
     createTreeNode(import_path2.default.join(...remainingDirNames), (treeNode != null ? treeNode : tree[tree.length - 1]).children);
 };
 var createTree = (paths) => paths.reduce((acc, cur) => (createTreeNode(cur, acc), acc), []);
+var deleteFile = (path2, copiedPath) => handleErrors(() => __async(null, null, function* () {
+  if (!(yield checkFileExists(path2))) return false;
+  if (copiedPath && !(yield checkFileExists(copiedPath)))
+    throw new Error(
+      `Failed to delete ${path2}. File does not exist at copied path ${copiedPath}.`
+    );
+  yield import_fs.promises.unlink(path2);
+  return true;
+}));
 var dirToFilePaths = (dirPath, filterFn) => __async(null, null, function* () {
   return yield filterFn ? new Builder().withFullPaths().filter(filterFn).crawl(dirPath).withPromise() : new Builder().withFullPaths().crawl(dirPath).withPromise();
 });
@@ -684,6 +888,7 @@ var removeEmptyFolders = (..._0) => __async(null, [..._0], function* (dirPath = 
 0 && (module.exports = {
   checkFileExists,
   createTree,
+  deleteFile,
   dirToFilePaths,
   dirToFolderPaths,
   makeFolder,
