@@ -16,6 +16,8 @@ export interface ChipProps extends Omit<MuiChipProps, "color" | "icon"> {
   bgColor?: CssColor;
   className?: string;
   color?: CssColor;
+  fontSize?: CSS["fontSize"];
+  fontWeight?: CSS["fontWeight"];
   height?: CSS["height"];
   icon?: IconName;
   iconColor?: CssColor;
@@ -30,6 +32,8 @@ export const Chip = ({
   bgColor,
   className,
   color,
+  fontSize,
+  fontWeight,
   height,
   icon,
   iconColor,
@@ -40,12 +44,21 @@ export const Chip = ({
   width,
   ...props
 }: ChipProps) => {
-  const { css, cx } = useClasses({ bgColor, color, height, padding, radiuses, width });
+  const { css, cx } = useClasses({
+    bgColor,
+    color,
+    fontSize,
+    fontWeight,
+    height,
+    padding,
+    radiuses,
+    width,
+  });
 
   return (
     <MuiChip
       {...props}
-      {...{ label }}
+      label={label}
       icon={
         icon ? (
           <Icon
@@ -64,19 +77,21 @@ export const Chip = ({
 
 interface ClassesProps extends Pick<
   ChipProps,
-  "bgColor" | "color" | "height" | "padding" | "radiuses" | "width"
+  "bgColor" | "color" | "fontSize" | "fontWeight" | "height" | "padding" | "radiuses" | "width"
 > {}
 
 const useClasses = makeClasses((props: ClassesProps) => ({
   chip: {
     ...makeBorderRadiuses(props.radiuses),
     height: props.height,
+    width: props.width,
     backgroundColor: props.bgColor,
     color: props.color,
     transition: "all 200ms ease-in-out",
-    width: props.width,
     "& > .MuiChip-label": {
       ...makePadding(props.padding),
+      fontSize: props.fontSize,
+      fontWeight: props.fontWeight,
     },
   },
 }));

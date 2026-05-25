@@ -609,6 +609,8 @@ interface ChipProps extends Omit<ChipProps$2, "color" | "icon"> {
     bgColor?: CssColor;
     className?: string;
     color?: CssColor;
+    fontSize?: CSS["fontSize"];
+    fontWeight?: CSS["fontWeight"];
     height?: CSS["height"];
     icon?: IconName;
     iconColor?: CssColor;
@@ -618,7 +620,7 @@ interface ChipProps extends Omit<ChipProps$2, "color" | "icon"> {
     radiuses?: BorderRadiuses;
     width?: CSS["width"];
 }
-declare const Chip: ({ bgColor, className, color, height, icon, iconColor, iconProps, label, padding, radiuses, width, ...props }: ChipProps) => react_jsx_runtime.JSX.Element;
+declare const Chip: ({ bgColor, className, color, fontSize, fontWeight, height, icon, iconColor, iconProps, label, padding, radiuses, width, ...props }: ChipProps) => react_jsx_runtime.JSX.Element;
 
 interface ConditionalWrapProps {
     children: JSX.Element | JSX.Element[];

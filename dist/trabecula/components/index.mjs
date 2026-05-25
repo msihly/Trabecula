@@ -2847,6 +2847,8 @@ var Chip = (_a) => {
     bgColor,
     className,
     color,
+    fontSize,
+    fontWeight,
     height,
     icon,
     iconColor,
@@ -2859,6 +2861,8 @@ var Chip = (_a) => {
     "bgColor",
     "className",
     "color",
+    "fontSize",
+    "fontWeight",
     "height",
     "icon",
     "iconColor",
@@ -2868,10 +2872,20 @@ var Chip = (_a) => {
     "radiuses",
     "width"
   ]);
-  const { css, cx } = useClasses31({ bgColor, color, height, padding, radiuses, width });
+  const { css, cx } = useClasses31({
+    bgColor,
+    color,
+    fontSize,
+    fontWeight,
+    height,
+    padding,
+    radiuses,
+    width
+  });
   return /* @__PURE__ */ jsx50(
     MuiChip,
-    __spreadProps(__spreadValues(__spreadValues({}, props), { label }), {
+    __spreadProps(__spreadValues({}, props), {
+      label,
       icon: icon ? /* @__PURE__ */ jsx50(
         Icon,
         __spreadValues({
@@ -2888,11 +2902,14 @@ var Chip = (_a) => {
 var useClasses31 = makeClasses((props) => ({
   chip: __spreadProps(__spreadValues({}, makeBorderRadiuses(props.radiuses)), {
     height: props.height,
+    width: props.width,
     backgroundColor: props.bgColor,
     color: props.color,
     transition: "all 200ms ease-in-out",
-    width: props.width,
-    "& > .MuiChip-label": __spreadValues({}, makePadding(props.padding))
+    "& > .MuiChip-label": __spreadProps(__spreadValues({}, makePadding(props.padding)), {
+      fontSize: props.fontSize,
+      fontWeight: props.fontWeight
+    })
   })
 }));
 
