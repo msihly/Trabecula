@@ -124,14 +124,14 @@ export const Button = ({
     <TooltipWrapper {...{ tooltip, tooltipProps }}>
       <MuiButton
         {...props}
-        {...{ size }}
+        size={size}
         onClick={handleClick}
         variant="contained"
         className={cx(css.root, className)}
       >
         <LoadingOverlay isLoading={loading} />
 
-        <View row justify="center" spacing="0.25em" width="100%">
+        <View row justify={justify} spacing="0.3rem" width="100%">
           {startNode}
 
           {icon && <Icon name={icon} size={iconSize} color={textColor} {...iconProps} />}

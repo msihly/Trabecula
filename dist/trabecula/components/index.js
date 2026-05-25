@@ -682,13 +682,14 @@ var Button = (_a) => {
   };
   return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(TooltipWrapper, __spreadProps(__spreadValues({}, { tooltip, tooltipProps }), { children: /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(
     import_material3.Button,
-    __spreadProps(__spreadValues(__spreadValues({}, props), { size }), {
+    __spreadProps(__spreadValues({}, props), {
+      size,
       onClick: handleClick,
       variant: "contained",
       className: cx(css.root, className),
       children: [
         /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(LoadingOverlay, { isLoading: loading }),
-        /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(View, { row: true, justify: "center", spacing: "0.25em", width: "100%", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(View, { row: true, justify, spacing: "0.3rem", width: "100%", children: [
           startNode,
           icon && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Icon, __spreadValues({ name: icon, size: iconSize, color: textColor }, iconProps)),
           typeof text === "string" ? /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
@@ -4922,9 +4923,11 @@ var useClasses23 = makeClasses((props) => {
   const preset = PRESETS[props.preset];
   return {
     root: __spreadProps(__spreadValues({}, preset), {
+      paddingTop: "0.1em",
       color: (_a = props.color) != null ? _a : preset == null ? void 0 : preset.color,
       fontSize: (_b = props.fontSize) != null ? _b : preset == null ? void 0 : preset.fontSize,
       fontWeight: (_c = props.fontWeight) != null ? _c : preset == null ? void 0 : preset.fontWeight,
+      lineHeight: 1.1,
       overflow: (_d = props.overflow) != null ? _d : preset == null ? void 0 : preset.overflow,
       textOverflow: "ellipsis",
       whiteSpace: (_e = props.whiteSpace) != null ? _e : preset == null ? void 0 : preset.whiteSpace
