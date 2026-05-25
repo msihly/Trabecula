@@ -9,7 +9,7 @@ export type TextPreset = "default" | "detail-label" | "label-glow" | "sub-text" 
 const PRESETS: Record<TextPreset, CSS> = {
   default: {
     fontSize: "1em",
-    fontWeight: 400,
+    fontWeight: 500,
     overflow: "hidden",
   },
   "detail-label": {
@@ -19,6 +19,7 @@ const PRESETS: Record<TextPreset, CSS> = {
   },
   "label-glow": {
     color: colors.custom.white,
+    fontWeight: 400,
     fontSize: "0.8em",
     textAlign: "center",
     textShadow: `0 0 10px ${colors.custom.blue}`,
@@ -26,6 +27,7 @@ const PRESETS: Record<TextPreset, CSS> = {
   },
   "sub-text": {
     color: colors.custom.grey,
+    fontWeight: 400,
     fontSize: "0.7em",
     whiteSpace: "nowrap",
     textOverflow: "ellipsis",
@@ -33,7 +35,7 @@ const PRESETS: Record<TextPreset, CSS> = {
   title: {
     color: colors.custom.white,
     fontSize: "1.1em",
-    fontWeight: 500,
+    fontWeight: 600,
     textAlign: "center",
     textOverflow: "ellipsis",
     overflow: "hidden",
@@ -97,7 +99,6 @@ const useClasses = makeClasses((props: ClassesProps) => {
   return {
     root: {
       ...preset,
-      paddingTop: "0.1em",
       color: props.color ?? preset?.color,
       fontSize: props.fontSize ?? preset?.fontSize,
       fontWeight: props.fontWeight ?? preset?.fontWeight,

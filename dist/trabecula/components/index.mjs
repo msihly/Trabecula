@@ -2106,7 +2106,7 @@ import { jsx as jsx37 } from "react/jsx-runtime";
 var PRESETS = {
   default: {
     fontSize: "1em",
-    fontWeight: 400,
+    fontWeight: 500,
     overflow: "hidden"
   },
   "detail-label": {
@@ -2116,6 +2116,7 @@ var PRESETS = {
   },
   "label-glow": {
     color: colors.custom.white,
+    fontWeight: 400,
     fontSize: "0.8em",
     textAlign: "center",
     textShadow: `0 0 10px ${colors.custom.blue}`,
@@ -2123,6 +2124,7 @@ var PRESETS = {
   },
   "sub-text": {
     color: colors.custom.grey,
+    fontWeight: 400,
     fontSize: "0.7em",
     whiteSpace: "nowrap",
     textOverflow: "ellipsis"
@@ -2130,7 +2132,7 @@ var PRESETS = {
   title: {
     color: colors.custom.white,
     fontSize: "1.1em",
-    fontWeight: 500,
+    fontWeight: 600,
     textAlign: "center",
     textOverflow: "ellipsis",
     overflow: "hidden",
@@ -2181,7 +2183,6 @@ var useClasses22 = makeClasses((props) => {
   const preset = PRESETS[props.preset];
   return {
     root: __spreadProps(__spreadValues({}, preset), {
-      paddingTop: "0.1em",
       color: (_a = props.color) != null ? _a : preset == null ? void 0 : preset.color,
       fontSize: (_b = props.fontSize) != null ? _b : preset == null ? void 0 : preset.fontSize,
       fontWeight: (_c = props.fontWeight) != null ? _c : preset == null ? void 0 : preset.fontWeight,
