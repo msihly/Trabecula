@@ -131,7 +131,7 @@ export const Button = ({
       >
         <LoadingOverlay isLoading={loading} />
 
-        <View row spacing="0.25em">
+        <View row justify="center" spacing="0.25em" width="100%">
           {startNode}
 
           {icon && <Icon name={icon} size={iconSize} color={textColor} {...iconProps} />}
@@ -226,6 +226,7 @@ const useClasses = makeClasses((props: ClassesProps) => ({
   },
   text: {
     lineHeight: 1.1,
+    alignContent: "center",
     overflow: "hidden",
     textOverflow: "ellipsis",
     transition: "all 100ms ease-in-out",

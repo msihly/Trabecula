@@ -40,7 +40,6 @@ export const SortMenu = ({
       icon="Sort"
       iconRight={value?.isDesc ? "ArrowDownward" : "ArrowUpward"}
       iconProps={{ size: "1.15em" }}
-      width="100%"
       text={
         <View column align="flex-start" width="100%">
           <Text className={css.topText}>{"Sort By"}</Text>

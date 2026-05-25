@@ -136,7 +136,7 @@ var Button = (_a) => {
       className: cx(css.root, className),
       children: [
         /* @__PURE__ */ jsx(LoadingOverlay, { isLoading: loading }),
-        /* @__PURE__ */ jsxs(View, { row: true, spacing: "0.25em", children: [
+        /* @__PURE__ */ jsxs(View, { row: true, justify: "center", spacing: "0.25em", width: "100%", children: [
           startNode,
           icon && /* @__PURE__ */ jsx(Icon, __spreadValues({ name: icon, size: iconSize, color: textColor }, iconProps)),
           typeof text === "string" ? /* @__PURE__ */ jsx(
@@ -187,6 +187,7 @@ var useClasses = makeClasses((props) => {
     }),
     text: {
       lineHeight: 1.1,
+      alignContent: "center",
       overflow: "hidden",
       textOverflow: "ellipsis",
       transition: "all 100ms ease-in-out",
@@ -552,7 +553,6 @@ var SortMenu = (_a) => {
       icon: "Sort",
       iconRight: (value == null ? void 0 : value.isDesc) ? "ArrowDownward" : "ArrowUpward",
       iconProps: { size: "1.15em" },
-      width: "100%",
       text: /* @__PURE__ */ jsxs6(View, { column: true, align: "flex-start", width: "100%", children: [
         /* @__PURE__ */ jsx8(Text, { className: css.topText, children: "Sort By" }),
         /* @__PURE__ */ jsx8(Text, { className: css.label, children: activeRow == null ? void 0 : activeRow.label })
