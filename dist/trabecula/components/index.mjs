@@ -188,7 +188,7 @@ var useClasses = makeClasses((props) => {
     }),
     text: {
       lineHeight: 1.1,
-      alignContent: "center",
+      alignSelf: "center",
       overflow: "hidden",
       textOverflow: "ellipsis",
       transition: "all 100ms ease-in-out",
