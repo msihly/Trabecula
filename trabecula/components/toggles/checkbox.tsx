@@ -89,7 +89,6 @@ const useClasses = makeClasses((props: ClassesProps) => ({
     borderRadius: "0.5rem",
     ...makeMargins(props.margins),
     width: props.width || "auto",
-    fontFamily: "Avenir",
     whiteSpace: "nowrap",
     transition: "all 200ms ease-in-out",
     userSelect: "none",
@@ -98,6 +97,7 @@ const useClasses = makeClasses((props: ClassesProps) => ({
     },
     "& .MuiFormControlLabel-label": {
       paddingRight: "0.4em",
+      fontFamily: "Avenir",
     },
   },
 }));

@@ -552,7 +552,8 @@ var SortMenu = (_a) => {
       icon: "Sort",
       iconRight: (value == null ? void 0 : value.isDesc) ? "ArrowDownward" : "ArrowUpward",
       iconProps: { size: "1.15em" },
-      text: /* @__PURE__ */ jsxs6(View, { column: true, align: "flex-start", children: [
+      width: "100%",
+      text: /* @__PURE__ */ jsxs6(View, { column: true, align: "flex-start", width: "100%", children: [
         /* @__PURE__ */ jsx8(Text, { className: css.topText, children: "Sort By" }),
         /* @__PURE__ */ jsx8(Text, { className: css.label, children: activeRow == null ? void 0 : activeRow.label })
       ] })
@@ -949,6 +950,7 @@ var useClasses8 = makeClasses((props) => {
       minWidth: props.minWidth,
       width: "100%",
       "& input": {
+        fontFamily: "Avenir",
         borderRadius: "inherit",
         padding: props.dense ? "0.25rem 0.5rem" : void 0,
         textAlign: props.textAlign,
@@ -2311,7 +2313,6 @@ var useClasses24 = makeClasses((props) => ({
     borderRadius: "0.5rem"
   }, makeMargins(props.margins)), {
     width: props.width || "auto",
-    fontFamily: "Avenir",
     whiteSpace: "nowrap",
     transition: "all 200ms ease-in-out",
     userSelect: "none",
@@ -2319,7 +2320,8 @@ var useClasses24 = makeClasses((props) => ({
       backgroundColor: Color6(props.color).fade(0.8).string()
     },
     "& .MuiFormControlLabel-label": {
-      paddingRight: "0.4em"
+      paddingRight: "0.4em",
+      fontFamily: "Avenir"
     }
   })
 }));
