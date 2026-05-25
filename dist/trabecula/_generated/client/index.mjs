@@ -1,7 +1,7 @@
 import {
   MUI_ICONS
 } from "../../chunk-7TIIU46R.mjs";
-import "../../chunk-UKKUKST7.mjs";
+import "../../chunk-A2APWHWI.mjs";
 export {
   MUI_ICONS
 };
