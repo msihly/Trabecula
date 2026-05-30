@@ -4801,46 +4801,39 @@ var Detail = (_a) => {
     emptyValueText = "--",
     label,
     labelProps = {},
-    overflowX = "auto",
-    overflowY = "hidden",
+    overflow = "hidden",
     row = false,
     tooltip,
     value,
     valueProps,
+    whiteSpace = "nowrap",
     withTooltip
   } = _b, props = __objRest(_b, [
     "emptyValueText",
     "label",
     "labelProps",
-    "overflowX",
-    "overflowY",
+    "overflow",
     "row",
     "tooltip",
     "value",
     "valueProps",
+    "whiteSpace",
     "withTooltip"
   ]);
-  const { css, cx } = useClasses22({ overflowX, overflowY });
   return /* @__PURE__ */ (0, import_jsx_runtime37.jsxs)(View, __spreadProps(__spreadValues({ column: !row, row, spacing: row ? "0.5rem" : null }, props), { children: [
-    ["number", "string"].includes(typeof label) ? /* @__PURE__ */ (0, import_jsx_runtime37.jsx)(Text, __spreadProps(__spreadValues({ preset: "detail-label" }, labelProps), { children: label })) : label,
+    ["number", "string"].includes(typeof label) ? /* @__PURE__ */ (0, import_jsx_runtime37.jsx)(Text, __spreadProps(__spreadValues({ preset: "detail-label", fontSize: "0.9em", fontWeight: 600 }, labelProps), { children: label })) : label,
     !value || ["number", "string"].includes(typeof value) ? /* @__PURE__ */ (0, import_jsx_runtime37.jsx)(
       Text,
       __spreadProps(__spreadValues({
         tooltip: tooltip != null ? tooltip : withTooltip ? value : void 0,
-        className: cx(css.value, valueProps == null ? void 0 : valueProps.className)
+        whiteSpace,
+        overflow
       }, valueProps), {
         children: value || emptyValueText
       })
     ) : value
   ] }));
 };
-var useClasses22 = makeClasses((props) => ({
-  value: {
-    overflowX: props.overflowX,
-    overflowY: props.overflowY,
-    whiteSpace: "nowrap"
-  }
-}));
 
 // trabecula/components/text/text.tsx
 var import_material19 = require("@mui/material");
@@ -4909,7 +4902,7 @@ var Text = (_a) => {
     "tooltipProps",
     "whiteSpace"
   ]);
-  const { css, cx } = useClasses23({ color, fontSize, fontWeight, overflow, preset, whiteSpace });
+  const { css, cx } = useClasses22({ color, fontSize, fontWeight, overflow, preset, whiteSpace });
   return /* @__PURE__ */ (0, import_jsx_runtime38.jsx)(TooltipWrapper, __spreadProps(__spreadValues({}, { tooltip, tooltipProps }), { children: /* @__PURE__ */ (0, import_jsx_runtime38.jsx)(
     import_material19.Typography,
     __spreadProps(__spreadValues({}, props), {
@@ -4920,7 +4913,7 @@ var Text = (_a) => {
     })
   ) }));
 };
-var useClasses23 = makeClasses((props) => {
+var useClasses22 = makeClasses((props) => {
   var _a, _b, _c, _d, _e;
   const preset = PRESETS[props.preset];
   return {
@@ -4955,7 +4948,7 @@ var Accordion = ({
     setIsExpanded(!isExpanded);
     setExpanded == null ? void 0 : setExpanded(!isExpanded);
   };
-  const { css, cx } = useClasses24({ dense, expanded: isExpanded, fullWidth });
+  const { css, cx } = useClasses23({ dense, expanded: isExpanded, fullWidth });
   return /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)(
     import_material20.Accordion,
     {
@@ -4980,7 +4973,7 @@ var Accordion = ({
     }
   );
 };
-var useClasses24 = makeClasses((props) => ({
+var useClasses23 = makeClasses((props) => ({
   accordion: {
     margin: 0,
     padding: 0,
@@ -5023,7 +5016,7 @@ var Checkbox = ({
   setChecked,
   width = "100%"
 }) => {
-  const { css, cx } = useClasses25({
+  const { css, cx } = useClasses24({
     center,
     color: indeterminate ? indeterminateColor || color : color,
     disabled,
@@ -5047,7 +5040,7 @@ var Checkbox = ({
     })
   );
 };
-var useClasses25 = makeClasses((props) => ({
+var useClasses24 = makeClasses((props) => ({
   checkbox: __spreadProps(__spreadValues({}, makePadding(props.padding)), {
     color: `${props.color} !important`,
     opacity: props.disabled ? 0.5 : 1
@@ -5106,7 +5099,7 @@ var Tooltip = (_a) => {
     "title",
     "viewProps"
   ]);
-  const { css } = useClasses26({
+  const { css } = useClasses25({
     borderColor,
     bgColor,
     color,
@@ -5132,7 +5125,7 @@ var Tooltip = (_a) => {
     })
   );
 };
-var useClasses26 = makeClasses((props) => ({
+var useClasses25 = makeClasses((props) => ({
   arrow: {
     color: props.borderColor
   },
@@ -5243,10 +5236,10 @@ var Chip2 = (_a) => {
     "opacity",
     "position"
   ]);
-  const { css } = useClasses27({ hasFooter, flush, opacity, position });
+  const { css } = useClasses26({ hasFooter, flush, opacity, position });
   return /* @__PURE__ */ (0, import_jsx_runtime44.jsx)(Chip, __spreadProps(__spreadValues(__spreadValues({}, props), { bgColor }), { className: css.chip }));
 };
-var useClasses27 = makeClasses((props) => ({
+var useClasses26 = makeClasses((props) => ({
   chip: {
     position: "absolute",
     top: props.position.includes("top") ? props.flush ? 0 : "0.3rem" : void 0,
@@ -5287,7 +5280,7 @@ var Container2 = (_a) => {
     "selectedColor",
     "width"
   ]);
-  const { css, cx } = useClasses28({ disabled, display, height, selected, selectedColor, width });
+  const { css, cx } = useClasses27({ disabled, display, height, selected, selectedColor, width });
   return /* @__PURE__ */ (0, import_jsx_runtime45.jsx)(View, __spreadProps(__spreadValues({}, viewProps), { className: cx(css.container, className), children: /* @__PURE__ */ (0, import_jsx_runtime45.jsx)(
     import_material23.Paper,
     {
@@ -5299,7 +5292,7 @@ var Container2 = (_a) => {
     }
   ) }));
 };
-var useClasses28 = makeClasses((props, theme) => {
+var useClasses27 = makeClasses((props, theme) => {
   var _a;
   return {
     container: __spreadProps(__spreadValues({
@@ -5334,10 +5327,10 @@ var useClasses28 = makeClasses((props, theme) => {
 // trabecula/components/wrappers/card-base/footer.tsx
 var import_jsx_runtime46 = require("react/jsx-runtime");
 var Footer2 = ({ children }) => {
-  const { css } = useClasses29(null);
+  const { css } = useClasses28(null);
   return /* @__PURE__ */ (0, import_jsx_runtime46.jsx)(View, { className: css.footer, children });
 };
-var useClasses29 = makeClasses({
+var useClasses28 = makeClasses({
   footer: {
     position: "absolute",
     bottom: 0,
@@ -5384,7 +5377,7 @@ var Image = ({
   const [hasError, setHasError] = (0, import_react15.useState)(false);
   const [imagePos, setImagePos] = (0, import_react15.useState)(null);
   const [thumbIndex, setThumbIndex] = (0, import_react15.useState)(0);
-  const { css, cx } = useClasses30({ fit, height, imagePos, rounded });
+  const { css, cx } = useClasses29({ fit, height, imagePos, rounded });
   const hasListeners = !disabled && !autoAnimate && (thumbPaths == null ? void 0 : thumbPaths.length) > 1;
   const createThumbInterval = () => {
     thumbInterval.current = setInterval(() => {
@@ -5449,7 +5442,7 @@ var Image = ({
     }
   );
 };
-var useClasses30 = makeClasses((props) => {
+var useClasses29 = makeClasses((props) => {
   var _a;
   return {
     image: __spreadProps(__spreadValues(__spreadValues({}, ["all", "top"].includes(props.rounded) && {
@@ -5535,7 +5528,7 @@ var CardGrid = Comp(
       "padding",
       "position"
     ]);
-    const { css, cx } = useClasses31({ hasCards: cards.length > 0, flexFlow, maxCards, position });
+    const { css, cx } = useClasses30({ hasCards: cards.length > 0, flexFlow, maxCards, position });
     return /* @__PURE__ */ (0, import_jsx_runtime50.jsxs)(View, __spreadProps(__spreadValues({}, props), { className: cx(css.root, className), children: [
       cards.length ? /* @__PURE__ */ (0, import_jsx_runtime50.jsx)(
         View,
@@ -5548,7 +5541,7 @@ var CardGrid = Comp(
     ] }));
   }
 );
-var useClasses31 = makeClasses((props, theme) => ({
+var useClasses30 = makeClasses((props, theme) => ({
   cards: __spreadProps(__spreadValues({
     display: "flex",
     flexFlow: props.flexFlow,
@@ -5614,7 +5607,7 @@ var Chip = (_a) => {
     "radiuses",
     "width"
   ]);
-  const { css, cx } = useClasses32({
+  const { css, cx } = useClasses31({
     bgColor,
     color,
     fontSize,
@@ -5641,7 +5634,7 @@ var Chip = (_a) => {
     })
   );
 };
-var useClasses32 = makeClasses((props) => ({
+var useClasses31 = makeClasses((props) => ({
   chip: __spreadProps(__spreadValues({}, makeBorderRadiuses(props.radiuses)), {
     height: props.height,
     width: props.width,
@@ -5670,7 +5663,7 @@ var import_color10 = __toESM(require("color"));
 var import_jsx_runtime53 = require("react/jsx-runtime");
 var ContextMenu = (_a) => {
   var _b = _a, { children, disabled, id, menuItems } = _b, props = __objRest(_b, ["children", "disabled", "id", "menuItems"]);
-  const { css } = useClasses33(null);
+  const { css } = useClasses32(null);
   const [mouseX, setMouseX] = (0, import_react16.useState)(null);
   const [mouseY, setMouseY] = (0, import_react16.useState)(null);
   const handleContext = (event) => {
@@ -5708,7 +5701,7 @@ var Item = ({
   onClose
 }) => {
   var _a, _b, _c;
-  const { css } = useClasses33(null);
+  const { css } = useClasses32(null);
   const color = item.color || colors.custom.lightGrey;
   const handleClick = item.onClick ? () => {
     item.onClick();
@@ -5739,7 +5732,7 @@ var SubItem = ({
   };
   return /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(ListItem, { text: subItem.label, icon: subItem.icon, onClick: handleClick });
 };
-var useClasses33 = makeClasses({
+var useClasses32 = makeClasses({
   contextMenu: {
     background: (0, import_color10.default)(colors.custom.black).fade(0.03).string()
   },
@@ -5809,7 +5802,7 @@ var HeaderWrapper = (_a) => {
 var import_material27 = require("@mui/material");
 var import_jsx_runtime56 = require("react/jsx-runtime");
 var LoadingOverlay = ({ children, isLoading, sub }) => {
-  const { css } = useClasses34({ isLoading });
+  const { css } = useClasses33({ isLoading });
   return /* @__PURE__ */ (0, import_jsx_runtime56.jsxs)(import_jsx_runtime56.Fragment, { children: [
     children,
     /* @__PURE__ */ (0, import_jsx_runtime56.jsxs)(
@@ -5831,7 +5824,7 @@ var LoadingOverlay = ({ children, isLoading, sub }) => {
     )
   ] });
 };
-var useClasses34 = makeClasses((props) => ({
+var useClasses33 = makeClasses((props) => ({
   loadingOverlay: {
     position: "absolute",
     top: 0,
@@ -5852,7 +5845,7 @@ var SideScroller = ({ children, className, innerClassName }) => {
   const [isLeftButtonVisible, setIsLeftButtonVisible] = (0, import_react17.useState)(false);
   const [isRightButtonVisible, setIsRightButtonVisible] = (0, import_react17.useState)(false);
   const [scrollPos, setScrollPos] = (0, import_react17.useState)(0);
-  const { css, cx } = useClasses35({ isLeftButtonVisible, isRightButtonVisible });
+  const { css, cx } = useClasses34({ isLeftButtonVisible, isRightButtonVisible });
   const getButtonVisibility = () => {
     if (!ref.current) return [false, false];
     const { clientWidth, scrollWidth, scrollLeft } = ref.current;
@@ -5900,7 +5893,7 @@ var SideScroller = ({ children, className, innerClassName }) => {
     )
   ] });
 };
-var useClasses35 = makeClasses((props) => ({
+var useClasses34 = makeClasses((props) => ({
   items: {
     display: "flex",
     flexFlow: "row nowrap",
@@ -5950,10 +5943,10 @@ var useClasses35 = makeClasses((props) => ({
 var import_jsx_runtime58 = require("react/jsx-runtime");
 var UniformList = (_a) => {
   var _b = _a, { children, uniformWidth } = _b, props = __objRest(_b, ["children", "uniformWidth"]);
-  const { css, cx } = useClasses36({ uniformWidth });
+  const { css, cx } = useClasses35({ uniformWidth });
   return /* @__PURE__ */ (0, import_jsx_runtime58.jsx)(View, __spreadProps(__spreadValues({}, props), { className: cx(css.uniform, props == null ? void 0 : props.className), children }));
 };
-var useClasses36 = makeClasses((props) => ({
+var useClasses35 = makeClasses((props) => ({
   uniform: {
     "& > *": {
       flexBasis: "100%",
@@ -6010,7 +6003,7 @@ var View = Comp(
       "wrap"
     ]);
     if (row) column = false;
-    const { css, cx } = useClasses37({
+    const { css, cx } = useClasses36({
       align,
       bgColor,
       borders,
@@ -6033,7 +6026,7 @@ var View = Comp(
     return /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", __spreadProps(__spreadValues({}, props), { ref, className: cx(className, css.view), children }));
   }
 );
-var useClasses37 = makeClasses((props) => {
+var useClasses36 = makeClasses((props) => {
   var _a;
   return {
     view: __spreadValues(__spreadProps(__spreadValues(__spreadValues(__spreadValues(__spreadValues({

@@ -461,14 +461,14 @@ interface DetailProps extends ViewProps {
     emptyValueText?: string;
     label: ReactNode;
     labelProps?: Partial<TextProps>;
-    overflowX?: CSS["overflowX"];
-    overflowY?: CSS["overflowY"];
+    overflow?: CSS["overflow"];
     tooltip?: ReactNode;
     value: ReactNode;
     valueProps?: Partial<TextProps>;
+    whiteSpace?: CSS["whiteSpace"];
     withTooltip?: boolean;
 }
-declare const Detail: ({ emptyValueText, label, labelProps, overflowX, overflowY, row, tooltip, value, valueProps, withTooltip, ...props }: DetailProps) => react_jsx_runtime.JSX.Element;
+declare const Detail: ({ emptyValueText, label, labelProps, overflow, row, tooltip, value, valueProps, whiteSpace, withTooltip, ...props }: DetailProps) => react_jsx_runtime.JSX.Element;
 
 type TextPreset = "default" | "detail-label" | "label-glow" | "sub-text" | "title";
 interface TextProps extends Omit<TypographyProps, "color" | "component" | "fontSize" | "fontWeight" | "overflow" | "title" | "whiteSpace"> {
