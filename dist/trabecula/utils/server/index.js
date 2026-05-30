@@ -319,9 +319,7 @@ var removeEmptyFolders = (..._0) => __async(null, [..._0], function* (dirPath = 
   const rootDirsToEmpty = /* @__PURE__ */ new Set();
   for (const dir of dirPathsDeepToShallow) {
     if (emptyFolders.has(dir)) {
-      const parts = dir.split(import_path.default.sep);
-      parts.pop();
-      const ancestors = parts.map((_, i) => parts.slice(0, i + 1).join(import_path.default.sep));
+      const ancestors = dir.split(import_path.default.sep).slice(0, -1).map((_, i, parts) => parts.slice(0, i + 1).join(import_path.default.sep));
       if (!ancestors.some((a) => emptyFolders.has(a))) rootDirsToEmpty.add(dir);
     }
   }
