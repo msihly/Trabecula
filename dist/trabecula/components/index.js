@@ -3312,7 +3312,7 @@ var SortMenu = (_a) => {
       icon: "Sort",
       iconRight: (value == null ? void 0 : value.isDesc) ? "ArrowDownward" : "ArrowUpward",
       iconProps: { size: "1.15em" },
-      text: /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(View, { column: true, align: "flex-start", width: "100%", children: [
+      text: /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(View, { column: true, align: "flex-start", justify: "center", width: "100%", children: [
         /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(Text, { className: css.topText, children: "Sort By" }),
         /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(Text, { className: css.label, children: activeRow == null ? void 0 : activeRow.label })
       ] })
