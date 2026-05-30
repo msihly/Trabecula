@@ -1558,7 +1558,7 @@ var ConfirmModal = ({
     /* @__PURE__ */ jsx25(Modal.Header, { children: /* @__PURE__ */ jsx25(Text, { preset: "title", children: headerText }) }),
     /* @__PURE__ */ jsxs16(Modal.Content, { align: "center", justify: "center", children: [
       /* @__PURE__ */ jsx25(Icon, { name: "Delete", color: colors.custom.red, size: "5rem" }),
-      (subText == null ? void 0 : subText.length) > 0 ? /* @__PURE__ */ jsx25(Text, { fontSize: "1.3em", textAlign: "center", children: subText }) : null,
+      (subText == null ? void 0 : subText.length) > 0 ? /* @__PURE__ */ jsx25(Text, { fontSize: "1.3em", textAlign: "center", whiteSpace: "normal", children: subText }) : null,
       children
     ] }),
     /* @__PURE__ */ jsxs16(Modal.Footer, { children: [

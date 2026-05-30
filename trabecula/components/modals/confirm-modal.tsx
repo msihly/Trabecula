@@ -61,7 +61,7 @@ export const ConfirmModal = ({
         <Icon name="Delete" color={colors.custom.red} size="5rem" />
 
         {subText?.length > 0 ? (
-          <Text fontSize="1.3em" textAlign="center">
+          <Text fontSize="1.3em" textAlign="center" whiteSpace="normal">
             {subText}
           </Text>
         ) : null}
