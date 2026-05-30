@@ -79,9 +79,7 @@ export const ListItem = ({
   );
 };
 
-interface ClassesProps {
-  color: CssColor;
-}
+interface ClassesProps extends Pick<ListItemProps, "color"> {}
 
 const useClasses = makeClasses((props: ClassesProps) => ({
   icon: {

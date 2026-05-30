@@ -124,11 +124,8 @@ export const Image = ({
   );
 };
 
-interface ClassesProps {
-  fit: ImageProps["fit"];
-  height: ImageProps["height"];
+interface ClassesProps extends Pick<ImageProps, "fit" | "height" | "rounded"> {
   imagePos: CSS["objectPosition"];
-  rounded: ImageProps["rounded"];
 }
 
 const useClasses = makeClasses((props: ClassesProps) => ({

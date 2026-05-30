@@ -77,8 +77,7 @@ export const MultiInputRow = <T,>({ bgColor, ...props }: MultiInputRowProps<T>) 
   );
 };
 
-interface ClassesProps {
-  bgColor: CssColor;
+interface ClassesProps extends Pick<MultiInputRowProps<any>, "bgColor"> {
   hasClick: boolean;
 }
 

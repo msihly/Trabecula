@@ -46,14 +46,10 @@ export const Container = ({
   );
 };
 
-interface ClassesProps {
-  disabled: boolean;
-  display: CSS["display"];
-  height: CSS["height"];
-  selected: boolean;
-  selectedColor: string;
-  width: CSS["width"];
-}
+interface ClassesProps extends Pick<
+  ContainerProps,
+  "disabled" | "display" | "height" | "selected" | "selectedColor" | "width"
+> {}
 
 const useClasses = makeClasses((props: ClassesProps, theme) => ({
   container: {

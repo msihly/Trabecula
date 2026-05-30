@@ -95,25 +95,27 @@ export const View = Comp(
   },
 );
 
-interface ClassesProps {
-  align: CSS["alignItems"];
-  bgColor: CssColor;
-  borders: Borders;
-  borderRadiuses: BorderRadiuses;
-  column: boolean;
-  display: CSS["display"];
-  flex: CSS["flex"];
-  height: CSS["height"];
-  justify: CSS["justifyContent"];
-  margins: Margins;
-  opacity: CSS["opacity"];
-  overflow: CSS["overflow"];
-  padding: Padding;
-  position: CSS["position"];
-  row: boolean;
-  spacing: CSS["marginRight"];
-  width: CSS["width"];
-  wrap: CSS["flexWrap"];
+interface ClassesProps extends Pick<
+  ViewProps,
+  | "align"
+  | "bgColor"
+  | "column"
+  | "display"
+  | "flex"
+  | "height"
+  | "justify"
+  | "margins"
+  | "opacity"
+  | "overflow"
+  | "padding"
+  | "position"
+  | "row"
+  | "spacing"
+  | "width"
+  | "wrap"
+> {
+  borders?: Borders;
+  borderRadiuses?: BorderRadiuses;
 }
 
 const useClasses = makeClasses((props: ClassesProps) => ({

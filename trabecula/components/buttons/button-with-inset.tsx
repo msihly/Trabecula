@@ -26,9 +26,7 @@ export const ButtonWithInset = Comp(
   },
 );
 
-interface ClassesProps {
-  insetWidth: ButtonWithInsetProps["insetWidth"];
-}
+interface ClassesProps extends Pick<ButtonWithInsetProps, "insetWidth"> {}
 
 const useClasses = makeClasses((props: ClassesProps) => ({
   insetContainer: {
