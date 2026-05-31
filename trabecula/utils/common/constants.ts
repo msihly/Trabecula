@@ -59,14 +59,14 @@ const AUDIO_CODECS_UNCOMMON = [
 ] as const;
 
 const AUDIO_CODECS = [...AUDIO_CODECS_COMMON, ...AUDIO_CODECS_UNCOMMON];
-type AudioCodec = (typeof AUDIO_CODECS)[number];
+export type AudioCodec = (typeof AUDIO_CODECS)[number];
 
 const IMAGE_EXTS_COMMON = ["gif", "heic", "jpeg", "jpg", "png", "webp"] as const;
 
 const IMAGE_EXTS_UNCOMMON = ["apng", "avif", "bmp", "jfif", "jif", "jiff", "svg", "tiff"] as const;
 
 const IMAGE_EXTS = [...IMAGE_EXTS_COMMON, ...IMAGE_EXTS_UNCOMMON];
-type ImageExt = (typeof IMAGE_EXTS)[number];
+export type ImageExt = (typeof IMAGE_EXTS)[number];
 
 const VIDEO_CODECS_COMMON = [
   "av1",
@@ -134,7 +134,7 @@ const VIDEO_CODECS_UNCOMMON = [
 ] as const;
 
 const VIDEO_CODECS = [...VIDEO_CODECS_COMMON, ...VIDEO_CODECS_UNCOMMON];
-type VideoCodec = (typeof VIDEO_CODECS)[number];
+export type VideoCodec = (typeof VIDEO_CODECS)[number];
 
 const VIDEO_EXTS_COMMON = [
   "3gp",
@@ -173,13 +173,13 @@ const VIDEO_EXTS_UNCOMMON = [
 ] as const;
 
 const VIDEO_EXTS = [...VIDEO_EXTS_COMMON, ...VIDEO_EXTS_UNCOMMON];
-type VideoExt = (typeof VIDEO_EXTS)[number];
+export type VideoExt = (typeof VIDEO_EXTS)[number];
 
 const WEB_VIDEO_CODECS = ["h264", "hevc", "vp8", "vp9", "theora", "av1"] as const;
-type WebVideoCodec = (typeof WEB_VIDEO_CODECS)[number];
+export type WebVideoCodec = (typeof WEB_VIDEO_CODECS)[number];
 
 const WEB_VIDEO_EXTS = ["mp4", "webm", "ogv", "wav"] as const;
-type WebVideoExt = (typeof WEB_VIDEO_EXTS)[number];
+export type WebVideoExt = (typeof WEB_VIDEO_EXTS)[number];
 
 export interface _Constants {
   AUDIO: {
