@@ -4,6 +4,7 @@ import { fdir } from "fdir";
 import _md5File from "md5-file";
 import trash from "trash";
 import { handleErrors } from "trabecula/utils/common";
+import { fileLog } from "trabecula/utils/server/logging";
 
 export const checkFileExists = async (path: string) => !!(await fs.stat(path).catch(() => false));
 
@@ -59,35 +60,16 @@ export const removeEmptyFolders = async (
   dirPath: string = ".",
   options: { excludedPaths?: string[]; hardDelete?: boolean } = {},
 ) => {
-  const dirPathsParts = [...new Set([dirPath, ...(await dirToFolderPaths(dirPath))])]
+  const dirPathsDeepToShallow = [...new Set([dirPath, ...(await dirToFolderPaths(dirPath))])]
     .filter((p) => !options.excludedPaths?.includes(p))
-    .map((p) => p.split(path.sep));
+    .sort((a, b) => b.split(path.sep).length - a.split(path.sep).length);
 
-  const dirPathsDeepToShallow = [...dirPathsParts]
-    .sort((a, b) => b.length - a.length)
-    .map((p) => p.join(path.sep));
-
-  const emptyFolders = new Set<string>();
-  await Promise.all(
-    dirPathsDeepToShallow.map(async (dir) => {
-      if ((await dirToFilePaths(dir)).length === 0) emptyFolders.add(dir);
-    }),
-  );
-
-  const rootDirsToEmpty = new Set<string>();
   for (const dir of dirPathsDeepToShallow) {
-    if (emptyFolders.has(dir)) {
-      const ancestors = dir
-        .split(path.sep)
-        .slice(0, -1)
-        .map((_, i, parts) => parts.slice(0, i + 1).join(path.sep));
-      if (!ancestors.some((a) => emptyFolders.has(a))) rootDirsToEmpty.add(dir);
+    try {
+      const entries = await fs.readdir(dir);
+      if (entries.length === 0) await (options.hardDelete ? fs.rm(dir) : trash(dir));
+    } catch {
+      fileLog(`Failed to remove empty folder: ${dir}`, { type: "error" });
     }
   }
-
-  await Promise.all(
-    [...rootDirsToEmpty].map((dir) =>
-      options.hardDelete ? fs.rm(dir, { recursive: true }) : trash(dir),
-    ),
-  );
 };
