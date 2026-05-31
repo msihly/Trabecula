@@ -1,4 +1,4 @@
-export const AUDIO_CODECS_COMMON = [
+const AUDIO_CODECS_COMMON = [
   "None",
   "aac_he",
   "aac_ld",
@@ -30,7 +30,7 @@ export const AUDIO_CODECS_COMMON = [
   "wmav2",
 ] as const;
 
-export const AUDIO_CODECS_UNCOMMON = [
+const AUDIO_CODECS_UNCOMMON = [
   "aac_latm",
   "alac",
   "ape",
@@ -58,26 +58,17 @@ export const AUDIO_CODECS_UNCOMMON = [
   "xma2",
 ] as const;
 
-export const AUDIO_CODECS = [...AUDIO_CODECS_COMMON, ...AUDIO_CODECS_UNCOMMON] as const;
-export type AudioCodec = (typeof AUDIO_CODECS)[number];
+const AUDIO_CODECS = [...AUDIO_CODECS_COMMON, ...AUDIO_CODECS_UNCOMMON];
+type AudioCodec = (typeof AUDIO_CODECS)[number];
 
-export const IMAGE_EXTS_COMMON = ["gif", "heic", "jpeg", "jpg", "png", "webp"] as const;
+const IMAGE_EXTS_COMMON = ["gif", "heic", "jpeg", "jpg", "png", "webp"] as const;
 
-export const IMAGE_EXTS_UNCOMMON = [
-  "apng",
-  "avif",
-  "bmp",
-  "jfif",
-  "jif",
-  "jiff",
-  "svg",
-  "tiff",
-] as const;
+const IMAGE_EXTS_UNCOMMON = ["apng", "avif", "bmp", "jfif", "jif", "jiff", "svg", "tiff"] as const;
 
-export const IMAGE_EXTS = [...IMAGE_EXTS_COMMON, ...IMAGE_EXTS_UNCOMMON];
-export type ImageExt = (typeof IMAGE_EXTS)[number];
+const IMAGE_EXTS = [...IMAGE_EXTS_COMMON, ...IMAGE_EXTS_UNCOMMON];
+type ImageExt = (typeof IMAGE_EXTS)[number];
 
-export const VIDEO_CODECS_COMMON = [
+const VIDEO_CODECS_COMMON = [
   "av1",
   "h264",
   "hevc",
@@ -88,7 +79,7 @@ export const VIDEO_CODECS_COMMON = [
   "wmv1",
 ] as const;
 
-export const VIDEO_CODECS_UNCOMMON = [
+const VIDEO_CODECS_UNCOMMON = [
   "amv",
   "asv1",
   "asv2",
@@ -142,10 +133,10 @@ export const VIDEO_CODECS_UNCOMMON = [
   "zmbv",
 ] as const;
 
-export const VIDEO_CODECS = [...VIDEO_CODECS_COMMON, ...VIDEO_CODECS_UNCOMMON] as const;
-export type VideoCodec = (typeof VIDEO_CODECS)[number];
+const VIDEO_CODECS = [...VIDEO_CODECS_COMMON, ...VIDEO_CODECS_UNCOMMON];
+type VideoCodec = (typeof VIDEO_CODECS)[number];
 
-export const VIDEO_EXTS_COMMON = [
+const VIDEO_EXTS_COMMON = [
   "3gp",
   "avi",
   "f4v",
@@ -159,7 +150,7 @@ export const VIDEO_EXTS_COMMON = [
   "wmv",
 ] as const;
 
-export const VIDEO_EXTS_UNCOMMON = [
+const VIDEO_EXTS_UNCOMMON = [
   "3gp2",
   "3gpp",
   "amv",
@@ -181,28 +172,69 @@ export const VIDEO_EXTS_UNCOMMON = [
   "wmp",
 ] as const;
 
-export const VIDEO_EXTS = [...VIDEO_EXTS_COMMON, ...VIDEO_EXTS_UNCOMMON];
-export type VideoExt = (typeof VIDEO_EXTS)[number];
+const VIDEO_EXTS = [...VIDEO_EXTS_COMMON, ...VIDEO_EXTS_UNCOMMON];
+type VideoExt = (typeof VIDEO_EXTS)[number];
 
-export const WEB_VIDEO_CODECS = ["h264", "hevc", "vp8", "vp9", "theora", "av1"];
-export const WEB_VIDEO_EXTS = ["mp4", "webm", "ogv", "wav"];
+const WEB_VIDEO_CODECS = ["h264", "hevc", "vp8", "vp9", "theora", "av1"] as const;
+type WebVideoCodec = (typeof WEB_VIDEO_CODECS)[number];
+
+const WEB_VIDEO_EXTS = ["mp4", "webm", "ogv", "wav"] as const;
+type WebVideoExt = (typeof WEB_VIDEO_EXTS)[number];
 
 export interface _Constants {
-  IMAGE_EXTS: readonly ImageExt[];
+  AUDIO: {
+    CODECS: AudioCodec[];
+    CODECS_COMMON: AudioCodec[];
+    CODECS_UNCOMMON: AudioCodec[];
+  };
+  IMAGE: {
+    EXTS: ImageExt[];
+    EXTS_COMMON: ImageExt[];
+    EXTS_UNCOMMON: ImageExt[];
+  };
   TOOLTIP: {
     ENTER_DELAY: number;
     ENTER_NEXT_DELAY: number;
   };
-  VIDEO_CODECS: readonly VideoCodec[];
-  VIDEO_EXTS: readonly VideoExt[];
+  VIDEO: {
+    CODECS: VideoCodec[];
+    CODECS_COMMON: VideoCodec[];
+    CODECS_UNCOMMON: VideoCodec[];
+    EXTS: VideoExt[];
+    EXTS_COMMON: VideoExt[];
+    EXTS_UNCOMMON: VideoExt[];
+  };
+  WEB_VIDEO: {
+    CODECS: WebVideoCodec[];
+    EXTS: WebVideoExt[];
+  };
 }
 
 export const _CONSTANTS: _Constants = {
-  IMAGE_EXTS,
+  AUDIO: {
+    CODECS: AUDIO_CODECS,
+    CODECS_COMMON: AUDIO_CODECS_COMMON as unknown as AudioCodec[],
+    CODECS_UNCOMMON: AUDIO_CODECS_UNCOMMON as unknown as AudioCodec[],
+  },
+  IMAGE: {
+    EXTS: IMAGE_EXTS,
+    EXTS_COMMON: IMAGE_EXTS_COMMON as unknown as ImageExt[],
+    EXTS_UNCOMMON: IMAGE_EXTS_UNCOMMON as unknown as ImageExt[],
+  },
   TOOLTIP: {
     ENTER_DELAY: 1000,
     ENTER_NEXT_DELAY: 500,
   },
-  VIDEO_CODECS,
-  VIDEO_EXTS,
+  VIDEO: {
+    CODECS: VIDEO_CODECS,
+    CODECS_COMMON: VIDEO_CODECS_COMMON as unknown as VideoCodec[],
+    CODECS_UNCOMMON: VIDEO_CODECS_UNCOMMON as unknown as VideoCodec[],
+    EXTS: VIDEO_EXTS,
+    EXTS_COMMON: VIDEO_EXTS_COMMON as unknown as VideoExt[],
+    EXTS_UNCOMMON: VIDEO_EXTS_UNCOMMON as unknown as VideoExt[],
+  },
+  WEB_VIDEO: {
+    CODECS: WEB_VIDEO_CODECS as unknown as WebVideoCodec[],
+    EXTS: WEB_VIDEO_EXTS as unknown as WebVideoExt[],
+  },
 };

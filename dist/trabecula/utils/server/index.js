@@ -132,16 +132,7 @@ var AUDIO_CODECS_UNCOMMON = [
 ];
 var AUDIO_CODECS = [...AUDIO_CODECS_COMMON, ...AUDIO_CODECS_UNCOMMON];
 var IMAGE_EXTS_COMMON = ["gif", "heic", "jpeg", "jpg", "png", "webp"];
-var IMAGE_EXTS_UNCOMMON = [
-  "apng",
-  "avif",
-  "bmp",
-  "jfif",
-  "jif",
-  "jiff",
-  "svg",
-  "tiff"
-];
+var IMAGE_EXTS_UNCOMMON = ["apng", "avif", "bmp", "jfif", "jif", "jiff", "svg", "tiff"];
 var IMAGE_EXTS = [...IMAGE_EXTS_COMMON, ...IMAGE_EXTS_UNCOMMON];
 var VIDEO_CODECS_COMMON = [
   "av1",

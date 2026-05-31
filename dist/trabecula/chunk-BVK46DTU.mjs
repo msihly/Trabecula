@@ -136,16 +136,7 @@ var AUDIO_CODECS_UNCOMMON = [
 ];
 var AUDIO_CODECS = [...AUDIO_CODECS_COMMON, ...AUDIO_CODECS_UNCOMMON];
 var IMAGE_EXTS_COMMON = ["gif", "heic", "jpeg", "jpg", "png", "webp"];
-var IMAGE_EXTS_UNCOMMON = [
-  "apng",
-  "avif",
-  "bmp",
-  "jfif",
-  "jif",
-  "jiff",
-  "svg",
-  "tiff"
-];
+var IMAGE_EXTS_UNCOMMON = ["apng", "avif", "bmp", "jfif", "jif", "jiff", "svg", "tiff"];
 var IMAGE_EXTS = [...IMAGE_EXTS_COMMON, ...IMAGE_EXTS_UNCOMMON];
 var VIDEO_CODECS_COMMON = [
   "av1",
@@ -249,13 +240,32 @@ var VIDEO_EXTS = [...VIDEO_EXTS_COMMON, ...VIDEO_EXTS_UNCOMMON];
 var WEB_VIDEO_CODECS = ["h264", "hevc", "vp8", "vp9", "theora", "av1"];
 var WEB_VIDEO_EXTS = ["mp4", "webm", "ogv", "wav"];
 var _CONSTANTS = {
-  IMAGE_EXTS,
+  AUDIO: {
+    CODECS: AUDIO_CODECS,
+    CODECS_COMMON: AUDIO_CODECS_COMMON,
+    CODECS_UNCOMMON: AUDIO_CODECS_UNCOMMON
+  },
+  IMAGE: {
+    EXTS: IMAGE_EXTS,
+    EXTS_COMMON: IMAGE_EXTS_COMMON,
+    EXTS_UNCOMMON: IMAGE_EXTS_UNCOMMON
+  },
   TOOLTIP: {
     ENTER_DELAY: 1e3,
     ENTER_NEXT_DELAY: 500
   },
-  VIDEO_CODECS,
-  VIDEO_EXTS
+  VIDEO: {
+    CODECS: VIDEO_CODECS,
+    CODECS_COMMON: VIDEO_CODECS_COMMON,
+    CODECS_UNCOMMON: VIDEO_CODECS_UNCOMMON,
+    EXTS: VIDEO_EXTS,
+    EXTS_COMMON: VIDEO_EXTS_COMMON,
+    EXTS_UNCOMMON: VIDEO_EXTS_UNCOMMON
+  },
+  WEB_VIDEO: {
+    CODECS: WEB_VIDEO_CODECS,
+    EXTS: WEB_VIDEO_EXTS
+  }
 };
 
 // trabecula/utils/common/date-and-time.ts
@@ -536,20 +546,6 @@ export {
   sumArray,
   uniqueArrayFilter,
   uniqueArrayMerge,
-  AUDIO_CODECS_COMMON,
-  AUDIO_CODECS_UNCOMMON,
-  AUDIO_CODECS,
-  IMAGE_EXTS_COMMON,
-  IMAGE_EXTS_UNCOMMON,
-  IMAGE_EXTS,
-  VIDEO_CODECS_COMMON,
-  VIDEO_CODECS_UNCOMMON,
-  VIDEO_CODECS,
-  VIDEO_EXTS_COMMON,
-  VIDEO_EXTS_UNCOMMON,
-  VIDEO_EXTS,
-  WEB_VIDEO_CODECS,
-  WEB_VIDEO_EXTS,
   _CONSTANTS,
   dayjs,
   dateWithTzToIso,
@@ -581,4 +577,4 @@ export {
   uuid,
   PromiseQueue
 };
-//# sourceMappingURL=chunk-VYK6HHAI.mjs.map
+//# sourceMappingURL=chunk-BVK46DTU.mjs.map
