@@ -66,7 +66,7 @@ export const removeEmptyFolders = async (
 
   for (const dir of dirPathsDeepToShallow) {
     try {
-      const entries = await fs.readdir(dir);
+      const entries = await dirToFilePaths(dir);
       if (entries.length === 0) await (options.hardDelete ? fs.rm(dir) : trash(dir));
     } catch {
       fileLog(`Failed to remove empty folder: ${dir}`, { type: "error" });

@@ -359,7 +359,7 @@ var removeEmptyFolders = (..._0) => __async(null, [..._0], function* (dirPath = 
   }).sort((a, b) => b.split(import_path2.default.sep).length - a.split(import_path2.default.sep).length);
   for (const dir of dirPathsDeepToShallow) {
     try {
-      const entries = yield import_fs2.promises.readdir(dir);
+      const entries = yield dirToFilePaths(dir);
       if (entries.length === 0) yield options.hardDelete ? import_fs2.promises.rm(dir) : (0, import_trash.default)(dir);
     } catch (e) {
       fileLog(`Failed to remove empty folder: ${dir}`, { type: "error" });

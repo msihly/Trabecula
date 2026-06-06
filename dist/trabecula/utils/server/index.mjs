@@ -111,7 +111,7 @@ var removeEmptyFolders = (..._0) => __async(null, [..._0], function* (dirPath = 
   }).sort((a, b) => b.split(path2.sep).length - a.split(path2.sep).length);
   for (const dir of dirPathsDeepToShallow) {
     try {
-      const entries = yield fs2.readdir(dir);
+      const entries = yield dirToFilePaths(dir);
       if (entries.length === 0) yield options.hardDelete ? fs2.rm(dir) : trash(dir);
     } catch (e) {
       fileLog(`Failed to remove empty folder: ${dir}`, { type: "error" });
