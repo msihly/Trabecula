@@ -18,7 +18,6 @@ declare const md5File: ((path: string) => Promise<string>) & {
 };
 declare const removeEmptyFolders: (dirPath?: string, options?: {
     excludedPaths?: string[];
-    hardDelete?: boolean;
 }) => Promise<void>;
 
 declare const setLogsPath: (filePath: string) => Promise<void>;

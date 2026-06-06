@@ -65,11 +65,10 @@ __export(server_exports, {
 module.exports = __toCommonJS(server_exports);
 
 // trabecula/utils/server/files.ts
-var import_fs2 = require("fs");
-var import_path2 = __toESM(require("path"));
+var import_fs = require("fs");
+var import_path = __toESM(require("path"));
 var import_fdir = require("fdir");
 var import_md5_file = __toESM(require("md5-file"));
-var import_trash = __toESM(require("trash"));
 
 // trabecula/utils/common/constants.ts
 var AUDIO_CODECS_COMMON = [
@@ -262,20 +261,77 @@ var handleErrors = (fn) => __async(null, null, function* () {
   }
 });
 
+// trabecula/utils/server/files.ts
+var checkFileExists = (path3) => __async(null, null, function* () {
+  return !!(yield import_fs.promises.stat(path3).catch(() => false));
+});
+var createTreeNode = (dirPath, tree) => {
+  const dirNames = import_path.default.normalize(dirPath).split(import_path.default.sep);
+  const [rootDirName, ...remainingDirNames] = dirNames;
+  const treeNode = tree.find((t) => t.name === rootDirName);
+  if (!treeNode) tree.push({ name: rootDirName, children: [] });
+  if (remainingDirNames.length > 0)
+    createTreeNode(import_path.default.join(...remainingDirNames), (treeNode != null ? treeNode : tree[tree.length - 1]).children);
+};
+var createTree = (paths) => paths.reduce((acc, cur) => (createTreeNode(cur, acc), acc), []);
+var deleteFile = (path3, copiedPath) => handleErrors(() => __async(null, null, function* () {
+  if (!(yield checkFileExists(path3))) return false;
+  if (copiedPath && !(yield checkFileExists(copiedPath)))
+    throw new Error(
+      `Failed to delete ${path3}. File does not exist at copied path ${copiedPath}.`
+    );
+  yield import_fs.promises.unlink(path3);
+  return true;
+}));
+var dirToFilePaths = (dirPath, filterFn) => __async(null, null, function* () {
+  return yield filterFn ? new import_fdir.fdir().withFullPaths().filter(filterFn).crawl(dirPath).withPromise() : new import_fdir.fdir().withFullPaths().crawl(dirPath).withPromise();
+});
+var dirToFolderPaths = (dirPath) => __async(null, null, function* () {
+  return (yield new import_fdir.fdir().onlyDirs().withFullPaths().crawl(dirPath).withPromise()).map((dir) => dir.split(import_path.default.sep).slice(0, -1).join(import_path.default.sep)).filter((dir) => import_path.default.normalize(dir) !== import_path.default.normalize(dirPath));
+});
+var extendFileName = (fileName, ext) => `${import_path.default.relative(".", fileName).replace(/\.\w+$/, "")}.${ext}`;
+var makeFolder = (path3) => __async(null, null, function* () {
+  return yield import_fs.promises.mkdir(path3, { recursive: true });
+});
+var md5File = import_md5_file.default;
+var removeEmptyFolders = (..._0) => __async(null, [..._0], function* (dirPath = ".", options = {}) {
+  const dirPathsParts = [.../* @__PURE__ */ new Set([dirPath, ...yield dirToFolderPaths(dirPath)])].filter((p) => {
+    var _a;
+    return !((_a = options.excludedPaths) == null ? void 0 : _a.includes(p));
+  }).map((p) => p.split(import_path.default.sep));
+  const dirPathsDeepToShallow = [...dirPathsParts].sort((a, b) => b.length - a.length).map((p) => p.join(import_path.default.sep));
+  const emptyFolders = /* @__PURE__ */ new Set();
+  yield Promise.all(
+    dirPathsDeepToShallow.map((dir) => __async(null, null, function* () {
+      if ((yield dirToFilePaths(dir)).length === 0) emptyFolders.add(dir);
+    }))
+  );
+  const rootDirsToEmpty = /* @__PURE__ */ new Set();
+  for (const dir of dirPathsDeepToShallow) {
+    if (emptyFolders.has(dir)) {
+      const parts = dir.split(import_path.default.sep);
+      parts.pop();
+      const ancestors = parts.map((_, i) => parts.slice(0, i + 1).join(import_path.default.sep));
+      if (!ancestors.some((a) => emptyFolders.has(a))) rootDirsToEmpty.add(dir);
+    }
+  }
+  yield Promise.all([...rootDirsToEmpty].map((dir) => import_fs.promises.rmdir(dir, { recursive: true })));
+});
+
 // trabecula/utils/server/logging.ts
-var import_fs = __toESM(require("fs"));
+var import_fs2 = __toESM(require("fs"));
 var import_promises = __toESM(require("fs/promises"));
-var import_path = __toESM(require("path"));
+var import_path2 = __toESM(require("path"));
 var logsPath;
 var logStream = null;
 var setLogsPath = (filePath) => __async(null, null, function* () {
-  logsPath = import_path.default.resolve(filePath);
-  yield import_promises.default.mkdir(import_path.default.dirname(logsPath), { recursive: true });
+  logsPath = import_path2.default.resolve(filePath);
+  yield import_promises.default.mkdir(import_path2.default.dirname(logsPath), { recursive: true });
   if (logStream) {
     logStream.end();
     logStream = null;
   }
-  logStream = import_fs.default.createWriteStream(logsPath, { flags: "a", encoding: "utf8" });
+  logStream = import_fs2.default.createWriteStream(logsPath, { flags: "a", encoding: "utf8" });
   logStream.on("error", (err) => {
     console.error("Log stream error:", err);
     logStream = null;
@@ -318,54 +374,6 @@ var makePerfLog = (logTag, toFile = false) => {
   };
   return { perfLog, perfLogTotal, perfStart };
 };
-
-// trabecula/utils/server/files.ts
-var checkFileExists = (path3) => __async(null, null, function* () {
-  return !!(yield import_fs2.promises.stat(path3).catch(() => false));
-});
-var createTreeNode = (dirPath, tree) => {
-  const dirNames = import_path2.default.normalize(dirPath).split(import_path2.default.sep);
-  const [rootDirName, ...remainingDirNames] = dirNames;
-  const treeNode = tree.find((t) => t.name === rootDirName);
-  if (!treeNode) tree.push({ name: rootDirName, children: [] });
-  if (remainingDirNames.length > 0)
-    createTreeNode(import_path2.default.join(...remainingDirNames), (treeNode != null ? treeNode : tree[tree.length - 1]).children);
-};
-var createTree = (paths) => paths.reduce((acc, cur) => (createTreeNode(cur, acc), acc), []);
-var deleteFile = (path3, copiedPath) => handleErrors(() => __async(null, null, function* () {
-  if (!(yield checkFileExists(path3))) return false;
-  if (copiedPath && !(yield checkFileExists(copiedPath)))
-    throw new Error(
-      `Failed to delete ${path3}. File does not exist at copied path ${copiedPath}.`
-    );
-  yield import_fs2.promises.unlink(path3);
-  return true;
-}));
-var dirToFilePaths = (dirPath, filterFn) => __async(null, null, function* () {
-  return yield filterFn ? new import_fdir.fdir().withFullPaths().filter(filterFn).crawl(dirPath).withPromise() : new import_fdir.fdir().withFullPaths().crawl(dirPath).withPromise();
-});
-var dirToFolderPaths = (dirPath) => __async(null, null, function* () {
-  return (yield new import_fdir.fdir().onlyDirs().withFullPaths().crawl(dirPath).withPromise()).map((dir) => dir.split(import_path2.default.sep).slice(0, -1).join(import_path2.default.sep)).filter((dir) => import_path2.default.normalize(dir) !== import_path2.default.normalize(dirPath));
-});
-var extendFileName = (fileName, ext) => `${import_path2.default.relative(".", fileName).replace(/\.\w+$/, "")}.${ext}`;
-var makeFolder = (path3) => __async(null, null, function* () {
-  return yield import_fs2.promises.mkdir(path3, { recursive: true });
-});
-var md5File = import_md5_file.default;
-var removeEmptyFolders = (..._0) => __async(null, [..._0], function* (dirPath = ".", options = {}) {
-  const dirPathsDeepToShallow = [.../* @__PURE__ */ new Set([dirPath, ...yield dirToFolderPaths(dirPath)])].filter((p) => {
-    var _a;
-    return !((_a = options.excludedPaths) == null ? void 0 : _a.includes(p));
-  }).sort((a, b) => b.split(import_path2.default.sep).length - a.split(import_path2.default.sep).length);
-  for (const dir of dirPathsDeepToShallow) {
-    try {
-      const entries = yield dirToFilePaths(dir);
-      if (entries.length === 0) yield options.hardDelete ? import_fs2.promises.rm(dir) : (0, import_trash.default)(dir);
-    } catch (e) {
-      fileLog(`Failed to remove empty folder: ${dir}`, { type: "error" });
-    }
-  }
-});
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   checkFileExists,
