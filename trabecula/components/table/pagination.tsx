@@ -77,5 +77,6 @@ const useClasses = makeClasses({
     left: 0,
     right: 0,
     width: "100%",
+    zIndex: 100,
   },
 });

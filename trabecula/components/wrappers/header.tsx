@@ -5,7 +5,7 @@ import { deepMerge } from "trabecula/utils/common";
 
 const DEFAULT_HEADER_PROPS: HeaderWrapperProps["headerProps"] = {
   bgColor: colors.custom.black,
-  borderRadiuses: { top: "0.5rem" },
+  borderRadiuses: { top: 6 },
   fontSize: "0.8em",
   justify: "center",
   padding: { all: "0.15rem 0.3rem" },

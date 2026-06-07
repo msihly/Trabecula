@@ -1909,7 +1909,8 @@ var useClasses19 = makeClasses({
     bottom: 0,
     left: 0,
     right: 0,
-    width: "100%"
+    width: "100%",
+    zIndex: 100
   }
 });
 
@@ -3018,7 +3019,7 @@ var Divider = (_a) => {
 import { jsx as jsx54, jsxs as jsxs28 } from "react/jsx-runtime";
 var DEFAULT_HEADER_PROPS2 = {
   bgColor: colors.custom.black,
-  borderRadiuses: { top: "0.5rem" },
+  borderRadiuses: { top: 6 },
   fontSize: "0.8em",
   justify: "center",
   padding: { all: "0.15rem 0.3rem" },
