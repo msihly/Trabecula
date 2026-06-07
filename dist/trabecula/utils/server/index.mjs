@@ -12,6 +12,7 @@ import { promises as fs } from "fs";
 import path from "path";
 import { fdir } from "fdir";
 import _md5File from "md5-file";
+import trash from "trash";
 var checkFileExists = (path3) => __async(null, null, function* () {
   return !!(yield fs.stat(path3).catch(() => false));
 });
@@ -65,7 +66,11 @@ var removeEmptyFolders = (..._0) => __async(null, [..._0], function* (dirPath = 
       if (!ancestors.some((a) => emptyFolders.has(a))) rootDirsToEmpty.add(dir);
     }
   }
-  yield Promise.all([...rootDirsToEmpty].map((dir) => fs.rmdir(dir, { recursive: true })));
+  yield Promise.all(
+    [...rootDirsToEmpty].map(
+      (dir) => options.hardDelete ? fs.rm(dir, { recursive: true }) : trash(dir)
+    )
+  );
 });
 
 // trabecula/utils/server/logging.ts

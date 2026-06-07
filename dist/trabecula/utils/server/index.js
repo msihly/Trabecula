@@ -69,6 +69,7 @@ var import_fs = require("fs");
 var import_path = __toESM(require("path"));
 var import_fdir = require("fdir");
 var import_md5_file = __toESM(require("md5-file"));
+var import_trash = __toESM(require("trash"));
 
 // trabecula/utils/common/constants.ts
 var AUDIO_CODECS_COMMON = [
@@ -315,7 +316,11 @@ var removeEmptyFolders = (..._0) => __async(null, [..._0], function* (dirPath = 
       if (!ancestors.some((a) => emptyFolders.has(a))) rootDirsToEmpty.add(dir);
     }
   }
-  yield Promise.all([...rootDirsToEmpty].map((dir) => import_fs.promises.rmdir(dir, { recursive: true })));
+  yield Promise.all(
+    [...rootDirsToEmpty].map(
+      (dir) => options.hardDelete ? import_fs.promises.rm(dir, { recursive: true }) : (0, import_trash.default)(dir)
+    )
+  );
 });
 
 // trabecula/utils/server/logging.ts
