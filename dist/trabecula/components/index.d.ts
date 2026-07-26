@@ -1,7 +1,7 @@
 import * as react from 'react';
 import { Ref, ForwardRefExoticComponent, PropsWithoutRef, RefAttributes, ReactNode, MouseEvent, Dispatch, SetStateAction, ElementType, DetailedHTMLProps, ImgHTMLAttributes, HTMLAttributes } from 'react';
 import * as react_jsx_runtime from 'react/jsx-runtime';
-import { ButtonProps as ButtonProps$1, IconButtonProps as IconButtonProps$1, TextFieldProps, ListItemProps as ListItemProps$1, IconProps as IconProps$1, DialogProps, PaginationProps as PaginationProps$1, TypographyProps, AccordionProps as AccordionProps$1, TooltipProps as TooltipProps$2, ChipProps as ChipProps$2, DividerProps as DividerProps$1 } from '@mui/material';
+import { ButtonProps as ButtonProps$1, IconButtonProps as IconButtonProps$1, AutocompleteProps, TextFieldProps, ListItemProps as ListItemProps$1, IconProps as IconProps$1, DialogProps, PaginationProps as PaginationProps$1, TypographyProps, AccordionProps as AccordionProps$1, TooltipProps as TooltipProps$2, ChipProps as ChipProps$2, DividerProps as DividerProps$1 } from '@mui/material';
 import { B as BorderRadiuses, C as CSS, b as CssColor, M as Margins, P as Padding, a as Borders } from '../css-B32sWQHL.js';
 import { IconName as IconName$1 } from '../_generated/client/index.js';
 import { DatePickerProps } from '@mui/x-date-pickers/DatePicker';
@@ -134,6 +134,20 @@ interface SortRowProps {
 }
 declare const SortRow: ({ attribute, label, icon, iconProps, setValue, value, }: SortRowProps) => react_jsx_runtime.JSX.Element;
 
+type AutoCompleteOption = {
+    label: string;
+    value: any;
+};
+declare const createAutoCompleteOptions: (values: any[]) => AutoCompleteOption[];
+interface AutoCompleteProps extends Omit<AutocompleteProps<any, any, any, any>, "fullWidth" | "onChange" | "options" | "renderInput"> {
+    inputProps?: InputProps;
+    header?: InputProps["header"];
+    onChange?: (val: any) => any;
+    options: AutoCompleteOption[];
+    required?: boolean;
+}
+declare const AutoComplete: ({ className, freeSolo, header, inputProps, onChange, options, required, value, ...props }: AutoCompleteProps) => react_jsx_runtime.JSX.Element;
+
 interface DateInputProps extends Omit<DatePickerProps<dayjs.Dayjs>, "label" | "onChange" | "value"> {
     header?: ReactNode;
     headerProps?: Partial<ViewProps>;
@@ -164,31 +178,45 @@ interface DropdownProps extends InputProps {
 }
 declare const Dropdown: ({ options, value, ...props }: DropdownProps) => react_jsx_runtime.JSX.Element;
 
+type FilterStore = {
+    applySavedSearch: (id: string) => any;
+    deleteSavedSearch: (id?: string) => Promise<any>;
+    hasChanges: boolean;
+    isDeleteModalOpen: boolean;
+    isLoading: boolean;
+    isSaveModalOpen: boolean;
+    loadSavedSearches: () => Promise<any>;
+    loadFiltered: (options?: {
+        noCache?: boolean;
+        page?: number;
+    }) => Promise<any>;
+    numOfFilters: number;
+    reset: () => any;
+    saveSavedSearch: (label: string) => Promise<any>;
+    savedSearches: Array<{
+        id: string;
+        label: string;
+    }>;
+    selectedSavedSearchId: string;
+    setPageCount: (count: number) => any;
+    setIsDeleteModalOpen: (value: boolean) => any;
+    setIsSaveModalOpen: (value: boolean) => any;
+    setSortValue: (val: {
+        isDesc: boolean;
+        key: string;
+    }) => any;
+    sortValue: {
+        isDesc: boolean;
+        key: string;
+    };
+};
 interface FilterMenuProps extends Omit<ButtonProps, "onChange" | "value"> {
     children: ReactNode | ReactNode[];
     color?: CssColor;
     menuProps?: Partial<MenuButtonProps>;
     resetFn?: () => void;
     sortOptions: SortMenuProps["rows"];
-    store: {
-        hasChanges: boolean;
-        isLoading: boolean;
-        loadFiltered: (options?: {
-            noCache?: boolean;
-            page?: number;
-        }) => void;
-        numOfFilters: number;
-        reset: () => void;
-        setPageCount: (count: number) => void;
-        setSortValue: (val: {
-            isDesc: boolean;
-            key: string;
-        }) => void;
-        sortValue: {
-            isDesc: boolean;
-            key: string;
-        };
-    };
+    store: FilterStore;
     viewProps?: ViewProps;
     width?: CSS["width"];
 }
@@ -206,6 +234,7 @@ interface InputProps extends Omit<TextFieldProps, "color" | "fullWidth" | "onCha
     hasHelper?: boolean;
     header?: HeaderWrapperProps["header"];
     headerProps?: HeaderWrapperProps["headerProps"];
+    height?: CSS["height"];
     helperText?: ReactNode;
     margins?: Margins;
     maxLength?: number;
@@ -708,4 +737,4 @@ interface ViewProps extends HTMLAttributes<HTMLDivElement> {
 }
 declare const View: react.ForwardRefExoticComponent<ViewProps & react.RefAttributes<HTMLDivElement>>;
 
-export { Accordion, type AccordionProps, Button, type ButtonProps, ButtonWithInset, type ButtonWithInsetProps, Card, CardBase, CardGrid, type CardGridProps, type CardProps, CenteredText, type CenteredTextProps, Checkbox, type CheckboxProps, Chip, type ChipProps, ColorPicker, type ColorPickerProps, Comp, ConditionalWrap, ConfirmModal, type ConfirmModalProps, type ContainerProps$1 as ContainerProps, type ContentProps, ContextMenu, type ContextMenuProps, DateDetail, type DateDetailProps, DateInput, type DateInputProps, DateRange, type DateRangeProps, Detail, type DetailProps, DetailRows, Divider, type DividerProps, Dropdown, type DropdownOption, type DropdownProps, FilterMenu, type FilterMenuProps, type FooterProps$1 as FooterProps, type HeaderProps, HeaderWrapper, type HeaderWrapperProps, Icon, IconButton, type IconButtonProps, type IconName, IconPicker, type IconPickerProps, type IconProps, Input, type InputProps, ListItem, type ListItemProps, LoadingOverlay, type LoadingOverlayProps, LogOpsInput, type LogOpsInputProps, MULTI_INPUT_ROW_HEIGHT, MenuButton, type MenuButtonProps, Modal, MultiActionButton, type MultiActionButtonProps, MultiInput, MultiInputList, type MultiInputListProps, type MultiInputProps, MultiInputRow, type MultiInputRowOption, type MultiInputRowProps, NumInput, type NumInputProps, NumRange, type NumRangeProps, Pagination, type PaginationProps, ProgressBar, type ProgressBarProps, ProgressCircle, type ProgressCircleProps, RangeWrapper, type RangeWrapperProps, SideScroller, SortMenu, type SortMenuProps, SortRow, type SortRowProps, Table, type TableColumn, type TableProps, Text, type TextPreset, type TextProps, Tooltip, type TooltipProps$1 as TooltipProps, TooltipWrapper, type TooltipWrapperProps, UniformList, type UniformListProps, View, type ViewProps };
+export { Accordion, type AccordionProps, AutoComplete, type AutoCompleteOption, type AutoCompleteProps, Button, type ButtonProps, ButtonWithInset, type ButtonWithInsetProps, Card, CardBase, CardGrid, type CardGridProps, type CardProps, CenteredText, type CenteredTextProps, Checkbox, type CheckboxProps, Chip, type ChipProps, ColorPicker, type ColorPickerProps, Comp, ConditionalWrap, ConfirmModal, type ConfirmModalProps, type ContainerProps$1 as ContainerProps, type ContentProps, ContextMenu, type ContextMenuProps, DateDetail, type DateDetailProps, DateInput, type DateInputProps, DateRange, type DateRangeProps, Detail, type DetailProps, DetailRows, Divider, type DividerProps, Dropdown, type DropdownOption, type DropdownProps, FilterMenu, type FilterMenuProps, type FooterProps$1 as FooterProps, type HeaderProps, HeaderWrapper, type HeaderWrapperProps, Icon, IconButton, type IconButtonProps, type IconName, IconPicker, type IconPickerProps, type IconProps, Input, type InputProps, ListItem, type ListItemProps, LoadingOverlay, type LoadingOverlayProps, LogOpsInput, type LogOpsInputProps, MULTI_INPUT_ROW_HEIGHT, MenuButton, type MenuButtonProps, Modal, MultiActionButton, type MultiActionButtonProps, MultiInput, MultiInputList, type MultiInputListProps, type MultiInputProps, MultiInputRow, type MultiInputRowOption, type MultiInputRowProps, NumInput, type NumInputProps, NumRange, type NumRangeProps, Pagination, type PaginationProps, ProgressBar, type ProgressBarProps, ProgressCircle, type ProgressCircleProps, RangeWrapper, type RangeWrapperProps, SideScroller, SortMenu, type SortMenuProps, SortRow, type SortRowProps, Table, type TableColumn, type TableProps, Text, type TextPreset, type TextProps, Tooltip, type TooltipProps$1 as TooltipProps, TooltipWrapper, type TooltipWrapperProps, UniformList, type UniformListProps, View, type ViewProps, createAutoCompleteOptions };

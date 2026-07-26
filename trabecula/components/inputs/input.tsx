@@ -37,6 +37,7 @@ export interface InputProps extends Omit<
   hasHelper?: boolean;
   header?: HeaderWrapperProps["header"];
   headerProps?: HeaderWrapperProps["headerProps"];
+  height?: CSS["height"];
   helperText?: ReactNode;
   margins?: Margins;
   maxLength?: number;
@@ -62,6 +63,7 @@ export const Input = Comp(
       hasHelper = false,
       header,
       headerProps = {},
+      height,
       helperText,
       inputProps,
       margins = {},
@@ -90,6 +92,7 @@ export const Input = Comp(
       hasHelper,
       hasHelperText: !!helperText,
       hasOnClick: !!onClick,
+      height,
       margins,
       minWidth,
       textAlign,
@@ -161,6 +164,7 @@ interface ClassesProps extends Pick<
   | "dense"
   | "flex"
   | "hasHelper"
+  | "height"
   | "margins"
   | "minWidth"
   | "textAlign"
@@ -184,6 +188,7 @@ const useClasses = makeClasses((props: ClassesProps) => ({
       fontFamily: "Roboto",
       borderRadius: "inherit",
       padding: props.dense ? "0.25rem 0.5rem" : undefined,
+      height: props.height,
       textAlign: props.textAlign,
       cursor: props.hasOnClick ? "pointer" : undefined,
     },

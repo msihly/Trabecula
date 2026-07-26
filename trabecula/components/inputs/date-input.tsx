@@ -73,9 +73,5 @@ const useClasses = makeClasses((props: ClassesProps) => ({
     "& .MuiIconButton-root": {
       padding: "0.2rem",
     },
-    "& input": {
-      fontFamily: "Roboto",
-      fontSize: "0.9em",
-    },
   },
 }));

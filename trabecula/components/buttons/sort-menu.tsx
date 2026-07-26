@@ -64,6 +64,7 @@ interface ClassesProps extends Pick<SortMenuProps, "hasHeader" | "width"> {}
 
 const useClasses = makeClasses((props: ClassesProps) => ({
   button: {
+    flexShrink: 0,
     ...makeBorderRadiuses({ all: "0.3rem", ...(props.hasHeader ? { top: 0 } : {}) }),
     height: "inherit",
     width: props.width,

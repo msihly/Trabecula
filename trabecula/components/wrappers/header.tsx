@@ -50,9 +50,9 @@ export const HeaderWrapper = ({
     <ConditionalWrap condition={!!header} wrap={wrap}>
       <View
         overflow="auto"
+        aria-label="header-wrapper-content"
         {...viewProps}
         {...{ display, height, position, row, spacing }}
-        aria-label="header-wrapper-content"
       >
         {children}
       </View>
