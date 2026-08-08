@@ -529,6 +529,7 @@ var SortMenu = (_a) => {
   var _b = _a, {
     color = colors.custom.black,
     hasHeader,
+    height = "inherit",
     rows,
     setValue,
     value,
@@ -536,24 +537,28 @@ var SortMenu = (_a) => {
   } = _b, buttonProps = __objRest(_b, [
     "color",
     "hasHeader",
+    "height",
     "rows",
     "setValue",
     "value",
     "width"
   ]);
-  const { css, cx } = useClasses5({ hasHeader, width });
+  const { css, cx } = useClasses5({ hasHeader });
   const activeRow = rows.find(({ attribute }) => attribute === (value == null ? void 0 : value.key));
   const renderButton = (onOpen) => /* @__PURE__ */ jsx8(
     Button,
     __spreadProps(__spreadValues({}, buttonProps), {
       onClick: onOpen,
       color,
-      justify: "space-between",
-      padding: { left: "0.5em", right: "0.5em" },
-      className: cx(css.button, buttonProps == null ? void 0 : buttonProps.className),
       icon: "Sort",
       iconRight: (value == null ? void 0 : value.isDesc) ? "ArrowDownward" : "ArrowUpward",
       iconProps: { size: "1.15em" },
+      justify: "space-between",
+      height,
+      width,
+      borderRadiuses: __spreadValues({ all: "0.3rem" }, hasHeader ? { top: 0 } : {}),
+      padding: { left: "0.5em", right: "0.5em" },
+      className: cx(css.button, buttonProps == null ? void 0 : buttonProps.className),
       text: /* @__PURE__ */ jsxs6(View, { column: true, align: "flex-start", justify: "center", width: "100%", children: [
         /* @__PURE__ */ jsx8(Text, { className: css.topText, children: "Sort By" }),
         /* @__PURE__ */ jsx8(Text, { className: css.label, children: activeRow == null ? void 0 : activeRow.label })
@@ -562,14 +567,11 @@ var SortMenu = (_a) => {
   );
   return /* @__PURE__ */ jsx8(MenuButton, { button: renderButton, children: /* @__PURE__ */ jsx8(View, { column: true, children: rows.map((rowProps) => /* @__PURE__ */ createElement(SortRow, __spreadProps(__spreadValues(__spreadValues({}, rowProps), { setValue, value }), { key: rowProps.attribute }))) }) });
 };
-var useClasses5 = makeClasses((props) => ({
-  button: __spreadProps(__spreadValues({
-    flexShrink: 0
-  }, makeBorderRadiuses(__spreadValues({ all: "0.3rem" }, props.hasHeader ? { top: 0 } : {}))), {
-    height: "inherit",
-    width: props.width,
+var useClasses5 = makeClasses({
+  button: {
+    flexShrink: 0,
     boxShadow: "none"
-  }),
+  },
   label: {
     fontSize: "0.9em",
     lineHeight: 1,
@@ -584,7 +586,7 @@ var useClasses5 = makeClasses((props) => ({
     fontWeight: 600,
     lineHeight: 1
   }
-}));
+});
 
 // trabecula/components/buttons/sort-row.tsx
 import { jsx as jsx9, jsxs as jsxs7 } from "react/jsx-runtime";

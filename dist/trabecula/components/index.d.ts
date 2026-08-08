@@ -122,7 +122,7 @@ interface SortMenuProps extends Omit<ButtonProps, "onChange" | "value"> {
     };
     width?: CSS["width"];
 }
-declare const SortMenu: ({ color, hasHeader, rows, setValue, value, width, ...buttonProps }: SortMenuProps) => react_jsx_runtime.JSX.Element;
+declare const SortMenu: ({ color, hasHeader, height, rows, setValue, value, width, ...buttonProps }: SortMenuProps) => react_jsx_runtime.JSX.Element;
 
 interface SortRowProps {
     attribute: string;
