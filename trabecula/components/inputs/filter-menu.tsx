@@ -59,7 +59,7 @@ export const FilterMenu = Comp(
     sortOptions,
     store,
     viewProps = {},
-    width = "fit-content",
+    width = "8rem",
     ...buttonProps
   }: FilterMenuProps) => {
     const hasSavedSearchApi =
@@ -97,48 +97,46 @@ export const FilterMenu = Comp(
     );
 
     return (
-      <>
-        <MenuButton button={renderButton} {...menuProps}>
-          <View column padding={{ all: "0.5rem" }} spacing="0.5rem" overflow="auto" {...viewProps}>
-            <View row spacing="0.5rem" width="100%">
-              <Button
-                text="Search"
-                icon="Search"
-                onClick={handleSearch}
-                disabled={store.isLoading}
-                color={store.hasChanges ? colors.custom.purple : colors.custom.blue}
-                width="100%"
-              />
+      <MenuButton button={renderButton} {...menuProps}>
+        <View column padding={{ all: "0.5rem" }} spacing="0.5rem" overflow="auto" {...viewProps}>
+          <View row spacing="0.5rem" width="100%">
+            <Button
+              text="Search"
+              icon="Search"
+              onClick={handleSearch}
+              disabled={store.isLoading}
+              color={store.hasChanges ? colors.custom.purple : colors.custom.blue}
+              width="100%"
+            />
 
-              <Button
-                icon="Refresh"
-                onClick={handleReset}
-                disabled={store.isLoading}
-                color={colors.foregroundCard}
-                colorOnHover={colors.custom.red}
-              />
+            <Button
+              icon="Refresh"
+              onClick={handleReset}
+              disabled={store.isLoading}
+              color={colors.foregroundCard}
+              colorOnHover={colors.custom.red}
+            />
 
-              <SortMenu
-                rows={sortOptions}
-                value={store.sortValue}
-                setValue={store.setSortValue}
-                color={colors.foregroundCard}
-                width="9rem"
-              />
+            <SortMenu
+              rows={sortOptions}
+              value={store.sortValue}
+              setValue={store.setSortValue}
+              color={colors.foregroundCard}
+              width="9rem"
+            />
 
-              {hasSavedSearchApi && (
-                <>
-                  <Divider orientation="vertical" />
+            {hasSavedSearchApi && (
+              <>
+                <Divider orientation="vertical" />
 
-                  <SavedSearchMenu store={store} />
-                </>
-              )}
-            </View>
-
-            {children}
+                <SavedSearchMenu store={store} />
+              </>
+            )}
           </View>
-        </MenuButton>
-      </>
+
+          {children}
+        </View>
+      </MenuButton>
     );
   },
 );

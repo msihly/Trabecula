@@ -809,7 +809,7 @@ var FilterMenu = Comp(
       sortOptions,
       store,
       viewProps = {},
-      width = "fit-content"
+      width = "8rem"
     } = _b, buttonProps = __objRest(_b, [
       "children",
       "color",
@@ -843,7 +843,7 @@ var FilterMenu = Comp(
         ] })
       })
     );
-    return /* @__PURE__ */ jsx14(Fragment2, { children: /* @__PURE__ */ jsx14(MenuButton, __spreadProps(__spreadValues({ button: renderButton }, menuProps), { children: /* @__PURE__ */ jsxs8(View, __spreadProps(__spreadValues({ column: true, padding: { all: "0.5rem" }, spacing: "0.5rem", overflow: "auto" }, viewProps), { children: [
+    return /* @__PURE__ */ jsx14(MenuButton, __spreadProps(__spreadValues({ button: renderButton }, menuProps), { children: /* @__PURE__ */ jsxs8(View, __spreadProps(__spreadValues({ column: true, padding: { all: "0.5rem" }, spacing: "0.5rem", overflow: "auto" }, viewProps), { children: [
       /* @__PURE__ */ jsxs8(View, { row: true, spacing: "0.5rem", width: "100%", children: [
         /* @__PURE__ */ jsx14(
           Button,
@@ -882,7 +882,7 @@ var FilterMenu = Comp(
         ] })
       ] }),
       children
-    ] })) })) });
+    ] })) }));
   }
 );
 var SavedSearchMenu = Comp(({ store }) => {
