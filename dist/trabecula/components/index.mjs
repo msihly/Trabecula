@@ -839,17 +839,7 @@ var FilterMenu = Comp(
         width,
         text: /* @__PURE__ */ jsxs8(View, { row: true, align: "center", spacing: "0.5rem", children: [
           /* @__PURE__ */ jsx14(Icon, { name: "FilterAlt", size: "1.15em" }),
-          /* @__PURE__ */ jsx14(Text, { children: "Filter Results" }),
-          /* @__PURE__ */ jsx14(
-            Chip,
-            {
-              label: store.numOfFilters,
-              bgColor: store.numOfFilters > 0 ? colors.custom.blue : colors.foregroundCard,
-              height: "1.2rem",
-              width: "2rem",
-              size: "small"
-            }
-          )
+          /* @__PURE__ */ jsx14(Text, { children: "Filter Results" })
         ] })
       })
     );

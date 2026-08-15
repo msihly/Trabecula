@@ -3,7 +3,6 @@ import {
   AutoComplete,
   Button,
   ButtonProps,
-  Chip,
   Comp,
   ConfirmModal,
   Divider,
@@ -29,7 +28,6 @@ type FilterStore = {
   isSaveModalOpen: boolean;
   loadSavedSearches: () => Promise<any>;
   loadFiltered: (options?: { noCache?: boolean; page?: number }) => Promise<any>;
-  numOfFilters: number;
   reset: () => any;
   saveSavedSearch: (label: string) => Promise<any>;
   savedSearches: Array<{ id: string; label: string }>;
@@ -93,14 +91,6 @@ export const FilterMenu = Comp(
             <Icon name="FilterAlt" size="1.15em" />
 
             <Text>{"Filter Results"}</Text>
-
-            <Chip
-              label={store.numOfFilters}
-              bgColor={store.numOfFilters > 0 ? colors.custom.blue : colors.foregroundCard}
-              height="1.2rem"
-              width="2rem"
-              size="small"
-            />
           </View>
         }
       />

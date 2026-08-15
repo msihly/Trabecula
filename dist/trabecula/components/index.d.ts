@@ -190,7 +190,6 @@ type FilterStore = {
         noCache?: boolean;
         page?: number;
     }) => Promise<any>;
-    numOfFilters: number;
     reset: () => any;
     saveSavedSearch: (label: string) => Promise<any>;
     savedSearches: Array<{

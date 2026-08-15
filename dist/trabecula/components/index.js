@@ -3608,17 +3608,7 @@ var FilterMenu = Comp(
         width,
         text: /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(View, { row: true, align: "center", spacing: "0.5rem", children: [
           /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Icon, { name: "FilterAlt", size: "1.15em" }),
-          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Text, { children: "Filter Results" }),
-          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
-            Chip,
-            {
-              label: store.numOfFilters,
-              bgColor: store.numOfFilters > 0 ? colors.custom.blue : colors.foregroundCard,
-              height: "1.2rem",
-              width: "2rem",
-              size: "small"
-            }
-          )
+          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Text, { children: "Filter Results" })
         ] })
       })
     );
