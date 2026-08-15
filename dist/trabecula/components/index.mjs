@@ -2002,6 +2002,7 @@ var useClasses18 = makeClasses((props) => ({
 }));
 
 // trabecula/components/table/pagination.tsx
+import { useState as useState8 } from "react";
 import {
   Pagination as PaginationBase,
   PaginationItem
@@ -2024,33 +2025,95 @@ var Pagination = (_a) => {
     "viewProps"
   ]);
   const { css, cx } = useClasses19(null);
+  const [isJumpModalOpen, setIsJumpModalOpen] = useState8(false);
+  const [jumpPage, setJumpPage] = useState8(null);
+  const hasError = !Number.isInteger(jumpPage) || jumpPage < 1 || jumpPage > count;
   const handleChange = (_, page) => onChange(page);
+  const handleJump = () => {
+    if (hasError) return;
+    setIsJumpModalOpen(false);
+    onChange(jumpPage);
+  };
+  const handleJumpModalOpen = () => {
+    var _a2;
+    const page = (_a2 = props.page) != null ? _a2 : null;
+    setJumpPage(page);
+    setIsJumpModalOpen(true);
+  };
   const handleLastPageClick = (event, item) => {
     var _a2;
     if (onFullLoad) event.preventDefault(), onFullLoad();
     else (_a2 = item.onClick) == null ? void 0 : _a2.call(item, event);
   };
-  return /* @__PURE__ */ jsx33(View, __spreadProps(__spreadValues({}, viewProps), { className: cx(css.root, viewProps == null ? void 0 : viewProps.className), children: /* @__PURE__ */ jsxs21(View, { position: "relative", overflow: "hidden", children: [
-    /* @__PURE__ */ jsx33(LoadingOverlay, { isLoading }),
-    /* @__PURE__ */ jsx33(
-      PaginationBase,
-      __spreadValues({
-        onChange: handleChange,
-        showFirstButton: true,
-        showLastButton: true,
-        siblingCount: 4,
-        boundaryCount: 2,
-        count,
-        className: cx(css.pagination, className),
-        renderItem: (item) => /* @__PURE__ */ jsx33(
-          PaginationItem,
-          __spreadProps(__spreadValues({}, item), {
-            onClick: item.type === "last" ? (e) => handleLastPageClick(e, item) : item.onClick
-          })
+  return /* @__PURE__ */ jsxs21(View, __spreadProps(__spreadValues({}, viewProps), { className: cx(css.root, viewProps == null ? void 0 : viewProps.className), children: [
+    /* @__PURE__ */ jsxs21(View, { position: "relative", overflow: "hidden", children: [
+      /* @__PURE__ */ jsx33(LoadingOverlay, { isLoading }),
+      /* @__PURE__ */ jsx33(
+        PaginationBase,
+        __spreadValues({
+          onChange: handleChange,
+          showFirstButton: true,
+          showLastButton: true,
+          siblingCount: 4,
+          boundaryCount: 2,
+          count,
+          className: cx(css.pagination, className),
+          renderItem: (item) => {
+            const isEllipsis = ["start-ellipsis", "end-ellipsis"].includes(item.type);
+            return /* @__PURE__ */ jsx33(
+              PaginationItem,
+              __spreadProps(__spreadValues({}, item), {
+                page: isEllipsis ? "..." : item.page,
+                type: isEllipsis ? "page" : item.type,
+                disabled: isEllipsis ? false : item.disabled,
+                onClick: isEllipsis ? handleJumpModalOpen : item.type === "last" ? (e) => handleLastPageClick(e, item) : item.onClick
+              })
+            );
+          }
+        }, props)
+      )
+    ] }),
+    isJumpModalOpen && /* @__PURE__ */ jsxs21(Modal.Container, { onClose: () => setIsJumpModalOpen(false), width: "24rem", children: [
+      /* @__PURE__ */ jsx33(Modal.Header, { children: /* @__PURE__ */ jsx33(Text, { preset: "title", children: "Jump to Page" }) }),
+      /* @__PURE__ */ jsx33(Modal.Content, { row: true, dividers: false, justify: "center", children: /* @__PURE__ */ jsx33(
+        NumInput,
+        {
+          placeholder: "Page",
+          value: jumpPage,
+          setValue: setJumpPage,
+          minValue: 1,
+          maxValue: count,
+          error: hasError,
+          helperText: `Max: ${count}`,
+          autoFocus: true,
+          textAlign: "center",
+          width: "6rem",
+          dense: true
+        }
+      ) }),
+      /* @__PURE__ */ jsxs21(Modal.Footer, { uniformWidth: "7rem", children: [
+        /* @__PURE__ */ jsx33(
+          Button,
+          {
+            text: "Cancel",
+            icon: "Close",
+            onClick: () => setIsJumpModalOpen(false),
+            color: colors.foregroundCard
+          }
+        ),
+        /* @__PURE__ */ jsx33(
+          Button,
+          {
+            text: "Jump",
+            icon: "Send",
+            onClick: handleJump,
+            disabled: !Number.isInteger(jumpPage) || jumpPage < 1 || jumpPage > count,
+            color: colors.custom.blue
+          }
         )
-      }, props)
-    )
-  ] }) }));
+      ] })
+    ] })
+  ] }));
 };
 var useClasses19 = makeClasses({
   pagination: {
@@ -2075,7 +2138,7 @@ var useClasses19 = makeClasses({
 });
 
 // trabecula/components/table/table.tsx
-import { useMemo, useState as useState8 } from "react";
+import { useMemo, useState as useState9 } from "react";
 import {
   Paper as Paper2,
   Table as MuiTable,
@@ -2098,8 +2161,8 @@ var Table = ({
   paginationClassName
 }) => {
   const { css, cx } = useClasses20(null);
-  const [page, setPage] = useState8(0);
-  const [rowsPerPage, setRowsPerPage] = useState8(rowCountOptions[0]);
+  const [page, setPage] = useState9(0);
+  const [rowsPerPage, setRowsPerPage] = useState9(rowCountOptions[0]);
   const handleRowsPerPageChange = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
@@ -2349,7 +2412,7 @@ var useClasses21 = makeClasses((props) => {
 });
 
 // trabecula/components/toggles/accordion.tsx
-import { useState as useState9 } from "react";
+import { useState as useState10 } from "react";
 import { Accordion as MuiAccordion } from "@mui/material";
 import { jsx as jsx39, jsxs as jsxs24 } from "react/jsx-runtime";
 var Accordion = ({
@@ -2362,7 +2425,7 @@ var Accordion = ({
   header,
   setExpanded
 }) => {
-  const [isExpanded, setIsExpanded] = useState9(expanded);
+  const [isExpanded, setIsExpanded] = useState10(expanded);
   const handleClick = () => {
     setIsExpanded(!isExpanded);
     setExpanded == null ? void 0 : setExpanded(!isExpanded);
@@ -2778,7 +2841,7 @@ var FooterText = (props) => {
 import {
   useEffect as useEffect4,
   useRef as useRef2,
-  useState as useState10
+  useState as useState11
 } from "react";
 import { jsx as jsx48, jsxs as jsxs25 } from "react/jsx-runtime";
 var Image = ({
@@ -2797,9 +2860,9 @@ var Image = ({
   title
 }) => {
   const thumbInterval = useRef2(null);
-  const [hasError, setHasError] = useState10(false);
-  const [imagePos, setImagePos] = useState10(null);
-  const [thumbIndex, setThumbIndex] = useState10(0);
+  const [hasError, setHasError] = useState11(false);
+  const [imagePos, setImagePos] = useState11(null);
+  const [thumbIndex, setThumbIndex] = useState11(0);
   const { css, cx } = useClasses28({ fit, height, imagePos, rounded });
   const hasListeners = !disabled && !autoAnimate && (thumbPaths == null ? void 0 : thumbPaths.length) > 1;
   const createThumbInterval = () => {
@@ -3080,15 +3143,15 @@ var ConditionalWrap = ({
 }) => condition ? wrap(children) : /* @__PURE__ */ jsx52(Fragment5, { children });
 
 // trabecula/components/wrappers/context-menu.tsx
-import { useState as useState11 } from "react";
+import { useState as useState12 } from "react";
 import { Menu as Menu2 } from "@mui/material";
 import Color9 from "color";
 import { jsx as jsx53, jsxs as jsxs27 } from "react/jsx-runtime";
 var ContextMenu = (_a) => {
   var _b = _a, { children, disabled, id, menuItems } = _b, props = __objRest(_b, ["children", "disabled", "id", "menuItems"]);
   const { css } = useClasses31(null);
-  const [mouseX, setMouseX] = useState11(null);
-  const [mouseY, setMouseY] = useState11(null);
+  const [mouseX, setMouseX] = useState12(null);
+  const [mouseY, setMouseY] = useState12(null);
   const handleContext = (event) => {
     event.preventDefault();
     if (disabled) return;
@@ -3260,14 +3323,14 @@ var useClasses32 = makeClasses((props) => ({
 }));
 
 // trabecula/components/wrappers/side-scroller.tsx
-import { useEffect as useEffect5, useRef as useRef3, useState as useState12 } from "react";
+import { useEffect as useEffect5, useRef as useRef3, useState as useState13 } from "react";
 import { jsx as jsx57, jsxs as jsxs30 } from "react/jsx-runtime";
 var SideScroller = ({ children, className, innerClassName }) => {
   const ref = useRef3(null);
   const { width } = useElementResize(ref);
-  const [isLeftButtonVisible, setIsLeftButtonVisible] = useState12(false);
-  const [isRightButtonVisible, setIsRightButtonVisible] = useState12(false);
-  const [scrollPos, setScrollPos] = useState12(0);
+  const [isLeftButtonVisible, setIsLeftButtonVisible] = useState13(false);
+  const [isRightButtonVisible, setIsRightButtonVisible] = useState13(false);
+  const [scrollPos, setScrollPos] = useState13(0);
   const { css, cx } = useClasses33({ isLeftButtonVisible, isRightButtonVisible });
   const getButtonVisibility = () => {
     if (!ref.current) return [false, false];

@@ -4767,6 +4767,7 @@ var useClasses19 = makeClasses((props) => ({
 }));
 
 // trabecula/components/table/pagination.tsx
+var import_react14 = require("react");
 var import_material18 = require("@mui/material");
 var import_jsx_runtime34 = require("react/jsx-runtime");
 var Pagination = (_a) => {
@@ -4786,33 +4787,95 @@ var Pagination = (_a) => {
     "viewProps"
   ]);
   const { css, cx } = useClasses20(null);
+  const [isJumpModalOpen, setIsJumpModalOpen] = (0, import_react14.useState)(false);
+  const [jumpPage, setJumpPage] = (0, import_react14.useState)(null);
+  const hasError = !Number.isInteger(jumpPage) || jumpPage < 1 || jumpPage > count;
   const handleChange = (_, page) => onChange(page);
+  const handleJump = () => {
+    if (hasError) return;
+    setIsJumpModalOpen(false);
+    onChange(jumpPage);
+  };
+  const handleJumpModalOpen = () => {
+    var _a2;
+    const page = (_a2 = props.page) != null ? _a2 : null;
+    setJumpPage(page);
+    setIsJumpModalOpen(true);
+  };
   const handleLastPageClick = (event, item) => {
     var _a2;
     if (onFullLoad) event.preventDefault(), onFullLoad();
     else (_a2 = item.onClick) == null ? void 0 : _a2.call(item, event);
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(View, __spreadProps(__spreadValues({}, viewProps), { className: cx(css.root, viewProps == null ? void 0 : viewProps.className), children: /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(View, { position: "relative", overflow: "hidden", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(LoadingOverlay, { isLoading }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(
-      import_material18.Pagination,
-      __spreadValues({
-        onChange: handleChange,
-        showFirstButton: true,
-        showLastButton: true,
-        siblingCount: 4,
-        boundaryCount: 2,
-        count,
-        className: cx(css.pagination, className),
-        renderItem: (item) => /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(
-          import_material18.PaginationItem,
-          __spreadProps(__spreadValues({}, item), {
-            onClick: item.type === "last" ? (e) => handleLastPageClick(e, item) : item.onClick
-          })
+  return /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(View, __spreadProps(__spreadValues({}, viewProps), { className: cx(css.root, viewProps == null ? void 0 : viewProps.className), children: [
+    /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(View, { position: "relative", overflow: "hidden", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(LoadingOverlay, { isLoading }),
+      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(
+        import_material18.Pagination,
+        __spreadValues({
+          onChange: handleChange,
+          showFirstButton: true,
+          showLastButton: true,
+          siblingCount: 4,
+          boundaryCount: 2,
+          count,
+          className: cx(css.pagination, className),
+          renderItem: (item) => {
+            const isEllipsis = ["start-ellipsis", "end-ellipsis"].includes(item.type);
+            return /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(
+              import_material18.PaginationItem,
+              __spreadProps(__spreadValues({}, item), {
+                page: isEllipsis ? "..." : item.page,
+                type: isEllipsis ? "page" : item.type,
+                disabled: isEllipsis ? false : item.disabled,
+                onClick: isEllipsis ? handleJumpModalOpen : item.type === "last" ? (e) => handleLastPageClick(e, item) : item.onClick
+              })
+            );
+          }
+        }, props)
+      )
+    ] }),
+    isJumpModalOpen && /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(Modal.Container, { onClose: () => setIsJumpModalOpen(false), width: "24rem", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(Modal.Header, { children: /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(Text, { preset: "title", children: "Jump to Page" }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(Modal.Content, { row: true, dividers: false, justify: "center", children: /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(
+        NumInput,
+        {
+          placeholder: "Page",
+          value: jumpPage,
+          setValue: setJumpPage,
+          minValue: 1,
+          maxValue: count,
+          error: hasError,
+          helperText: `Max: ${count}`,
+          autoFocus: true,
+          textAlign: "center",
+          width: "6rem",
+          dense: true
+        }
+      ) }),
+      /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)(Modal.Footer, { uniformWidth: "7rem", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(
+          Button,
+          {
+            text: "Cancel",
+            icon: "Close",
+            onClick: () => setIsJumpModalOpen(false),
+            color: colors.foregroundCard
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)(
+          Button,
+          {
+            text: "Jump",
+            icon: "Send",
+            onClick: handleJump,
+            disabled: !Number.isInteger(jumpPage) || jumpPage < 1 || jumpPage > count,
+            color: colors.custom.blue
+          }
         )
-      }, props)
-    )
-  ] }) }));
+      ] })
+    ] })
+  ] }));
 };
 var useClasses20 = makeClasses({
   pagination: {
@@ -4837,7 +4900,7 @@ var useClasses20 = makeClasses({
 });
 
 // trabecula/components/table/table.tsx
-var import_react14 = require("react");
+var import_react15 = require("react");
 var import_material19 = require("@mui/material");
 var import_jsx_runtime35 = require("react/jsx-runtime");
 var MUI_TABLE_ROW_HEIGHT = 33;
@@ -4851,13 +4914,13 @@ var Table = ({
   paginationClassName
 }) => {
   const { css, cx } = useClasses21(null);
-  const [page, setPage] = (0, import_react14.useState)(0);
-  const [rowsPerPage, setRowsPerPage] = (0, import_react14.useState)(rowCountOptions[0]);
+  const [page, setPage] = (0, import_react15.useState)(0);
+  const [rowsPerPage, setRowsPerPage] = (0, import_react15.useState)(rowCountOptions[0]);
   const handleRowsPerPageChange = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-  const displayedRows = (0, import_react14.useMemo)(
+  const displayedRows = (0, import_react15.useMemo)(
     () => rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
     [page, rowsPerPage, rows]
   );
@@ -5102,7 +5165,7 @@ var useClasses22 = makeClasses((props) => {
 });
 
 // trabecula/components/toggles/accordion.tsx
-var import_react15 = require("react");
+var import_react16 = require("react");
 var import_material21 = require("@mui/material");
 var import_jsx_runtime40 = require("react/jsx-runtime");
 var Accordion = ({
@@ -5115,7 +5178,7 @@ var Accordion = ({
   header,
   setExpanded
 }) => {
-  const [isExpanded, setIsExpanded] = (0, import_react15.useState)(expanded);
+  const [isExpanded, setIsExpanded] = (0, import_react16.useState)(expanded);
   const handleClick = () => {
     setIsExpanded(!isExpanded);
     setExpanded == null ? void 0 : setExpanded(!isExpanded);
@@ -5528,7 +5591,7 @@ var FooterText = (props) => {
 };
 
 // trabecula/components/wrappers/card-base/image.tsx
-var import_react16 = require("react");
+var import_react17 = require("react");
 var import_jsx_runtime49 = require("react/jsx-runtime");
 var Image = ({
   autoAnimate = false,
@@ -5545,10 +5608,10 @@ var Image = ({
   thumbPaths,
   title
 }) => {
-  const thumbInterval = (0, import_react16.useRef)(null);
-  const [hasError, setHasError] = (0, import_react16.useState)(false);
-  const [imagePos, setImagePos] = (0, import_react16.useState)(null);
-  const [thumbIndex, setThumbIndex] = (0, import_react16.useState)(0);
+  const thumbInterval = (0, import_react17.useRef)(null);
+  const [hasError, setHasError] = (0, import_react17.useState)(false);
+  const [imagePos, setImagePos] = (0, import_react17.useState)(null);
+  const [thumbIndex, setThumbIndex] = (0, import_react17.useState)(0);
   const { css, cx } = useClasses29({ fit, height, imagePos, rounded });
   const hasListeners = !disabled && !autoAnimate && (thumbPaths == null ? void 0 : thumbPaths.length) > 1;
   const createThumbInterval = () => {
@@ -5557,7 +5620,7 @@ var Image = ({
       setThumbIndex((thumbIndex2) => thumbIndex2 + 1 === (thumbPaths == null ? void 0 : thumbPaths.length) ? 0 : thumbIndex2 + 1);
     }, 300);
   };
-  (0, import_react16.useEffect)(() => {
+  (0, import_react17.useEffect)(() => {
     if (!autoAnimate) return;
     createThumbInterval();
     return () => clearInterval(thumbInterval.current);
@@ -5829,15 +5892,15 @@ var ConditionalWrap = ({
 }) => condition ? wrap(children) : /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(import_jsx_runtime53.Fragment, { children });
 
 // trabecula/components/wrappers/context-menu.tsx
-var import_react17 = require("react");
+var import_react18 = require("react");
 var import_material26 = require("@mui/material");
 var import_color10 = __toESM(require("color"));
 var import_jsx_runtime54 = require("react/jsx-runtime");
 var ContextMenu = (_a) => {
   var _b = _a, { children, disabled, id, menuItems } = _b, props = __objRest(_b, ["children", "disabled", "id", "menuItems"]);
   const { css } = useClasses32(null);
-  const [mouseX, setMouseX] = (0, import_react17.useState)(null);
-  const [mouseY, setMouseY] = (0, import_react17.useState)(null);
+  const [mouseX, setMouseX] = (0, import_react18.useState)(null);
+  const [mouseY, setMouseY] = (0, import_react18.useState)(null);
   const handleContext = (event) => {
     event.preventDefault();
     if (disabled) return;
@@ -6009,14 +6072,14 @@ var useClasses33 = makeClasses((props) => ({
 }));
 
 // trabecula/components/wrappers/side-scroller.tsx
-var import_react18 = require("react");
+var import_react19 = require("react");
 var import_jsx_runtime58 = require("react/jsx-runtime");
 var SideScroller = ({ children, className, innerClassName }) => {
-  const ref = (0, import_react18.useRef)(null);
+  const ref = (0, import_react19.useRef)(null);
   const { width } = useElementResize(ref);
-  const [isLeftButtonVisible, setIsLeftButtonVisible] = (0, import_react18.useState)(false);
-  const [isRightButtonVisible, setIsRightButtonVisible] = (0, import_react18.useState)(false);
-  const [scrollPos, setScrollPos] = (0, import_react18.useState)(0);
+  const [isLeftButtonVisible, setIsLeftButtonVisible] = (0, import_react19.useState)(false);
+  const [isRightButtonVisible, setIsRightButtonVisible] = (0, import_react19.useState)(false);
+  const [scrollPos, setScrollPos] = (0, import_react19.useState)(0);
   const { css, cx } = useClasses34({ isLeftButtonVisible, isRightButtonVisible });
   const getButtonVisibility = () => {
     if (!ref.current) return [false, false];
@@ -6032,13 +6095,13 @@ var SideScroller = ({ children, className, innerClassName }) => {
     ref.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
     setScrollPos(newScrollPos);
   };
-  (0, import_react18.useEffect)(() => {
+  (0, import_react19.useEffect)(() => {
     const node = ref.current;
     const scrollListener = debounce(setScrollPos.bind(node.scrollLeft), 50);
     node.addEventListener("scroll", scrollListener);
     return () => node.removeEventListener("scroll", scrollListener);
   }, []);
-  (0, import_react18.useEffect)(() => {
+  (0, import_react19.useEffect)(() => {
     const [left, right] = getButtonVisibility();
     setIsLeftButtonVisible(left);
     setIsRightButtonVisible(right);
