@@ -3464,9 +3464,9 @@ var AutoComplete = (_a) => {
 
 // trabecula/components/inputs/date-input.tsx
 var import_react7 = require("react");
+var import_x_date_pickers = require("@mui/x-date-pickers");
 var import_AdapterDayjs = require("@mui/x-date-pickers/AdapterDayjs");
 var import_DatePicker = require("@mui/x-date-pickers/DatePicker");
-var import_LocalizationProvider = require("@mui/x-date-pickers/LocalizationProvider");
 var import_jsx_runtime12 = require("react/jsx-runtime");
 var DateInput = (_a) => {
   var _b = _a, {
@@ -3474,55 +3474,63 @@ var DateInput = (_a) => {
     headerProps = {},
     inputProps = {},
     setValue,
+    slotProps = {},
     value,
+    viewProps = {},
     width
   } = _b, datePickerProps = __objRest(_b, [
     "header",
     "headerProps",
     "inputProps",
     "setValue",
+    "slotProps",
     "value",
+    "viewProps",
     "width"
   ]);
-  const { css } = useClasses8({ width });
+  const { css } = useClasses8(null);
   const [dateValue, setDateValue] = (0, import_react7.useState)((value == null ? void 0 : value.length) ? (0, import_dayjs.default)(value) : null);
   (0, import_react7.useEffect)(() => {
-    setDateValue((value == null ? void 0 : value.length) ? (0, import_dayjs.default)(value) : null);
+    if (value == null ? void 0 : value.length) setDateValue((0, import_dayjs.default)(value));
+    else setDateValue(null);
   }, [value]);
   const handleChange = (val) => {
     setDateValue(val);
-    setValue == null ? void 0 : setValue((val == null ? void 0 : val.isValid()) ? val.format("YYYY-MM-DD") : "");
+    setValue == null ? void 0 : setValue(val.format("YYYY-MM-DD"));
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(HeaderWrapper, { header, headerProps, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_LocalizationProvider.LocalizationProvider, { dateAdapter: import_AdapterDayjs.AdapterDayjs, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+  const textFieldProps = __spreadProps(__spreadValues(__spreadValues({}, inputProps), slotProps == null ? void 0 : slotProps.textField), {
+    header,
+    headerProps,
+    width
+  });
+  return /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_x_date_pickers.LocalizationProvider, { dateAdapter: import_AdapterDayjs.AdapterDayjs, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(View, __spreadProps(__spreadValues({}, viewProps), { width, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
     import_DatePicker.DatePicker,
     __spreadProps(__spreadValues({}, datePickerProps), {
       value: dateValue,
       onChange: handleChange,
-      slots: {
-        textField: (props) => /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
-          Input,
-          __spreadProps(__spreadValues(__spreadValues({}, props), inputProps), {
-            color: inputProps.color,
-            value: props == null ? void 0 : props.value
-          })
-        )
-      },
-      slotProps: { actionBar: { actions: ["cancel", "clear", "today"] } },
+      slots: { textField: DateTextField },
+      slotProps: __spreadProps(__spreadValues({}, slotProps), {
+        actionBar: __spreadValues({ actions: ["cancel", "clear", "today"] }, slotProps == null ? void 0 : slotProps.actionBar),
+        inputAdornment: __spreadProps(__spreadValues({}, slotProps == null ? void 0 : slotProps.inputAdornment), { tabIndex: -1 }),
+        openPickerButton: __spreadProps(__spreadValues({}, slotProps == null ? void 0 : slotProps.openPickerButton), { tabIndex: -1 }),
+        textField: textFieldProps
+      }),
       className: css.datePicker
     })
-  ) }) });
+  ) })) });
 };
-var useClasses8 = makeClasses((props) => ({
+var DateTextField = (props) => /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(Input, __spreadValues({}, props));
+var useClasses8 = makeClasses({
   datePicker: {
-    width: props.width,
+    width: "100%",
     "& .MuiInputBase-input": {
-      padding: "0.5rem 0 0.5rem 0.5rem"
+      paddingLeft: "0.5rem"
     },
     "& .MuiIconButton-root": {
       padding: "0.2rem"
     }
   }
-}));
+});
 
 // trabecula/components/inputs/date-range.tsx
 var import_jsx_runtime13 = require("react/jsx-runtime");

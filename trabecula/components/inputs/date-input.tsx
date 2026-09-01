@@ -1,8 +1,10 @@
 import { ReactNode, useEffect, useState } from "react";
+// eslint-disable-next-line @typescript-eslint/no-restricted-imports
+import { TextFieldProps } from "@mui/material";
+import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker, DatePickerProps } from "@mui/x-date-pickers/DatePicker";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { HeaderWrapper, Input, InputProps, ViewProps } from "trabecula/components";
+import { Input, InputProps, View, ViewProps } from "trabecula/components";
 import { CSS, makeClasses } from "trabecula/utils/client";
 import { dayjs } from "trabecula/utils/common";
 
@@ -12,9 +14,10 @@ export interface DateInputProps extends Omit<
 > {
   header?: ReactNode;
   headerProps?: Partial<ViewProps>;
-  inputProps?: Partial<InputProps>;
+  inputProps?: Omit<Partial<InputProps>, "header" | "headerProps">;
   setValue?: (val: string) => void;
   value: string;
+  viewProps?: Partial<ViewProps>;
   width?: CSS["width"];
 }
 
@@ -23,58 +26,66 @@ export const DateInput = ({
   headerProps = {},
   inputProps = {},
   setValue,
+  slotProps = {},
   value,
+  viewProps = {},
   width,
   ...datePickerProps
 }: DateInputProps) => {
-  const { css } = useClasses({ width });
+  const { css } = useClasses(null);
 
   const [dateValue, setDateValue] = useState<dayjs.Dayjs>(value?.length ? dayjs(value) : null);
 
   useEffect(() => {
-    setDateValue(value?.length ? dayjs(value) : null);
+    if (value?.length) setDateValue(dayjs(value));
+    else setDateValue(null);
   }, [value]);
 
-  const handleChange = (val: dayjs.Dayjs | null) => {
+  const handleChange = (val: dayjs.Dayjs) => {
     setDateValue(val);
-    setValue?.(val?.isValid() ? val.format("YYYY-MM-DD") : "");
+    setValue?.(val.format("YYYY-MM-DD"));
+  };
+
+  const textFieldProps: Omit<InputProps, "color" | "value"> = {
+    ...inputProps,
+    ...slotProps?.textField,
+    header,
+    headerProps,
+    width,
   };
 
   return (
-    <HeaderWrapper header={header} headerProps={headerProps}>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <View {...viewProps} width={width}>
         <DatePicker
           {...datePickerProps}
           value={dateValue}
           onChange={handleChange}
-          slots={{
-            textField: (props) => (
-              <Input
-                {...props}
-                {...inputProps}
-                color={inputProps.color}
-                value={props?.value as string}
-              />
-            ),
+          slots={{ textField: DateTextField }}
+          slotProps={{
+            ...slotProps,
+            actionBar: { actions: ["cancel", "clear", "today"], ...slotProps?.actionBar },
+            inputAdornment: { ...slotProps?.inputAdornment, tabIndex: -1 },
+            openPickerButton: { ...slotProps?.openPickerButton, tabIndex: -1 },
+            textField: textFieldProps as unknown as TextFieldProps,
           }}
-          slotProps={{ actionBar: { actions: ["cancel", "clear", "today"] } }}
           className={css.datePicker}
         />
-      </LocalizationProvider>
-    </HeaderWrapper>
+      </View>
+    </LocalizationProvider>
   );
 };
 
-interface ClassesProps extends Pick<DateInputProps, "width"> {}
+const DateTextField = (props: TextFieldProps) => <Input {...(props as unknown as InputProps)} />;
 
-const useClasses = makeClasses((props: ClassesProps) => ({
+const useClasses = makeClasses({
   datePicker: {
-    width: props.width,
+    width: "100%",
     "& .MuiInputBase-input": {
-      padding: "0.5rem 0 0.5rem 0.5rem",
+      paddingLeft: "0.5rem",
     },
     "& .MuiIconButton-root": {
       padding: "0.2rem",
     },
   },
-}));
+});

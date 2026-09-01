@@ -151,12 +151,13 @@ declare const AutoComplete: ({ className, freeSolo, header, inputProps, onChange
 interface DateInputProps extends Omit<DatePickerProps<dayjs.Dayjs>, "label" | "onChange" | "value"> {
     header?: ReactNode;
     headerProps?: Partial<ViewProps>;
-    inputProps?: Partial<InputProps>;
+    inputProps?: Omit<Partial<InputProps>, "header" | "headerProps">;
     setValue?: (val: string) => void;
     value: string;
+    viewProps?: Partial<ViewProps>;
     width?: CSS["width"];
 }
-declare const DateInput: ({ header, headerProps, inputProps, setValue, value, width, ...datePickerProps }: DateInputProps) => react_jsx_runtime.JSX.Element;
+declare const DateInput: ({ header, headerProps, inputProps, setValue, slotProps, value, viewProps, width, ...datePickerProps }: DateInputProps) => react_jsx_runtime.JSX.Element;
 
 interface DateRangeProps {
     dateInputProps?: Partial<DateInputProps>;

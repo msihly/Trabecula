@@ -695,9 +695,9 @@ var AutoComplete = (_a) => {
 
 // trabecula/components/inputs/date-input.tsx
 import { useEffect as useEffect2, useState as useState3 } from "react";
+import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { jsx as jsx11 } from "react/jsx-runtime";
 var DateInput = (_a) => {
   var _b = _a, {
@@ -705,55 +705,63 @@ var DateInput = (_a) => {
     headerProps = {},
     inputProps = {},
     setValue,
+    slotProps = {},
     value,
+    viewProps = {},
     width
   } = _b, datePickerProps = __objRest(_b, [
     "header",
     "headerProps",
     "inputProps",
     "setValue",
+    "slotProps",
     "value",
+    "viewProps",
     "width"
   ]);
-  const { css } = useClasses7({ width });
+  const { css } = useClasses7(null);
   const [dateValue, setDateValue] = useState3((value == null ? void 0 : value.length) ? dayjs(value) : null);
   useEffect2(() => {
-    setDateValue((value == null ? void 0 : value.length) ? dayjs(value) : null);
+    if (value == null ? void 0 : value.length) setDateValue(dayjs(value));
+    else setDateValue(null);
   }, [value]);
   const handleChange = (val) => {
     setDateValue(val);
-    setValue == null ? void 0 : setValue((val == null ? void 0 : val.isValid()) ? val.format("YYYY-MM-DD") : "");
+    setValue == null ? void 0 : setValue(val.format("YYYY-MM-DD"));
   };
-  return /* @__PURE__ */ jsx11(HeaderWrapper, { header, headerProps, children: /* @__PURE__ */ jsx11(LocalizationProvider, { dateAdapter: AdapterDayjs, children: /* @__PURE__ */ jsx11(
+  const textFieldProps = __spreadProps(__spreadValues(__spreadValues({}, inputProps), slotProps == null ? void 0 : slotProps.textField), {
+    header,
+    headerProps,
+    width
+  });
+  return /* @__PURE__ */ jsx11(LocalizationProvider, { dateAdapter: AdapterDayjs, children: /* @__PURE__ */ jsx11(View, __spreadProps(__spreadValues({}, viewProps), { width, children: /* @__PURE__ */ jsx11(
     DatePicker,
     __spreadProps(__spreadValues({}, datePickerProps), {
       value: dateValue,
       onChange: handleChange,
-      slots: {
-        textField: (props) => /* @__PURE__ */ jsx11(
-          Input,
-          __spreadProps(__spreadValues(__spreadValues({}, props), inputProps), {
-            color: inputProps.color,
-            value: props == null ? void 0 : props.value
-          })
-        )
-      },
-      slotProps: { actionBar: { actions: ["cancel", "clear", "today"] } },
+      slots: { textField: DateTextField },
+      slotProps: __spreadProps(__spreadValues({}, slotProps), {
+        actionBar: __spreadValues({ actions: ["cancel", "clear", "today"] }, slotProps == null ? void 0 : slotProps.actionBar),
+        inputAdornment: __spreadProps(__spreadValues({}, slotProps == null ? void 0 : slotProps.inputAdornment), { tabIndex: -1 }),
+        openPickerButton: __spreadProps(__spreadValues({}, slotProps == null ? void 0 : slotProps.openPickerButton), { tabIndex: -1 }),
+        textField: textFieldProps
+      }),
       className: css.datePicker
     })
-  ) }) });
+  ) })) });
 };
-var useClasses7 = makeClasses((props) => ({
+var DateTextField = (props) => /* @__PURE__ */ jsx11(Input, __spreadValues({}, props));
+var useClasses7 = makeClasses({
   datePicker: {
-    width: props.width,
+    width: "100%",
     "& .MuiInputBase-input": {
-      padding: "0.5rem 0 0.5rem 0.5rem"
+      paddingLeft: "0.5rem"
     },
     "& .MuiIconButton-root": {
       padding: "0.2rem"
     }
   }
-}));
+});
 
 // trabecula/components/inputs/date-range.tsx
 import { jsx as jsx12 } from "react/jsx-runtime";
