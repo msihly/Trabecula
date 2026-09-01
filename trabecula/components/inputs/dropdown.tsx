@@ -1,5 +1,5 @@
 import { MenuItem } from "@mui/material";
-import { Input, InputProps, Text } from "trabecula/components";
+import { Comp, Input, InputProps, Text } from "trabecula/components";
 
 export type DropdownOption = {
   label: string;
@@ -10,7 +10,7 @@ export interface DropdownProps extends InputProps {
   options: DropdownOption[];
 }
 
-export const Dropdown = ({ options, value, ...props }: DropdownProps) => {
+export const Dropdown = Comp(({ options, value, ...props }: DropdownProps) => {
   return (
     <Input {...props} value={value} select>
       {options.map((o, i) => (
@@ -20,4 +20,4 @@ export const Dropdown = ({ options, value, ...props }: DropdownProps) => {
       ))}
     </Input>
   );
-};
+});

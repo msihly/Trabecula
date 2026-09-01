@@ -1,4 +1,10 @@
-import { HeaderWrapperProps, NumInput, NumInputProps, RangeWrapper } from "trabecula/components";
+import {
+  Comp,
+  HeaderWrapperProps,
+  NumInput,
+  NumInputProps,
+  RangeWrapper,
+} from "trabecula/components";
 
 export interface NumRangeProps {
   hasHelper?: boolean;
@@ -11,42 +17,44 @@ export interface NumRangeProps {
   setMin: (val: number) => void;
 }
 
-export const NumRange = ({
-  hasHelper = false,
-  header,
-  headerProps,
-  max,
-  min,
-  numInputProps = {},
-  setMax,
-  setMin,
-}: NumRangeProps) => {
-  return (
-    <RangeWrapper
-      header={header}
-      headerProps={headerProps}
-      startInput={
-        <NumInput
-          {...numInputProps}
-          {...{ hasHelper }}
-          value={min}
-          setValue={setMin}
-          placeholder="Min"
-          textAlign="center"
-          borderRadiuses={{ top: 0, right: 0 }}
-        />
-      }
-      endInput={
-        <NumInput
-          {...numInputProps}
-          {...{ hasHelper }}
-          value={max}
-          setValue={setMax}
-          placeholder="Max"
-          textAlign="center"
-          borderRadiuses={{ top: 0, left: 0 }}
-        />
-      }
-    />
-  );
-};
+export const NumRange = Comp(
+  ({
+    hasHelper = false,
+    header,
+    headerProps,
+    max,
+    min,
+    numInputProps = {},
+    setMax,
+    setMin,
+  }: NumRangeProps) => {
+    return (
+      <RangeWrapper
+        header={header}
+        headerProps={headerProps}
+        startInput={
+          <NumInput
+            {...numInputProps}
+            {...{ hasHelper }}
+            value={min}
+            setValue={setMin}
+            placeholder="Min"
+            textAlign="center"
+            borderRadiuses={{ top: 0, right: 0 }}
+          />
+        }
+        endInput={
+          <NumInput
+            {...numInputProps}
+            {...{ hasHelper }}
+            value={max}
+            setValue={setMax}
+            placeholder="Max"
+            textAlign="center"
+            borderRadiuses={{ top: 0, left: 0 }}
+          />
+        }
+      />
+    );
+  },
+);

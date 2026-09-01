@@ -1,4 +1,10 @@
-import { DateInput, DateInputProps, HeaderWrapperProps, RangeWrapper } from "trabecula/components";
+import {
+  Comp,
+  DateInput,
+  DateInputProps,
+  HeaderWrapperProps,
+  RangeWrapper,
+} from "trabecula/components";
 
 export interface DateRangeProps {
   dateInputProps?: Partial<DateInputProps>;
@@ -10,35 +16,37 @@ export interface DateRangeProps {
   startDate: string;
 }
 
-export const DateRange = ({
-  dateInputProps = {},
-  endDate,
-  header,
-  headerProps,
-  setEndDate,
-  setStartDate,
-  startDate,
-}: DateRangeProps) => {
-  return (
-    <RangeWrapper
-      header={header}
-      headerProps={headerProps}
-      startInput={
-        <DateInput
-          {...dateInputProps}
-          value={startDate}
-          setValue={setStartDate}
-          inputProps={{ borderRadiuses: { top: 0, right: 0 } }}
-        />
-      }
-      endInput={
-        <DateInput
-          {...dateInputProps}
-          value={endDate}
-          setValue={setEndDate}
-          inputProps={{ borderRadiuses: { top: 0, left: 0 } }}
-        />
-      }
-    />
-  );
-};
+export const DateRange = Comp(
+  ({
+    dateInputProps = {},
+    endDate,
+    header,
+    headerProps,
+    setEndDate,
+    setStartDate,
+    startDate,
+  }: DateRangeProps) => {
+    return (
+      <RangeWrapper
+        header={header}
+        headerProps={headerProps}
+        startInput={
+          <DateInput
+            {...dateInputProps}
+            value={startDate}
+            setValue={setStartDate}
+            inputProps={{ borderRadiuses: { top: 0, right: 0 } }}
+          />
+        }
+        endInput={
+          <DateInput
+            {...dateInputProps}
+            value={endDate}
+            setValue={setEndDate}
+            inputProps={{ borderRadiuses: { top: 0, left: 0 } }}
+          />
+        }
+      />
+    );
+  },
+);

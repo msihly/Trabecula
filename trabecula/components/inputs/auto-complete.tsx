@@ -5,7 +5,7 @@ import {
   AutocompleteProps as MuiAutocompleteProps,
   createFilterOptions,
 } from "@mui/material";
-import { Input, InputProps } from ".";
+import { Comp, Input, InputProps } from "trabecula/components";
 
 export type AutoCompleteOption = {
   label: string;
@@ -26,49 +26,51 @@ export interface AutoCompleteProps extends Omit<
   required?: boolean;
 }
 
-export const AutoComplete = ({
-  className,
-  freeSolo,
-  header,
-  inputProps = {},
-  onChange,
-  options,
-  required = false,
-  value,
-  ...props
-}: AutoCompleteProps) => {
-  const handleChange = (
-    _: SyntheticEvent<Element, Event>,
-    val: string,
-    reason: AutocompleteInputChangeReason,
-  ) => {
-    if (val === "" && reason === "reset") return;
-    onChange?.(val ?? "");
-  };
+export const AutoComplete = Comp(
+  ({
+    className,
+    freeSolo,
+    header,
+    inputProps = {},
+    onChange,
+    options,
+    required = false,
+    value,
+    ...props
+  }: AutoCompleteProps) => {
+    const handleChange = (
+      _: SyntheticEvent<Element, Event>,
+      val: string,
+      reason: AutocompleteInputChangeReason,
+    ) => {
+      if (val === "" && reason === "reset") return;
+      onChange?.(val ?? "");
+    };
 
-  return (
-    <Autocomplete
-      {...props}
-      autoComplete
-      autoHighlight={props.autoHighlight ?? true}
-      freeSolo={freeSolo}
-      options={options.map((o) => o.label)}
-      filterOptions={createFilterOptions({ ignoreCase: true, ignoreAccents: true })}
-      inputValue={value}
-      onInputChange={handleChange}
-      renderInput={(params) => (
-        <Input
-          {...params}
-          variant="outlined"
-          header={header}
-          required={required}
-          value={value}
-          {...inputProps}
-        />
-      )}
-      size="small"
-      fullWidth
-      className={className}
-    />
-  );
-};
+    return (
+      <Autocomplete
+        {...props}
+        autoComplete
+        autoHighlight={props.autoHighlight ?? true}
+        freeSolo={freeSolo}
+        options={options.map((o) => o.label)}
+        filterOptions={createFilterOptions({ ignoreCase: true, ignoreAccents: true })}
+        inputValue={value}
+        onInputChange={handleChange}
+        renderInput={(params) => (
+          <Input
+            {...params}
+            variant="outlined"
+            header={header}
+            required={required}
+            value={value}
+            {...inputProps}
+          />
+        )}
+        size="small"
+        fullWidth
+        className={className}
+      />
+    );
+  },
+);

@@ -146,7 +146,7 @@ interface AutoCompleteProps extends Omit<AutocompleteProps<any, any, any, any>, 
     options: AutoCompleteOption[];
     required?: boolean;
 }
-declare const AutoComplete: ({ className, freeSolo, header, inputProps, onChange, options, required, value, ...props }: AutoCompleteProps) => react_jsx_runtime.JSX.Element;
+declare const AutoComplete: react.ForwardRefExoticComponent<Omit<AutoCompleteProps, "ref"> & react.RefAttributes<HTMLDivElement>>;
 
 interface DateInputProps extends Omit<DatePickerProps<dayjs.Dayjs>, "label" | "onChange" | "value"> {
     header?: ReactNode;
@@ -157,7 +157,7 @@ interface DateInputProps extends Omit<DatePickerProps<dayjs.Dayjs>, "label" | "o
     viewProps?: Partial<ViewProps>;
     width?: CSS["width"];
 }
-declare const DateInput: ({ header, headerProps, inputProps, setValue, slotProps, value, viewProps, width, ...datePickerProps }: DateInputProps) => react_jsx_runtime.JSX.Element;
+declare const DateInput: react.ForwardRefExoticComponent<DateInputProps & react.RefAttributes<HTMLDivElement>>;
 
 interface DateRangeProps {
     dateInputProps?: Partial<DateInputProps>;
@@ -168,7 +168,7 @@ interface DateRangeProps {
     setStartDate: (val: string) => void;
     startDate: string;
 }
-declare const DateRange: ({ dateInputProps, endDate, header, headerProps, setEndDate, setStartDate, startDate, }: DateRangeProps) => react_jsx_runtime.JSX.Element;
+declare const DateRange: react.ForwardRefExoticComponent<DateRangeProps & react.RefAttributes<HTMLDivElement>>;
 
 type DropdownOption = {
     label: string;
@@ -177,7 +177,7 @@ type DropdownOption = {
 interface DropdownProps extends InputProps {
     options: DropdownOption[];
 }
-declare const Dropdown: ({ options, value, ...props }: DropdownProps) => react_jsx_runtime.JSX.Element;
+declare const Dropdown: react.ForwardRefExoticComponent<Omit<DropdownProps, "ref"> & react.RefAttributes<HTMLDivElement>>;
 
 type FilterStore = {
     applySavedSearch: (id: string) => any;
@@ -258,7 +258,7 @@ interface LogOpsInputProps extends ViewProps {
     setNumValue?: (val: number) => void;
     setNumValueDisplay?: (val: string) => void;
 }
-declare const LogOpsInput: ({ dropdownProps, header, headerProps, logOpValue, numInputProps, numValue, numValueDisplay, setLogOpValue, setNumValue, setNumValueDisplay, ...props }: LogOpsInputProps) => react_jsx_runtime.JSX.Element;
+declare const LogOpsInput: react.ForwardRefExoticComponent<LogOpsInputProps & react.RefAttributes<HTMLDivElement>>;
 
 interface MultiInputProps<T = string> {
     hasDelete?: boolean;
@@ -329,7 +329,7 @@ interface NumRangeProps {
     setMax: (val: number) => void;
     setMin: (val: number) => void;
 }
-declare const NumRange: ({ hasHelper, header, headerProps, max, min, numInputProps, setMax, setMin, }: NumRangeProps) => react_jsx_runtime.JSX.Element;
+declare const NumRange: react.ForwardRefExoticComponent<NumRangeProps & react.RefAttributes<HTMLDivElement>>;
 
 type RangeWrapperProps = {
     endInput: JSX.Element;
@@ -337,7 +337,7 @@ type RangeWrapperProps = {
     headerProps?: HeaderWrapperProps["headerProps"];
     startInput: JSX.Element;
 };
-declare const RangeWrapper: (props: RangeWrapperProps) => react_jsx_runtime.JSX.Element;
+declare const RangeWrapper: react.ForwardRefExoticComponent<RangeWrapperProps & react.RefAttributes<HTMLDivElement>>;
 
 type Row = {
     label: string | ReactNode;
@@ -455,7 +455,7 @@ interface PaginationProps extends Omit<PaginationProps$1, "onChange"> {
     onFullLoad?: () => void;
     viewProps?: Partial<ViewProps>;
 }
-declare const Pagination: ({ className, count, isLoading, onChange, onFullLoad, viewProps, ...props }: PaginationProps) => react_jsx_runtime.JSX.Element;
+declare const Pagination: react.ForwardRefExoticComponent<Omit<PaginationProps, "ref"> & react.RefAttributes<HTMLDivElement>>;
 
 interface TableColumn<T> {
     header: string;
@@ -649,7 +649,7 @@ interface ChipProps extends Omit<ChipProps$2, "color" | "icon"> {
     radiuses?: BorderRadiuses;
     width?: CSS["width"];
 }
-declare const Chip: ({ bgColor, className, color, fontSize, fontWeight, height, icon, iconColor, iconProps, label, padding, radiuses, width, ...props }: ChipProps) => react_jsx_runtime.JSX.Element;
+declare const Chip: react.ForwardRefExoticComponent<Omit<ChipProps, "ref"> & react.RefAttributes<HTMLDivElement>>;
 
 interface ConditionalWrapProps {
     children: JSX.Element | JSX.Element[];

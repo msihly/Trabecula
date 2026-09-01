@@ -642,56 +642,58 @@ import {
 } from "@mui/material";
 import { jsx as jsx10 } from "react/jsx-runtime";
 var createAutoCompleteOptions = (values) => Array.isArray(values) ? values.map((v) => ({ label: String(v), value: v })) : [];
-var AutoComplete = (_a) => {
-  var _b = _a, {
-    className,
-    freeSolo,
-    header,
-    inputProps = {},
-    onChange,
-    options,
-    required = false,
-    value
-  } = _b, props = __objRest(_b, [
-    "className",
-    "freeSolo",
-    "header",
-    "inputProps",
-    "onChange",
-    "options",
-    "required",
-    "value"
-  ]);
-  var _a2;
-  const handleChange = (_, val, reason) => {
-    if (val === "" && reason === "reset") return;
-    onChange == null ? void 0 : onChange(val != null ? val : "");
-  };
-  return /* @__PURE__ */ jsx10(
-    Autocomplete,
-    __spreadProps(__spreadValues({}, props), {
-      autoComplete: true,
-      autoHighlight: (_a2 = props.autoHighlight) != null ? _a2 : true,
+var AutoComplete = Comp(
+  (_a) => {
+    var _b = _a, {
+      className,
       freeSolo,
-      options: options.map((o) => o.label),
-      filterOptions: createFilterOptions({ ignoreCase: true, ignoreAccents: true }),
-      inputValue: value,
-      onInputChange: handleChange,
-      renderInput: (params) => /* @__PURE__ */ jsx10(
-        Input,
-        __spreadValues(__spreadProps(__spreadValues({}, params), {
-          variant: "outlined",
-          header,
-          required,
-          value
-        }), inputProps)
-      ),
-      size: "small",
-      fullWidth: true,
-      className
-    })
-  );
-};
+      header,
+      inputProps = {},
+      onChange,
+      options,
+      required = false,
+      value
+    } = _b, props = __objRest(_b, [
+      "className",
+      "freeSolo",
+      "header",
+      "inputProps",
+      "onChange",
+      "options",
+      "required",
+      "value"
+    ]);
+    var _a2;
+    const handleChange = (_, val, reason) => {
+      if (val === "" && reason === "reset") return;
+      onChange == null ? void 0 : onChange(val != null ? val : "");
+    };
+    return /* @__PURE__ */ jsx10(
+      Autocomplete,
+      __spreadProps(__spreadValues({}, props), {
+        autoComplete: true,
+        autoHighlight: (_a2 = props.autoHighlight) != null ? _a2 : true,
+        freeSolo,
+        options: options.map((o) => o.label),
+        filterOptions: createFilterOptions({ ignoreCase: true, ignoreAccents: true }),
+        inputValue: value,
+        onInputChange: handleChange,
+        renderInput: (params) => /* @__PURE__ */ jsx10(
+          Input,
+          __spreadValues(__spreadProps(__spreadValues({}, params), {
+            variant: "outlined",
+            header,
+            required,
+            value
+          }), inputProps)
+        ),
+        size: "small",
+        fullWidth: true,
+        className
+      })
+    );
+  }
+);
 
 // trabecula/components/inputs/date-input.tsx
 import { useEffect as useEffect2, useState as useState3 } from "react";
@@ -699,57 +701,59 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { jsx as jsx11 } from "react/jsx-runtime";
-var DateInput = (_a) => {
-  var _b = _a, {
-    header,
-    headerProps = {},
-    inputProps = {},
-    setValue,
-    slotProps = {},
-    value,
-    viewProps = {},
-    width
-  } = _b, datePickerProps = __objRest(_b, [
-    "header",
-    "headerProps",
-    "inputProps",
-    "setValue",
-    "slotProps",
-    "value",
-    "viewProps",
-    "width"
-  ]);
-  const { css } = useClasses7(null);
-  const [dateValue, setDateValue] = useState3((value == null ? void 0 : value.length) ? dayjs(value) : null);
-  useEffect2(() => {
-    if (value == null ? void 0 : value.length) setDateValue(dayjs(value));
-    else setDateValue(null);
-  }, [value]);
-  const handleChange = (val) => {
-    setDateValue(val);
-    setValue == null ? void 0 : setValue(val.format("YYYY-MM-DD"));
-  };
-  const textFieldProps = __spreadProps(__spreadValues(__spreadValues({}, inputProps), slotProps == null ? void 0 : slotProps.textField), {
-    header,
-    headerProps,
-    width
-  });
-  return /* @__PURE__ */ jsx11(LocalizationProvider, { dateAdapter: AdapterDayjs, children: /* @__PURE__ */ jsx11(View, __spreadProps(__spreadValues({}, viewProps), { width, children: /* @__PURE__ */ jsx11(
-    DatePicker,
-    __spreadProps(__spreadValues({}, datePickerProps), {
-      value: dateValue,
-      onChange: handleChange,
-      slots: { textField: DateTextField },
-      slotProps: __spreadProps(__spreadValues({}, slotProps), {
-        actionBar: __spreadValues({ actions: ["cancel", "clear", "today"] }, slotProps == null ? void 0 : slotProps.actionBar),
-        inputAdornment: __spreadProps(__spreadValues({}, slotProps == null ? void 0 : slotProps.inputAdornment), { tabIndex: -1 }),
-        openPickerButton: __spreadProps(__spreadValues({}, slotProps == null ? void 0 : slotProps.openPickerButton), { tabIndex: -1 }),
-        textField: textFieldProps
-      }),
-      className: css.datePicker
-    })
-  ) })) });
-};
+var DateInput = Comp(
+  (_a) => {
+    var _b = _a, {
+      header,
+      headerProps = {},
+      inputProps = {},
+      setValue,
+      slotProps = {},
+      value,
+      viewProps = {},
+      width
+    } = _b, datePickerProps = __objRest(_b, [
+      "header",
+      "headerProps",
+      "inputProps",
+      "setValue",
+      "slotProps",
+      "value",
+      "viewProps",
+      "width"
+    ]);
+    const { css } = useClasses7(null);
+    const [dateValue, setDateValue] = useState3((value == null ? void 0 : value.length) ? dayjs(value) : null);
+    useEffect2(() => {
+      if (value == null ? void 0 : value.length) setDateValue(dayjs(value));
+      else setDateValue(null);
+    }, [value]);
+    const handleChange = (val) => {
+      setDateValue(val);
+      setValue == null ? void 0 : setValue(val.format("YYYY-MM-DD"));
+    };
+    const textFieldProps = __spreadProps(__spreadValues(__spreadValues({}, inputProps), slotProps == null ? void 0 : slotProps.textField), {
+      header,
+      headerProps,
+      width
+    });
+    return /* @__PURE__ */ jsx11(LocalizationProvider, { dateAdapter: AdapterDayjs, children: /* @__PURE__ */ jsx11(View, __spreadProps(__spreadValues({}, viewProps), { width, children: /* @__PURE__ */ jsx11(
+      DatePicker,
+      __spreadProps(__spreadValues({}, datePickerProps), {
+        value: dateValue,
+        onChange: handleChange,
+        slots: { textField: DateTextField },
+        slotProps: __spreadProps(__spreadValues({}, slotProps), {
+          actionBar: __spreadValues({ actions: ["cancel", "clear", "today"] }, slotProps == null ? void 0 : slotProps.actionBar),
+          inputAdornment: __spreadProps(__spreadValues({}, slotProps == null ? void 0 : slotProps.inputAdornment), { tabIndex: -1 }),
+          openPickerButton: __spreadProps(__spreadValues({}, slotProps == null ? void 0 : slotProps.openPickerButton), { tabIndex: -1 }),
+          textField: textFieldProps
+        }),
+        className: css.datePicker
+      })
+    ) })) });
+  }
+);
 var DateTextField = (props) => /* @__PURE__ */ jsx11(Input, __spreadValues({}, props));
 var useClasses7 = makeClasses({
   datePicker: {
@@ -765,47 +769,49 @@ var useClasses7 = makeClasses({
 
 // trabecula/components/inputs/date-range.tsx
 import { jsx as jsx12 } from "react/jsx-runtime";
-var DateRange = ({
-  dateInputProps = {},
-  endDate,
-  header,
-  headerProps,
-  setEndDate,
-  setStartDate,
-  startDate
-}) => {
-  return /* @__PURE__ */ jsx12(
-    RangeWrapper,
-    {
-      header,
-      headerProps,
-      startInput: /* @__PURE__ */ jsx12(
-        DateInput,
-        __spreadProps(__spreadValues({}, dateInputProps), {
-          value: startDate,
-          setValue: setStartDate,
-          inputProps: { borderRadiuses: { top: 0, right: 0 } }
-        })
-      ),
-      endInput: /* @__PURE__ */ jsx12(
-        DateInput,
-        __spreadProps(__spreadValues({}, dateInputProps), {
-          value: endDate,
-          setValue: setEndDate,
-          inputProps: { borderRadiuses: { top: 0, left: 0 } }
-        })
-      )
-    }
-  );
-};
+var DateRange = Comp(
+  ({
+    dateInputProps = {},
+    endDate,
+    header,
+    headerProps,
+    setEndDate,
+    setStartDate,
+    startDate
+  }) => {
+    return /* @__PURE__ */ jsx12(
+      RangeWrapper,
+      {
+        header,
+        headerProps,
+        startInput: /* @__PURE__ */ jsx12(
+          DateInput,
+          __spreadProps(__spreadValues({}, dateInputProps), {
+            value: startDate,
+            setValue: setStartDate,
+            inputProps: { borderRadiuses: { top: 0, right: 0 } }
+          })
+        ),
+        endInput: /* @__PURE__ */ jsx12(
+          DateInput,
+          __spreadProps(__spreadValues({}, dateInputProps), {
+            value: endDate,
+            setValue: setEndDate,
+            inputProps: { borderRadiuses: { top: 0, left: 0 } }
+          })
+        )
+      }
+    );
+  }
+);
 
 // trabecula/components/inputs/dropdown.tsx
 import { MenuItem } from "@mui/material";
 import { jsx as jsx13 } from "react/jsx-runtime";
-var Dropdown = (_a) => {
+var Dropdown = Comp((_a) => {
   var _b = _a, { options, value } = _b, props = __objRest(_b, ["options", "value"]);
   return /* @__PURE__ */ jsx13(Input, __spreadProps(__spreadValues({}, props), { value, select: true, children: options.map((o, i) => /* @__PURE__ */ jsx13(MenuItem, { value: o.value, children: /* @__PURE__ */ jsx13(Text, { fontSize: "0.9em", children: o.label }) }, i)) }));
-};
+});
 
 // trabecula/components/inputs/filter-menu.tsx
 import { useEffect as useEffect3, useState as useState4 } from "react";
@@ -1176,58 +1182,60 @@ var LOG_OPS_OPTS = [
   { label: "Any", value: "" },
   ...LOGICAL_OPS.map((op) => ({ label: op, value: op }))
 ];
-var LogOpsInput = (_a) => {
-  var _b = _a, {
-    dropdownProps = {},
-    header,
-    headerProps,
-    logOpValue,
-    numInputProps,
-    numValue,
-    numValueDisplay,
-    setLogOpValue,
-    setNumValue,
-    setNumValueDisplay
-  } = _b, props = __objRest(_b, [
-    "dropdownProps",
-    "header",
-    "headerProps",
-    "logOpValue",
-    "numInputProps",
-    "numValue",
-    "numValueDisplay",
-    "setLogOpValue",
-    "setNumValue",
-    "setNumValueDisplay"
-  ]);
-  return /* @__PURE__ */ jsxs9(HeaderWrapper, __spreadProps(__spreadValues(__spreadValues({ row: true, overflow: "hidden" }, { header, headerProps }), props), { children: [
-    /* @__PURE__ */ jsx16(
-      Dropdown,
-      __spreadValues({
-        value: logOpValue,
-        setValue: setLogOpValue,
-        options: LOG_OPS_OPTS,
-        minWidth: "3.7em",
-        borderRadiuses: { top: 0, right: 0 },
-        textAlign: "center"
-      }, dropdownProps)
-    ),
-    /* @__PURE__ */ jsx16(
-      NumInput,
-      __spreadValues({
-        value: numValue,
-        valueDisplay: numValueDisplay,
-        setValue: setNumValue,
-        setValueDisplay: setNumValueDisplay,
-        disabled: logOpValue === "",
-        width: "100%",
-        textAlign: "center",
-        hasHelper: false,
-        borderRadiuses: { top: 0, left: 0 }
-      }, numInputProps)
-    )
-  ] }));
-};
+var LogOpsInput = Comp(
+  (_a) => {
+    var _b = _a, {
+      dropdownProps = {},
+      header,
+      headerProps,
+      logOpValue,
+      numInputProps,
+      numValue,
+      numValueDisplay,
+      setLogOpValue,
+      setNumValue,
+      setNumValueDisplay
+    } = _b, props = __objRest(_b, [
+      "dropdownProps",
+      "header",
+      "headerProps",
+      "logOpValue",
+      "numInputProps",
+      "numValue",
+      "numValueDisplay",
+      "setLogOpValue",
+      "setNumValue",
+      "setNumValueDisplay"
+    ]);
+    return /* @__PURE__ */ jsxs9(HeaderWrapper, __spreadProps(__spreadValues(__spreadValues({ row: true, overflow: "hidden" }, { header, headerProps }), props), { children: [
+      /* @__PURE__ */ jsx16(
+        Dropdown,
+        __spreadValues({
+          value: logOpValue,
+          setValue: setLogOpValue,
+          options: LOG_OPS_OPTS,
+          minWidth: "3.7em",
+          borderRadiuses: { top: 0, right: 0 },
+          textAlign: "center"
+        }, dropdownProps)
+      ),
+      /* @__PURE__ */ jsx16(
+        NumInput,
+        __spreadValues({
+          value: numValue,
+          valueDisplay: numValueDisplay,
+          setValue: setNumValue,
+          setValueDisplay: setNumValueDisplay,
+          disabled: logOpValue === "",
+          width: "100%",
+          textAlign: "center",
+          hasHelper: false,
+          borderRadiuses: { top: 0, left: 0 }
+        }, numInputProps)
+      )
+    ] }));
+  }
+);
 
 // trabecula/components/inputs/multi-input.tsx
 import { useState as useState5 } from "react";
@@ -1491,48 +1499,50 @@ var NumInput = Comp(
 
 // trabecula/components/inputs/num-range.tsx
 import { jsx as jsx21 } from "react/jsx-runtime";
-var NumRange = ({
-  hasHelper = false,
-  header,
-  headerProps,
-  max,
-  min,
-  numInputProps = {},
-  setMax,
-  setMin
-}) => {
-  return /* @__PURE__ */ jsx21(
-    RangeWrapper,
-    {
-      header,
-      headerProps,
-      startInput: /* @__PURE__ */ jsx21(
-        NumInput,
-        __spreadProps(__spreadValues(__spreadValues({}, numInputProps), { hasHelper }), {
-          value: min,
-          setValue: setMin,
-          placeholder: "Min",
-          textAlign: "center",
-          borderRadiuses: { top: 0, right: 0 }
-        })
-      ),
-      endInput: /* @__PURE__ */ jsx21(
-        NumInput,
-        __spreadProps(__spreadValues(__spreadValues({}, numInputProps), { hasHelper }), {
-          value: max,
-          setValue: setMax,
-          placeholder: "Max",
-          textAlign: "center",
-          borderRadiuses: { top: 0, left: 0 }
-        })
-      )
-    }
-  );
-};
+var NumRange = Comp(
+  ({
+    hasHelper = false,
+    header,
+    headerProps,
+    max,
+    min,
+    numInputProps = {},
+    setMax,
+    setMin
+  }) => {
+    return /* @__PURE__ */ jsx21(
+      RangeWrapper,
+      {
+        header,
+        headerProps,
+        startInput: /* @__PURE__ */ jsx21(
+          NumInput,
+          __spreadProps(__spreadValues(__spreadValues({}, numInputProps), { hasHelper }), {
+            value: min,
+            setValue: setMin,
+            placeholder: "Min",
+            textAlign: "center",
+            borderRadiuses: { top: 0, right: 0 }
+          })
+        ),
+        endInput: /* @__PURE__ */ jsx21(
+          NumInput,
+          __spreadProps(__spreadValues(__spreadValues({}, numInputProps), { hasHelper }), {
+            value: max,
+            setValue: setMax,
+            placeholder: "Max",
+            textAlign: "center",
+            borderRadiuses: { top: 0, left: 0 }
+          })
+        )
+      }
+    );
+  }
+);
 
 // trabecula/components/inputs/range-wrapper.tsx
 import { jsx as jsx22, jsxs as jsxs13 } from "react/jsx-runtime";
-var RangeWrapper = (props) => {
+var RangeWrapper = Comp((props) => {
   return /* @__PURE__ */ jsxs13(HeaderWrapper, { row: true, header: props.header, headerProps: props.headerProps, children: [
     props.startInput,
     /* @__PURE__ */ jsx22(
@@ -1551,7 +1561,7 @@ var RangeWrapper = (props) => {
     ),
     props.endInput
   ] });
-};
+});
 
 // trabecula/components/list/detail-rows.tsx
 import { jsx as jsx23, jsxs as jsxs14 } from "react/jsx-runtime";
@@ -2024,113 +2034,115 @@ import {
   PaginationItem
 } from "@mui/material";
 import { jsx as jsx33, jsxs as jsxs21 } from "react/jsx-runtime";
-var Pagination = (_a) => {
-  var _b = _a, {
-    className,
-    count,
-    isLoading,
-    onChange,
-    onFullLoad,
-    viewProps = {}
-  } = _b, props = __objRest(_b, [
-    "className",
-    "count",
-    "isLoading",
-    "onChange",
-    "onFullLoad",
-    "viewProps"
-  ]);
-  const { css, cx } = useClasses19(null);
-  const [isJumpModalOpen, setIsJumpModalOpen] = useState8(false);
-  const [jumpPage, setJumpPage] = useState8(null);
-  const hasError = !Number.isInteger(jumpPage) || jumpPage < 1 || jumpPage > count;
-  const handleChange = (_, page) => onChange(page);
-  const handleJump = () => {
-    if (hasError) return;
-    setIsJumpModalOpen(false);
-    onChange(jumpPage);
-  };
-  const handleJumpModalOpen = () => {
-    var _a2;
-    const page = (_a2 = props.page) != null ? _a2 : null;
-    setJumpPage(page);
-    setIsJumpModalOpen(true);
-  };
-  const handleLastPageClick = (event, item) => {
-    var _a2;
-    if (onFullLoad) event.preventDefault(), onFullLoad();
-    else (_a2 = item.onClick) == null ? void 0 : _a2.call(item, event);
-  };
-  return /* @__PURE__ */ jsxs21(View, __spreadProps(__spreadValues({}, viewProps), { className: cx(css.root, viewProps == null ? void 0 : viewProps.className), children: [
-    /* @__PURE__ */ jsxs21(View, { position: "relative", overflow: "hidden", children: [
-      /* @__PURE__ */ jsx33(LoadingOverlay, { isLoading }),
-      /* @__PURE__ */ jsx33(
-        PaginationBase,
-        __spreadValues({
-          onChange: handleChange,
-          showFirstButton: true,
-          showLastButton: true,
-          siblingCount: 4,
-          boundaryCount: 2,
-          count,
-          className: cx(css.pagination, className),
-          renderItem: (item) => {
-            const isEllipsis = ["start-ellipsis", "end-ellipsis"].includes(item.type);
-            return /* @__PURE__ */ jsx33(
-              PaginationItem,
-              __spreadProps(__spreadValues({}, item), {
-                page: isEllipsis ? "..." : item.page,
-                type: isEllipsis ? "page" : item.type,
-                disabled: isEllipsis ? false : item.disabled,
-                onClick: isEllipsis ? handleJumpModalOpen : item.type === "last" ? (e) => handleLastPageClick(e, item) : item.onClick
-              })
-            );
-          }
-        }, props)
-      )
-    ] }),
-    isJumpModalOpen && /* @__PURE__ */ jsxs21(Modal.Container, { onClose: () => setIsJumpModalOpen(false), width: "24rem", children: [
-      /* @__PURE__ */ jsx33(Modal.Header, { children: /* @__PURE__ */ jsx33(Text, { preset: "title", children: "Jump to Page" }) }),
-      /* @__PURE__ */ jsx33(Modal.Content, { row: true, dividers: false, justify: "center", children: /* @__PURE__ */ jsx33(
-        NumInput,
-        {
-          placeholder: "Page",
-          value: jumpPage,
-          setValue: setJumpPage,
-          minValue: 1,
-          maxValue: count,
-          error: hasError,
-          helperText: `Max: ${count}`,
-          autoFocus: true,
-          textAlign: "center",
-          width: "6rem",
-          dense: true
-        }
-      ) }),
-      /* @__PURE__ */ jsxs21(Modal.Footer, { uniformWidth: "7rem", children: [
+var Pagination = Comp(
+  (_a) => {
+    var _b = _a, {
+      className,
+      count,
+      isLoading,
+      onChange,
+      onFullLoad,
+      viewProps = {}
+    } = _b, props = __objRest(_b, [
+      "className",
+      "count",
+      "isLoading",
+      "onChange",
+      "onFullLoad",
+      "viewProps"
+    ]);
+    const { css, cx } = useClasses19(null);
+    const [isJumpModalOpen, setIsJumpModalOpen] = useState8(false);
+    const [jumpPage, setJumpPage] = useState8(null);
+    const hasError = !Number.isInteger(jumpPage) || jumpPage < 1 || jumpPage > count;
+    const handleChange = (_, page) => onChange(page);
+    const handleJump = () => {
+      if (hasError) return;
+      setIsJumpModalOpen(false);
+      onChange(jumpPage);
+    };
+    const handleJumpModalOpen = () => {
+      var _a2;
+      const page = (_a2 = props.page) != null ? _a2 : null;
+      setJumpPage(page);
+      setIsJumpModalOpen(true);
+    };
+    const handleLastPageClick = (event, item) => {
+      var _a2;
+      if (onFullLoad) event.preventDefault(), onFullLoad();
+      else (_a2 = item.onClick) == null ? void 0 : _a2.call(item, event);
+    };
+    return /* @__PURE__ */ jsxs21(View, __spreadProps(__spreadValues({}, viewProps), { className: cx(css.root, viewProps == null ? void 0 : viewProps.className), children: [
+      /* @__PURE__ */ jsxs21(View, { position: "relative", overflow: "hidden", children: [
+        /* @__PURE__ */ jsx33(LoadingOverlay, { isLoading }),
         /* @__PURE__ */ jsx33(
-          Button,
-          {
-            text: "Cancel",
-            icon: "Close",
-            onClick: () => setIsJumpModalOpen(false),
-            color: colors.foregroundCard
-          }
-        ),
-        /* @__PURE__ */ jsx33(
-          Button,
-          {
-            text: "Jump",
-            icon: "Send",
-            onClick: handleJump,
-            disabled: !Number.isInteger(jumpPage) || jumpPage < 1 || jumpPage > count,
-            color: colors.custom.blue
-          }
+          PaginationBase,
+          __spreadValues({
+            onChange: handleChange,
+            showFirstButton: true,
+            showLastButton: true,
+            siblingCount: 4,
+            boundaryCount: 2,
+            count,
+            className: cx(css.pagination, className),
+            renderItem: (item) => {
+              const isEllipsis = ["start-ellipsis", "end-ellipsis"].includes(item.type);
+              return /* @__PURE__ */ jsx33(
+                PaginationItem,
+                __spreadProps(__spreadValues({}, item), {
+                  page: isEllipsis ? "..." : item.page,
+                  type: isEllipsis ? "page" : item.type,
+                  disabled: isEllipsis ? false : item.disabled,
+                  onClick: isEllipsis ? handleJumpModalOpen : item.type === "last" ? (e) => handleLastPageClick(e, item) : item.onClick
+                })
+              );
+            }
+          }, props)
         )
+      ] }),
+      isJumpModalOpen && /* @__PURE__ */ jsxs21(Modal.Container, { onClose: () => setIsJumpModalOpen(false), width: "24rem", children: [
+        /* @__PURE__ */ jsx33(Modal.Header, { children: /* @__PURE__ */ jsx33(Text, { preset: "title", children: "Jump to Page" }) }),
+        /* @__PURE__ */ jsx33(Modal.Content, { row: true, dividers: false, justify: "center", children: /* @__PURE__ */ jsx33(
+          NumInput,
+          {
+            placeholder: "Page",
+            value: jumpPage,
+            setValue: setJumpPage,
+            minValue: 1,
+            maxValue: count,
+            error: hasError,
+            helperText: `Max: ${count}`,
+            autoFocus: true,
+            textAlign: "center",
+            width: "6rem",
+            dense: true
+          }
+        ) }),
+        /* @__PURE__ */ jsxs21(Modal.Footer, { uniformWidth: "7rem", children: [
+          /* @__PURE__ */ jsx33(
+            Button,
+            {
+              text: "Cancel",
+              icon: "Close",
+              onClick: () => setIsJumpModalOpen(false),
+              color: colors.foregroundCard
+            }
+          ),
+          /* @__PURE__ */ jsx33(
+            Button,
+            {
+              text: "Jump",
+              icon: "Send",
+              onClick: handleJump,
+              disabled: !Number.isInteger(jumpPage) || jumpPage < 1 || jumpPage > count,
+              color: colors.custom.blue
+            }
+          )
+        ] })
       ] })
-    ] })
-  ] }));
-};
+    ] }));
+  }
+);
 var useClasses19 = makeClasses({
   pagination: {
     borderRadius: 0,
@@ -3079,63 +3091,65 @@ var useClasses29 = makeClasses((props, theme) => ({
 // trabecula/components/wrappers/chip.tsx
 import { Chip as MuiChip } from "@mui/material";
 import { jsx as jsx51 } from "react/jsx-runtime";
-var Chip = (_a) => {
-  var _b = _a, {
-    bgColor,
-    className,
-    color,
-    fontSize,
-    fontWeight,
-    height,
-    icon,
-    iconColor,
-    iconProps,
-    label,
-    padding,
-    radiuses,
-    width
-  } = _b, props = __objRest(_b, [
-    "bgColor",
-    "className",
-    "color",
-    "fontSize",
-    "fontWeight",
-    "height",
-    "icon",
-    "iconColor",
-    "iconProps",
-    "label",
-    "padding",
-    "radiuses",
-    "width"
-  ]);
-  const { css, cx } = useClasses30({
-    bgColor,
-    color,
-    fontSize,
-    fontWeight,
-    height,
-    padding,
-    radiuses,
-    width
-  });
-  return /* @__PURE__ */ jsx51(
-    MuiChip,
-    __spreadProps(__spreadValues({}, props), {
+var Chip = Comp(
+  (_a) => {
+    var _b = _a, {
+      bgColor,
+      className,
+      color,
+      fontSize,
+      fontWeight,
+      height,
+      icon,
+      iconColor,
+      iconProps,
       label,
-      icon: icon ? /* @__PURE__ */ jsx51(
-        Icon,
-        __spreadValues({
-          name: icon,
-          color: iconColor,
-          size: "inherit",
-          margins: { left: "0.5rem !important" }
-        }, iconProps)
-      ) : void 0,
-      className: cx(css.chip, className)
-    })
-  );
-};
+      padding,
+      radiuses,
+      width
+    } = _b, props = __objRest(_b, [
+      "bgColor",
+      "className",
+      "color",
+      "fontSize",
+      "fontWeight",
+      "height",
+      "icon",
+      "iconColor",
+      "iconProps",
+      "label",
+      "padding",
+      "radiuses",
+      "width"
+    ]);
+    const { css, cx } = useClasses30({
+      bgColor,
+      color,
+      fontSize,
+      fontWeight,
+      height,
+      padding,
+      radiuses,
+      width
+    });
+    return /* @__PURE__ */ jsx51(
+      MuiChip,
+      __spreadProps(__spreadValues({}, props), {
+        label,
+        icon: icon ? /* @__PURE__ */ jsx51(
+          Icon,
+          __spreadValues({
+            name: icon,
+            color: iconColor,
+            size: "inherit",
+            margins: { left: "0.5rem !important" }
+          }, iconProps)
+        ) : void 0,
+        className: cx(css.chip, className)
+      })
+    );
+  }
+);
 var useClasses30 = makeClasses((props) => ({
   chip: __spreadProps(__spreadValues({}, makeBorderRadiuses(props.radiuses)), {
     height: props.height,
