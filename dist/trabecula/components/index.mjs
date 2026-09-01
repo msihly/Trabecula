@@ -720,7 +720,10 @@ var DateInput = (_a) => {
   useEffect2(() => {
     setDateValue((value == null ? void 0 : value.length) ? dayjs(value) : null);
   }, [value]);
-  const handleChange = (val) => setValue == null ? void 0 : setValue((val == null ? void 0 : val.isValid()) ? val.format("YYYY-MM-DD") : "");
+  const handleChange = (val) => {
+    setDateValue(val);
+    setValue == null ? void 0 : setValue((val == null ? void 0 : val.isValid()) ? val.format("YYYY-MM-DD") : "");
+  };
   return /* @__PURE__ */ jsx11(HeaderWrapper, { header, headerProps, children: /* @__PURE__ */ jsx11(LocalizationProvider, { dateAdapter: AdapterDayjs, children: /* @__PURE__ */ jsx11(
     DatePicker,
     __spreadProps(__spreadValues({}, datePickerProps), {

@@ -3489,7 +3489,10 @@ var DateInput = (_a) => {
   (0, import_react7.useEffect)(() => {
     setDateValue((value == null ? void 0 : value.length) ? (0, import_dayjs.default)(value) : null);
   }, [value]);
-  const handleChange = (val) => setValue == null ? void 0 : setValue((val == null ? void 0 : val.isValid()) ? val.format("YYYY-MM-DD") : "");
+  const handleChange = (val) => {
+    setDateValue(val);
+    setValue == null ? void 0 : setValue((val == null ? void 0 : val.isValid()) ? val.format("YYYY-MM-DD") : "");
+  };
   return /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(HeaderWrapper, { header, headerProps, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_LocalizationProvider.LocalizationProvider, { dateAdapter: import_AdapterDayjs.AdapterDayjs, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
     import_DatePicker.DatePicker,
     __spreadProps(__spreadValues({}, datePickerProps), {
