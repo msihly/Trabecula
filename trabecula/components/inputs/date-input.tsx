@@ -35,7 +35,8 @@ export const DateInput = ({
     setDateValue(value?.length ? dayjs(value) : null);
   }, [value]);
 
-  const handleChange = (val: dayjs.Dayjs) => setValue?.(val?.format("YYYY-MM-DD"));
+  const handleChange = (val: dayjs.Dayjs | null) =>
+    setValue?.(val?.isValid() ? val.format("YYYY-MM-DD") : "");
 
   return (
     <HeaderWrapper header={header} headerProps={headerProps}>

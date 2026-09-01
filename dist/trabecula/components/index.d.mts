@@ -221,7 +221,7 @@ interface FilterMenuProps extends Omit<ButtonProps, "onChange" | "value"> {
 }
 declare const FilterMenu: react.ForwardRefExoticComponent<Omit<FilterMenuProps, "ref"> & react.RefAttributes<HTMLDivElement>>;
 
-interface InputProps extends Omit<TextFieldProps, "color" | "fullWidth" | "onChange" | "helperText" | "label"> {
+interface InputProps extends Omit<TextFieldProps, "color" | "fullWidth" | "helperText" | "label"> {
     adornment?: ReactNode;
     adornmentPosition?: "end" | "start";
     borders?: Borders;

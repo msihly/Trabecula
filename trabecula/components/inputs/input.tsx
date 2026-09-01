@@ -24,7 +24,7 @@ const DEFAULT_HEADER_PROPS: HeaderWrapperProps["headerProps"] = {
 
 export interface InputProps extends Omit<
   TextFieldProps,
-  "color" | "fullWidth" | "onChange" | "helperText" | "label"
+  "color" | "fullWidth" | "helperText" | "label"
 > {
   adornment?: ReactNode;
   adornmentPosition?: "end" | "start";
@@ -69,6 +69,7 @@ export const Input = Comp(
       margins = {},
       maxLength,
       minWidth,
+      onChange,
       onClick,
       onKeyDown,
       setValue,
@@ -99,8 +100,10 @@ export const Input = Comp(
       width,
     });
 
-    const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+    const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setValue?.(event.target.value);
+      onChange?.(event);
+    };
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
       event.stopPropagation();

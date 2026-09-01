@@ -720,7 +720,7 @@ var DateInput = (_a) => {
   useEffect2(() => {
     setDateValue((value == null ? void 0 : value.length) ? dayjs(value) : null);
   }, [value]);
-  const handleChange = (val) => setValue == null ? void 0 : setValue(val == null ? void 0 : val.format("YYYY-MM-DD"));
+  const handleChange = (val) => setValue == null ? void 0 : setValue((val == null ? void 0 : val.isValid()) ? val.format("YYYY-MM-DD") : "");
   return /* @__PURE__ */ jsx11(HeaderWrapper, { header, headerProps, children: /* @__PURE__ */ jsx11(LocalizationProvider, { dateAdapter: AdapterDayjs, children: /* @__PURE__ */ jsx11(
     DatePicker,
     __spreadProps(__spreadValues({}, datePickerProps), {
@@ -1016,6 +1016,7 @@ var Input = Comp(
       margins = {},
       maxLength,
       minWidth,
+      onChange,
       onClick,
       onKeyDown,
       setValue,
@@ -1042,6 +1043,7 @@ var Input = Comp(
       "margins",
       "maxLength",
       "minWidth",
+      "onChange",
       "onClick",
       "onKeyDown",
       "setValue",
@@ -1067,7 +1069,10 @@ var Input = Comp(
       textAlign,
       width
     });
-    const handleChange = (event) => setValue == null ? void 0 : setValue(event.target.value);
+    const handleChange = (event) => {
+      setValue == null ? void 0 : setValue(event.target.value);
+      onChange == null ? void 0 : onChange(event);
+    };
     const handleKeyDown = (event) => {
       event.stopPropagation();
       onKeyDown == null ? void 0 : onKeyDown(event);
