@@ -7,7 +7,7 @@ import { colors, CSS, CssColor, makeClasses } from "trabecula/utils/client";
 export interface MenuButtonProps extends IconButtonProps {
   bgColor?: CssColor;
   button?: (onOpen: (event: MouseEvent) => void) => ReactNode;
-  children: ReactNode;
+  children: ReactNode | ((onClose: () => void) => ReactNode);
   color?: CssColor;
   icon?: IconName;
   keepMounted?: boolean;
@@ -51,7 +51,7 @@ export const MenuButton = ({
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         className={css.menu}
       >
-        {children}
+        {typeof children === "function" ? children(handleClose) : children}
       </Menu>
     </>
   );

@@ -91,7 +91,7 @@ declare const IconPicker: react.ForwardRefExoticComponent<Omit<IconPickerProps, 
 interface MenuButtonProps extends IconButtonProps {
     bgColor?: CssColor;
     button?: (onOpen: (event: MouseEvent) => void) => ReactNode;
-    children: ReactNode;
+    children: ReactNode | ((onClose: () => void) => ReactNode);
     color?: CssColor;
     icon?: IconName;
     keepMounted?: boolean;

@@ -3266,7 +3266,7 @@ var MenuButton = (_a) => {
         anchorOrigin: { horizontal: "right", vertical: "bottom" },
         transformOrigin: { horizontal: "right", vertical: "top" },
         className: css.menu,
-        children
+        children: typeof children === "function" ? children(handleClose) : children
       })
     )
   ] });
