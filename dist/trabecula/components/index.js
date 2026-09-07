@@ -113,6 +113,7 @@ __export(components_exports, {
   MULTI_INPUT_ROW_HEIGHT: () => MULTI_INPUT_ROW_HEIGHT,
   MenuButton: () => MenuButton,
   Modal: () => Modal,
+  MuiProvider: () => MuiProvider,
   MultiActionButton: () => MultiActionButton,
   MultiInput: () => MultiInput,
   MultiInputList: () => MultiInputList,
@@ -6315,6 +6316,37 @@ var useClasses36 = makeClasses((props) => {
     } : {})
   };
 });
+
+// trabecula/views/mui-provider.tsx
+var import_react20 = require("react");
+var import_cache = __toESM(require("@emotion/cache"));
+var import_react21 = require("@emotion/react");
+var import_material29 = require("@mui/material");
+var import_tss_react2 = require("tss-react");
+var import_jsx_runtime61 = require("react/jsx-runtime");
+var MuiProvider = ({
+  children,
+  portalContainer,
+  styleContainer
+}) => {
+  const themeRef = (0, import_react20.useRef)(
+    (0, import_material29.createTheme)({
+      components: {
+        MuiModal: { defaultProps: { container: portalContainer } },
+        MuiPopover: { defaultProps: { container: portalContainer } },
+        MuiPopper: { defaultProps: { container: portalContainer } }
+      },
+      palette: { mode: "dark" }
+    })
+  );
+  const muiCacheRef = (0, import_react20.useRef)(
+    (0, import_cache.default)({ container: styleContainer, key: "mui", prepend: true, stylisPlugins: [] })
+  );
+  const tssCacheRef = (0, import_react20.useRef)(
+    (0, import_cache.default)({ container: styleContainer, key: "tss", stylisPlugins: [] })
+  );
+  return /* @__PURE__ */ (0, import_jsx_runtime61.jsx)(import_react20.StrictMode, { children: /* @__PURE__ */ (0, import_jsx_runtime61.jsx)(import_react21.CacheProvider, { value: muiCacheRef.current, children: /* @__PURE__ */ (0, import_jsx_runtime61.jsx)(import_tss_react2.TssCacheProvider, { value: tssCacheRef.current, children: /* @__PURE__ */ (0, import_jsx_runtime61.jsx)(import_material29.ThemeProvider, { theme: themeRef.current, children }) }) }) });
+};
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   Accordion,
@@ -6351,6 +6383,7 @@ var useClasses36 = makeClasses((props) => {
   MULTI_INPUT_ROW_HEIGHT,
   MenuButton,
   Modal,
+  MuiProvider,
   MultiActionButton,
   MultiInput,
   MultiInputList,

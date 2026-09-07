@@ -3566,6 +3566,37 @@ var useClasses35 = makeClasses((props) => {
     } : {})
   };
 });
+
+// trabecula/views/mui-provider.tsx
+import { StrictMode, useRef as useRef4 } from "react";
+import createCache from "@emotion/cache";
+import { CacheProvider } from "@emotion/react";
+import { createTheme, ThemeProvider } from "@mui/material";
+import { TssCacheProvider } from "tss-react";
+import { jsx as jsx60 } from "react/jsx-runtime";
+var MuiProvider = ({
+  children,
+  portalContainer,
+  styleContainer
+}) => {
+  const themeRef = useRef4(
+    createTheme({
+      components: {
+        MuiModal: { defaultProps: { container: portalContainer } },
+        MuiPopover: { defaultProps: { container: portalContainer } },
+        MuiPopper: { defaultProps: { container: portalContainer } }
+      },
+      palette: { mode: "dark" }
+    })
+  );
+  const muiCacheRef = useRef4(
+    createCache({ container: styleContainer, key: "mui", prepend: true, stylisPlugins: [] })
+  );
+  const tssCacheRef = useRef4(
+    createCache({ container: styleContainer, key: "tss", stylisPlugins: [] })
+  );
+  return /* @__PURE__ */ jsx60(StrictMode, { children: /* @__PURE__ */ jsx60(CacheProvider, { value: muiCacheRef.current, children: /* @__PURE__ */ jsx60(TssCacheProvider, { value: tssCacheRef.current, children: /* @__PURE__ */ jsx60(ThemeProvider, { theme: themeRef.current, children }) }) }) });
+};
 export {
   Accordion,
   AutoComplete,
@@ -3601,6 +3632,7 @@ export {
   MULTI_INPUT_ROW_HEIGHT,
   MenuButton,
   Modal,
+  MuiProvider,
   MultiActionButton,
   MultiInput,
   MultiInputList,
