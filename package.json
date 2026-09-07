@@ -68,8 +68,7 @@
     "hmr": "SET HMR=true&& SET BROWSER=none&& pnpm run gen && vite --config ./vite.config.hmr.ts",
     "lint": "eslint trabecula/{components,generator,utils}/**/*{.ts,.tsx}",
     "lint-fix": "pnpm run lint --fix",
-    "postinstall": "node -e \"require('fs').existsSync('.git') && require('child_process').execSync('patch-package', {stdio:'inherit'})\"",
-    "prepare": "husky",
+    "postinstall": "node -e \"if (require('fs').existsSync('.git')) { require('child_process').execSync('patch-package', {stdio:'inherit'}); require('child_process').execSync('husky', {stdio:'inherit'}); }\"",
     "prettier": "prettier --check trabecula --config ./.prettierrc --ignore-path ./.prettierignore",
     "prettier-fix": "pnpm run prettier --write",
     "ts-check": "tspc --noEmit"
