@@ -30,7 +30,7 @@ import {
   Margins,
   Padding,
 } from "trabecula/utils/client";
-import { CONSTANTS } from "trabecula/utils/common";
+import { DENSE_FORM_ROW_HEIGHT, FORM_ROW_HEIGHT } from "trabecula/utils/common";
 
 export interface ButtonProps extends Omit<
   MuiButtonProps,
@@ -127,8 +127,8 @@ export const Button = ({
   const defaultHeight = isLinkDisplay
     ? "auto"
     : dense || size === "small"
-      ? CONSTANTS.DENSE_FORM_ROW_HEIGHT
-      : CONSTANTS.FORM_ROW_HEIGHT;
+      ? DENSE_FORM_ROW_HEIGHT
+      : FORM_ROW_HEIGHT;
   const resolvedTextColor =
     textColor ?? (outlined ? color : isLinkDisplay ? colors.custom.lightBlue : colors.custom.white);
   const resolvedColorOnHover = colorOnHover;

@@ -17,7 +17,7 @@ import {
   Margins,
   Padding,
 } from "trabecula/utils/client";
-import { CONSTANTS, deepMerge } from "trabecula/utils/common";
+import { deepMerge, DENSE_FORM_ROW_HEIGHT } from "trabecula/utils/common";
 
 export const DENSE_INPUT_PADDING = "0.1rem 0.5rem";
 
@@ -112,8 +112,7 @@ export const Input = Comp((rawProps: InputProps, ref?: MutableRefObject<HTMLDivE
   const resolvedLabel = label ?? header;
   const resolvedLabelProps = deepMerge(DEFAULT_HEADER_PROPS, labelProps ?? headerProps);
   const hasLabel = !!resolvedLabel;
-  const denseHeight =
-    dense && rawProps.height === undefined ? CONSTANTS.DENSE_FORM_ROW_HEIGHT : height;
+  const denseHeight = dense && rawProps.height === undefined ? DENSE_FORM_ROW_HEIGHT : height;
   const inputHeight = rawProps.multiline && rawProps.height === undefined ? undefined : denseHeight;
   const inputName =
     props.name ??

@@ -65,7 +65,8 @@ var __async = (__this, __arguments, generator) => {
 // trabecula/utils/common/index.ts
 var common_exports = {};
 __export(common_exports, {
-  CONSTANTS: () => CONSTANTS,
+  DENSE_FORM_ROW_HEIGHT: () => DENSE_FORM_ROW_HEIGHT,
+  FORM_ROW_HEIGHT: () => FORM_ROW_HEIGHT,
   Fmt: () => Fmt,
   LOGICAL_OPS: () => LOGICAL_OPS,
   PromiseQueue: () => PromiseQueue,
@@ -350,10 +351,8 @@ var VIDEO_EXTS_UNCOMMON = [
 var VIDEO_EXTS = [...VIDEO_EXTS_COMMON, ...VIDEO_EXTS_UNCOMMON];
 var WEB_VIDEO_CODECS = ["h264", "hevc", "vp8", "vp9", "theora", "av1"];
 var WEB_VIDEO_EXTS = ["mp4", "webm", "ogv", "wav"];
-var CONSTANTS = {
-  DENSE_FORM_ROW_HEIGHT: "1.8rem",
-  FORM_ROW_HEIGHT: "2.3rem"
-};
+var DENSE_FORM_ROW_HEIGHT = "1.8rem";
+var FORM_ROW_HEIGHT = "2.3rem";
 var _CONSTANTS = {
   AUDIO: {
     CODECS: AUDIO_CODECS,
@@ -656,7 +655,8 @@ var PromiseQueue = class {
 };
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  CONSTANTS,
+  DENSE_FORM_ROW_HEIGHT,
+  FORM_ROW_HEIGHT,
   Fmt,
   LOGICAL_OPS,
   PromiseQueue,

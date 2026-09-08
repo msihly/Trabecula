@@ -10,7 +10,7 @@ import {
 import Color from "color";
 import { HeaderWrapper, Icon, Input, InputProps, Text, TextProps } from "trabecula/components";
 import { CSS, CssColor, makeClasses, useElementResize } from "trabecula/utils/client";
-import { CONSTANTS } from "trabecula/utils/common";
+import { DENSE_FORM_ROW_HEIGHT } from "trabecula/utils/common";
 import { DENSE_INPUT_PADDING } from "./input";
 
 export type DropdownOption<T = string> = {
@@ -113,7 +113,7 @@ export function Dropdown<T = string>({
     inputPadding,
     inputRootAlignItems,
     inputRootHeight:
-      dense && inputRootHeight === undefined ? CONSTANTS.DENSE_FORM_ROW_HEIGHT : inputRootHeight,
+      dense && inputRootHeight === undefined ? DENSE_FORM_ROW_HEIGHT : inputRootHeight,
     inputRootMinHeight,
     inputRootPadding,
     itemBgColor,

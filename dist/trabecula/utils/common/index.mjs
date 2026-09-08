@@ -1,5 +1,6 @@
 import {
-  CONSTANTS,
+  DENSE_FORM_ROW_HEIGHT,
+  FORM_ROW_HEIGHT,
   Fmt,
   LOGICAL_OPS,
   PromiseQueue,
@@ -46,10 +47,11 @@ import {
   uniqueArrayFilter,
   uniqueArrayMerge,
   uuid
-} from "../../chunk-GP4JFB5G.mjs";
+} from "../../chunk-7JXT4WW4.mjs";
 import "../../chunk-DM4QYMVJ.mjs";
 export {
-  CONSTANTS,
+  DENSE_FORM_ROW_HEIGHT,
+  FORM_ROW_HEIGHT,
   Fmt,
   LOGICAL_OPS,
   PromiseQueue,

@@ -426,10 +426,8 @@ var VIDEO_EXTS_UNCOMMON = [
 var VIDEO_EXTS = [...VIDEO_EXTS_COMMON, ...VIDEO_EXTS_UNCOMMON];
 var WEB_VIDEO_CODECS = ["h264", "hevc", "vp8", "vp9", "theora", "av1"];
 var WEB_VIDEO_EXTS = ["mp4", "webm", "ogv", "wav"];
-var CONSTANTS = {
-  DENSE_FORM_ROW_HEIGHT: "1.8rem",
-  FORM_ROW_HEIGHT: "2.3rem"
-};
+var DENSE_FORM_ROW_HEIGHT = "1.8rem";
+var FORM_ROW_HEIGHT = "2.3rem";
 var _CONSTANTS = {
   AUDIO: {
     CODECS: AUDIO_CODECS,
@@ -724,7 +722,7 @@ var Button = (_a) => {
   const isAnchor = !!href;
   const isLinkDisplay = type === "link";
   const defaultPadding = isLinkDisplay ? "0" : dense || size === "small" ? "0 0.5rem" : "0 1rem";
-  const defaultHeight = isLinkDisplay ? "auto" : dense || size === "small" ? CONSTANTS.DENSE_FORM_ROW_HEIGHT : CONSTANTS.FORM_ROW_HEIGHT;
+  const defaultHeight = isLinkDisplay ? "auto" : dense || size === "small" ? DENSE_FORM_ROW_HEIGHT : FORM_ROW_HEIGHT;
   const resolvedTextColor = textColor != null ? textColor : outlined ? color : isLinkDisplay ? colors.custom.lightBlue : colors.custom.white;
   const resolvedColorOnHover = colorOnHover;
   const resolvedTextColorOnHover = textColorOnHover != null ? textColorOnHover : resolvedColorOnHover && outlined ? resolvedColorOnHover : resolvedTextColor;
@@ -3817,7 +3815,7 @@ var Input = Comp((rawProps, ref) => {
   const resolvedLabel = label != null ? label : header;
   const resolvedLabelProps = deepMerge(DEFAULT_HEADER_PROPS, labelProps != null ? labelProps : headerProps);
   const hasLabel = !!resolvedLabel;
-  const denseHeight = dense && rawProps.height === void 0 ? CONSTANTS.DENSE_FORM_ROW_HEIGHT : height;
+  const denseHeight = dense && rawProps.height === void 0 ? DENSE_FORM_ROW_HEIGHT : height;
   const inputHeight = rawProps.multiline && rawProps.height === void 0 ? void 0 : denseHeight;
   const inputName = (_b = props.name) != null ? _b : typeof resolvedLabel === "string" ? resolvedLabel.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") : void 0;
   const { css, cx } = useClasses10({
@@ -4074,7 +4072,7 @@ function Dropdown(_a) {
     inputOutlineWidth,
     inputPadding,
     inputRootAlignItems,
-    inputRootHeight: dense && inputRootHeight === void 0 ? CONSTANTS.DENSE_FORM_ROW_HEIGHT : inputRootHeight,
+    inputRootHeight: dense && inputRootHeight === void 0 ? DENSE_FORM_ROW_HEIGHT : inputRootHeight,
     inputRootMinHeight,
     inputRootPadding,
     itemBgColor,

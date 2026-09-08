@@ -210,10 +210,8 @@ export interface _Constants {
   };
 }
 
-export const CONSTANTS = {
-  DENSE_FORM_ROW_HEIGHT: "1.8rem",
-  FORM_ROW_HEIGHT: "2.3rem",
-};
+export const DENSE_FORM_ROW_HEIGHT = "1.8rem";
+export const FORM_ROW_HEIGHT = "2.3rem";
 
 export const _CONSTANTS: _Constants = {
   AUDIO: {
