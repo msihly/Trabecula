@@ -30,7 +30,7 @@ import {
   Margins,
   Padding,
 } from "trabecula/utils/client";
-import { DENSE_FORM_ROW_HEIGHT, FORM_ROW_HEIGHT } from "trabecula/utils/common";
+import { DENSE_FORM_ROW_HEIGHT } from "trabecula/utils/common";
 
 export interface ButtonProps extends Omit<
   MuiButtonProps,
@@ -123,12 +123,14 @@ export const Button = ({
 }: ButtonProps) => {
   const isAnchor = !!href;
   const isLinkDisplay = type === "link";
-  const defaultPadding = isLinkDisplay ? "0" : dense || size === "small" ? "0 0.5rem" : "0 1rem";
-  const defaultHeight = isLinkDisplay
-    ? "auto"
-    : dense || size === "small"
-      ? DENSE_FORM_ROW_HEIGHT
-      : FORM_ROW_HEIGHT;
+  const defaultPadding = isLinkDisplay
+    ? "0"
+    : dense
+      ? "0 0.5rem"
+      : !text
+        ? "0.4rem"
+        : "0.4rem 0.8rem";
+  const defaultHeight = !isLinkDisplay && dense ? DENSE_FORM_ROW_HEIGHT : undefined;
   const resolvedTextColor =
     textColor ?? (outlined ? color : isLinkDisplay ? colors.custom.lightBlue : colors.custom.white);
   const resolvedColorOnHover = colorOnHover;
@@ -173,16 +175,16 @@ export const Button = ({
       >
         <LoadingOverlay isLoading={loading} />
 
-        {startNode}
+        <View row justify={justify} spacing="0.3rem" height="100%" width="100%">
+          {startNode}
 
-        <View row align="center" spacing="0.3rem">
           {icon && <Icon name={icon} size={iconSize} {...iconProps} />}
 
           {typeof text === "string" ? (
             <Text
               {...{ fontFamily, fontSize, fontWeight, textTransform }}
               {...textProps}
-              className={cx(css.text, textClassName, textProps.className)}
+              className={cx(css.text, className, textClassName, textProps.className)}
             >
               {text}
             </Text>
@@ -191,9 +193,9 @@ export const Button = ({
           )}
 
           {iconRight && <Icon name={iconRight} size={iconSize} {...iconProps} />}
-        </View>
 
-        {endNode}
+          {endNode}
+        </View>
       </MuiButton>
     </TooltipWrapper>
   );
@@ -234,25 +236,25 @@ const useClasses = makeClasses((props: ClassesProps) => {
   const bgColorOnHover = props.isLinkDisplay
     ? "transparent"
     : props.outlined
-      ? (props.outlineFillOnHover ?? Color(props.outlineFill).fade(0.1).string())
-      : (props.colorOnHover ?? Color(props.color).fade(0.1).string());
-  const borderColor = props.outlined ? props.color : bgColor;
+      ? (props.outlineFillOnHover ?? Color(props.outlineFill).lighten(0.1).string())
+      : (props.colorOnHover ?? Color(props.color).lighten(0.1).string());
+  const borderColor = props.outlined ? props.color : "transparent";
   const borderColorOnHover =
-    props.borderColorOnHover ?? (props.outlined ? props.colorOnHover : bgColorOnHover);
+    props.borderColorOnHover ??
+    (props.outlined && props.colorOnHover ? props.colorOnHover : undefined);
   const linkPadding = props.isLinkDisplay && !props.padding?.all ? 0 : undefined;
-  const textColor = `${props.textColor} !important`;
-  const textColorOnHover = `${props.textColorOnHover} !important`;
+  const textColor = props.textColor;
+  const textColorOnHover = props.textColorOnHover;
   const textDecoration = props.underline === "always" ? "underline" : "none";
   const textDecorationOnHover = props.underline === "none" ? "none" : "underline";
 
   return {
     root: {
       position: "relative",
-      display: props.isLinkDisplay ? "inline-flex" : "flex",
+      display: "flex",
       flexDirection: "row",
       justifyContent: props.justify,
       alignItems: "center",
-      alignSelf: "auto",
       border: `1px solid ${borderColor}`,
       ...makeBorderRadiuses(props.borderRadiuses),
       ...makeBorders(props.borders),
@@ -268,10 +270,9 @@ const useClasses = makeClasses((props: ClassesProps) => {
       width: props.width,
       backgroundColor: bgColor,
       color: textColor,
-      cursor: "pointer",
       textDecoration,
       textTransform: props.textTransform,
-      lineHeight: 1,
+      overflow: "hidden",
       boxShadow: props.boxShadow ?? "none",
       "&:active": {
         color: textColor,
@@ -291,18 +292,10 @@ const useClasses = makeClasses((props: ClassesProps) => {
         color: textColor,
         textDecoration,
       },
-      "&.Mui-disabled": {
-        backgroundColor: bgColor,
-        color: textColor,
-        opacity: 0.5,
-        "&:hover": {
-          backgroundColor: bgColorOnHover,
-          color: textColorOnHover,
-        },
-      },
     },
     text: {
-      lineHeight: 1.2,
+      alignSelf: "center",
+      lineHeight: 1.1,
       overflow: "hidden",
       textOverflow: "ellipsis",
       transition: "all 100ms ease-in-out",

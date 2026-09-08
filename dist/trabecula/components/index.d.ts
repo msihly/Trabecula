@@ -755,7 +755,9 @@ interface AccordionProps extends Omit<AccordionProps$1, "children" | "expanded" 
     color?: CssColor;
     contentPadding?: CSS["padding"];
     borderColor?: CssColor;
+    dense?: boolean;
     expanded?: boolean;
+    fullWidth?: boolean;
     header?: ReactNode;
     headerBgColor?: CssColor;
     headerBorderMode?: "always" | "expanded" | "visibleBorder";
@@ -997,7 +999,7 @@ interface DividerProps extends Omit<DividerProps$1, "color" | "sx"> {
     height?: CSS["height"];
     margins?: Margins;
 }
-declare const Divider: react.ForwardRefExoticComponent<Omit<DividerProps, "ref"> & react.RefAttributes<HTMLDivElement>>;
+declare const Divider: react.ForwardRefExoticComponent<Omit<DividerProps, "ref"> & react.RefAttributes<HTMLHRElement>>;
 
 interface HeaderWrapperProps extends ViewProps {
     header?: ReactNode;

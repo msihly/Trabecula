@@ -25,7 +25,9 @@ export interface AccordionProps extends Omit<
   color?: CssColor;
   contentPadding?: CSS["padding"];
   borderColor?: CssColor;
+  dense?: boolean;
   expanded?: boolean;
+  fullWidth?: boolean;
   header?: ReactNode;
   headerBgColor?: CssColor;
   headerBorderMode?: "always" | "expanded" | "visibleBorder";
@@ -52,7 +54,9 @@ export const Accordion = (rawProps: AccordionProps) => {
     className,
     color = "transparent",
     contentPadding,
+    dense = false,
     expanded,
+    fullWidth = false,
     header,
     headerBgColor,
     headerBorderMode = "visibleBorder",
@@ -73,17 +77,20 @@ export const Accordion = (rawProps: AccordionProps) => {
   } = rawProps;
 
   const [internalExpanded, setInternalExpanded] = useState(expanded ?? false);
-  const effectiveExpanded = isExpanded ?? expanded ?? internalExpanded;
+  const effectiveExpanded = isExpanded ?? internalExpanded;
   const contentExpanded = showExpandToggle ? effectiveExpanded : true;
 
   const { css, cx } = useClasses({
     borderColor,
     contentPadding,
     contentExpanded,
+    dense,
+    fullWidth,
     headerBgColor,
     headerBorderMode,
     headerBorderColor,
     headerPadding,
+    isLoading,
     showBorder,
     showExpandToggle,
     width,
@@ -94,6 +101,12 @@ export const Accordion = (rawProps: AccordionProps) => {
     setInternalExpanded(!effectiveExpanded);
     setExpanded?.(!effectiveExpanded);
   };
+
+  const hasHeaderWrapper =
+    title !== undefined ||
+    headerBgColor !== undefined ||
+    headerBorderColor !== undefined ||
+    headerPadding !== undefined;
 
   const renderHeader = () => {
     if (title !== undefined) {
@@ -125,8 +138,9 @@ export const Accordion = (rawProps: AccordionProps) => {
         endNode={
           showExpandToggle ? (
             <Icon
-              name={contentExpanded ? "ArrowDropUp" : "ArrowDropDown"}
+              name="ExpandMore"
               color={buttonProps.iconProps?.color ?? buttonProps.textColor ?? colors.custom.blue}
+              rotation={contentExpanded ? 180 : 0}
               size={buttonProps.iconSize ?? "1.3rem"}
             />
           ) : undefined
@@ -134,7 +148,6 @@ export const Accordion = (rawProps: AccordionProps) => {
         onClick={handleToggle}
         color={color}
         width="100%"
-        height="auto"
         justify="space-between"
         className={css.button}
         {...buttonProps}
@@ -150,7 +163,7 @@ export const Accordion = (rawProps: AccordionProps) => {
       disableGutters
       className={cx(css.accordion, className)}
     >
-      <View className={css.header}>{renderHeader()}</View>
+      {hasHeaderWrapper ? <View className={css.header}>{renderHeader()}</View> : renderHeader()}
 
       <View column className={css.content}>
         <LoadingOverlay isLoading={isLoading} />
@@ -168,10 +181,13 @@ interface ClassesProps extends Pick<
   AccordionProps,
   | "contentPadding"
   | "borderColor"
+  | "dense"
+  | "fullWidth"
   | "headerBorderMode"
   | "headerBgColor"
   | "headerBorderColor"
   | "headerPadding"
+  | "isLoading"
   | "showBorder"
   | "showExpandToggle"
   | "width"
@@ -190,25 +206,30 @@ const useClasses = makeClasses((props: ClassesProps) => ({
   accordion: {
     margin: 0,
     padding: 0,
-    width: props.width,
+    width: props.width ?? (props.fullWidth ? "100%" : "auto"),
     background: "transparent",
     border: props.borderColor && props.showBorder ? `1px solid ${props.borderColor}` : undefined,
     borderRadius: props.borderColor && props.showBorder ? "0.3rem" : undefined,
     boxShadow: "none",
     overflow: props.borderColor && props.showBorder ? "hidden" : undefined,
+    "& button": {
+      boxShadow: "none",
+    },
     "&:before": {
       display: "none",
     },
   },
   button: {
     justifyContent: "space-between",
-    padding: "0.5rem 1rem",
+    borderBottomLeftRadius: props.contentExpanded ? 0 : undefined,
+    borderBottomRightRadius: props.contentExpanded ? 0 : undefined,
+    padding: props.dense ? "0.2rem 0.6rem" : "0.5rem 1rem",
     fontSize: "1em",
     textTransform: "capitalize",
   },
   content: {
     padding: props.contentPadding,
-    position: "relative",
+    position: props.isLoading ? "relative" : undefined,
   },
   header: {
     background: props.headerBgColor,

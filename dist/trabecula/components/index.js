@@ -427,7 +427,6 @@ var VIDEO_EXTS = [...VIDEO_EXTS_COMMON, ...VIDEO_EXTS_UNCOMMON];
 var WEB_VIDEO_CODECS = ["h264", "hevc", "vp8", "vp9", "theora", "av1"];
 var WEB_VIDEO_EXTS = ["mp4", "webm", "ogv", "wav"];
 var DENSE_FORM_ROW_HEIGHT = "1.8rem";
-var FORM_ROW_HEIGHT = "2.3rem";
 var _CONSTANTS = {
   AUDIO: {
     CODECS: AUDIO_CODECS,
@@ -721,8 +720,8 @@ var Button = (_a) => {
   ]);
   const isAnchor = !!href;
   const isLinkDisplay = type === "link";
-  const defaultPadding = isLinkDisplay ? "0" : dense || size === "small" ? "0 0.5rem" : "0 1rem";
-  const defaultHeight = isLinkDisplay ? "auto" : dense || size === "small" ? DENSE_FORM_ROW_HEIGHT : FORM_ROW_HEIGHT;
+  const defaultPadding = isLinkDisplay ? "0" : dense ? "0 0.5rem" : !text ? "0.4rem" : "0.4rem 0.8rem";
+  const defaultHeight = !isLinkDisplay && dense ? DENSE_FORM_ROW_HEIGHT : void 0;
   const resolvedTextColor = textColor != null ? textColor : outlined ? color : isLinkDisplay ? colors.custom.lightBlue : colors.custom.white;
   const resolvedColorOnHover = colorOnHover;
   const resolvedTextColorOnHover = textColorOnHover != null ? textColorOnHover : resolvedColorOnHover && outlined ? resolvedColorOnHover : resolvedTextColor;
@@ -757,19 +756,19 @@ var Button = (_a) => {
       className: cx(css.root, className),
       children: [
         /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(LoadingOverlay, { isLoading: loading }),
-        startNode,
-        /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(View, { row: true, align: "center", spacing: "0.3rem", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(View, { row: true, justify, spacing: "0.3rem", height: "100%", width: "100%", children: [
+          startNode,
           icon && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Icon, __spreadValues({ name: icon, size: iconSize }, iconProps)),
           typeof text === "string" ? /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
             Text,
             __spreadProps(__spreadValues(__spreadValues({}, { fontFamily, fontSize, fontWeight, textTransform }), textProps), {
-              className: cx(css.text, textClassName, textProps.className),
+              className: cx(css.text, className, textClassName, textProps.className),
               children: text
             })
           ) : text,
-          iconRight && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Icon, __spreadValues({ name: iconRight, size: iconSize }, iconProps))
-        ] }),
-        endNode
+          iconRight && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Icon, __spreadValues({ name: iconRight, size: iconSize }, iconProps)),
+          endNode
+        ] })
       ]
     })
   ) }));
@@ -777,22 +776,21 @@ var Button = (_a) => {
 var useClasses2 = makeClasses((props) => {
   var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o;
   const bgColor = props.outlined ? props.outlineFill : props.isLinkDisplay ? "transparent" : props.color;
-  const bgColorOnHover = props.isLinkDisplay ? "transparent" : props.outlined ? (_a = props.outlineFillOnHover) != null ? _a : (0, import_color2.default)(props.outlineFill).fade(0.1).string() : (_b = props.colorOnHover) != null ? _b : (0, import_color2.default)(props.color).fade(0.1).string();
-  const borderColor = props.outlined ? props.color : bgColor;
-  const borderColorOnHover = (_c = props.borderColorOnHover) != null ? _c : props.outlined ? props.colorOnHover : bgColorOnHover;
+  const bgColorOnHover = props.isLinkDisplay ? "transparent" : props.outlined ? (_a = props.outlineFillOnHover) != null ? _a : (0, import_color2.default)(props.outlineFill).lighten(0.1).string() : (_b = props.colorOnHover) != null ? _b : (0, import_color2.default)(props.color).lighten(0.1).string();
+  const borderColor = props.outlined ? props.color : "transparent";
+  const borderColorOnHover = (_c = props.borderColorOnHover) != null ? _c : props.outlined && props.colorOnHover ? props.colorOnHover : void 0;
   const linkPadding = props.isLinkDisplay && !((_d = props.padding) == null ? void 0 : _d.all) ? 0 : void 0;
-  const textColor = `${props.textColor} !important`;
-  const textColorOnHover = `${props.textColorOnHover} !important`;
+  const textColor = props.textColor;
+  const textColorOnHover = props.textColorOnHover;
   const textDecoration = props.underline === "always" ? "underline" : "none";
   const textDecorationOnHover = props.underline === "none" ? "none" : "underline";
   return {
     root: __spreadProps(__spreadValues(__spreadValues(__spreadValues({
       position: "relative",
-      display: props.isLinkDisplay ? "inline-flex" : "flex",
+      display: "flex",
       flexDirection: "row",
       justifyContent: props.justify,
       alignItems: "center",
-      alignSelf: "auto",
       border: `1px solid ${borderColor}`
     }, makeBorderRadiuses(props.borderRadiuses)), makeBorders(props.borders)), makeMargins(props.margins)), {
       padding: (_e = props.padding) == null ? void 0 : _e.all,
@@ -806,10 +804,9 @@ var useClasses2 = makeClasses((props) => {
       width: props.width,
       backgroundColor: bgColor,
       color: textColor,
-      cursor: "pointer",
       textDecoration,
       textTransform: props.textTransform,
-      lineHeight: 1,
+      overflow: "hidden",
       boxShadow: (_n = props.boxShadow) != null ? _n : "none",
       "&:active": {
         color: textColor,
@@ -828,19 +825,11 @@ var useClasses2 = makeClasses((props) => {
       "&:visited": {
         color: textColor,
         textDecoration
-      },
-      "&.Mui-disabled": {
-        backgroundColor: bgColor,
-        color: textColor,
-        opacity: 0.5,
-        "&:hover": {
-          backgroundColor: bgColorOnHover,
-          color: textColorOnHover
-        }
       }
     }),
     text: {
-      lineHeight: 1.2,
+      alignSelf: "center",
+      lineHeight: 1.1,
       overflow: "hidden",
       textOverflow: "ellipsis",
       transition: "all 100ms ease-in-out",
@@ -3835,7 +3824,7 @@ var Input = Comp((rawProps, ref) => {
     height: inputHeight,
     helperText,
     helperTextProps,
-    margins: hasLabel ? {} : margins,
+    margins,
     minWidth,
     noFade,
     padding,
@@ -3857,17 +3846,16 @@ var Input = Comp((rawProps, ref) => {
   return /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
     HeaderWrapper,
     {
-      ref,
       flex,
       header: resolvedLabel,
       headerProps: resolvedLabelProps,
-      margins: hasLabel ? margins : void 0,
       overflow: "initial",
       textProps: labelTextProps,
       width,
       children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
         import_material9.TextField,
         __spreadProps(__spreadValues({}, props), {
+          ref,
           id: (_c = props.id) != null ? _c : inputName,
           name: inputName,
           onChange: handleChange,
@@ -3914,13 +3902,13 @@ var useClasses10 = makeClasses((props) => {
         fontFamily: props.fontFamily,
         fontSize: props.fontSize,
         fontWeight: props.fontWeight,
-        height: "100%",
+        height: props.dense ? "100%" : props.height,
         textAlign: props.textAlign,
-        "&.Mui-disabled": {
+        "&.Mui-disabled": props.noFade || props.textColor ? {
           color: props.textColor,
-          cursor: "not-allowed",
+          opacity: props.noFade ? 1 : void 0,
           WebkitTextFillColor: props.textColor
-        }
+        } : void 0
       }),
       "& .MuiInputAdornment-root svg": {
         color: props.adornmentColor
@@ -3932,12 +3920,9 @@ var useClasses10 = makeClasses((props) => {
       },
       "& .MuiOutlinedInput-root": {
         background: props.background,
-        minHeight: 0,
+        minHeight: props.dense ? 0 : void 0,
         height: props.height,
-        "&.Mui-disabled": {
-          cursor: "not-allowed",
-          opacity: props.noFade ? 1 : 0.5
-        },
+        "&.Mui-disabled": props.noFade ? { opacity: 1 } : void 0,
         "& fieldset": __spreadValues(__spreadValues({
           transition: "all 200ms ease-in-out",
           borderColor: props.color,
@@ -3948,7 +3933,7 @@ var useClasses10 = makeClasses((props) => {
         "&:hover fieldset": {
           borderColor: props.color ? (0, import_color3.default)(props.color).lighten(0.3).toString() : void 0
         },
-        "&.Mui-focused fieldset, &.Mui-disabled fieldset": {
+        "&.Mui-focused fieldset": {
           borderColor: props.color
         }
       },
@@ -3964,8 +3949,8 @@ var useClasses10 = makeClasses((props) => {
         margin: "0.3rem 0 0 0",
         color: (_g = (_f = props.helperTextProps) == null ? void 0 : _f.color) != null ? _g : props.color,
         fontSize: "0.75em",
-        lineHeight: 1.5,
-        textAlign: props.textAlign
+        lineHeight: 1,
+        textAlign: "center"
       }
     })
   };
@@ -5140,7 +5125,7 @@ var useClasses18 = makeClasses((props) => {
       top: "50%"
     },
     root: {
-      alignItems: "center",
+      alignItems: props.hasLayers ? "center" : void 0,
       height: rootSize,
       justifyContent: "center",
       position: props.hasLayers ? "relative" : void 0,
@@ -6574,7 +6559,6 @@ var import_react25 = require("react");
 var import_material25 = require("@mui/material");
 var import_jsx_runtime48 = require("react/jsx-runtime");
 var Accordion = (rawProps) => {
-  var _b;
   const _a = rawProps, {
     buttonProps = {},
     borderColor,
@@ -6582,7 +6566,9 @@ var Accordion = (rawProps) => {
     className,
     color = "transparent",
     contentPadding,
+    dense = false,
     expanded,
+    fullWidth = false,
     header,
     headerBgColor,
     headerBorderMode = "visibleBorder",
@@ -6606,7 +6592,9 @@ var Accordion = (rawProps) => {
     "className",
     "color",
     "contentPadding",
+    "dense",
     "expanded",
+    "fullWidth",
     "header",
     "headerBgColor",
     "headerBorderMode",
@@ -6625,16 +6613,19 @@ var Accordion = (rawProps) => {
     "width"
   ]);
   const [internalExpanded, setInternalExpanded] = (0, import_react25.useState)(expanded != null ? expanded : false);
-  const effectiveExpanded = (_b = isExpanded != null ? isExpanded : expanded) != null ? _b : internalExpanded;
+  const effectiveExpanded = isExpanded != null ? isExpanded : internalExpanded;
   const contentExpanded = showExpandToggle ? effectiveExpanded : true;
   const { css, cx } = useClasses30({
     borderColor,
     contentPadding,
     contentExpanded,
+    dense,
+    fullWidth,
     headerBgColor,
     headerBorderMode,
     headerBorderColor,
     headerPadding,
+    isLoading,
     showBorder,
     showExpandToggle,
     width
@@ -6644,8 +6635,9 @@ var Accordion = (rawProps) => {
     setInternalExpanded(!effectiveExpanded);
     setExpanded == null ? void 0 : setExpanded(!effectiveExpanded);
   };
+  const hasHeaderWrapper = title !== void 0 || headerBgColor !== void 0 || headerBorderColor !== void 0 || headerPadding !== void 0;
   const renderHeader = () => {
-    var _a2, _b2, _c, _d;
+    var _a2, _b, _c, _d;
     if (title !== void 0) {
       return /* @__PURE__ */ (0, import_jsx_runtime48.jsxs)(View, { row: true, align: "center", justify: "space-between", width: "100%", children: [
         typeof title === "string" ? /* @__PURE__ */ (0, import_jsx_runtime48.jsx)(Text, __spreadProps(__spreadValues({}, titleProps), { children: title })) : title,
@@ -6671,15 +6663,15 @@ var Accordion = (rawProps) => {
         endNode: showExpandToggle ? /* @__PURE__ */ (0, import_jsx_runtime48.jsx)(
           Icon,
           {
-            name: contentExpanded ? "ArrowDropUp" : "ArrowDropDown",
-            color: (_c = (_b2 = (_a2 = buttonProps.iconProps) == null ? void 0 : _a2.color) != null ? _b2 : buttonProps.textColor) != null ? _c : colors.custom.blue,
+            name: "ExpandMore",
+            color: (_c = (_b = (_a2 = buttonProps.iconProps) == null ? void 0 : _a2.color) != null ? _b : buttonProps.textColor) != null ? _c : colors.custom.blue,
+            rotation: contentExpanded ? 180 : 0,
             size: (_d = buttonProps.iconSize) != null ? _d : "1.3rem"
           }
         ) : void 0,
         onClick: handleToggle,
         color,
         width: "100%",
-        height: "auto",
         justify: "space-between",
         className: css.button
       }, buttonProps)
@@ -6693,7 +6685,7 @@ var Accordion = (rawProps) => {
       disableGutters: true,
       className: cx(css.accordion, className),
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime48.jsx)(View, { className: css.header, children: renderHeader() }),
+        hasHeaderWrapper ? /* @__PURE__ */ (0, import_jsx_runtime48.jsx)(View, { className: css.header, children: renderHeader() }) : renderHeader(),
         /* @__PURE__ */ (0, import_jsx_runtime48.jsxs)(View, { column: true, className: css.content, children: [
           /* @__PURE__ */ (0, import_jsx_runtime48.jsx)(LoadingOverlay, { isLoading }),
           children
@@ -6708,36 +6700,44 @@ var shouldShowHeaderBorder = (props) => {
   if (props.headerBorderMode === "expanded") return props.contentExpanded;
   return props.showExpandToggle ? props.showBorder : true;
 };
-var useClasses30 = makeClasses((props) => ({
-  accordion: {
-    margin: 0,
-    padding: 0,
-    width: props.width,
-    background: "transparent",
-    border: props.borderColor && props.showBorder ? `1px solid ${props.borderColor}` : void 0,
-    borderRadius: props.borderColor && props.showBorder ? "0.3rem" : void 0,
-    boxShadow: "none",
-    overflow: props.borderColor && props.showBorder ? "hidden" : void 0,
-    "&:before": {
-      display: "none"
+var useClasses30 = makeClasses((props) => {
+  var _a;
+  return {
+    accordion: {
+      margin: 0,
+      padding: 0,
+      width: (_a = props.width) != null ? _a : props.fullWidth ? "100%" : "auto",
+      background: "transparent",
+      border: props.borderColor && props.showBorder ? `1px solid ${props.borderColor}` : void 0,
+      borderRadius: props.borderColor && props.showBorder ? "0.3rem" : void 0,
+      boxShadow: "none",
+      overflow: props.borderColor && props.showBorder ? "hidden" : void 0,
+      "& button": {
+        boxShadow: "none"
+      },
+      "&:before": {
+        display: "none"
+      }
+    },
+    button: {
+      justifyContent: "space-between",
+      borderBottomLeftRadius: props.contentExpanded ? 0 : void 0,
+      borderBottomRightRadius: props.contentExpanded ? 0 : void 0,
+      padding: props.dense ? "0.2rem 0.6rem" : "0.5rem 1rem",
+      fontSize: "1em",
+      textTransform: "capitalize"
+    },
+    content: {
+      padding: props.contentPadding,
+      position: props.isLoading ? "relative" : void 0
+    },
+    header: {
+      background: props.headerBgColor,
+      borderBottom: shouldShowHeaderBorder(props) ? `1px solid ${props.headerBorderColor}` : void 0,
+      padding: props.headerPadding
     }
-  },
-  button: {
-    justifyContent: "space-between",
-    padding: "0.5rem 1rem",
-    fontSize: "1em",
-    textTransform: "capitalize"
-  },
-  content: {
-    padding: props.contentPadding,
-    position: "relative"
-  },
-  header: {
-    background: props.headerBgColor,
-    borderBottom: shouldShowHeaderBorder(props) ? `1px solid ${props.headerBorderColor}` : void 0,
-    padding: props.headerPadding
-  }
-}));
+  };
+});
 
 // trabecula/components/toggles/accordion-group.tsx
 var import_react26 = require("react");
@@ -6865,7 +6865,7 @@ var Checkbox = ({
     else if (checked) setChecked(false, false);
     else setChecked(false, true);
   };
-  const labelNode = typeof label === "string" ? /* @__PURE__ */ (0, import_jsx_runtime50.jsx)(Text, __spreadProps(__spreadValues({}, labelProps), { children: label })) : label;
+  const labelNode = typeof label === "string" && labelProps ? /* @__PURE__ */ (0, import_jsx_runtime50.jsx)(Text, __spreadProps(__spreadValues({}, labelProps), { children: label })) : label;
   return /* @__PURE__ */ (0, import_jsx_runtime50.jsx)(
     import_material26.FormControlLabel,
     {
@@ -7110,7 +7110,7 @@ var Card = Comp(
       className,
       column = true,
       display = "flex",
-      elevated = true,
+      elevated = false,
       header,
       height,
       headerProps,
@@ -7143,7 +7143,7 @@ var Card = Comp(
     const { css, cx } = useClasses34({ boxShadow, elevated });
     return /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(
       HeaderWrapper,
-      __spreadProps(__spreadValues(__spreadValues({}, viewProps), { borderRadiuses, display, header, headerProps, height, overflow, width }), {
+      __spreadProps(__spreadValues(__spreadValues({}, viewProps), { borderRadiuses, className, display, header, headerProps, height, overflow, width }), {
         children: /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(
           View,
           __spreadProps(__spreadValues(__spreadValues({
@@ -7164,8 +7164,7 @@ var useClasses34 = makeClasses((props) => {
   var _a;
   return {
     root: {
-      boxSizing: "border-box",
-      boxShadow: (_a = props.boxShadow) != null ? _a : props.elevated ? "0.1rem 0.1rem 0.3rem rgb(0 0 0 / 50%)" : "none"
+      boxShadow: (_a = props.boxShadow) != null ? _a : props.elevated ? "0.1rem 0.1rem 0.3rem rgb(0 0 0 / 50%)" : void 0
     }
   };
 });
@@ -7735,8 +7734,8 @@ var Divider = Comp(
   (_a, ref) => {
     var _b = _a, {
       alignSelf,
-      borderWidth = 1,
-      color = colors.custom.blue,
+      borderWidth,
+      color,
       flexItem = true,
       height,
       margins = {},
@@ -7754,7 +7753,6 @@ var Divider = Comp(
     return /* @__PURE__ */ (0, import_jsx_runtime66.jsx)(
       import_material32.Divider,
       __spreadProps(__spreadValues({}, props), {
-        component: "div",
         ref,
         flexItem,
         orientation,
@@ -7794,8 +7792,7 @@ var HeaderWrapper = Comp(
       position = "relative",
       row,
       spacing,
-      textProps = {},
-      width
+      textProps = {}
     } = _b, viewProps = __objRest(_b, [
       "children",
       "display",
@@ -7805,24 +7802,13 @@ var HeaderWrapper = Comp(
       "position",
       "row",
       "spacing",
-      "textProps",
-      "width"
+      "textProps"
     ]);
     headerProps = deepMerge(DEFAULT_HEADER_PROPS2, headerProps);
-    const wrap = (content) => /* @__PURE__ */ (0, import_jsx_runtime67.jsxs)(
-      View,
-      __spreadProps(__spreadValues({}, viewProps), {
-        ref,
-        column: true,
-        height,
-        width,
-        "aria-label": "header-wrapper",
-        children: [
-          /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(View, __spreadProps(__spreadValues({}, headerProps), { "aria-label": "header", children: typeof header === "string" ? /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(Text, __spreadProps(__spreadValues({ flex: 1, fontSize: headerProps.fontSize, textAlign: "center" }, textProps), { children: header })) : header })),
-          content
-        ]
-      })
-    );
+    const wrap = (content) => /* @__PURE__ */ (0, import_jsx_runtime67.jsxs)(View, __spreadProps(__spreadValues({}, viewProps), { ref, column: true, height, "aria-label": "header-wrapper", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(View, __spreadProps(__spreadValues({}, headerProps), { "aria-label": "header", children: typeof header === "string" ? /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(Text, __spreadProps(__spreadValues({ flex: 1, fontSize: headerProps.fontSize, textAlign: "center" }, textProps), { children: header })) : header })),
+      content
+    ] }));
     return /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(ConditionalWrap, { condition: !!header, wrap, children: /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
       View,
       __spreadProps(__spreadValues({
@@ -7835,7 +7821,6 @@ var HeaderWrapper = Comp(
         position,
         row,
         spacing,
-        width: header ? "100%" : width,
         children
       })
     ) });

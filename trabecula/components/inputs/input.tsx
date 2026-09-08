@@ -140,7 +140,7 @@ export const Input = Comp((rawProps: InputProps, ref?: MutableRefObject<HTMLDivE
     height: inputHeight,
     helperText,
     helperTextProps,
-    margins: hasLabel ? {} : margins,
+    margins,
     minWidth,
     noFade,
     padding,
@@ -164,17 +164,16 @@ export const Input = Comp((rawProps: InputProps, ref?: MutableRefObject<HTMLDivE
 
   return (
     <HeaderWrapper
-      ref={ref}
       flex={flex}
       header={resolvedLabel}
       headerProps={resolvedLabelProps}
-      margins={hasLabel ? margins : undefined}
       overflow="initial"
       textProps={labelTextProps}
       width={width}
     >
       <TextField
         {...props}
+        ref={ref}
         id={props.id ?? inputName}
         name={inputName}
         onChange={handleChange}
@@ -273,13 +272,16 @@ const useClasses = makeClasses((props: ClassesProps) => ({
       fontFamily: props.fontFamily,
       fontSize: props.fontSize,
       fontWeight: props.fontWeight,
-      height: "100%",
+      height: props.dense ? "100%" : props.height,
       textAlign: props.textAlign,
-      "&.Mui-disabled": {
-        color: props.textColor,
-        cursor: "not-allowed",
-        WebkitTextFillColor: props.textColor,
-      },
+      "&.Mui-disabled":
+        props.noFade || props.textColor
+          ? {
+              color: props.textColor,
+              opacity: props.noFade ? 1 : undefined,
+              WebkitTextFillColor: props.textColor,
+            }
+          : undefined,
     },
     "& .MuiInputAdornment-root svg": {
       color: props.adornmentColor,
@@ -291,12 +293,9 @@ const useClasses = makeClasses((props: ClassesProps) => ({
     },
     "& .MuiOutlinedInput-root": {
       background: props.background,
-      minHeight: 0,
+      minHeight: props.dense ? 0 : undefined,
       height: props.height,
-      "&.Mui-disabled": {
-        cursor: "not-allowed",
-        opacity: props.noFade ? 1 : 0.5,
-      },
+      "&.Mui-disabled": props.noFade ? { opacity: 1 } : undefined,
       "& fieldset": {
         transition: "all 200ms ease-in-out",
         borderColor: props.color,
@@ -309,7 +308,7 @@ const useClasses = makeClasses((props: ClassesProps) => ({
       "&:hover fieldset": {
         borderColor: props.color ? Color(props.color).lighten(0.3).toString() : undefined,
       },
-      "&.Mui-focused fieldset, &.Mui-disabled fieldset": {
+      "&.Mui-focused fieldset": {
         borderColor: props.color,
       },
     },
@@ -325,8 +324,8 @@ const useClasses = makeClasses((props: ClassesProps) => ({
       margin: "0.3rem 0 0 0",
       color: props.helperTextProps?.color ?? props.color,
       fontSize: "0.75em",
-      lineHeight: 1.5,
-      textAlign: props.textAlign,
+      lineHeight: 1,
+      textAlign: "center",
     },
   },
 }));

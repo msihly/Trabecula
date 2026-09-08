@@ -1,5 +1,4 @@
 // eslint-disable-next-line @typescript-eslint/no-restricted-imports
-// eslint-disable-next-line @typescript-eslint/no-restricted-imports
 import { Icon as MuiIcon, IconProps as MuiIconProps } from "@mui/material";
 import { IconName as MuiIconName } from "trabecula/_generated/client/icons";
 import { View, ViewProps } from "trabecula/components";
@@ -104,7 +103,7 @@ const useClasses = makeClasses((props: ClassesProps) => {
       top: "50%",
     },
     root: {
-      alignItems: "center",
+      alignItems: props.hasLayers ? "center" : undefined,
       height: rootSize,
       justifyContent: "center",
       position: props.hasLayers ? "relative" : undefined,

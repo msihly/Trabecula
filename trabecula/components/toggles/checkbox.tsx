@@ -85,7 +85,8 @@ export const Checkbox = ({
     else setChecked(false, true);
   };
 
-  const labelNode = typeof label === "string" ? <Text {...labelProps}>{label}</Text> : label;
+  const labelNode =
+    typeof label === "string" && labelProps ? <Text {...labelProps}>{label}</Text> : label;
 
   return (
     <FormControlLabel

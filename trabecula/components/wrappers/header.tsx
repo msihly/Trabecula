@@ -30,7 +30,6 @@ export const HeaderWrapper = Comp(
       row,
       spacing,
       textProps = {},
-      width,
       ...viewProps
     }: HeaderWrapperProps,
     ref,
@@ -38,14 +37,7 @@ export const HeaderWrapper = Comp(
     headerProps = deepMerge(DEFAULT_HEADER_PROPS, headerProps);
 
     const wrap = (content: ReactNode) => (
-      <View
-        {...viewProps}
-        ref={ref}
-        column
-        height={height}
-        width={width}
-        aria-label="header-wrapper"
-      >
+      <View {...viewProps} ref={ref} column height={height} aria-label="header-wrapper">
         <View {...headerProps} aria-label="header">
           {typeof header === "string" ? (
             <Text flex={1} fontSize={headerProps.fontSize} textAlign="center" {...textProps}>
@@ -72,7 +64,6 @@ export const HeaderWrapper = Comp(
           position={position}
           row={row}
           spacing={spacing}
-          width={header ? "100%" : width}
         >
           {children}
         </View>

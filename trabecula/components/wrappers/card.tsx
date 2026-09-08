@@ -19,7 +19,7 @@ export const Card = Comp(
       className,
       column = true,
       display = "flex",
-      elevated = true,
+      elevated = false,
       header,
       height,
       headerProps,
@@ -40,7 +40,7 @@ export const Card = Comp(
     return (
       <HeaderWrapper
         {...viewProps}
-        {...{ borderRadiuses, display, header, headerProps, height, overflow, width }}
+        {...{ borderRadiuses, className, display, header, headerProps, height, overflow, width }}
       >
         <View
           className={cx(css.root, className)}
@@ -62,8 +62,7 @@ interface ClassesProps extends Pick<CardProps, "boxShadow" | "elevated"> {}
 
 const useClasses = makeClasses((props: ClassesProps) => ({
   root: {
-    boxSizing: "border-box",
     boxShadow:
-      props.boxShadow ?? (props.elevated ? "0.1rem 0.1rem 0.3rem rgb(0 0 0 / 50%)" : "none"),
+      props.boxShadow ?? (props.elevated ? "0.1rem 0.1rem 0.3rem rgb(0 0 0 / 50%)" : undefined),
   },
 }));

@@ -72,7 +72,6 @@ interface _Constants {
     };
 }
 declare const DENSE_FORM_ROW_HEIGHT = "1.8rem";
-declare const FORM_ROW_HEIGHT = "2.3rem";
 declare const _CONSTANTS: _Constants;
 
 type DayJsInput = string | number | Date | dayjs.Dayjs;
@@ -132,4 +131,4 @@ declare const sleep: (min: number, max?: number) => Promise<unknown>;
 declare const throttle: typeof throttle$1;
 declare const uuid: () => `${string}-${string}-${string}-${string}-${string}`;
 
-export { type AudioCodec, DENSE_FORM_ROW_HEIGHT, type DayJsInput, type DeepNonNullable, type DeepPartial, FORM_ROW_HEIGHT, Fmt, type ImageExt, type IsPlainObject, type NestedKeys, type VideoCodec, type VideoExt, type WebVideoCodec, type WebVideoExt, _CONSTANTS, type _Constants, arrayIntersect, attempt, bisectArrayChanges, centeredSlice, chunkArray, convertNestedKeys, countItems, dateWithTzToIso, debounce, deepClone, deepMerge, getArrayDiff, handleErrors, isArchive, isArchiveFirstPart, isArchivePart, isDeepEqual, isObject, isPlainObject, mergePreset, objectToFloat32Array, range, rng, rotateArrayPos, setObj, sleep, sortArray, splitArray, sumArray, throttle, uniqueArrayFilter, uniqueArrayMerge, uuid };
+export { type AudioCodec, DENSE_FORM_ROW_HEIGHT, type DayJsInput, type DeepNonNullable, type DeepPartial, Fmt, type ImageExt, type IsPlainObject, type NestedKeys, type VideoCodec, type VideoExt, type WebVideoCodec, type WebVideoExt, _CONSTANTS, type _Constants, arrayIntersect, attempt, bisectArrayChanges, centeredSlice, chunkArray, convertNestedKeys, countItems, dateWithTzToIso, debounce, deepClone, deepMerge, getArrayDiff, handleErrors, isArchive, isArchiveFirstPart, isArchivePart, isDeepEqual, isObject, isPlainObject, mergePreset, objectToFloat32Array, range, rng, rotateArrayPos, setObj, sleep, sortArray, splitArray, sumArray, throttle, uniqueArrayFilter, uniqueArrayMerge, uuid };

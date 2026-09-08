@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-restricted-imports
 import { Divider as MuiDivider, DividerProps as MuiDividerProps } from "@mui/material";
 import { Comp } from "trabecula/components";
-import { colors, CSS, CssColor, makeClasses, makeMargins, Margins } from "trabecula/utils/client";
+import { CSS, CssColor, makeClasses, makeMargins, Margins } from "trabecula/utils/client";
 
 export interface DividerProps extends Omit<MuiDividerProps, "color" | "sx"> {
   alignSelf?: CSS["alignSelf"];
@@ -11,12 +11,12 @@ export interface DividerProps extends Omit<MuiDividerProps, "color" | "sx"> {
   margins?: Margins;
 }
 
-export const Divider = Comp(
+export const Divider = Comp<DividerProps, HTMLHRElement>(
   (
     {
       alignSelf,
-      borderWidth = 1,
-      color = colors.custom.blue,
+      borderWidth,
+      color,
       flexItem = true,
       height,
       margins = {},
@@ -30,7 +30,6 @@ export const Divider = Comp(
     return (
       <MuiDivider
         {...props}
-        component="div"
         ref={ref}
         flexItem={flexItem}
         orientation={orientation}
