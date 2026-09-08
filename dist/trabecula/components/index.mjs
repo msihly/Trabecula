@@ -10,7 +10,7 @@ import {
   makePadding,
   toast,
   useElementResize
-} from "../chunk-LXJPACKK.mjs";
+} from "../chunk-F3RGYJ4N.mjs";
 import {
   DENSE_FORM_ROW_HEIGHT,
   Fmt,
@@ -1016,8 +1016,8 @@ var Input = Comp((rawProps, ref) => {
   const resolvedLabel = label != null ? label : header;
   const resolvedLabelProps = deepMerge(DEFAULT_HEADER_PROPS, labelProps != null ? labelProps : headerProps);
   const hasLabel = !!resolvedLabel;
-  const denseHeight = dense && rawProps.height === void 0 ? DENSE_FORM_ROW_HEIGHT : height;
-  const inputHeight = rawProps.multiline && rawProps.height === void 0 ? void 0 : denseHeight;
+  const inputHeight = rawProps.multiline && rawProps.height === void 0 ? void 0 : height;
+  const inputRootHeight = dense && rawProps.height === void 0 && !rawProps.multiline ? DENSE_FORM_ROW_HEIGHT : void 0;
   const inputName = (_b = props.name) != null ? _b : typeof resolvedLabel === "string" ? resolvedLabel.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") : void 0;
   const { css, cx } = useClasses9({
     adornmentColor,
@@ -1036,6 +1036,7 @@ var Input = Comp((rawProps, ref) => {
     height: inputHeight,
     helperText,
     helperTextProps,
+    inputRootHeight,
     margins,
     minWidth,
     noFade,
@@ -1051,9 +1052,9 @@ var Input = Comp((rawProps, ref) => {
   const handleKeyDown = (event) => {
     event.stopPropagation();
     onKeyDown == null ? void 0 : onKeyDown(event);
-    if (event.defaultPrevented || event.key !== "Enter" || event.shiftKey) return;
+    if (!onEnter || event.defaultPrevented || event.key !== "Enter" || event.shiftKey) return;
     event.preventDefault();
-    onEnter == null ? void 0 : onEnter();
+    onEnter();
   };
   return /* @__PURE__ */ jsx14(
     HeaderWrapper,
@@ -1114,7 +1115,7 @@ var useClasses9 = makeClasses((props) => {
         fontFamily: props.fontFamily,
         fontSize: props.fontSize,
         fontWeight: props.fontWeight,
-        height: props.dense ? "100%" : props.height,
+        height: props.inputRootHeight ? "100%" : props.height,
         textAlign: props.textAlign,
         "&.Mui-disabled": props.noFade || props.textColor ? {
           color: props.textColor,
@@ -1132,8 +1133,8 @@ var useClasses9 = makeClasses((props) => {
       },
       "& .MuiOutlinedInput-root": {
         background: props.background,
-        minHeight: props.dense ? 0 : void 0,
-        height: props.height,
+        minHeight: props.inputRootHeight ? 0 : void 0,
+        height: props.inputRootHeight,
         "&.Mui-disabled": props.noFade ? { opacity: 1 } : void 0,
         "& fieldset": __spreadValues(__spreadValues({
           transition: "all 200ms ease-in-out",
@@ -1153,9 +1154,6 @@ var useClasses9 = makeClasses((props) => {
         fontFamily: props.fontFamily,
         fontSize: (_e = props.fontSize) != null ? _e : "0.9em",
         padding: props.dense ? DENSE_INPUT_PADDING : void 0
-      },
-      "& .MuiInputBase-inputMultiline": {
-        padding: 0
       },
       "& .MuiFormHelperText-root": {
         margin: "0.3rem 0 0 0",
@@ -3870,7 +3868,7 @@ var Accordion = (rawProps) => {
   };
   const hasHeaderWrapper = title !== void 0 || headerBgColor !== void 0 || headerBorderColor !== void 0 || headerPadding !== void 0;
   const renderHeader = () => {
-    var _a2, _b, _c, _d;
+    var _a2, _b;
     if (title !== void 0) {
       return /* @__PURE__ */ jsxs28(View, { row: true, align: "center", justify: "space-between", width: "100%", children: [
         typeof title === "string" ? /* @__PURE__ */ jsx47(Text, __spreadProps(__spreadValues({}, titleProps), { children: title })) : title,
@@ -3897,9 +3895,9 @@ var Accordion = (rawProps) => {
           Icon,
           {
             name: "ExpandMore",
-            color: (_c = (_b = (_a2 = buttonProps.iconProps) == null ? void 0 : _a2.color) != null ? _b : buttonProps.textColor) != null ? _c : colors.custom.blue,
+            color: (_b = (_a2 = buttonProps.iconProps) == null ? void 0 : _a2.color) != null ? _b : buttonProps.textColor,
             rotation: contentExpanded ? 180 : 0,
-            size: (_d = buttonProps.iconSize) != null ? _d : "1.3rem"
+            size: buttonProps.iconSize
           }
         ) : void 0,
         onClick: handleToggle,
@@ -4372,6 +4370,7 @@ var Card = Comp(
       "width"
     ]);
     borderRadiuses = deepMerge({ bottom: "0.5rem", top: !!header ? 0 : "0.5rem" }, borderRadiuses);
+    headerProps = deepMerge({ width: "100%" }, headerProps != null ? headerProps : {});
     padding = deepMerge({ all: "0.5rem" }, padding);
     const { css, cx } = useClasses33({ boxShadow, elevated });
     return /* @__PURE__ */ jsx53(
@@ -4972,6 +4971,7 @@ var Divider = Comp(
     var _b = _a, {
       alignSelf,
       borderWidth,
+      className,
       color,
       flexItem = true,
       height,
@@ -4980,20 +4980,21 @@ var Divider = Comp(
     } = _b, props = __objRest(_b, [
       "alignSelf",
       "borderWidth",
+      "className",
       "color",
       "flexItem",
       "height",
       "margins",
       "orientation"
     ]);
-    const { css } = useClasses42({ alignSelf, borderWidth, color, height, margins, orientation });
+    const { css, cx } = useClasses42({ alignSelf, borderWidth, color, height, margins, orientation });
     return /* @__PURE__ */ jsx65(
       MuiDivider,
       __spreadProps(__spreadValues({}, props), {
         ref,
         flexItem,
         orientation,
-        className: css.divider
+        className: cx(css.divider, className)
       })
     );
   }

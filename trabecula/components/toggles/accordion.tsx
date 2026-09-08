@@ -14,7 +14,7 @@ import {
   TextProps,
   View,
 } from "trabecula/components";
-import { colors, CSS, CssColor, makeClasses } from "trabecula/utils/client";
+import { CSS, CssColor, makeClasses } from "trabecula/utils/client";
 
 export interface AccordionProps extends Omit<
   MuiAccordionProps,
@@ -139,9 +139,9 @@ export const Accordion = (rawProps: AccordionProps) => {
           showExpandToggle ? (
             <Icon
               name="ExpandMore"
-              color={buttonProps.iconProps?.color ?? buttonProps.textColor ?? colors.custom.blue}
+              color={buttonProps.iconProps?.color ?? buttonProps.textColor}
               rotation={contentExpanded ? 180 : 0}
-              size={buttonProps.iconSize ?? "1.3rem"}
+              size={buttonProps.iconSize}
             />
           ) : undefined
         }

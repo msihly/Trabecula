@@ -187,7 +187,7 @@ var useLazyLoad = (containerRef, options) => {
 var copyToClipboard = (value, message) => {
   navigator.clipboard.writeText(value).then(
     () => message && toast.info(message),
-    () => toast.error("Failed to copy")
+    () => toast.error("Failed to copy to clipboard")
   );
 };
 
@@ -511,4 +511,4 @@ export {
   Toaster,
   ToastContainer
 };
-//# sourceMappingURL=chunk-LXJPACKK.mjs.map
+//# sourceMappingURL=chunk-F3RGYJ4N.mjs.map

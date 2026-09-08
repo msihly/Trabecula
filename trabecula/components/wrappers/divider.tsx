@@ -16,6 +16,7 @@ export const Divider = Comp<DividerProps, HTMLHRElement>(
     {
       alignSelf,
       borderWidth,
+      className,
       color,
       flexItem = true,
       height,
@@ -25,7 +26,7 @@ export const Divider = Comp<DividerProps, HTMLHRElement>(
     }: DividerProps,
     ref,
   ) => {
-    const { css } = useClasses({ alignSelf, borderWidth, color, height, margins, orientation });
+    const { css, cx } = useClasses({ alignSelf, borderWidth, color, height, margins, orientation });
 
     return (
       <MuiDivider
@@ -33,7 +34,7 @@ export const Divider = Comp<DividerProps, HTMLHRElement>(
         ref={ref}
         flexItem={flexItem}
         orientation={orientation}
-        className={css.divider}
+        className={cx(css.divider, className)}
       />
     );
   },

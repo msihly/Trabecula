@@ -34,6 +34,7 @@ export const Card = Comp(
     ref,
   ) => {
     borderRadiuses = deepMerge({ bottom: "0.5rem", top: !!header ? 0 : "0.5rem" }, borderRadiuses);
+    headerProps = deepMerge({ width: "100%" }, headerProps ?? {});
     padding = deepMerge({ all: "0.5rem" }, padding);
     const { css, cx } = useClasses({ boxShadow, elevated });
 

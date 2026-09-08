@@ -112,8 +112,11 @@ export const Input = Comp((rawProps: InputProps, ref?: MutableRefObject<HTMLDivE
   const resolvedLabel = label ?? header;
   const resolvedLabelProps = deepMerge(DEFAULT_HEADER_PROPS, labelProps ?? headerProps);
   const hasLabel = !!resolvedLabel;
-  const denseHeight = dense && rawProps.height === undefined ? DENSE_FORM_ROW_HEIGHT : height;
-  const inputHeight = rawProps.multiline && rawProps.height === undefined ? undefined : denseHeight;
+  const inputHeight = rawProps.multiline && rawProps.height === undefined ? undefined : height;
+  const inputRootHeight =
+    dense && rawProps.height === undefined && !rawProps.multiline
+      ? DENSE_FORM_ROW_HEIGHT
+      : undefined;
   const inputName =
     props.name ??
     (typeof resolvedLabel === "string"
@@ -140,6 +143,7 @@ export const Input = Comp((rawProps: InputProps, ref?: MutableRefObject<HTMLDivE
     height: inputHeight,
     helperText,
     helperTextProps,
+    inputRootHeight,
     margins,
     minWidth,
     noFade,
@@ -157,9 +161,9 @@ export const Input = Comp((rawProps: InputProps, ref?: MutableRefObject<HTMLDivE
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     event.stopPropagation();
     onKeyDown?.(event);
-    if (event.defaultPrevented || event.key !== "Enter" || event.shiftKey) return;
+    if (!onEnter || event.defaultPrevented || event.key !== "Enter" || event.shiftKey) return;
     event.preventDefault();
-    onEnter?.();
+    onEnter();
   };
 
   return (
@@ -251,6 +255,7 @@ interface ClassesProps extends NonNullable<
 > {
   hasLabel: boolean;
   hasOnClick: boolean;
+  inputRootHeight?: CSS["height"];
 }
 
 const useClasses = makeClasses((props: ClassesProps) => ({
@@ -272,7 +277,7 @@ const useClasses = makeClasses((props: ClassesProps) => ({
       fontFamily: props.fontFamily,
       fontSize: props.fontSize,
       fontWeight: props.fontWeight,
-      height: props.dense ? "100%" : props.height,
+      height: props.inputRootHeight ? "100%" : props.height,
       textAlign: props.textAlign,
       "&.Mui-disabled":
         props.noFade || props.textColor
@@ -293,8 +298,8 @@ const useClasses = makeClasses((props: ClassesProps) => ({
     },
     "& .MuiOutlinedInput-root": {
       background: props.background,
-      minHeight: props.dense ? 0 : undefined,
-      height: props.height,
+      minHeight: props.inputRootHeight ? 0 : undefined,
+      height: props.inputRootHeight,
       "&.Mui-disabled": props.noFade ? { opacity: 1 } : undefined,
       "& fieldset": {
         transition: "all 200ms ease-in-out",
@@ -316,9 +321,6 @@ const useClasses = makeClasses((props: ClassesProps) => ({
       fontFamily: props.fontFamily,
       fontSize: props.fontSize ?? "0.9em",
       padding: props.dense ? DENSE_INPUT_PADDING : undefined,
-    },
-    "& .MuiInputBase-inputMultiline": {
-      padding: 0,
     },
     "& .MuiFormHelperText-root": {
       margin: "0.3rem 0 0 0",

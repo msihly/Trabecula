@@ -489,7 +489,7 @@ var useLazyLoad = (containerRef, options) => {
 var copyToClipboard = (value, message) => {
   navigator.clipboard.writeText(value).then(
     () => message && toast.info(message),
-    () => toast.error("Failed to copy")
+    () => toast.error("Failed to copy to clipboard")
   );
 };
 
