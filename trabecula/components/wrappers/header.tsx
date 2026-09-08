@@ -63,9 +63,9 @@ export const HeaderWrapper = Comp(
     return (
       <ConditionalWrap condition={!!header} wrap={wrap}>
         <View
-          {...(header ? {} : viewProps)}
-          ref={header ? undefined : ref}
           overflow="auto"
+          {...viewProps}
+          ref={header ? undefined : ref}
           aria-label="header-wrapper-content"
           display={display}
           height={height}

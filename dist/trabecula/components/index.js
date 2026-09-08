@@ -7825,9 +7825,10 @@ var HeaderWrapper = Comp(
     );
     return /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(ConditionalWrap, { condition: !!header, wrap, children: /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
       View,
-      __spreadProps(__spreadValues({}, header ? {} : viewProps), {
+      __spreadProps(__spreadValues({
+        overflow: "auto"
+      }, viewProps), {
         ref: header ? void 0 : ref,
-        overflow: "auto",
         "aria-label": "header-wrapper-content",
         display,
         height,
