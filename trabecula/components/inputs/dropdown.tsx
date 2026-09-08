@@ -265,6 +265,7 @@ export function Dropdown<T = string>({
       <Autocomplete<DropdownOption<T>, false, boolean, boolean>
         autoHighlight={autoHighlight}
         autoSelect={autoSelect}
+        className={css.autocomplete}
         componentsProps={{
           paper: {
             className: css.paper,
@@ -325,6 +326,13 @@ const useClasses = makeClasses((props: ClassesProps) => {
   const inputPadding = props.inputPadding ?? (props.dense ? DENSE_INPUT_PADDING : undefined);
 
   return {
+    autocomplete: {
+      height: "100%",
+      "& > [aria-label='header-wrapper-content'], & .MuiFormControl-root, & .MuiOutlinedInput-root":
+        {
+          height: "100%",
+        },
+    },
     input: {
       "& input": {
         fontSize: props.inputFontSize,
