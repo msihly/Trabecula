@@ -96,6 +96,7 @@ __export(components_exports, {
   ConditionalWrap: () => ConditionalWrap,
   ConfirmModal: () => ConfirmModal,
   ContextMenu: () => ContextMenu,
+  DEFAULT_INPUT_HEADER_PROPS: () => DEFAULT_INPUT_HEADER_PROPS,
   DENSE_INPUT_PADDING: () => DENSE_INPUT_PADDING,
   DataGrid: () => DataGrid,
   DataGridHeader: () => DataGridHeader,
@@ -3714,7 +3715,7 @@ var import_material9 = require("@mui/material");
 var import_color3 = __toESM(require("color"));
 var import_jsx_runtime15 = require("react/jsx-runtime");
 var DENSE_INPUT_PADDING = "0.1rem 0.5rem";
-var DEFAULT_HEADER_PROPS = {
+var DEFAULT_INPUT_HEADER_PROPS = {
   fontSize: "0.8em",
   padding: { all: "0.2rem 0.3rem" }
 };
@@ -3802,7 +3803,7 @@ var Input = Comp((rawProps, ref) => {
     "width"
   ]);
   const resolvedLabel = label != null ? label : header;
-  const resolvedLabelProps = deepMerge(DEFAULT_HEADER_PROPS, labelProps != null ? labelProps : headerProps);
+  const resolvedLabelProps = deepMerge(DEFAULT_INPUT_HEADER_PROPS, labelProps != null ? labelProps : headerProps);
   const hasLabel = !!resolvedLabel;
   const inputHeight = rawProps.multiline && rawProps.height === void 0 ? void 0 : height;
   const inputRootHeight = dense && rawProps.height === void 0 && !rawProps.multiline ? DENSE_FORM_ROW_HEIGHT : void 0;
@@ -4045,7 +4046,7 @@ function Dropdown(_a) {
     "withClearButton",
     "withValueTest"
   ]);
-  var _a2, _b2, _c;
+  var _a2, _b2, _c, _d;
   const { css, cx } = useClasses11({
     dense,
     inputFontSize,
@@ -4055,7 +4056,7 @@ function Dropdown(_a) {
     inputOutlineWidth,
     inputPadding,
     inputRootAlignItems,
-    inputRootHeight: dense && inputRootHeight === void 0 ? DENSE_FORM_ROW_HEIGHT : inputRootHeight,
+    inputRootHeight: dense && inputRootHeight === void 0 && props.height === void 0 ? DENSE_FORM_ROW_HEIGHT : inputRootHeight,
     inputRootMinHeight,
     inputRootPadding,
     itemBgColor,
@@ -4072,12 +4073,12 @@ function Dropdown(_a) {
   const resolvedLabel = label != null ? label : header;
   const resolvedHeader = typeof resolvedLabel === "string" && required ? `${resolvedLabel} *` : resolvedLabel;
   const [valueOption, setValueOption] = (0, import_react10.useState)(null);
-  const committedLabel = (_b2 = (_a2 = options.find((option) => option.value === value)) == null ? void 0 : _a2.label) != null ? _b2 : freeSolo && typeof value === "string" ? value : "";
+  const committedLabel = value === "" ? "" : (_b2 = (_a2 = options.find((option) => option.value === value)) == null ? void 0 : _a2.label) != null ? _b2 : freeSolo && typeof value === "string" ? value : "";
   const [inputValue, setInputValue] = (0, import_react10.useState)(committedLabel);
   const isTypingRef = (0, import_react10.useRef)(false);
   (0, import_react10.useEffect)(() => {
     var _a3, _b3;
-    const matched = (_a3 = options.find((option) => option.value === value)) != null ? _a3 : null;
+    const matched = value === "" ? null : (_a3 = options.find((option) => option.value === value)) != null ? _a3 : null;
     setValueOption(matched);
     if (!isTypingRef.current)
       setInputValue((_b3 = matched == null ? void 0 : matched.label) != null ? _b3 : freeSolo && typeof value === "string" ? value : "");
@@ -4109,9 +4110,10 @@ function Dropdown(_a) {
       setInputValue(newValue);
       return;
     }
+    const newValueOption = (newValue == null ? void 0 : newValue.value) === "" ? null : newValue;
     setValue(newValue == null ? void 0 : newValue.value);
-    setValueOption(newValue);
-    setInputValue((_a3 = newValue == null ? void 0 : newValue.label) != null ? _a3 : "");
+    setValueOption(newValueOption);
+    setInputValue((_a3 = newValueOption == null ? void 0 : newValueOption.label) != null ? _a3 : "");
   };
   const handleInputChange = (_, newInputValue, reason) => {
     if (reason !== "input") return;
@@ -4168,10 +4170,10 @@ function Dropdown(_a) {
     {
       ref: containerRef,
       header: resolvedHeader,
-      headerProps: labelProps != null ? labelProps : headerProps,
+      headerProps: deepMerge(DEFAULT_INPUT_HEADER_PROPS, (_c = labelProps != null ? labelProps : headerProps) != null ? _c : {}),
       overflow: "initial",
       textProps: labelTextProps,
-      width: (_c = props.width) != null ? _c : "100%",
+      width: (_d = props.width) != null ? _d : "100%",
       children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
         import_material10.Autocomplete,
         {
@@ -7774,7 +7776,7 @@ var useClasses43 = makeClasses((props) => ({
 
 // trabecula/components/wrappers/header.tsx
 var import_jsx_runtime67 = require("react/jsx-runtime");
-var DEFAULT_HEADER_PROPS2 = {
+var DEFAULT_HEADER_PROPS = {
   bgColor: colors.custom.black,
   borderRadiuses: { top: 6 },
   fontSize: "0.8em",
@@ -7805,7 +7807,7 @@ var HeaderWrapper = Comp(
       "spacing",
       "textProps"
     ]);
-    headerProps = deepMerge(DEFAULT_HEADER_PROPS2, headerProps);
+    headerProps = deepMerge(DEFAULT_HEADER_PROPS, headerProps);
     const wrap = (content) => /* @__PURE__ */ (0, import_jsx_runtime67.jsxs)(View, __spreadProps(__spreadValues({}, viewProps), { ref, column: true, height, "aria-label": "header-wrapper", children: [
       /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(View, __spreadProps(__spreadValues({}, headerProps), { "aria-label": "header", children: typeof header === "string" ? /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(Text, __spreadProps(__spreadValues({ flex: 1, fontSize: headerProps.fontSize, textAlign: "center" }, textProps), { children: header })) : header })),
       content
@@ -8150,6 +8152,7 @@ var MuiProvider = ({
   ConditionalWrap,
   ConfirmModal,
   ContextMenu,
+  DEFAULT_INPUT_HEADER_PROPS,
   DENSE_INPUT_PADDING,
   DataGrid,
   DataGridHeader,

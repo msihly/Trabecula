@@ -10,8 +10,8 @@ import {
 import Color from "color";
 import { HeaderWrapper, Icon, Input, InputProps, Text, TextProps } from "trabecula/components";
 import { CSS, CssColor, makeClasses, useElementResize } from "trabecula/utils/client";
-import { DENSE_FORM_ROW_HEIGHT } from "trabecula/utils/common";
-import { DENSE_INPUT_PADDING } from "./input";
+import { deepMerge, DENSE_FORM_ROW_HEIGHT } from "trabecula/utils/common";
+import { DEFAULT_INPUT_HEADER_PROPS, DENSE_INPUT_PADDING } from "./input";
 
 export type DropdownOption<T = string> = {
   label: string;
@@ -113,7 +113,9 @@ export function Dropdown<T = string>({
     inputPadding,
     inputRootAlignItems,
     inputRootHeight:
-      dense && inputRootHeight === undefined ? DENSE_FORM_ROW_HEIGHT : inputRootHeight,
+      dense && inputRootHeight === undefined && props.height === undefined
+        ? DENSE_FORM_ROW_HEIGHT
+        : inputRootHeight,
     inputRootMinHeight,
     inputRootPadding,
     itemBgColor,
@@ -133,13 +135,16 @@ export function Dropdown<T = string>({
     typeof resolvedLabel === "string" && required ? `${resolvedLabel} *` : resolvedLabel;
   const [valueOption, setValueOption] = useState<DropdownOption<T> | null>(null);
   const committedLabel =
-    options.find((option) => option.value === value)?.label ??
-    (freeSolo && typeof value === "string" ? value : "");
+    value === ""
+      ? ""
+      : (options.find((option) => option.value === value)?.label ??
+        (freeSolo && typeof value === "string" ? value : ""));
   const [inputValue, setInputValue] = useState(committedLabel);
   const isTypingRef = useRef(false);
 
   useEffect(() => {
-    const matched = options.find((option) => option.value === value) ?? null;
+    const matched =
+      value === "" ? null : (options.find((option) => option.value === value) ?? null);
     setValueOption(matched);
     if (!isTypingRef.current)
       setInputValue(matched?.label ?? (freeSolo && typeof value === "string" ? value : ""));
@@ -185,9 +190,10 @@ export function Dropdown<T = string>({
       return;
     }
 
+    const newValueOption = newValue?.value === "" ? null : newValue;
     setValue(newValue?.value);
-    setValueOption(newValue);
-    setInputValue(newValue?.label ?? "");
+    setValueOption(newValueOption);
+    setInputValue(newValueOption?.label ?? "");
   };
 
   const handleInputChange = (_: unknown, newInputValue: string, reason: string) => {
@@ -251,7 +257,7 @@ export function Dropdown<T = string>({
     <HeaderWrapper
       ref={containerRef}
       header={resolvedHeader}
-      headerProps={labelProps ?? headerProps}
+      headerProps={deepMerge(DEFAULT_INPUT_HEADER_PROPS, labelProps ?? headerProps ?? {})}
       overflow="initial"
       textProps={labelTextProps}
       width={props.width ?? "100%"}

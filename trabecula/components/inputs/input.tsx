@@ -21,7 +21,7 @@ import { deepMerge, DENSE_FORM_ROW_HEIGHT } from "trabecula/utils/common";
 
 export const DENSE_INPUT_PADDING = "0.1rem 0.5rem";
 
-const DEFAULT_HEADER_PROPS: HeaderWrapperProps["headerProps"] = {
+export const DEFAULT_INPUT_HEADER_PROPS: HeaderWrapperProps["headerProps"] = {
   fontSize: "0.8em",
   padding: { all: "0.2rem 0.3rem" },
 };
@@ -110,7 +110,7 @@ export const Input = Comp((rawProps: InputProps, ref?: MutableRefObject<HTMLDivE
   } = rawProps;
 
   const resolvedLabel = label ?? header;
-  const resolvedLabelProps = deepMerge(DEFAULT_HEADER_PROPS, labelProps ?? headerProps);
+  const resolvedLabelProps = deepMerge(DEFAULT_INPUT_HEADER_PROPS, labelProps ?? headerProps);
   const hasLabel = !!resolvedLabel;
   const inputHeight = rawProps.multiline && rawProps.height === undefined ? undefined : height;
   const inputRootHeight =
