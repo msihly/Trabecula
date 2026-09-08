@@ -15,7 +15,7 @@ export type Borders = {
   left?: CSS["borderLeft"];
 };
 
-export const makeBorders = (props: Borders) => ({
+export const makeBorders = (props?: Borders) => ({
   border: props?.all,
   borderTop: props?.top,
   borderBottom: props?.bottom,
@@ -256,7 +256,7 @@ export type CssNamedColor =
   | "transparent"
   | "currentColor";
 
-export type CssColor = HexColor | RgbColor | HslColor | CssNamedColor;
+export type CssColor = "inherit" | HexColor | RgbColor | HslColor | CssNamedColor;
 
 const customColors = {
   black: "#131313",

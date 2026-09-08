@@ -8,13 +8,22 @@ import {
   TooltipWrapper,
   TooltipWrapperProps,
 } from "trabecula/components";
-import { makeClasses, makeMargins, Margins } from "trabecula/utils/client";
+import {
+  CssColor,
+  makeClasses,
+  makeMargins,
+  makePadding,
+  Margins,
+  Padding,
+} from "trabecula/utils/client";
 
 export interface IconButtonProps extends Omit<MuiIconButtonProps, "color"> {
   children?: ReactNode | ReactNode[];
+  color?: CssColor;
   iconProps?: Partial<IconProps>;
   margins?: Margins;
   name?: IconName;
+  padding?: Padding;
   tooltip?: TooltipWrapperProps["tooltip"];
   tooltipProps?: TooltipWrapperProps["tooltipProps"];
 }
@@ -22,17 +31,19 @@ export interface IconButtonProps extends Omit<MuiIconButtonProps, "color"> {
 export const IconButton = ({
   children,
   className,
+  color,
   disabled,
   iconProps = {},
   margins,
   name,
   onClick,
+  padding = {},
   size,
   tooltip,
   tooltipProps,
   ...props
 }: IconButtonProps) => {
-  const { css, cx } = useClasses({ disabled, margins });
+  const { css, cx } = useClasses({ disabled, margins, padding });
 
   return (
     <TooltipWrapper {...{ tooltip, tooltipProps }}>
@@ -41,18 +52,19 @@ export const IconButton = ({
         {...{ disabled, onClick, size }}
         className={cx(css.root, className)}
       >
-        {name && <Icon {...iconProps} name={name} />}
+        {name && <Icon {...iconProps} {...{ color, name }} />}
         {children}
       </MuiIconButton>
     </TooltipWrapper>
   );
 };
 
-interface ClassesProps extends Pick<IconButtonProps, "disabled" | "margins"> {}
+interface ClassesProps extends Pick<IconButtonProps, "disabled" | "margins" | "padding"> {}
 
 const useClasses = makeClasses((props: ClassesProps) => ({
   root: {
     ...makeMargins(props.margins),
+    ...makePadding(props.padding),
     opacity: props.disabled ? 0.5 : 1,
     transition: "all 100ms ease-in-out",
   },

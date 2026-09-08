@@ -2,10 +2,23 @@ var __create = Object.create;
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
+var __getOwnPropSymbols = Object.getOwnPropertySymbols;
 var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __propIsEnum = Object.prototype.propertyIsEnumerable;
 var __pow = Math.pow;
 var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __spreadValues = (a, b) => {
+  for (var prop in b || (b = {}))
+    if (__hasOwnProp.call(b, prop))
+      __defNormalProp(a, prop, b[prop]);
+  if (__getOwnPropSymbols)
+    for (var prop of __getOwnPropSymbols(b)) {
+      if (__propIsEnum.call(b, prop))
+        __defNormalProp(a, prop, b[prop]);
+    }
+  return a;
+};
 var __export = (target, all) => {
   for (var name in all)
     __defProp(target, name, { get: all[name], enumerable: true });
@@ -52,6 +65,7 @@ var __async = (__this, __arguments, generator) => {
 // trabecula/utils/common/index.ts
 var common_exports = {};
 __export(common_exports, {
+  CONSTANTS: () => CONSTANTS,
   Fmt: () => Fmt,
   LOGICAL_OPS: () => LOGICAL_OPS,
   PromiseQueue: () => PromiseQueue,
@@ -80,7 +94,9 @@ __export(common_exports, {
   isArchivePart: () => isArchivePart,
   isDeepEqual: () => isDeepEqual,
   isObject: () => isObject,
+  isPlainObject: () => isPlainObject,
   logicOpsToMongo: () => logicOpsToMongo,
+  mergePreset: () => mergePreset,
   objectToFloat32Array: () => objectToFloat32Array,
   range: () => range,
   rng: () => rng,
@@ -334,6 +350,10 @@ var VIDEO_EXTS_UNCOMMON = [
 var VIDEO_EXTS = [...VIDEO_EXTS_COMMON, ...VIDEO_EXTS_UNCOMMON];
 var WEB_VIDEO_CODECS = ["h264", "hevc", "vp8", "vp9", "theora", "av1"];
 var WEB_VIDEO_EXTS = ["mp4", "webm", "ogv", "wav"];
+var CONSTANTS = {
+  DENSE_FORM_ROW_HEIGHT: "1.8rem",
+  FORM_ROW_HEIGHT: "2.3rem"
+};
 var _CONSTANTS = {
   AUDIO: {
     CODECS: AUDIO_CODECS,
@@ -545,6 +565,21 @@ var handleErrors = (fn) => __async(null, null, function* () {
 });
 var isDeepEqual = import_es_toolkit.isEqual;
 var isObject = (item) => item && typeof item === "object" && !Array.isArray(item);
+var isPlainObject = (value) => {
+  if (!value || typeof value !== "object") return false;
+  const proto = Object.getPrototypeOf(value);
+  return proto === Object.prototype || proto === null;
+};
+var mergePreset = (preset, props) => {
+  const merge = (presetValue, propValue) => {
+    if (propValue === void 0) return presetValue;
+    if (!isPlainObject(presetValue) || !isPlainObject(propValue)) return propValue;
+    const result = __spreadValues({}, presetValue);
+    for (const key of Object.keys(propValue)) result[key] = merge(presetValue[key], propValue[key]);
+    return result;
+  };
+  return merge(preset, props);
+};
 var rng = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 var setObj = import_compat.set;
 var sleep = (min, max) => new Promise((resolve) => setTimeout(resolve, max > 0 ? rng(min, max) : min));
@@ -621,6 +656,7 @@ var PromiseQueue = class {
 };
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
+  CONSTANTS,
   Fmt,
   LOGICAL_OPS,
   PromiseQueue,
@@ -649,7 +685,9 @@ var PromiseQueue = class {
   isArchivePart,
   isDeepEqual,
   isObject,
+  isPlainObject,
   logicOpsToMongo,
+  mergePreset,
   objectToFloat32Array,
   range,
   rng,

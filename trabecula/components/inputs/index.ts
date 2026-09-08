@@ -1,4 +1,5 @@
 export * from "./auto-complete";
+export * from "./chip-input";
 export * from "./date-input";
 export * from "./date-range";
 export * from "./dropdown";
@@ -11,3 +12,4 @@ export * from "./multi-input-row";
 export * from "./num-input";
 export * from "./num-range";
 export * from "./range-wrapper";
+export * from "./time-input";

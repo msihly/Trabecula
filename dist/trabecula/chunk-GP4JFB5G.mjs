@@ -1,7 +1,8 @@
 import {
   __async,
   __pow,
-  __publicField
+  __publicField,
+  __spreadValues
 } from "./chunk-DM4QYMVJ.mjs";
 
 // trabecula/utils/common/arrays.ts
@@ -239,6 +240,10 @@ var VIDEO_EXTS_UNCOMMON = [
 var VIDEO_EXTS = [...VIDEO_EXTS_COMMON, ...VIDEO_EXTS_UNCOMMON];
 var WEB_VIDEO_CODECS = ["h264", "hevc", "vp8", "vp9", "theora", "av1"];
 var WEB_VIDEO_EXTS = ["mp4", "webm", "ogv", "wav"];
+var CONSTANTS = {
+  DENSE_FORM_ROW_HEIGHT: "1.8rem",
+  FORM_ROW_HEIGHT: "2.3rem"
+};
 var _CONSTANTS = {
   AUDIO: {
     CODECS: AUDIO_CODECS,
@@ -456,6 +461,21 @@ var handleErrors = (fn) => __async(null, null, function* () {
 });
 var isDeepEqual = _isEqual;
 var isObject = (item) => item && typeof item === "object" && !Array.isArray(item);
+var isPlainObject = (value) => {
+  if (!value || typeof value !== "object") return false;
+  const proto = Object.getPrototypeOf(value);
+  return proto === Object.prototype || proto === null;
+};
+var mergePreset = (preset, props) => {
+  const merge = (presetValue, propValue) => {
+    if (propValue === void 0) return presetValue;
+    if (!isPlainObject(presetValue) || !isPlainObject(propValue)) return propValue;
+    const result = __spreadValues({}, presetValue);
+    for (const key of Object.keys(propValue)) result[key] = merge(presetValue[key], propValue[key]);
+    return result;
+  };
+  return merge(preset, props);
+};
 var rng = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 var setObj = _set;
 var sleep = (min, max) => new Promise((resolve) => setTimeout(resolve, max > 0 ? rng(min, max) : min));
@@ -546,6 +566,7 @@ export {
   sumArray,
   uniqueArrayFilter,
   uniqueArrayMerge,
+  CONSTANTS,
   _CONSTANTS,
   dayjs,
   dateWithTzToIso,
@@ -570,6 +591,8 @@ export {
   handleErrors,
   isDeepEqual,
   isObject,
+  isPlainObject,
+  mergePreset,
   rng,
   setObj,
   sleep,
@@ -577,4 +600,4 @@ export {
   uuid,
   PromiseQueue
 };
-//# sourceMappingURL=chunk-OTMX7HSJ.mjs.map
+//# sourceMappingURL=chunk-GP4JFB5G.mjs.map

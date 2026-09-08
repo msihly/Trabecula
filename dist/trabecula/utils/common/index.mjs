@@ -1,4 +1,5 @@
 import {
+  CONSTANTS,
   Fmt,
   LOGICAL_OPS,
   PromiseQueue,
@@ -27,7 +28,9 @@ import {
   isArchivePart,
   isDeepEqual,
   isObject,
+  isPlainObject,
   logicOpsToMongo,
+  mergePreset,
   objectToFloat32Array,
   range,
   rng,
@@ -43,9 +46,10 @@ import {
   uniqueArrayFilter,
   uniqueArrayMerge,
   uuid
-} from "../../chunk-OTMX7HSJ.mjs";
+} from "../../chunk-GP4JFB5G.mjs";
 import "../../chunk-DM4QYMVJ.mjs";
 export {
+  CONSTANTS,
   Fmt,
   LOGICAL_OPS,
   PromiseQueue,
@@ -74,7 +78,9 @@ export {
   isArchivePart,
   isDeepEqual,
   isObject,
+  isPlainObject,
   logicOpsToMongo,
+  mergePreset,
   objectToFloat32Array,
   range,
   rng,

@@ -7,7 +7,11 @@ import {
 } from "es-toolkit";
 import { set as _set } from "es-toolkit/compat";
 
-type IsPlainObject<T> = T extends object
+export type DeepNonNullable<T> = T extends object
+  ? { [K in keyof T]-?: DeepNonNullable<NonNullable<T[K]>> }
+  : NonNullable<T>;
+
+export type IsPlainObject<T> = T extends object
   ? T extends any[]
     ? false
     : T extends Function
@@ -64,6 +68,25 @@ export const isDeepEqual = _isEqual;
 
 export const isObject = (item: any): boolean =>
   item && typeof item === "object" && !Array.isArray(item);
+
+export const isPlainObject = (value: unknown): value is Record<string, any> => {
+  if (!value || typeof value !== "object") return false;
+  const proto = Object.getPrototypeOf(value);
+  return proto === Object.prototype || proto === null;
+};
+
+export const mergePreset = <T>(preset: Partial<T>, props: T): T => {
+  const merge = (presetValue: any, propValue: any): any => {
+    if (propValue === undefined) return presetValue;
+    if (!isPlainObject(presetValue) || !isPlainObject(propValue)) return propValue;
+
+    const result: Record<string, any> = { ...presetValue };
+    for (const key of Object.keys(propValue)) result[key] = merge(presetValue[key], propValue[key]);
+    return result;
+  };
+
+  return merge(preset, props);
+};
 
 export const rng = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
 

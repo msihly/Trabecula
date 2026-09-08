@@ -488,8 +488,8 @@ var useLazyLoad = (containerRef, options) => {
 // trabecula/utils/client/miscellaneous.ts
 var copyToClipboard = (value, message) => {
   navigator.clipboard.writeText(value).then(
-    () => toast.info(message),
-    () => toast.error("Failed to copy to clipboard")
+    () => message && toast.info(message),
+    () => toast.error("Failed to copy")
   );
 };
 

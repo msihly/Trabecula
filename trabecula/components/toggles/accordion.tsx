@@ -1,81 +1,220 @@
 import { ReactNode, useState } from "react";
-// eslint-disable-next-line @typescript-eslint/no-restricted-imports
-import { Accordion as MuiAccordion, AccordionProps as MuiAccordionProps } from "@mui/material";
-import { Button, Icon, View } from "trabecula/components";
-import { CssColor, makeClasses } from "trabecula/utils/client";
+import {
+  // eslint-disable-next-line @typescript-eslint/no-restricted-imports
+  Accordion as MuiAccordion,
+  // eslint-disable-next-line @typescript-eslint/no-restricted-imports
+  AccordionProps as MuiAccordionProps,
+} from "@mui/material";
+import {
+  Button,
+  ButtonProps,
+  Icon,
+  LoadingOverlay,
+  Text,
+  TextProps,
+  View,
+} from "trabecula/components";
+import { colors, CSS, CssColor, makeClasses } from "trabecula/utils/client";
 
-export interface AccordionProps extends MuiAccordionProps {
+export interface AccordionProps extends Omit<
+  MuiAccordionProps,
+  "children" | "expanded" | "onChange" | "title"
+> {
   children: ReactNode | ReactNode[];
+  buttonProps?: Partial<ButtonProps>;
   color?: CssColor;
-  dense?: boolean;
+  contentPadding?: CSS["padding"];
+  borderColor?: CssColor;
   expanded?: boolean;
-  fullWidth?: boolean;
-  header: ReactNode;
+  header?: ReactNode;
+  headerBgColor?: CssColor;
+  headerBorderMode?: "always" | "expanded" | "visibleBorder";
+  headerBorderColor?: CssColor;
+  headerButton?: ReactNode;
+  headerPadding?: CSS["padding"];
+  isExpanded?: boolean;
+  isLoading?: boolean;
+  onToggle?: () => void;
   setExpanded?: (expanded: boolean) => void;
+  showBorder?: boolean;
+  showExpandToggle?: boolean;
+  title?: ReactNode;
+  titleProps?: Partial<TextProps>;
+  toggleButtonProps?: Partial<ButtonProps>;
+  width?: CSS["width"];
 }
 
-export const Accordion = ({
-  children,
-  className,
-  color = "transparent",
-  dense = false,
-  expanded = false,
-  fullWidth = false,
-  header,
-  setExpanded,
-}: AccordionProps) => {
-  const [isExpanded, setIsExpanded] = useState(expanded);
+export const Accordion = (rawProps: AccordionProps) => {
+  const {
+    buttonProps = {},
+    borderColor,
+    children,
+    className,
+    color = "transparent",
+    contentPadding,
+    expanded,
+    header,
+    headerBgColor,
+    headerBorderMode = "visibleBorder",
+    headerBorderColor,
+    headerButton,
+    headerPadding,
+    isExpanded,
+    isLoading = false,
+    onToggle,
+    setExpanded,
+    showBorder = true,
+    showExpandToggle = true,
+    title,
+    titleProps = {},
+    toggleButtonProps = {},
+    width,
+    ...props
+  } = rawProps;
 
-  const handleClick = () => {
-    setIsExpanded(!isExpanded);
-    setExpanded?.(!isExpanded);
+  const [internalExpanded, setInternalExpanded] = useState(expanded ?? false);
+  const effectiveExpanded = isExpanded ?? expanded ?? internalExpanded;
+  const contentExpanded = showExpandToggle ? effectiveExpanded : true;
+
+  const { css, cx } = useClasses({
+    borderColor,
+    contentPadding,
+    contentExpanded,
+    headerBgColor,
+    headerBorderMode,
+    headerBorderColor,
+    headerPadding,
+    showBorder,
+    showExpandToggle,
+    width,
+  });
+
+  const handleToggle = () => {
+    onToggle?.();
+    setInternalExpanded(!effectiveExpanded);
+    setExpanded?.(!effectiveExpanded);
   };
 
-  const { css, cx } = useClasses({ dense, expanded: isExpanded, fullWidth });
+  const renderHeader = () => {
+    if (title !== undefined) {
+      return (
+        <View row align="center" justify="space-between" width="100%">
+          {typeof title === "string" ? <Text {...titleProps}>{title}</Text> : title}
+
+          <View row align="center" spacing="0.6rem">
+            {headerButton}
+
+            {showExpandToggle ? (
+              <Button
+                type="link"
+                text={contentExpanded ? "Minimize" : "Expand"}
+                iconRight={contentExpanded ? "ArrowDropUp" : "ArrowDropDown"}
+                iconSize="1.3rem"
+                onClick={handleToggle}
+                {...toggleButtonProps}
+              />
+            ) : null}
+          </View>
+        </View>
+      );
+    }
+
+    return (
+      <Button
+        text={header}
+        endNode={
+          showExpandToggle ? (
+            <Icon
+              name={contentExpanded ? "ArrowDropUp" : "ArrowDropDown"}
+              color={buttonProps.iconProps?.color ?? buttonProps.textColor ?? colors.custom.blue}
+              size={buttonProps.iconSize ?? "1.3rem"}
+            />
+          ) : undefined
+        }
+        onClick={handleToggle}
+        color={color}
+        width="100%"
+        height="auto"
+        justify="space-between"
+        className={css.button}
+        {...buttonProps}
+      />
+    );
+  };
 
   return (
     <MuiAccordion
-      expanded={isExpanded}
-      disableGutters
+      {...props}
+      expanded={contentExpanded}
       TransitionProps={{ unmountOnExit: true }}
+      disableGutters
       className={cx(css.accordion, className)}
     >
-      <Button
-        text={header}
-        onClick={handleClick}
-        endNode={<Icon name="ExpandMore" rotation={isExpanded ? 180 : 0} />}
-        color={color}
-        width="100%"
-        className={css.button}
-      />
+      <View className={css.header}>{renderHeader()}</View>
 
-      <View column>{children}</View>
+      <View column className={css.content}>
+        <LoadingOverlay isLoading={isLoading} />
+
+        {children}
+      </View>
     </MuiAccordion>
   );
 };
 
-interface ClassesProps extends Pick<AccordionProps, "dense" | "expanded" | "fullWidth"> {}
+/* -------------------------------------------------------------------------- */
+/*                                   CLASSES                                  */
+/* -------------------------------------------------------------------------- */
+interface ClassesProps extends Pick<
+  AccordionProps,
+  | "contentPadding"
+  | "borderColor"
+  | "headerBorderMode"
+  | "headerBgColor"
+  | "headerBorderColor"
+  | "headerPadding"
+  | "showBorder"
+  | "showExpandToggle"
+  | "width"
+> {
+  contentExpanded: boolean;
+}
+
+const shouldShowHeaderBorder = (props: ClassesProps) => {
+  if (!props.headerBorderColor) return false;
+  if (props.headerBorderMode === "always") return true;
+  if (props.headerBorderMode === "expanded") return props.contentExpanded;
+  return props.showExpandToggle ? props.showBorder : true;
+};
 
 const useClasses = makeClasses((props: ClassesProps) => ({
   accordion: {
     margin: 0,
     padding: 0,
-    width: props.fullWidth ? "100%" : "auto",
+    width: props.width,
     background: "transparent",
+    border: props.borderColor && props.showBorder ? `1px solid ${props.borderColor}` : undefined,
+    borderRadius: props.borderColor && props.showBorder ? "0.3rem" : undefined,
     boxShadow: "none",
-    "& button": {
-      boxShadow: "none",
-    },
+    overflow: props.borderColor && props.showBorder ? "hidden" : undefined,
     "&:before": {
       display: "none",
     },
   },
   button: {
     justifyContent: "space-between",
-    borderBottomRightRadius: props.expanded ? 0 : undefined,
-    borderBottomLeftRadius: props.expanded ? 0 : undefined,
-    padding: props.dense ? "0.2rem 0.6rem" : "0.5rem 1rem",
+    padding: "0.5rem 1rem",
     fontSize: "1em",
     textTransform: "capitalize",
+  },
+  content: {
+    padding: props.contentPadding,
+    position: "relative",
+  },
+  header: {
+    background: props.headerBgColor,
+    borderBottom: shouldShowHeaderBorder(props)
+      ? `1px solid ${props.headerBorderColor}`
+      : undefined,
+    padding: props.headerPadding,
   },
 }));

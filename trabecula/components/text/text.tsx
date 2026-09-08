@@ -45,20 +45,37 @@ const PRESETS: Record<TextPreset, CSS> = {
 
 export interface TextProps extends Omit<
   TypographyProps,
-  "color" | "component" | "fontSize" | "fontWeight" | "overflow" | "title" | "whiteSpace"
+  | "color"
+  | "component"
+  | "fontSize"
+  | "fontWeight"
+  | "lineHeight"
+  | "opacity"
+  | "overflow"
+  | "textDecoration"
+  | "title"
+  | "variant"
 > {
+  bold?: boolean;
   color?: CssColor;
   component?: ElementType;
   fontSize?: CSS["fontSize"];
   fontWeight?: CSS["fontWeight"];
+  italic?: boolean;
+  lineHeight?: CSS["lineHeight"];
+  opacity?: CSS["opacity"];
   overflow?: CSS["overflow"];
+  overflowWrap?: CSS["overflowWrap"];
   preset?: TextPreset;
   tooltip?: TooltipProps["title"];
   tooltipProps?: Partial<TooltipProps>;
+  textOverflow?: CSS["textOverflow"];
   whiteSpace?: CSS["whiteSpace"];
+  wordBreak?: CSS["wordBreak"];
 }
 
 export const Text = ({
+  bold = false,
   children,
   className,
   color,
@@ -66,14 +83,34 @@ export const Text = ({
   fontFamily = "Roboto",
   fontSize,
   fontWeight,
+  italic = false,
+  lineHeight,
+  opacity,
   overflow,
+  overflowWrap,
   preset = "default",
   tooltip,
   tooltipProps,
+  textOverflow,
   whiteSpace = "nowrap",
+  wordBreak,
   ...props
 }: TextProps) => {
-  const { css, cx } = useClasses({ color, fontSize, fontWeight, overflow, preset, whiteSpace });
+  const { css, cx } = useClasses({
+    bold,
+    color,
+    fontSize,
+    fontWeight,
+    italic,
+    lineHeight,
+    opacity,
+    overflow,
+    overflowWrap,
+    preset,
+    textOverflow,
+    whiteSpace,
+    wordBreak,
+  });
 
   return (
     <TooltipWrapper {...{ tooltip, tooltipProps }}>
@@ -89,9 +126,23 @@ export const Text = ({
   );
 };
 
+Text.Inline = (props: Omit<TextProps, "component">) => <Text display="inline" {...props} />;
+
 interface ClassesProps extends Pick<
   TextProps,
-  "color" | "fontSize" | "fontWeight" | "overflow" | "preset" | "whiteSpace"
+  | "bold"
+  | "color"
+  | "fontSize"
+  | "fontWeight"
+  | "italic"
+  | "lineHeight"
+  | "opacity"
+  | "overflow"
+  | "overflowWrap"
+  | "preset"
+  | "textOverflow"
+  | "whiteSpace"
+  | "wordBreak"
 > {}
 
 const useClasses = makeClasses((props: ClassesProps) => {
@@ -101,11 +152,17 @@ const useClasses = makeClasses((props: ClassesProps) => {
       ...preset,
       color: props.color ?? preset?.color,
       fontSize: props.fontSize ?? preset?.fontSize,
-      fontWeight: props.fontWeight ?? preset?.fontWeight,
-      lineHeight: 1.2,
+      fontWeight: props.bold ? 600 : (props.fontWeight ?? preset?.fontWeight),
+      fontStyle: props.italic ? "italic" : undefined,
+      lineHeight: props.lineHeight ?? 1.2,
+      opacity: props.opacity,
       overflow: props.overflow ?? preset?.overflow,
-      textOverflow: "ellipsis",
+      overflowWrap: props.overflowWrap,
+      textOverflow: props.textOverflow ?? "ellipsis",
       whiteSpace: props.whiteSpace ?? preset?.whiteSpace,
+      wordBreak: props.wordBreak,
     },
   };
 });
+
+export { PRESETS as TEXT_PRESETS };

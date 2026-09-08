@@ -1,7 +1,7 @@
 import {
   handleErrors,
   isDeepEqual
-} from "./chunk-OTMX7HSJ.mjs";
+} from "./chunk-GP4JFB5G.mjs";
 import {
   __async,
   __publicField,
@@ -186,8 +186,8 @@ var useLazyLoad = (containerRef, options) => {
 // trabecula/utils/client/miscellaneous.ts
 var copyToClipboard = (value, message) => {
   navigator.clipboard.writeText(value).then(
-    () => toast.info(message),
-    () => toast.error("Failed to copy to clipboard")
+    () => message && toast.info(message),
+    () => toast.error("Failed to copy")
   );
 };
 
@@ -511,4 +511,4 @@ export {
   Toaster,
   ToastContainer
 };
-//# sourceMappingURL=chunk-ZW2NULEZ.mjs.map
+//# sourceMappingURL=chunk-AHKKNM45.mjs.map

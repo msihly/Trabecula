@@ -71,6 +71,10 @@ interface _Constants {
         EXTS: WebVideoExt[];
     };
 }
+declare const CONSTANTS: {
+    DENSE_FORM_ROW_HEIGHT: string;
+    FORM_ROW_HEIGHT: string;
+};
 declare const _CONSTANTS: _Constants;
 
 type DayJsInput = string | number | Date | dayjs.Dayjs;
@@ -100,6 +104,9 @@ declare const Fmt: {
     titleCase: (str: string) => string;
 };
 
+type DeepNonNullable<T> = T extends object ? {
+    [K in keyof T]-?: DeepNonNullable<NonNullable<T[K]>>;
+} : NonNullable<T>;
 type IsPlainObject<T> = T extends object ? T extends any[] ? false : T extends Function ? false : true : false;
 type NestedKeys<T> = {
     [K in keyof T]: K extends string ? IsPlainObject<T[K]> extends true ? K | `${K}.${NestedKeys<T[K]>}` : K : never;
@@ -119,10 +126,12 @@ declare const handleErrors: <T>(fn: () => Promise<T>) => Promise<{
 }>;
 declare const isDeepEqual: typeof isEqual;
 declare const isObject: (item: any) => boolean;
+declare const isPlainObject: (value: unknown) => value is Record<string, any>;
+declare const mergePreset: <T>(preset: Partial<T>, props: T) => T;
 declare const rng: (min: number, max: number) => number;
 declare const setObj: typeof set;
 declare const sleep: (min: number, max?: number) => Promise<unknown>;
 declare const throttle: typeof throttle$1;
 declare const uuid: () => `${string}-${string}-${string}-${string}-${string}`;
 
-export { type AudioCodec, type DayJsInput, type DeepPartial, Fmt, type ImageExt, type NestedKeys, type VideoCodec, type VideoExt, type WebVideoCodec, type WebVideoExt, _CONSTANTS, type _Constants, arrayIntersect, attempt, bisectArrayChanges, centeredSlice, chunkArray, convertNestedKeys, countItems, dateWithTzToIso, debounce, deepClone, deepMerge, getArrayDiff, handleErrors, isArchive, isArchiveFirstPart, isArchivePart, isDeepEqual, isObject, objectToFloat32Array, range, rng, rotateArrayPos, setObj, sleep, sortArray, splitArray, sumArray, throttle, uniqueArrayFilter, uniqueArrayMerge, uuid };
+export { type AudioCodec, CONSTANTS, type DayJsInput, type DeepNonNullable, type DeepPartial, Fmt, type ImageExt, type IsPlainObject, type NestedKeys, type VideoCodec, type VideoExt, type WebVideoCodec, type WebVideoExt, _CONSTANTS, type _Constants, arrayIntersect, attempt, bisectArrayChanges, centeredSlice, chunkArray, convertNestedKeys, countItems, dateWithTzToIso, debounce, deepClone, deepMerge, getArrayDiff, handleErrors, isArchive, isArchiveFirstPart, isArchivePart, isDeepEqual, isObject, isPlainObject, mergePreset, objectToFloat32Array, range, rng, rotateArrayPos, setObj, sleep, sortArray, splitArray, sumArray, throttle, uniqueArrayFilter, uniqueArrayMerge, uuid };

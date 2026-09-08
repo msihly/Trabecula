@@ -4,6 +4,7 @@ export * from "./card-grid";
 export * from "./chip";
 export * from "./conditional";
 export * from "./context-menu";
+export * from "./disabled-overlay";
 export * from "./divider";
 export * from "./header";
 export * from "./loading-overlay";

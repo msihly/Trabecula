@@ -1,9 +1,11 @@
 import { ReactNode } from "react";
 import { Comp, HeaderWrapper, View, ViewProps } from "trabecula/components";
-import { colors } from "trabecula/utils/client";
+import { colors, CSS, makeClasses } from "trabecula/utils/client";
 import { deepMerge } from "trabecula/utils/common";
 
 export interface CardProps extends ViewProps {
+  boxShadow?: CSS["boxShadow"];
+  elevated?: boolean;
   header?: ReactNode;
   headerProps?: Partial<ViewProps>;
 }
@@ -14,11 +16,14 @@ export const Card = Comp(
       bgColor = colors.foreground,
       borderRadiuses = {},
       children,
+      className,
       column = true,
       display = "flex",
+      elevated = true,
       header,
       height,
       headerProps,
+      boxShadow,
       overflow,
       padding = {},
       row = false,
@@ -30,6 +35,7 @@ export const Card = Comp(
   ) => {
     borderRadiuses = deepMerge({ bottom: "0.5rem", top: !!header ? 0 : "0.5rem" }, borderRadiuses);
     padding = deepMerge({ all: "0.5rem" }, padding);
+    const { css, cx } = useClasses({ boxShadow, elevated });
 
     return (
       <HeaderWrapper
@@ -37,6 +43,7 @@ export const Card = Comp(
         {...{ borderRadiuses, display, header, headerProps, height, overflow, width }}
       >
         <View
+          className={cx(css.root, className)}
           position="relative"
           column={column && !row}
           flex={1}
@@ -50,3 +57,13 @@ export const Card = Comp(
     );
   },
 );
+
+interface ClassesProps extends Pick<CardProps, "boxShadow" | "elevated"> {}
+
+const useClasses = makeClasses((props: ClassesProps) => ({
+  root: {
+    boxSizing: "border-box",
+    boxShadow:
+      props.boxShadow ?? (props.elevated ? "0.1rem 0.1rem 0.3rem rgb(0 0 0 / 50%)" : "none"),
+  },
+}));

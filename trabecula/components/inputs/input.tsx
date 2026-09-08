@@ -1,8 +1,8 @@
-import { ChangeEvent, MutableRefObject, ReactNode } from "react";
+import type { ChangeEvent, MutableRefObject, ReactNode } from "react";
 // eslint-disable-next-line @typescript-eslint/no-restricted-imports
 import { InputAdornment, TextField, TextFieldProps } from "@mui/material";
 import Color from "color";
-import { Comp, HeaderWrapper, HeaderWrapperProps, Text } from "trabecula/components";
+import { Comp, HeaderWrapper, HeaderWrapperProps, Text, TextProps } from "trabecula/components";
 import {
   BorderRadiuses,
   Borders,
@@ -13,13 +13,17 @@ import {
   makeBorders,
   makeClasses,
   makeMargins,
+  makePadding,
   Margins,
+  Padding,
 } from "trabecula/utils/client";
-import { deepMerge } from "trabecula/utils/common";
+import { CONSTANTS, deepMerge } from "trabecula/utils/common";
+
+export const DENSE_INPUT_PADDING = "0.1rem 0.5rem";
 
 const DEFAULT_HEADER_PROPS: HeaderWrapperProps["headerProps"] = {
   fontSize: "0.8em",
-  padding: { all: "0.15rem 0.3rem" },
+  padding: { all: "0.2rem 0.3rem" },
 };
 
 export interface InputProps extends Omit<
@@ -27,154 +31,227 @@ export interface InputProps extends Omit<
   "color" | "fullWidth" | "helperText" | "label"
 > {
   adornment?: ReactNode;
+  adornmentColor?: CssColor;
   adornmentPosition?: "end" | "start";
-  borders?: Borders;
+  background?: CssColor;
   borderRadiuses?: BorderRadiuses;
+  borders?: Borders;
   className?: string;
   color?: CssColor;
   dense?: boolean;
   flex?: CSS["flex"];
+  fontFamily?: CSS["fontFamily"];
+  fontSize?: CSS["fontSize"];
+  fontWeight?: CSS["fontWeight"];
   hasHelper?: boolean;
   header?: HeaderWrapperProps["header"];
   headerProps?: HeaderWrapperProps["headerProps"];
   height?: CSS["height"];
   helperText?: ReactNode;
+  helperTextProps?: Partial<TextProps>;
+  label?: HeaderWrapperProps["header"];
+  labelProps?: HeaderWrapperProps["headerProps"];
+  labelTextProps?: HeaderWrapperProps["textProps"];
   margins?: Margins;
   maxLength?: number;
   minWidth?: CSS["minWidth"];
-  setValue?: (value: string) => void;
+  noFade?: boolean;
+  onEnter?: () => any;
+  padding?: Padding;
+  setValue?: (value: string) => any;
   textAlign?: CSS["textAlign"];
+  textColor?: CssColor;
   value?: string;
   width?: CSS["width"];
 }
 
-export const Input = Comp(
-  (
-    {
-      adornment,
-      adornmentPosition = "end",
-      borders,
-      borderRadiuses,
-      children,
-      className,
-      color,
-      dense = false,
-      flex,
-      hasHelper = false,
-      header,
-      headerProps = {},
-      height,
-      helperText,
-      inputProps,
-      margins = {},
-      maxLength,
-      minWidth,
-      onChange,
-      onClick,
-      onKeyDown,
-      setValue,
-      textAlign,
-      value,
-      variant = "outlined",
-      width = "100%",
-      ...props
-    }: InputProps,
-    ref?: MutableRefObject<HTMLDivElement>,
-  ) => {
-    headerProps = deepMerge(DEFAULT_HEADER_PROPS, headerProps);
+export const Input = Comp((rawProps: InputProps, ref?: MutableRefObject<HTMLDivElement>) => {
+  const {
+    adornment,
+    adornmentColor = colors.custom.grey,
+    adornmentPosition = "end",
+    background = "rgb(0 0 0 / 0.2)",
+    borderRadiuses,
+    borders,
+    children,
+    className,
+    color,
+    dense = false,
+    flex,
+    fontFamily = "Roboto",
+    fontSize,
+    fontWeight,
+    hasHelper = false,
+    header,
+    headerProps = {},
+    height,
+    helperText,
+    helperTextProps = {},
+    inputProps,
+    label,
+    labelProps,
+    labelTextProps = {},
+    margins = {},
+    maxLength,
+    minWidth,
+    noFade = false,
+    onChange,
+    onClick,
+    onEnter,
+    onKeyDown,
+    padding = {},
+    setValue,
+    textAlign,
+    textColor,
+    value,
+    variant = "outlined",
+    width = "100%",
+    ...props
+  } = rawProps;
 
-    const { css, cx } = useClasses({
-      borders,
-      borderRadiuses,
-      color,
-      dense,
-      flex,
-      hasHeader: header !== undefined,
-      hasHelper,
-      hasHelperText: !!helperText,
-      hasOnClick: !!onClick,
-      height,
-      margins,
-      minWidth,
-      textAlign,
-      width,
-    });
+  const resolvedLabel = label ?? header;
+  const resolvedLabelProps = deepMerge(DEFAULT_HEADER_PROPS, labelProps ?? headerProps);
+  const hasLabel = !!resolvedLabel;
+  const denseHeight =
+    dense && rawProps.height === undefined ? CONSTANTS.DENSE_FORM_ROW_HEIGHT : height;
+  const inputHeight = rawProps.multiline && rawProps.height === undefined ? undefined : denseHeight;
+  const inputName =
+    props.name ??
+    (typeof resolvedLabel === "string"
+      ? resolvedLabel
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-|-$/g, "")
+      : undefined);
 
-    const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      setValue?.(event.target.value);
-      onChange?.(event);
-    };
+  const { css, cx } = useClasses({
+    adornmentColor,
+    background,
+    borderRadiuses,
+    borders,
+    color,
+    dense,
+    flex,
+    fontFamily,
+    fontSize,
+    fontWeight,
+    hasHelper,
+    hasLabel,
+    hasOnClick: !!onClick,
+    height: inputHeight,
+    helperText,
+    helperTextProps,
+    margins: hasLabel ? {} : margins,
+    minWidth,
+    noFade,
+    padding,
+    textAlign,
+    textColor,
+    width,
+  });
 
-    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-      event.stopPropagation();
-      onKeyDown?.(event);
-    };
+  const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setValue?.(event.target.value);
+    onChange?.(event);
+  };
 
-    return (
-      <HeaderWrapper
-        {...{ flex, header, headerProps, width }}
-        overflow="initial"
-        aria-label="input-wrapper"
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    event.stopPropagation();
+    onKeyDown?.(event);
+    if (event.defaultPrevented || event.key !== "Enter" || event.shiftKey) return;
+    event.preventDefault();
+    onEnter?.();
+  };
+
+  return (
+    <HeaderWrapper
+      ref={ref}
+      flex={flex}
+      header={resolvedLabel}
+      headerProps={resolvedLabelProps}
+      margins={hasLabel ? margins : undefined}
+      overflow="initial"
+      textProps={labelTextProps}
+      width={width}
+    >
+      <TextField
+        {...props}
+        id={props.id ?? inputName}
+        name={inputName}
+        onChange={handleChange}
+        onClick={onClick}
+        onKeyDown={handleKeyDown}
+        value={value}
+        variant={variant}
+        helperText={
+          !helperText ? undefined : typeof helperText === "string" ? (
+            <Text color={helperTextProps.color ?? color} {...helperTextProps}>
+              {helperText}
+            </Text>
+          ) : (
+            helperText
+          )
+        }
+        FormHelperTextProps={{ component: "div" }}
+        inputProps={{
+          title: typeof value === "string" ? value : undefined,
+          ...inputProps,
+          maxLength,
+          value: value ?? "",
+        }}
+        InputProps={{
+          endAdornment:
+            adornmentPosition === "end" && adornment ? (
+              <InputAdornment position="end">
+                {typeof adornment === "string" ? (
+                  <Text fontSize="0.9em" color={adornmentColor}>
+                    {adornment}
+                  </Text>
+                ) : (
+                  adornment
+                )}
+              </InputAdornment>
+            ) : null,
+          startAdornment: adornmentPosition === "start" ? adornment : null,
+          ...props.InputProps,
+        }}
+        size="small"
+        className={cx(css.input, className)}
+        aria-label="input"
       >
-        <TextField
-          {...props}
-          {...{ onClick, ref, value, variant }}
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
-          helperText={
-            helperText ? (
-              typeof helperText === "string" ? (
-                <Text>{helperText}</Text>
-              ) : (
-                helperText
-              )
-            ) : undefined
-          }
-          FormHelperTextProps={{ component: "div" }}
-          inputProps={{ ...inputProps, maxLength, value: value ?? "" }}
-          InputProps={{
-            endAdornment:
-              adornmentPosition === "end" && adornment ? (
-                <InputAdornment position="end">
-                  {typeof adornment === "string" ? (
-                    <Text fontSize="0.9em" color={colors.custom.grey}>
-                      {adornment}
-                    </Text>
-                  ) : (
-                    adornment
-                  )}
-                </InputAdornment>
-              ) : null,
-            startAdornment: adornmentPosition === "start" ? adornment : null,
-            ...props.InputProps,
-          }}
-          size="small"
-          className={cx(css.input, className)}
-          aria-label="input"
-        >
-          {children}
-        </TextField>
-      </HeaderWrapper>
-    );
-  },
-);
+        {children}
+      </TextField>
+    </HeaderWrapper>
+  );
+});
 
-interface ClassesProps extends Pick<
-  InputProps,
-  | "borders"
-  | "borderRadiuses"
-  | "color"
-  | "dense"
-  | "flex"
-  | "hasHelper"
-  | "height"
-  | "margins"
-  | "minWidth"
-  | "textAlign"
-  | "width"
+interface ClassesProps extends NonNullable<
+  Pick<
+    InputProps,
+    | "adornmentColor"
+    | "background"
+    | "borderRadiuses"
+    | "borders"
+    | "color"
+    | "dense"
+    | "flex"
+    | "fontFamily"
+    | "fontSize"
+    | "fontWeight"
+    | "hasHelper"
+    | "height"
+    | "helperText"
+    | "helperTextProps"
+    | "margins"
+    | "minWidth"
+    | "noFade"
+    | "padding"
+    | "textAlign"
+    | "textColor"
+    | "width"
+  >
 > {
-  hasHeader: boolean;
-  hasHelperText: boolean;
+  hasLabel: boolean;
   hasOnClick: boolean;
 }
 
@@ -183,17 +260,30 @@ const useClasses = makeClasses((props: ClassesProps) => ({
     flex: props.flex,
     ...makeMargins({
       ...props.margins,
-      bottom: props.margins?.bottom ?? (props.hasHelper && !props.hasHelperText ? "1.3em" : 0),
+      bottom: props.margins?.bottom ?? (props.hasHelper && !props.helperText ? "1.3rem" : 0),
     }),
     minWidth: props.minWidth,
     width: "100%",
-    "& input": {
-      fontFamily: "Roboto",
-      borderRadius: "inherit",
-      padding: props.dense ? "0.25rem 0.5rem" : undefined,
-      height: props.height,
-      textAlign: props.textAlign,
+    "& input, & textarea": {
+      ...makePadding({
+        ...props.padding,
+        all: props.padding.all ?? (props.dense ? DENSE_INPUT_PADDING : undefined),
+      }),
+      color: props.textColor,
       cursor: props.hasOnClick ? "pointer" : undefined,
+      fontFamily: props.fontFamily,
+      fontSize: props.fontSize,
+      fontWeight: props.fontWeight,
+      height: "100%",
+      textAlign: props.textAlign,
+      "&.Mui-disabled": {
+        color: props.textColor,
+        cursor: "not-allowed",
+        WebkitTextFillColor: props.textColor,
+      },
+    },
+    "& .MuiInputAdornment-root svg": {
+      color: props.adornmentColor,
     },
     "& .MuiTypography-root": {
       display: "inline-grid",
@@ -201,34 +291,43 @@ const useClasses = makeClasses((props: ClassesProps) => ({
       textAlign: props.textAlign,
     },
     "& .MuiOutlinedInput-root": {
-      background: "rgb(0 0 0 / 0.2)",
+      background: props.background,
+      minHeight: 0,
+      height: props.height,
+      "&.Mui-disabled": {
+        cursor: "not-allowed",
+        opacity: props.noFade ? 1 : 0.5,
+      },
       "& fieldset": {
         transition: "all 200ms ease-in-out",
         borderColor: props.color,
         borderStyle: "dotted",
         ...makeBorders(props.borders),
         ...makeBorderRadiuses(
-          deepMerge(props.hasHeader ? { top: 0 } : {}, props.borderRadiuses ?? {}),
+          deepMerge(props.hasLabel ? { top: 0 } : {}, props.borderRadiuses ?? {}),
         ),
       },
       "&:hover fieldset": {
         borderColor: props.color ? Color(props.color).lighten(0.3).toString() : undefined,
       },
-      "&.Mui-focused fieldset": {
+      "&.Mui-focused fieldset, &.Mui-disabled fieldset": {
         borderColor: props.color,
       },
     },
     "& .MuiSelect-select": {
-      padding: props.dense ? "0.25rem 0.5rem" : undefined,
-      fontFamily: "Roboto",
-      fontSize: "0.9em",
+      fontFamily: props.fontFamily,
+      fontSize: props.fontSize ?? "0.9em",
+      padding: props.dense ? DENSE_INPUT_PADDING : undefined,
+    },
+    "& .MuiInputBase-inputMultiline": {
+      padding: 0,
     },
     "& .MuiFormHelperText-root": {
-      margin: "0.3em 0 0 0",
-      color: props.color,
+      margin: "0.3rem 0 0 0",
+      color: props.helperTextProps?.color ?? props.color,
       fontSize: "0.75em",
-      lineHeight: 1,
-      textAlign: "center",
+      lineHeight: 1.5,
+      textAlign: props.textAlign,
     },
   },
 }));

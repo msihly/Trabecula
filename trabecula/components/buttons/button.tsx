@@ -1,4 +1,4 @@
-import { MouseEvent, ReactNode } from "react";
+import type { MouseEvent, ReactNode } from "react";
 import {
   // eslint-disable-next-line @typescript-eslint/no-restricted-imports
   Button as MuiButton,
@@ -12,32 +12,39 @@ import {
   IconProps,
   LoadingOverlay,
   Text,
+  TextProps,
   TooltipProps,
   TooltipWrapper,
   View,
 } from "trabecula/components";
 import {
   BorderRadiuses,
+  Borders,
   colors,
   CSS,
   CssColor,
   makeBorderRadiuses,
+  makeBorders,
   makeClasses,
   makeMargins,
-  makePadding,
   Margins,
   Padding,
 } from "trabecula/utils/client";
+import { CONSTANTS } from "trabecula/utils/common";
 
 export interface ButtonProps extends Omit<
   MuiButtonProps,
-  "children" | "color" | "endIcon" | "fullWidth" | "startIcon" | "type" | "variant"
+  "children" | "color" | "component" | "endIcon" | "fullWidth" | "startIcon" | "type" | "variant"
 > {
+  borderColorOnHover?: CssColor;
   borderRadiuses?: BorderRadiuses;
+  borders?: Borders;
   boxShadow?: CSS["boxShadow"];
   color?: CssColor;
   colorOnHover?: CssColor;
+  dense?: boolean;
   endNode?: ReactNode;
+  fontFamily?: CSS["fontFamily"];
   fontSize?: CSS["fontSize"];
   fontWeight?: CSS["fontWeight"];
   height?: CSS["height"];
@@ -48,28 +55,38 @@ export interface ButtonProps extends Omit<
   justify?: CSS["justifyContent"];
   loading?: boolean;
   margins?: Margins;
+  maxWidth?: CSS["maxWidth"];
   outlined?: boolean;
-  outlineFill?: string;
+  outlineFill?: CssColor;
+  outlineFillOnHover?: CssColor;
   padding?: Padding;
   startNode?: ReactNode;
   text?: ReactNode;
-  textColor?: CssColor;
   textClassName?: string;
+  textColor?: CssColor;
+  textColorOnHover?: CssColor;
+  textProps?: Omit<Partial<TextProps>, "color" | "fontFamily" | "fontSize" | "fontWeight">;
   textTransform?: CSS["textTransform"];
   tooltip?: TooltipProps["title"];
   tooltipProps?: Partial<TooltipProps>;
   type?: "button" | "link";
-  width?: CSS["width"];
+  underline?: "always" | "hover" | "none";
+  variant?: "contained" | "outlined" | "text";
   whiteSpace?: CSS["whiteSpace"];
+  width?: CSS["width"];
 }
 
 export const Button = ({
+  borderColorOnHover,
   borderRadiuses = { all: "0.3rem" },
+  borders,
   boxShadow,
   className,
   color = colors.custom.grey,
   colorOnHover,
+  dense = false,
   endNode,
+  fontFamily,
   fontSize = "1.15em",
   fontWeight = 400,
   height,
@@ -81,66 +98,91 @@ export const Button = ({
   justify = "center",
   loading = false,
   margins,
+  maxWidth,
   onClick,
   outlined = false,
   outlineFill = "transparent",
+  outlineFillOnHover,
   padding,
   size = "small",
   startNode,
   text,
+  textClassName,
   textColor,
+  textColorOnHover,
+  textProps = {},
   textTransform = "none",
   tooltip,
   tooltipProps,
   type = "button",
-  width,
+  underline = type === "link" ? "hover" : "none",
+  variant = "contained",
   whiteSpace = "nowrap",
+  width,
   ...props
 }: ButtonProps) => {
+  const isAnchor = !!href;
+  const isLinkDisplay = type === "link";
+  const defaultPadding = isLinkDisplay ? "0" : dense || size === "small" ? "0 0.5rem" : "0 1rem";
+  const defaultHeight = isLinkDisplay
+    ? "auto"
+    : dense || size === "small"
+      ? CONSTANTS.DENSE_FORM_ROW_HEIGHT
+      : CONSTANTS.FORM_ROW_HEIGHT;
+  const resolvedTextColor =
+    textColor ?? (outlined ? color : isLinkDisplay ? colors.custom.lightBlue : colors.custom.white);
+  const resolvedColorOnHover = colorOnHover;
+  const resolvedTextColorOnHover =
+    textColorOnHover ??
+    (resolvedColorOnHover && outlined ? resolvedColorOnHover : resolvedTextColor);
+
   const { css, cx } = useClasses({
+    borderColorOnHover,
     borderRadiuses,
+    borders,
     boxShadow,
     color,
-    colorOnHover,
-    height,
-    isLink: type === "link",
+    colorOnHover: resolvedColorOnHover,
+    height: height ?? defaultHeight,
+    isLinkDisplay,
     justify,
     margins,
+    maxWidth,
     outlined,
     outlineFill,
-    padding: { all: !text ? "0.4em" : "0.4em 0.8em", ...padding },
-    textColor,
+    outlineFillOnHover,
+    padding: { all: defaultPadding, ...padding },
+    textColor: resolvedTextColor,
+    textColorOnHover: resolvedTextColorOnHover,
     textTransform,
-    width,
+    underline,
     whiteSpace,
+    width,
   });
 
-  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
-    onClick?.(event);
-    if (href) window.open(href, "_blank");
-  };
+  const handleClick = (event: MouseEvent<HTMLButtonElement>) => onClick?.(event);
 
   return (
     <TooltipWrapper {...{ tooltip, tooltipProps }}>
       <MuiButton
         {...props}
-        size={size}
+        {...{ size, variant }}
+        {...(isAnchor ? { component: "a", href } : {})}
         onClick={handleClick}
-        variant="contained"
         className={cx(css.root, className)}
       >
         <LoadingOverlay isLoading={loading} />
 
-        <View row justify={justify} spacing="0.3rem" height="100%" width="100%">
-          {startNode}
+        {startNode}
 
-          {icon && <Icon name={icon} size={iconSize} color={textColor} {...iconProps} />}
+        <View row align="center" spacing="0.3rem">
+          {icon && <Icon name={icon} size={iconSize} {...iconProps} />}
 
           {typeof text === "string" ? (
             <Text
-              {...{ fontSize, fontWeight }}
-              color={textColor}
-              className={cx(css.text, className)}
+              {...{ fontFamily, fontSize, fontWeight, textTransform }}
+              {...textProps}
+              className={cx(css.text, textClassName, textProps.className)}
             >
               {text}
             </Text>
@@ -148,10 +190,10 @@ export const Button = ({
             text
           )}
 
-          {iconRight && <Icon name={iconRight} size={iconSize} color={textColor} {...iconProps} />}
-
-          {endNode}
+          {iconRight && <Icon name={iconRight} size={iconSize} {...iconProps} />}
         </View>
+
+        {endNode}
       </MuiButton>
     </TooltipWrapper>
   );
@@ -159,78 +201,113 @@ export const Button = ({
 
 interface ClassesProps extends Pick<
   ButtonProps,
+  | "borderColorOnHover"
   | "borderRadiuses"
+  | "borders"
   | "boxShadow"
   | "color"
   | "colorOnHover"
   | "height"
   | "justify"
   | "margins"
+  | "maxWidth"
   | "outlined"
   | "outlineFill"
+  | "outlineFillOnHover"
   | "padding"
   | "textColor"
+  | "textColorOnHover"
   | "textTransform"
-  | "width"
+  | "underline"
   | "whiteSpace"
+  | "width"
 > {
-  isLink: boolean;
+  isLinkDisplay: boolean;
 }
 
-const useClasses = makeClasses((props: ClassesProps) => ({
-  root: {
-    position: "relative",
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: props.justify,
-    alignItems: "center",
-    border: `1px solid ${props.outlined ? props.color : "transparent"}`,
-    ...makeBorderRadiuses(props.borderRadiuses),
-    ...makeMargins(props.margins),
-    ...makePadding({
-      all: props.padding?.all,
-      top: props.padding?.top ?? (props.isLink ? 0 : undefined),
-      bottom: props.padding?.bottom ?? (props.isLink ? 0 : undefined),
-      right: props.padding?.right ?? (props.isLink ? 0 : undefined),
-      left: props.padding?.left ?? (props.isLink ? 0 : undefined),
-    }),
-    minWidth: "fit-content",
-    height: props.height,
-    width: props.width,
-    backgroundColor: props.isLink
+const useClasses = makeClasses((props: ClassesProps) => {
+  const bgColor = props.outlined
+    ? props.outlineFill
+    : props.isLinkDisplay
       ? "transparent"
-      : props.outlined
-        ? props.outlineFill
-        : props.color,
-    boxShadow: props.boxShadow ?? "none",
-    color: props.outlined
-      ? props.color
-      : (props.textColor ??
-        (props.isLink
-          ? colors.custom.lightBlue
-          : props.outlined
-            ? props.color
-            : colors.custom.white)),
-    textTransform: props.textTransform,
-    overflow: "hidden",
-    "&:hover": {
-      background: props.isLink
-        ? "transparent"
-        : props.colorOnHover ||
-          Color(props.outlined ? props.outlineFill : props.color)
-            .lighten(0.1)
-            .string(),
-      boxShadow: props.isLink ? "none" : undefined,
-      textDecoration: props.isLink ? "underline" : undefined,
+      : props.color;
+  const bgColorOnHover = props.isLinkDisplay
+    ? "transparent"
+    : props.outlined
+      ? (props.outlineFillOnHover ?? Color(props.outlineFill).fade(0.1).string())
+      : (props.colorOnHover ?? Color(props.color).fade(0.1).string());
+  const borderColor = props.outlined ? props.color : bgColor;
+  const borderColorOnHover =
+    props.borderColorOnHover ?? (props.outlined ? props.colorOnHover : bgColorOnHover);
+  const linkPadding = props.isLinkDisplay && !props.padding?.all ? 0 : undefined;
+  const textColor = `${props.textColor} !important`;
+  const textColorOnHover = `${props.textColorOnHover} !important`;
+  const textDecoration = props.underline === "always" ? "underline" : "none";
+  const textDecorationOnHover = props.underline === "none" ? "none" : "underline";
+
+  return {
+    root: {
+      position: "relative",
+      display: props.isLinkDisplay ? "inline-flex" : "flex",
+      flexDirection: "row",
+      justifyContent: props.justify,
+      alignItems: "center",
+      alignSelf: "auto",
+      border: `1px solid ${borderColor}`,
+      ...makeBorderRadiuses(props.borderRadiuses),
+      ...makeBorders(props.borders),
+      ...makeMargins(props.margins),
+      padding: props.padding?.all,
+      paddingTop: props.padding?.top ?? linkPadding,
+      paddingBottom: props.padding?.bottom ?? linkPadding,
+      paddingRight: props.padding?.right ?? linkPadding,
+      paddingLeft: props.padding?.left ?? linkPadding,
+      maxWidth: props.maxWidth,
+      minWidth: "fit-content",
+      height: props.height,
+      width: props.width,
+      backgroundColor: bgColor,
+      color: textColor,
+      cursor: "pointer",
+      textDecoration,
+      textTransform: props.textTransform,
+      lineHeight: 1,
+      boxShadow: props.boxShadow ?? "none",
+      "&:active": {
+        color: textColor,
+        textDecoration,
+      },
+      "&:link": {
+        color: textColor,
+      },
+      "&:hover, &:link:hover, &:visited:hover": {
+        backgroundColor: bgColorOnHover,
+        borderColor: borderColorOnHover,
+        color: textColorOnHover,
+        boxShadow: props.boxShadow ?? (props.isLinkDisplay ? "none" : undefined),
+        textDecoration: `${textDecorationOnHover} !important`,
+      },
+      "&:visited": {
+        color: textColor,
+        textDecoration,
+      },
+      "&.Mui-disabled": {
+        backgroundColor: bgColor,
+        color: textColor,
+        opacity: 0.5,
+        "&:hover": {
+          backgroundColor: bgColorOnHover,
+          color: textColorOnHover,
+        },
+      },
     },
-  },
-  text: {
-    lineHeight: 1.1,
-    alignSelf: "center",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    transition: "all 100ms ease-in-out",
-    textTransform: props.textTransform,
-    whiteSpace: props.whiteSpace,
-  },
-}));
+    text: {
+      lineHeight: 1.2,
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+      transition: "all 100ms ease-in-out",
+      textTransform: props.textTransform,
+      whiteSpace: props.whiteSpace,
+    },
+  };
+});

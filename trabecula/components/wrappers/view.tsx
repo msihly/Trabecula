@@ -22,11 +22,16 @@ export interface ViewProps extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode | ReactNode[];
   className?: string;
   column?: boolean;
+  cursor?: CSS["cursor"];
   display?: CSS["display"];
   flex?: CSS["flex"];
   height?: CSS["height"];
   justify?: CSS["justifyContent"];
   margins?: Margins;
+  maxHeight?: CSS["maxHeight"];
+  maxWidth?: CSS["maxWidth"];
+  minHeight?: CSS["minHeight"];
+  minWidth?: CSS["minWidth"];
   opacity?: CSS["opacity"];
   overflow?: CSS["overflow"];
   padding?: Padding;
@@ -47,11 +52,16 @@ export const View = Comp(
       children,
       className,
       column,
+      cursor,
       display,
       flex,
       height,
       justify,
       margins,
+      maxHeight,
+      maxWidth,
+      minHeight,
+      minWidth,
       opacity,
       overflow,
       padding,
@@ -72,11 +82,16 @@ export const View = Comp(
       borders,
       borderRadiuses,
       column,
+      cursor,
       display,
       flex,
       height,
       justify,
       margins,
+      maxHeight,
+      maxWidth,
+      minHeight,
+      minWidth,
       opacity,
       overflow,
       padding,
@@ -100,11 +115,16 @@ interface ClassesProps extends Pick<
   | "align"
   | "bgColor"
   | "column"
+  | "cursor"
   | "display"
   | "flex"
   | "height"
   | "justify"
   | "margins"
+  | "maxHeight"
+  | "maxWidth"
+  | "minHeight"
+  | "minWidth"
   | "opacity"
   | "overflow"
   | "padding"
@@ -131,11 +151,16 @@ const useClasses = makeClasses((props: ClassesProps) => ({
     ...makeBorderRadiuses(props.borderRadiuses),
     ...makeMargins(props.margins),
     ...makePadding(props.padding),
+    maxHeight: props.maxHeight,
+    maxWidth: props.maxWidth,
+    minHeight: props.minHeight,
+    minWidth: props.minWidth,
     height: props.height,
     width: props.width,
     backgroundColor: props.bgColor,
     opacity: props.opacity,
     overflow: props.overflow,
+    cursor: props.cursor,
     ...(props.spacing
       ? {
           "& > *:not(:last-child)": {

@@ -1,4 +1,4 @@
-export { B as BorderRadiuses, a as Borders, C as CSS, b as CssColor, c as CssNamedColor, M as Margins, P as Padding, d as colors, m as makeBorderRadiuses, e as makeBorders, f as makeClasses, g as makeMargins, h as makePadding } from '../../css-B32sWQHL.mjs';
+export { B as BorderRadiuses, a as Borders, C as CSS, b as CssColor, c as CssNamedColor, M as Margins, P as Padding, d as colors, m as makeBorderRadiuses, e as makeBorders, f as makeClasses, g as makeMargins, h as makePadding } from '../../css-BUA_CbgU.mjs';
 import { EffectCallback, DependencyList, MutableRefObject, ReactNode } from 'react';
 import * as mobx_keystone from 'mobx-keystone';
 import { P as PromiseQueue } from '../../queue-CNnYljaI.mjs';
@@ -25,7 +25,7 @@ declare const useLazyLoad: (containerRef: React.RefObject<HTMLElement>, options?
     threshold?: number | number[];
 }) => boolean;
 
-declare const copyToClipboard: (value: string, message: string) => void;
+declare const copyToClipboard: (value: string, message?: string) => void;
 
 type MobxKeystoneBindings = {
     onPatches: typeof mobx_keystone.onPatches;
