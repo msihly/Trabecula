@@ -4359,6 +4359,7 @@ var useClasses32 = makeClasses((props) => ({
     color: props.color,
     fontSize: props.fontSize,
     whiteSpace: "pre-wrap",
+    width: "max-content",
     boxShadow: "rgb(0 0 0 / 97%) 0px 0px 2px 0px"
   },
   popper: {
