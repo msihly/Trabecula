@@ -210,9 +210,8 @@ var useClasses = makeClasses((props) => {
       display: "flex",
       flexDirection: "row",
       justifyContent: props.justify,
-      alignItems: "center",
-      border: `1px solid ${borderColor}`
-    }, makeBorderRadiuses(props.borderRadiuses)), makeBorders(props.borders)), makeMargins(props.margins)), {
+      alignItems: "center"
+    }, makeBorderRadiuses(props.borderRadiuses)), makeBorders(__spreadValues({ all: `1px solid ${borderColor}` }, props.borders))), makeMargins(props.margins)), {
       padding: (_e = props.padding) == null ? void 0 : _e.all,
       paddingTop: (_g = (_f = props.padding) == null ? void 0 : _f.top) != null ? _g : linkPadding,
       paddingBottom: (_i = (_h = props.padding) == null ? void 0 : _h.bottom) != null ? _i : linkPadding,
