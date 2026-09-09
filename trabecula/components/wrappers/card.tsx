@@ -23,6 +23,7 @@ export const Card = Comp(
       header,
       height,
       headerProps,
+      margins,
       boxShadow,
       overflow,
       padding = {},
@@ -47,6 +48,7 @@ export const Card = Comp(
         header={header}
         headerProps={headerProps}
         height={height}
+        margins={margins}
         overflow={overflow}
         width={width}
       >
@@ -63,7 +65,7 @@ export const Card = Comp(
           ref={ref}
           row={row}
           spacing={spacing}
-          width={width}
+          width={header ? "100%" : width}
           {...viewProps}
           aria-label="card"
         >

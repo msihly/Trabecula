@@ -3841,7 +3841,7 @@ var Input = Comp((rawProps, ref) => {
     helperText,
     helperTextProps,
     inputRootHeight,
-    margins,
+    margins: hasLabel ? {} : margins,
     minWidth,
     noFade,
     padding,
@@ -3866,6 +3866,7 @@ var Input = Comp((rawProps, ref) => {
       flex,
       header: resolvedLabel,
       headerProps: resolvedLabelProps,
+      margins: hasLabel ? margins : void 0,
       overflow: "initial",
       textProps: labelTextProps,
       width,
@@ -7164,6 +7165,7 @@ var Card = Comp(
       header,
       height,
       headerProps,
+      margins,
       boxShadow,
       overflow,
       padding = {},
@@ -7181,6 +7183,7 @@ var Card = Comp(
       "header",
       "height",
       "headerProps",
+      "margins",
       "boxShadow",
       "overflow",
       "padding",
@@ -7201,6 +7204,7 @@ var Card = Comp(
         header,
         headerProps,
         height,
+        margins,
         overflow,
         width,
         children: /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(
@@ -7218,7 +7222,7 @@ var Card = Comp(
             ref,
             row,
             spacing,
-            width
+            width: header ? "100%" : width
           }, viewProps), {
             "aria-label": "card",
             children
@@ -7865,26 +7869,41 @@ var HeaderWrapper = Comp(
       header,
       height = "auto",
       headerProps = {},
+      margins,
       position = "relative",
       row,
       spacing,
-      textProps = {}
+      textProps = {},
+      width
     } = _b, viewProps = __objRest(_b, [
       "children",
       "display",
       "header",
       "height",
       "headerProps",
+      "margins",
       "position",
       "row",
       "spacing",
-      "textProps"
+      "textProps",
+      "width"
     ]);
     headerProps = deepMerge(DEFAULT_HEADER_PROPS, headerProps);
-    const wrap = (content) => /* @__PURE__ */ (0, import_jsx_runtime67.jsxs)(View, __spreadProps(__spreadValues({}, viewProps), { ref, column: true, height, "aria-label": "header-wrapper", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(View, __spreadProps(__spreadValues({}, headerProps), { "aria-label": "header", children: typeof header === "string" ? /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(Text, __spreadProps(__spreadValues({ flex: 1, fontSize: headerProps.fontSize, textAlign: "center" }, textProps), { children: header })) : header })),
-      content
-    ] }));
+    const wrap = (content) => /* @__PURE__ */ (0, import_jsx_runtime67.jsxs)(
+      View,
+      __spreadProps(__spreadValues({}, viewProps), {
+        ref,
+        column: true,
+        height,
+        margins,
+        width,
+        "aria-label": "header-wrapper",
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(View, __spreadProps(__spreadValues({}, headerProps), { "aria-label": "header", children: typeof header === "string" ? /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(Text, __spreadProps(__spreadValues({ flex: 1, fontSize: headerProps.fontSize, textAlign: "center" }, textProps), { children: header })) : header })),
+          content
+        ]
+      })
+    );
     return /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(ConditionalWrap, { condition: !!header, wrap, children: /* @__PURE__ */ (0, import_jsx_runtime67.jsx)(
       View,
       __spreadProps(__spreadValues({
@@ -7894,9 +7913,11 @@ var HeaderWrapper = Comp(
         "aria-label": "header-wrapper-content",
         display,
         height,
+        margins: header ? void 0 : margins,
         position,
         row,
         spacing,
+        width: header ? "100%" : width,
         children
       })
     ) });

@@ -144,7 +144,7 @@ export const Input = Comp((rawProps: InputProps, ref?: MutableRefObject<HTMLDivE
     helperText,
     helperTextProps,
     inputRootHeight,
-    margins,
+    margins: hasLabel ? {} : margins,
     minWidth,
     noFade,
     padding,
@@ -171,6 +171,7 @@ export const Input = Comp((rawProps: InputProps, ref?: MutableRefObject<HTMLDivE
       flex={flex}
       header={resolvedLabel}
       headerProps={resolvedLabelProps}
+      margins={hasLabel ? margins : undefined}
       overflow="initial"
       textProps={labelTextProps}
       width={width}
