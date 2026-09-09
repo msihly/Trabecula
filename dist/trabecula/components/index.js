@@ -721,7 +721,7 @@ var Button = (_a) => {
   ]);
   const isAnchor = !!href;
   const isLinkDisplay = type === "link";
-  const defaultPadding = isLinkDisplay ? "0" : dense ? "0 0.5rem" : !text ? "0.4rem" : "0.4rem 0.8rem";
+  const defaultPadding = isLinkDisplay ? "0" : dense ? "0 0.5rem" : !text ? "0.3rem" : "0.3rem 0.7rem";
   const defaultHeight = !isLinkDisplay && dense ? DENSE_FORM_ROW_HEIGHT : void 0;
   const resolvedTextColor = textColor != null ? textColor : outlined ? color : isLinkDisplay ? colors.custom.lightBlue : colors.custom.white;
   const resolvedColorOnHover = colorOnHover;
