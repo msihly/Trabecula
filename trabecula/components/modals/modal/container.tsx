@@ -42,13 +42,13 @@ export const Container = ({
   return (
     <Dialog
       {...props}
-      {...{ scroll }}
+      scroll={scroll}
       PaperComponent={draggable ? DraggablePaper : undefined}
       open={visible}
       onClose={handleClose}
       className={cx(css.modal, className)}
     >
-      <LoadingOverlay {...{ isLoading }} />
+      <LoadingOverlay isLoading={isLoading} />
 
       {children}
     </Dialog>

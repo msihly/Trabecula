@@ -23,7 +23,11 @@ export const Link = ({
 
   return (
     <MuiLink
-      {...{ fontSize, fontWeight, rel, target, underline }}
+      fontSize={fontSize}
+      fontWeight={fontWeight}
+      rel={rel}
+      target={target}
+      underline={underline}
       {...props}
       className={cx(css.link, className)}
     >

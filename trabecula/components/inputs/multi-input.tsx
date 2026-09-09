@@ -55,17 +55,27 @@ export const MultiInput = Comp(
     };
 
     const renderList = () => (
-      <MultiInputList {...{ hasDelete, hasDeleteAll }} search={{ onChange, value }} hasInput />
+      <MultiInputList
+        hasDelete={hasDelete}
+        hasDeleteAll={hasDeleteAll}
+        search={{ onChange, value }}
+        hasInput
+      />
     );
 
     return (
       <View column height="100%" width="100%">
         {single && value.length > 0 ? (
-          <HeaderWrapper {...{ header, headerProps }}>{renderList()}</HeaderWrapper>
+          <HeaderWrapper header={header} headerProps={headerProps}>
+            {renderList()}
+          </HeaderWrapper>
         ) : (
           <>
             <Input
-              {...{ disabled, hasHelper, header, headerProps }}
+              disabled={disabled}
+              hasHelper={hasHelper}
+              header={header}
+              headerProps={headerProps}
               {...inputProps}
               onKeyDown={onKeyDown}
               ref={inputRef}

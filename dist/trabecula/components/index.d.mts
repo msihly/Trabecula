@@ -350,6 +350,7 @@ interface MultiInputProps<T = string> {
 declare const MultiInput: react.ForwardRefExoticComponent<MultiInputProps<string> & react.RefAttributes<HTMLDivElement>>;
 
 interface MultiInputListProps<T = string> {
+    hasDelete?: boolean;
     hasDeleteAll?: boolean;
     hasInput?: boolean;
     renderRow?: (index: number, style: React.CSSProperties) => JSX.Element;

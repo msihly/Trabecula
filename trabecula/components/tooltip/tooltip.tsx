@@ -47,7 +47,9 @@ export const Tooltip = ({
   return (
     <MuiTooltip
       {...props}
-      {...{ arrow, placement, title }}
+      arrow={arrow}
+      placement={placement}
+      title={title}
       classes={{ arrow: css.arrow, popper: css.popper, tooltip: css.tooltip }}
     >
       <View

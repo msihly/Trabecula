@@ -12,7 +12,7 @@ export const Footer = ({ children, uniformWidth = "10rem", ...props }: FooterPro
         justify="center"
         spacing="0.5rem"
         width="100%"
-        {...{ uniformWidth }}
+        uniformWidth={uniformWidth}
         {...props}
       >
         {children}

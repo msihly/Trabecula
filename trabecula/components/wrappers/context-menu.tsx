@@ -101,7 +101,7 @@ const Item = ({
       {item.subItems?.length ? (
         <View column>
           {item.subItems.map((subItem) => (
-            <SubItem key={subItem.label} {...{ subItem, onClose }} />
+            <SubItem key={subItem.label} subItem={subItem} onClose={onClose} />
           ))}
         </View>
       ) : null}

@@ -35,7 +35,7 @@ export const NumRange = Comp(
         startInput={
           <NumInput
             {...numInputProps}
-            {...{ hasHelper }}
+            hasHelper={hasHelper}
             value={min}
             setValue={setMin}
             placeholder="Min"
@@ -46,7 +46,7 @@ export const NumRange = Comp(
         endInput={
           <NumInput
             {...numInputProps}
-            {...{ hasHelper }}
+            hasHelper={hasHelper}
             value={max}
             setValue={setMax}
             placeholder="Max"

@@ -14,7 +14,7 @@ export const CenteredText = ({
   ...props
 }: CenteredTextProps) => (
   <View row justify="center" align="center" flex={1} {...viewProps}>
-    <Text {...props} {...{ color }}>
+    <Text {...props} color={color}>
       {text}
     </Text>
   </View>

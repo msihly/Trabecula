@@ -107,7 +107,10 @@ export const Image = ({
         </View>
       ) : thumbPaths?.length > 0 ? (
         <img
-          {...{ draggable, loading, onDragEnd, onDragStart }}
+          draggable={draggable}
+          loading={loading}
+          onDragEnd={onDragEnd}
+          onDragStart={onDragStart}
           src={thumbPaths[thumbIndex]}
           alt={title}
           onError={handleError}

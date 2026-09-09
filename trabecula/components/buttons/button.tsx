@@ -165,10 +165,11 @@ export const Button = ({
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => onClick?.(event);
 
   return (
-    <TooltipWrapper {...{ tooltip, tooltipProps }}>
+    <TooltipWrapper tooltip={tooltip} tooltipProps={tooltipProps}>
       <MuiButton
         {...props}
-        {...{ size, variant }}
+        size={size}
+        variant={variant}
         {...(isAnchor ? { component: "a", href } : {})}
         onClick={handleClick}
         className={cx(css.root, className)}
@@ -182,7 +183,10 @@ export const Button = ({
 
           {typeof text === "string" ? (
             <Text
-              {...{ fontFamily, fontSize, fontWeight, textTransform }}
+              fontFamily={fontFamily}
+              fontSize={fontSize}
+              fontWeight={fontWeight}
+              textTransform={textTransform}
               {...textProps}
               className={cx(css.text, className, textClassName, textProps.className)}
             >

@@ -113,7 +113,7 @@ export const Text = ({
   });
 
   return (
-    <TooltipWrapper {...{ tooltip, tooltipProps }}>
+    <TooltipWrapper tooltip={tooltip} tooltipProps={tooltipProps}>
       <Typography
         {...props}
         component={component}

@@ -30,7 +30,8 @@ export const ChipInput = Comp(
 
     return (
       <Autocomplete
-        {...{ options, value }}
+        options={options}
+        value={value}
         getOptionLabel={(option: ChipOption) => option.label}
         renderInput={(params) => (
           <Input

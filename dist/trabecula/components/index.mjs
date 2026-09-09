@@ -161,9 +161,12 @@ var Button = (_a) => {
     width
   });
   const handleClick = (event) => onClick == null ? void 0 : onClick(event);
-  return /* @__PURE__ */ jsx(TooltipWrapper, __spreadProps(__spreadValues({}, { tooltip, tooltipProps }), { children: /* @__PURE__ */ jsxs(
+  return /* @__PURE__ */ jsx(TooltipWrapper, { tooltip, tooltipProps, children: /* @__PURE__ */ jsxs(
     MuiButton,
-    __spreadProps(__spreadValues(__spreadValues(__spreadValues({}, props), { size, variant }), isAnchor ? { component: "a", href } : {}), {
+    __spreadProps(__spreadValues(__spreadProps(__spreadValues({}, props), {
+      size,
+      variant
+    }), isAnchor ? { component: "a", href } : {}), {
       onClick: handleClick,
       className: cx(css.root, className),
       children: [
@@ -173,7 +176,12 @@ var Button = (_a) => {
           icon && /* @__PURE__ */ jsx(Icon, __spreadValues({ name: icon, size: iconSize }, iconProps)),
           typeof text === "string" ? /* @__PURE__ */ jsx(
             Text,
-            __spreadProps(__spreadValues(__spreadValues({}, { fontFamily, fontSize, fontWeight, textTransform }), textProps), {
+            __spreadProps(__spreadValues({
+              fontFamily,
+              fontSize,
+              fontWeight,
+              textTransform
+            }, textProps), {
               className: cx(css.text, className, textClassName, textProps.className),
               children: text
             })
@@ -183,7 +191,7 @@ var Button = (_a) => {
         ] })
       ]
     })
-  ) }));
+  ) });
 };
 var useClasses = makeClasses((props) => {
   var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o;
@@ -381,16 +389,19 @@ var IconButton = (_a) => {
     "tooltipProps"
   ]);
   const { css, cx } = useClasses3({ disabled, margins, padding });
-  return /* @__PURE__ */ jsx4(TooltipWrapper, __spreadProps(__spreadValues({}, { tooltip, tooltipProps }), { children: /* @__PURE__ */ jsxs3(
+  return /* @__PURE__ */ jsx4(TooltipWrapper, { tooltip, tooltipProps, children: /* @__PURE__ */ jsxs3(
     MuiIconButton,
-    __spreadProps(__spreadValues(__spreadValues({}, props), { disabled, onClick, size }), {
+    __spreadProps(__spreadValues({}, props), {
+      disabled,
+      onClick,
+      size,
       className: cx(css.root, className),
       children: [
-        name && /* @__PURE__ */ jsx4(Icon, __spreadValues(__spreadValues({}, iconProps), { color, name })),
+        name && /* @__PURE__ */ jsx4(Icon, __spreadProps(__spreadValues({}, iconProps), { color: color != null ? color : iconProps.color, name })),
         children
       ]
     })
-  ) }));
+  ) });
 };
 var useClasses3 = makeClasses((props) => ({
   root: __spreadProps(__spreadValues(__spreadValues({}, makeMargins(props.margins)), makePadding(props.padding)), {
@@ -545,14 +556,16 @@ var MenuButton = (_a) => {
     button ? button(handleOpen) : /* @__PURE__ */ jsx6(IconButton, __spreadValues({ name: icon, onClick: handleOpen, iconProps: { color } }, props)),
     /* @__PURE__ */ jsx6(
       Menu,
-      __spreadProps(__spreadValues({}, { anchorEl, keepMounted }), {
+      {
+        anchorEl,
+        keepMounted,
         open: Boolean(anchorEl),
         onClose: handleClose,
         anchorOrigin: { horizontal: "right", vertical: "bottom" },
         transformOrigin: { horizontal: "right", vertical: "top" },
         className: css.menu,
         children: typeof children === "function" ? children(handleClose) : children
-      })
+      }
     )
   ] });
 };
@@ -622,7 +635,7 @@ var SortMenu = (_a) => {
       ] })
     })
   );
-  return /* @__PURE__ */ jsx8(MenuButton, { button: renderButton, children: /* @__PURE__ */ jsx8(View, { column: true, children: rows.map((rowProps) => /* @__PURE__ */ createElement(SortRow, __spreadProps(__spreadValues(__spreadValues({}, rowProps), { setValue, value }), { key: rowProps.attribute }))) }) });
+  return /* @__PURE__ */ jsx8(MenuButton, { button: renderButton, children: /* @__PURE__ */ jsx8(View, { column: true, children: rows.map((rowProps) => /* @__PURE__ */ createElement(SortRow, __spreadProps(__spreadValues({}, rowProps), { setValue, value, key: rowProps.attribute }))) }) });
 };
 var useClasses5 = makeClasses({
   button: {
@@ -659,8 +672,8 @@ var SortRow = ({
   return /* @__PURE__ */ jsxs7(View, { className: css.row, children: [
     /* @__PURE__ */ jsx9(Icon, __spreadValues({ name: icon }, iconProps)),
     /* @__PURE__ */ jsx9(Text, { className: css.label, children: label }),
-    /* @__PURE__ */ jsx9(SortButton, __spreadProps(__spreadValues({}, { attribute, setValue, value }), { isDesc: true })),
-    /* @__PURE__ */ jsx9(SortButton, __spreadValues({}, { attribute, setValue, value }))
+    /* @__PURE__ */ jsx9(SortButton, { attribute, setValue, value, isDesc: true }),
+    /* @__PURE__ */ jsx9(SortButton, { attribute, setValue, value })
   ] });
 };
 var SortButton = ({ attribute, isDesc = false, setValue, value }) => {
@@ -765,7 +778,9 @@ var ChipInput = Comp(
     const [inputValue, setInputValue] = useState3("");
     return /* @__PURE__ */ jsx11(
       Autocomplete2,
-      __spreadValues(__spreadProps(__spreadValues({}, { options, value }), {
+      __spreadValues({
+        options,
+        value,
         getOptionLabel: (option) => option.label,
         renderInput: (params) => /* @__PURE__ */ jsx11(
           Input,
@@ -793,7 +808,7 @@ var ChipInput = Comp(
         clearOnBlur: false,
         disableClearable: true,
         multiple: true
-      }), props)
+      }, props)
     );
   }
 );
@@ -1712,7 +1727,7 @@ var LogOpsInput = Comp(
       "setNumValue",
       "setNumValueDisplay"
     ]);
-    return /* @__PURE__ */ jsxs9(HeaderWrapper, __spreadProps(__spreadValues(__spreadValues({ row: true, overflow: "hidden" }, { header, headerProps }), props), { children: [
+    return /* @__PURE__ */ jsxs9(HeaderWrapper, __spreadProps(__spreadValues({ row: true, overflow: "hidden", header, headerProps }, props), { children: [
       /* @__PURE__ */ jsx17(
         Dropdown,
         __spreadValues({
@@ -1829,20 +1844,14 @@ var useClasses11 = makeClasses((props) => ({
 // trabecula/components/inputs/multi-input-list.tsx
 import { jsx as jsx19, jsxs as jsxs11 } from "react/jsx-runtime";
 var MultiInputList = forwardRef2(
-  (_a, ref) => {
-    var _b = _a, {
-      hasDeleteAll = false,
-      hasInput,
-      renderRow,
-      search,
-      viewProps = {}
-    } = _b, props = __objRest(_b, [
-      "hasDeleteAll",
-      "hasInput",
-      "renderRow",
-      "search",
-      "viewProps"
-    ]);
+  ({
+    hasDelete,
+    hasDeleteAll = false,
+    hasInput,
+    renderRow,
+    search,
+    viewProps = {}
+  }, ref) => {
     const { css } = useClasses12({ hasDeleteAll, hasInput });
     const handleDeleteAll = () => search.onChange([]);
     return /* @__PURE__ */ jsxs11(View, { column: true, height: "100%", children: [
@@ -1868,9 +1877,12 @@ var MultiInputList = forwardRef2(
               itemCount: search.value.length,
               children: ({ index, style }) => renderRow ? renderRow(index, style) : /* @__PURE__ */ jsx19(
                 MultiInputRow,
-                __spreadValues(__spreadValues({
-                  value: search.value[index]
-                }, { search, style }), props),
+                {
+                  hasDelete,
+                  value: search.value[index],
+                  search,
+                  style
+                },
                 index
               )
             }
@@ -1930,11 +1942,24 @@ var MultiInput = Comp(
         setInputValue("");
       }
     };
-    const renderList = () => /* @__PURE__ */ jsx20(MultiInputList, __spreadProps(__spreadValues({}, { hasDelete, hasDeleteAll }), { search: { onChange, value }, hasInput: true }));
-    return /* @__PURE__ */ jsx20(View, { column: true, height: "100%", width: "100%", children: single && value.length > 0 ? /* @__PURE__ */ jsx20(HeaderWrapper, __spreadProps(__spreadValues({}, { header, headerProps }), { children: renderList() })) : /* @__PURE__ */ jsxs12(Fragment3, { children: [
+    const renderList = () => /* @__PURE__ */ jsx20(
+      MultiInputList,
+      {
+        hasDelete,
+        hasDeleteAll,
+        search: { onChange, value },
+        hasInput: true
+      }
+    );
+    return /* @__PURE__ */ jsx20(View, { column: true, height: "100%", width: "100%", children: single && value.length > 0 ? /* @__PURE__ */ jsx20(HeaderWrapper, { header, headerProps, children: renderList() }) : /* @__PURE__ */ jsxs12(Fragment3, { children: [
       /* @__PURE__ */ jsx20(
         Input,
-        __spreadProps(__spreadValues(__spreadValues({}, { disabled, hasHelper, header, headerProps }), inputProps), {
+        __spreadProps(__spreadValues({
+          disabled,
+          hasHelper,
+          header,
+          headerProps
+        }, inputProps), {
           onKeyDown,
           ref: inputRef,
           value: inputValue,
@@ -2022,7 +2047,8 @@ var NumRange = Comp(
         headerProps,
         startInput: /* @__PURE__ */ jsx22(
           NumInput,
-          __spreadProps(__spreadValues(__spreadValues({}, numInputProps), { hasHelper }), {
+          __spreadProps(__spreadValues({}, numInputProps), {
+            hasHelper,
             value: min,
             setValue: setMin,
             placeholder: "Min",
@@ -2032,7 +2058,8 @@ var NumRange = Comp(
         ),
         endInput: /* @__PURE__ */ jsx22(
           NumInput,
-          __spreadProps(__spreadValues(__spreadValues({}, numInputProps), { hasHelper }), {
+          __spreadProps(__spreadValues({}, numInputProps), {
+            hasHelper,
             value: max,
             setValue: setMax,
             placeholder: "Max",
@@ -2458,13 +2485,14 @@ var Container = (_a) => {
   const handleClose = (_, reason) => (reason === "backdropClick" ? closeOnBackdrop : true) && (onClose == null ? void 0 : onClose());
   return /* @__PURE__ */ jsxs17(
     Dialog,
-    __spreadProps(__spreadValues(__spreadValues({}, props), { scroll }), {
+    __spreadProps(__spreadValues({}, props), {
+      scroll,
       PaperComponent: draggable ? DraggablePaper : void 0,
       open: visible,
       onClose: handleClose,
       className: cx(css.modal, className),
       children: [
-        /* @__PURE__ */ jsx30(LoadingOverlay, __spreadValues({}, { isLoading })),
+        /* @__PURE__ */ jsx30(LoadingOverlay, { isLoading }),
         children
       ]
     })
@@ -2518,18 +2546,22 @@ var Content = (_a) => {
   ]);
   const { css } = useClasses19(null);
   padding = __spreadValues({ all: `${dividers ? "0.5rem" : "0.2rem"} 1rem` }, padding);
-  return /* @__PURE__ */ jsx31(DialogContent, __spreadProps(__spreadValues({}, { dividers }), { className: css.content, children: /* @__PURE__ */ jsx31(
+  return /* @__PURE__ */ jsx31(DialogContent, { dividers, className: css.content, children: /* @__PURE__ */ jsx31(
     View,
-    __spreadProps(__spreadValues(__spreadValues({
+    __spreadProps(__spreadValues({
       column: true,
       flex: 1,
       spacing: "0.5rem",
       width: "100%",
-      height: "100%"
-    }, { className, overflow, padding, position }), viewProps), {
+      height: "100%",
+      className,
+      overflow,
+      padding,
+      position
+    }, viewProps), {
       children
     })
-  ) }));
+  ) });
 };
 var useClasses19 = makeClasses({
   content: {
@@ -2545,12 +2577,13 @@ var Footer = (_a) => {
   var _b = _a, { children, uniformWidth = "10rem" } = _b, props = __objRest(_b, ["children", "uniformWidth"]);
   return /* @__PURE__ */ jsx32(DialogActions, { children: /* @__PURE__ */ jsx32(
     UniformList,
-    __spreadProps(__spreadValues(__spreadValues({
+    __spreadProps(__spreadValues({
       row: true,
       justify: "center",
       spacing: "0.5rem",
-      width: "100%"
-    }, { uniformWidth }), props), {
+      width: "100%",
+      uniformWidth
+    }, props), {
       children
     })
   ) });
@@ -3481,7 +3514,7 @@ var CenteredText = (_a) => {
     "text",
     "viewProps"
   ]);
-  return /* @__PURE__ */ jsx41(View, __spreadProps(__spreadValues({ row: true, justify: "center", align: "center", flex: 1 }, viewProps), { children: /* @__PURE__ */ jsx41(Text, __spreadProps(__spreadValues(__spreadValues({}, props), { color }), { children: text })) }));
+  return /* @__PURE__ */ jsx41(View, __spreadProps(__spreadValues({ row: true, justify: "center", align: "center", flex: 1 }, viewProps), { children: /* @__PURE__ */ jsx41(Text, __spreadProps(__spreadValues({}, props), { color, children: text })) }));
 };
 
 // trabecula/components/text/date-detail.tsx
@@ -3565,7 +3598,13 @@ var Link = (_a) => {
   const { css, cx } = useClasses27({ bold, color });
   return /* @__PURE__ */ jsx44(
     MuiLink,
-    __spreadProps(__spreadValues(__spreadValues({}, { fontSize, fontWeight, rel, target, underline }), props), {
+    __spreadProps(__spreadValues({
+      fontSize,
+      fontWeight,
+      rel,
+      target,
+      underline
+    }, props), {
       className: cx(css.link, className),
       children
     })
@@ -3674,7 +3713,7 @@ var Text = (_a) => {
     whiteSpace,
     wordBreak
   });
-  return /* @__PURE__ */ jsx45(TooltipWrapper, __spreadProps(__spreadValues({}, { tooltip, tooltipProps }), { children: /* @__PURE__ */ jsx45(
+  return /* @__PURE__ */ jsx45(TooltipWrapper, { tooltip, tooltipProps, children: /* @__PURE__ */ jsx45(
     Typography,
     __spreadProps(__spreadValues({}, props), {
       component,
@@ -3682,7 +3721,7 @@ var Text = (_a) => {
       className: cx(css.root, className),
       children
     })
-  ) }));
+  ) });
 };
 Text.Inline = (props) => /* @__PURE__ */ jsx45(Text, __spreadValues({ display: "inline" }, props));
 var useClasses28 = makeClasses((props) => {
@@ -4283,7 +4322,10 @@ var Tooltip = (_a) => {
   });
   return /* @__PURE__ */ jsx51(
     MuiTooltip,
-    __spreadProps(__spreadValues(__spreadValues({}, props), { arrow, placement, title }), {
+    __spreadProps(__spreadValues({}, props), {
+      arrow,
+      placement,
+      title,
       classes: { arrow: css.arrow, popper: css.popper, tooltip: css.tooltip },
       children: /* @__PURE__ */ jsx51(
         View,
@@ -4383,15 +4425,32 @@ var Card = Comp(
     const { css, cx } = useClasses33({ boxShadow, elevated });
     return /* @__PURE__ */ jsx53(
       HeaderWrapper,
-      __spreadProps(__spreadValues(__spreadValues({}, viewProps), { borderRadiuses, className, display, header, headerProps, height, overflow, width }), {
+      __spreadProps(__spreadValues({}, viewProps), {
+        borderRadiuses,
+        className,
+        display,
+        header,
+        headerProps,
+        height,
+        overflow,
+        width,
         children: /* @__PURE__ */ jsx53(
           View,
-          __spreadProps(__spreadValues(__spreadValues({
+          __spreadProps(__spreadValues({
             className: cx(css.root, className),
             position: "relative",
             column: column && !row,
-            flex: 1
-          }, { bgColor, borderRadiuses, height, overflow, padding, ref, row, spacing, width }), viewProps), {
+            flex: 1,
+            bgColor,
+            borderRadiuses,
+            height,
+            overflow,
+            padding,
+            ref,
+            row,
+            spacing,
+            width
+          }, viewProps), {
             "aria-label": "card",
             children
           })
@@ -4426,7 +4485,7 @@ var Chip3 = (_a) => {
     "position"
   ]);
   const { css } = useClasses34({ hasFooter, flush, opacity, position });
-  return /* @__PURE__ */ jsx54(Chip2, __spreadProps(__spreadValues(__spreadValues({}, props), { bgColor }), { className: css.chip }));
+  return /* @__PURE__ */ jsx54(Chip2, __spreadProps(__spreadValues({}, props), { bgColor, className: css.chip }));
 };
 var useClasses34 = makeClasses((props) => ({
   chip: {
@@ -4621,14 +4680,18 @@ var Image = ({
           }
         ) }) : (thumbPaths == null ? void 0 : thumbPaths.length) > 0 ? /* @__PURE__ */ jsx58(
           "img",
-          __spreadProps(__spreadValues({}, { draggable, loading, onDragEnd, onDragStart }), {
+          {
+            draggable,
+            loading,
+            onDragEnd,
+            onDragStart,
             src: thumbPaths[thumbIndex],
             alt: title,
             onError: handleError,
             onMouseMove: fit === "cover" ? handleMouseMove : void 0,
             onMouseLeave: fit === "cover" ? handleMouseLeave : void 0,
             className: css.image
-          })
+          }
         ) : /* @__PURE__ */ jsx58(View, { className: css.image }),
         children
       ]
@@ -4725,7 +4788,9 @@ var CardGrid = Comp(
     return /* @__PURE__ */ jsxs30(View, __spreadProps(__spreadValues({}, props), { className: cx(css.root, className), children: [
       cards.length ? /* @__PURE__ */ jsx60(
         View,
-        __spreadProps(__spreadValues(__spreadValues({}, cardsProps), { padding, ref }), {
+        __spreadProps(__spreadValues({}, cardsProps), {
+          padding,
+          ref,
           className: cx(css.cards, cardsProps == null ? void 0 : cardsProps.className),
           children: cards
         })
@@ -4912,7 +4977,7 @@ var Item = ({
       iconEnd: ((_b = item.subItems) == null ? void 0 : _b.length) ? "ChevronRight" : null,
       onClick: handleClick,
       className: css.item,
-      children: ((_c = item.subItems) == null ? void 0 : _c.length) ? /* @__PURE__ */ jsx63(View, { column: true, children: item.subItems.map((subItem) => /* @__PURE__ */ jsx63(SubItem, __spreadValues({}, { subItem, onClose }), subItem.label)) }) : null
+      children: ((_c = item.subItems) == null ? void 0 : _c.length) ? /* @__PURE__ */ jsx63(View, { column: true, children: item.subItems.map((subItem) => /* @__PURE__ */ jsx63(SubItem, { subItem, onClose }, subItem.label)) }) : null
     },
     item.label
   );

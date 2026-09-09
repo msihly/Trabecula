@@ -27,14 +27,17 @@ export const Content = ({
   padding = { all: `${dividers ? "0.5rem" : "0.2rem"} 1rem`, ...padding };
 
   return (
-    <DialogContent {...{ dividers }} className={css.content}>
+    <DialogContent dividers={dividers} className={css.content}>
       <View
         column
         flex={1}
         spacing="0.5rem"
         width="100%"
         height="100%"
-        {...{ className, overflow, padding, position }}
+        className={className}
+        overflow={overflow}
+        padding={padding}
+        position={position}
         {...viewProps}
       >
         {children}

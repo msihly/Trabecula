@@ -35,7 +35,8 @@ export const CardGrid = Comp(
         {cards.length ? (
           <View
             {...cardsProps}
-            {...{ padding, ref }}
+            padding={padding}
+            ref={ref}
             className={cx(css.cards, cardsProps?.className)}
           >
             {cards}

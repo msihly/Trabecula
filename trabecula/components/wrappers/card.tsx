@@ -41,14 +41,29 @@ export const Card = Comp(
     return (
       <HeaderWrapper
         {...viewProps}
-        {...{ borderRadiuses, className, display, header, headerProps, height, overflow, width }}
+        borderRadiuses={borderRadiuses}
+        className={className}
+        display={display}
+        header={header}
+        headerProps={headerProps}
+        height={height}
+        overflow={overflow}
+        width={width}
       >
         <View
           className={cx(css.root, className)}
           position="relative"
           column={column && !row}
           flex={1}
-          {...{ bgColor, borderRadiuses, height, overflow, padding, ref, row, spacing, width }}
+          bgColor={bgColor}
+          borderRadiuses={borderRadiuses}
+          height={height}
+          overflow={overflow}
+          padding={padding}
+          ref={ref}
+          row={row}
+          spacing={spacing}
+          width={width}
           {...viewProps}
           aria-label="card"
         >

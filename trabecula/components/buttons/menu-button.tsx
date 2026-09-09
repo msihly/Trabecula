@@ -44,7 +44,8 @@ export const MenuButton = ({
       )}
 
       <Menu
-        {...{ anchorEl, keepMounted }}
+        anchorEl={anchorEl}
+        keepMounted={keepMounted}
         open={Boolean(anchorEl)}
         onClose={handleClose}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}

@@ -6,6 +6,7 @@ import { colors, makeClasses } from "trabecula/utils/client";
 import { MULTI_INPUT_ROW_HEIGHT, MultiInputRow } from "./multi-input-row";
 
 export interface MultiInputListProps<T = string> {
+  hasDelete?: boolean;
   hasDeleteAll?: boolean;
   hasInput?: boolean;
   renderRow?: (index: number, style: React.CSSProperties) => JSX.Element;
@@ -19,12 +20,12 @@ export interface MultiInputListProps<T = string> {
 export const MultiInputList = forwardRef(
   <T,>(
     {
+      hasDelete,
       hasDeleteAll = false,
       hasInput,
       renderRow,
       search,
       viewProps = {},
-      ...props
     }: MultiInputListProps<T>,
     ref: MutableRefObject<FixedSizeList>,
   ) => {
@@ -65,9 +66,10 @@ export const MultiInputList = forwardRef(
                       ) : (
                         <MultiInputRow
                           key={index}
+                          hasDelete={hasDelete}
                           value={search.value[index]}
-                          {...{ search, style }}
-                          {...props}
+                          search={search}
+                          style={style}
                         />
                       )
                     }

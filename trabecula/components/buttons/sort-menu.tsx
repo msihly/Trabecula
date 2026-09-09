@@ -57,7 +57,7 @@ export const SortMenu = ({
     <MenuButton button={renderButton}>
       <View column>
         {rows.map((rowProps) => (
-          <SortRow {...rowProps} {...{ setValue, value }} key={rowProps.attribute} />
+          <SortRow {...rowProps} setValue={setValue} value={value} key={rowProps.attribute} />
         ))}
       </View>
     </MenuButton>

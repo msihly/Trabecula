@@ -32,8 +32,8 @@ export const SortRow = ({
     <View className={css.row}>
       <Icon name={icon} {...iconProps} />
       <Text className={css.label}>{label}</Text>
-      <SortButton {...{ attribute, setValue, value }} isDesc />
-      <SortButton {...{ attribute, setValue, value }} />
+      <SortButton attribute={attribute} setValue={setValue} value={value} isDesc />
+      <SortButton attribute={attribute} setValue={setValue} value={value} />
     </View>
   );
 };

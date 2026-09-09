@@ -43,7 +43,7 @@ export const LogOpsInput = Comp(
     ...props
   }: LogOpsInputProps) => {
     return (
-      <HeaderWrapper row overflow="hidden" {...{ header, headerProps }} {...props}>
+      <HeaderWrapper row overflow="hidden" header={header} headerProps={headerProps} {...props}>
         <Dropdown
           value={logOpValue}
           setValue={setLogOpValue}
