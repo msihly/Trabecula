@@ -10,7 +10,7 @@ import {
 import Color from "color";
 import { HeaderWrapper, Icon, Input, InputProps, Text, TextProps } from "trabecula/components";
 import { CSS, CssColor, makeClasses, useElementResize } from "trabecula/utils/client";
-import { deepMerge, DENSE_FORM_ROW_HEIGHT } from "trabecula/utils/common";
+import { deepMerge } from "trabecula/utils/common";
 import { DEFAULT_INPUT_HEADER_PROPS, DENSE_INPUT_PADDING } from "./input";
 
 export type DropdownOption<T = string> = {
@@ -112,10 +112,7 @@ export function Dropdown<T = string>({
     inputOutlineWidth,
     inputPadding,
     inputRootAlignItems,
-    inputRootHeight:
-      dense && inputRootHeight === undefined && props.height === undefined
-        ? DENSE_FORM_ROW_HEIGHT
-        : inputRootHeight,
+    inputRootHeight,
     inputRootMinHeight,
     inputRootPadding,
     itemBgColor,
@@ -328,10 +325,9 @@ const useClasses = makeClasses((props: ClassesProps) => {
   return {
     autocomplete: {
       height: "100%",
-      "& > [aria-label='header-wrapper-content'], & .MuiFormControl-root, & .MuiOutlinedInput-root":
-        {
-          height: "100%",
-        },
+      "& > [aria-label='header-wrapper-content'], & .MuiFormControl-root": {
+        height: "100%",
+      },
     },
     input: {
       "& input": {

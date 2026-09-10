@@ -17,7 +17,7 @@ import {
   Margins,
   Padding,
 } from "trabecula/utils/client";
-import { deepMerge, DENSE_FORM_ROW_HEIGHT } from "trabecula/utils/common";
+import { deepMerge, DENSE_FORM_ROW_HEIGHT, FORM_ROW_HEIGHT } from "trabecula/utils/common";
 
 export const DENSE_INPUT_PADDING = "0.1rem 0.5rem";
 
@@ -114,8 +114,10 @@ export const Input = Comp((rawProps: InputProps, ref?: MutableRefObject<HTMLDivE
   const hasLabel = !!resolvedLabel;
   const inputHeight = rawProps.multiline && rawProps.height === undefined ? undefined : height;
   const inputRootHeight =
-    dense && rawProps.height === undefined && !rawProps.multiline
-      ? DENSE_FORM_ROW_HEIGHT
+    rawProps.height === undefined && !rawProps.multiline
+      ? dense
+        ? DENSE_FORM_ROW_HEIGHT
+        : FORM_ROW_HEIGHT
       : undefined;
   const inputName =
     props.name ??
@@ -273,6 +275,7 @@ const useClasses = makeClasses((props: ClassesProps) => ({
         ...props.padding,
         all: props.padding.all ?? (props.dense ? DENSE_INPUT_PADDING : undefined),
       }),
+      boxSizing: props.inputRootHeight ? "border-box" : undefined,
       color: props.textColor,
       cursor: props.hasOnClick ? "pointer" : undefined,
       fontFamily: props.fontFamily,

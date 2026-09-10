@@ -10,9 +10,10 @@ import {
   makePadding,
   toast,
   useElementResize
-} from "../chunk-F3RGYJ4N.mjs";
+} from "../chunk-ZW6MFLS2.mjs";
 import {
   DENSE_FORM_ROW_HEIGHT,
+  FORM_ROW_HEIGHT,
   Fmt,
   LOGICAL_OPS,
   _CONSTANTS,
@@ -20,7 +21,7 @@ import {
   dayjs,
   debounce,
   deepMerge
-} from "../chunk-CZMNKVKS.mjs";
+} from "../chunk-BJ7A65K2.mjs";
 import {
   __async,
   __objRest,
@@ -1031,7 +1032,7 @@ var Input = Comp((rawProps, ref) => {
   const resolvedLabelProps = deepMerge(DEFAULT_INPUT_HEADER_PROPS, labelProps != null ? labelProps : headerProps);
   const hasLabel = !!resolvedLabel;
   const inputHeight = rawProps.multiline && rawProps.height === void 0 ? void 0 : height;
-  const inputRootHeight = dense && rawProps.height === void 0 && !rawProps.multiline ? DENSE_FORM_ROW_HEIGHT : void 0;
+  const inputRootHeight = rawProps.height === void 0 && !rawProps.multiline ? dense ? DENSE_FORM_ROW_HEIGHT : FORM_ROW_HEIGHT : void 0;
   const inputName = (_b = props.name) != null ? _b : typeof resolvedLabel === "string" ? resolvedLabel.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") : void 0;
   const { css, cx } = useClasses9({
     adornmentColor,
@@ -1125,6 +1126,7 @@ var useClasses9 = makeClasses((props) => {
       "& input, & textarea": __spreadProps(__spreadValues({}, makePadding(__spreadProps(__spreadValues({}, props.padding), {
         all: (_c = props.padding.all) != null ? _c : props.dense ? DENSE_INPUT_PADDING : void 0
       }))), {
+        boxSizing: props.inputRootHeight ? "border-box" : void 0,
         color: props.textColor,
         cursor: props.hasOnClick ? "pointer" : void 0,
         fontFamily: props.fontFamily,
@@ -1282,7 +1284,7 @@ function Dropdown(_a) {
     inputOutlineWidth,
     inputPadding,
     inputRootAlignItems,
-    inputRootHeight: dense && inputRootHeight === void 0 && props.height === void 0 ? DENSE_FORM_ROW_HEIGHT : inputRootHeight,
+    inputRootHeight,
     inputRootMinHeight,
     inputRootPadding,
     itemBgColor,
@@ -1443,7 +1445,7 @@ var useClasses10 = makeClasses((props) => {
   return {
     autocomplete: {
       height: "100%",
-      "& > [aria-label='header-wrapper-content'], & .MuiFormControl-root, & .MuiOutlinedInput-root": {
+      "& > [aria-label='header-wrapper-content'], & .MuiFormControl-root": {
         height: "100%"
       }
     },

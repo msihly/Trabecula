@@ -241,6 +241,7 @@ var VIDEO_EXTS = [...VIDEO_EXTS_COMMON, ...VIDEO_EXTS_UNCOMMON];
 var WEB_VIDEO_CODECS = ["h264", "hevc", "vp8", "vp9", "theora", "av1"];
 var WEB_VIDEO_EXTS = ["mp4", "webm", "ogv", "wav"];
 var DENSE_FORM_ROW_HEIGHT = "1.8rem";
+var FORM_ROW_HEIGHT = "2.25rem";
 var _CONSTANTS = {
   AUDIO: {
     CODECS: AUDIO_CODECS,
@@ -564,6 +565,7 @@ export {
   uniqueArrayFilter,
   uniqueArrayMerge,
   DENSE_FORM_ROW_HEIGHT,
+  FORM_ROW_HEIGHT,
   _CONSTANTS,
   dayjs,
   dateWithTzToIso,
@@ -597,4 +599,4 @@ export {
   uuid,
   PromiseQueue
 };
-//# sourceMappingURL=chunk-CZMNKVKS.mjs.map
+//# sourceMappingURL=chunk-BJ7A65K2.mjs.map
