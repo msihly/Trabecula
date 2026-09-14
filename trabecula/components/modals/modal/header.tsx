@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 // eslint-disable-next-line @typescript-eslint/no-restricted-imports
 import { DialogTitle } from "@mui/material";
-import { ConditionalWrap, UniformList, View } from "trabecula/components";
+import { HeaderContent } from "trabecula/components";
 import { CSS, makeClasses } from "trabecula/utils/client";
 
 export interface HeaderProps {
@@ -23,32 +23,9 @@ export const Header = ({
 
   return (
     <DialogTitle className={cx(css.root, className)}>
-      <ConditionalWrap
-        condition={leftNode !== undefined || rightNode !== undefined}
-        wrap={(wrappedChildren) => (
-          <UniformList row flex={1} align="center">
-            {leftNode ? (
-              <View row align="center" justify="flex-start">
-                {leftNode}
-              </View>
-            ) : (
-              <View />
-            )}
-
-            {wrappedChildren}
-
-            {rightNode ? (
-              <View row align="center" justify="flex-end">
-                {rightNode}
-              </View>
-            ) : (
-              <View />
-            )}
-          </UniformList>
-        )}
-      >
+      <HeaderContent leftNode={leftNode} rightNode={rightNode}>
         {children}
-      </ConditionalWrap>
+      </HeaderContent>
     </DialogTitle>
   );
 };

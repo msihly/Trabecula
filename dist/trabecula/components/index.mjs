@@ -1508,29 +1508,32 @@ var useClasses10 = makeClasses((props) => {
 });
 
 // trabecula/components/inputs/filter-header.tsx
-import { jsx as jsx16, jsxs as jsxs8 } from "react/jsx-runtime";
+import { jsx as jsx16 } from "react/jsx-runtime";
 var FilterHeader = Comp(({ label, mode, setMode }) => {
   const toggleMode = () => setMode(mode === "required" ? "optional" : "required");
-  return /* @__PURE__ */ jsxs8(View, { row: true, align: "center", width: "100%", children: [
-    /* @__PURE__ */ jsx16(Text, { flex: 1, fontSize: "0.8em", textAlign: "center", children: label }),
-    /* @__PURE__ */ jsx16(
-      Button,
-      {
-        color: mode === "optional" ? colors.custom.lightBlue : colors.custom.grey,
-        fontSize: "0.8em",
-        onClick: toggleMode,
-        padding: { all: "0 0.3rem" },
-        text: mode === "optional" ? "OR" : "AND",
-        tooltip: mode === "optional" ? "Optional: match at least one optional filter. Click to make required." : "Required: match this filter. Click to make optional.",
-        variant: "text"
-      }
-    )
-  ] });
+  return /* @__PURE__ */ jsx16(
+    HeaderContent,
+    {
+      rightNode: /* @__PURE__ */ jsx16(
+        Button,
+        {
+          color: mode === "optional" ? colors.custom.lightBlue : colors.custom.grey,
+          fontSize: "0.8em",
+          onClick: toggleMode,
+          padding: { all: "0 0.3rem" },
+          text: mode === "optional" ? "OR" : "AND",
+          tooltip: mode === "optional" ? "Optional: match at least one optional filter. Click to make required." : "Required: match this filter. Click to make optional.",
+          variant: "text"
+        }
+      ),
+      children: /* @__PURE__ */ jsx16(Text, { fontSize: "0.8em", textAlign: "center", children: label })
+    }
+  );
 });
 
 // trabecula/components/inputs/filter-menu.tsx
 import { useEffect as useEffect4, useState as useState6 } from "react";
-import { Fragment as Fragment2, jsx as jsx17, jsxs as jsxs9 } from "react/jsx-runtime";
+import { Fragment as Fragment2, jsx as jsx17, jsxs as jsxs8 } from "react/jsx-runtime";
 var FilterMenu = Comp(
   (_a) => {
     var _b = _a, {
@@ -1569,14 +1572,14 @@ var FilterMenu = Comp(
         justify: "space-between",
         padding: { left: "0.5em", right: "0.5em" },
         width,
-        text: /* @__PURE__ */ jsxs9(View, { row: true, align: "center", spacing: "0.5rem", children: [
+        text: /* @__PURE__ */ jsxs8(View, { row: true, align: "center", spacing: "0.5rem", children: [
           /* @__PURE__ */ jsx17(Icon, { name: "FilterAlt", size: "1.15em" }),
           /* @__PURE__ */ jsx17(Text, { children: "Filter Results" })
         ] })
       })
     );
-    return /* @__PURE__ */ jsx17(MenuButton, __spreadProps(__spreadValues({ button: renderButton }, menuProps), { children: /* @__PURE__ */ jsxs9(View, __spreadProps(__spreadValues({ column: true, padding: { all: "0.5rem" }, spacing: "0.5rem", overflow: "auto" }, viewProps), { children: [
-      /* @__PURE__ */ jsxs9(View, { row: true, spacing: "0.5rem", width: "100%", children: [
+    return /* @__PURE__ */ jsx17(MenuButton, __spreadProps(__spreadValues({ button: renderButton }, menuProps), { children: /* @__PURE__ */ jsxs8(View, __spreadProps(__spreadValues({ column: true, padding: { all: "0.5rem" }, spacing: "0.5rem", overflow: "auto" }, viewProps), { children: [
+      /* @__PURE__ */ jsxs8(View, { row: true, spacing: "0.5rem", width: "100%", children: [
         /* @__PURE__ */ jsx17(
           Button,
           {
@@ -1608,7 +1611,7 @@ var FilterMenu = Comp(
             width: "9rem"
           }
         ),
-        hasSavedSearchApi && /* @__PURE__ */ jsxs9(Fragment2, { children: [
+        hasSavedSearchApi && /* @__PURE__ */ jsxs8(Fragment2, { children: [
           /* @__PURE__ */ jsx17(Divider, { orientation: "vertical" }),
           /* @__PURE__ */ jsx17(SavedSearchMenu, { store })
         ] })
@@ -1648,7 +1651,7 @@ var SavedSearchMenu = Comp(({ store }) => {
     const selectedSearch = options.find((option) => option.label === value);
     if (selectedSearch) store.applySavedSearch(selectedSearch.value);
   };
-  return /* @__PURE__ */ jsxs9(Fragment2, { children: [
+  return /* @__PURE__ */ jsxs8(Fragment2, { children: [
     /* @__PURE__ */ jsx17(
       AutoComplete,
       {
@@ -1701,10 +1704,10 @@ var SavedSearchMenu = Comp(({ store }) => {
     )
   ] });
 });
-var SavedSearchModal = Comp(({ label, onClose, onSave, setLabel }) => /* @__PURE__ */ jsxs9(Modal.Container, { onClose, width: "24rem", children: [
+var SavedSearchModal = Comp(({ label, onClose, onSave, setLabel }) => /* @__PURE__ */ jsxs8(Modal.Container, { onClose, width: "24rem", children: [
   /* @__PURE__ */ jsx17(Modal.Header, { children: /* @__PURE__ */ jsx17(Text, { preset: "title", children: "Save Search" }) }),
   /* @__PURE__ */ jsx17(Modal.Content, { spacing: "0.5rem", dividers: false, children: /* @__PURE__ */ jsx17(Input, { header: "Label", value: label, setValue: setLabel, autoFocus: true }) }),
-  /* @__PURE__ */ jsxs9(Modal.Footer, { children: [
+  /* @__PURE__ */ jsxs8(Modal.Footer, { children: [
     /* @__PURE__ */ jsx17(Button, { text: "Cancel", icon: "Close", onClick: onClose, color: colors.foregroundCard }),
     /* @__PURE__ */ jsx17(
       Button,
@@ -1720,7 +1723,7 @@ var SavedSearchModal = Comp(({ label, onClose, onSave, setLabel }) => /* @__PURE
 ] }));
 
 // trabecula/components/inputs/log-ops-input.tsx
-import { jsx as jsx18, jsxs as jsxs10 } from "react/jsx-runtime";
+import { jsx as jsx18, jsxs as jsxs9 } from "react/jsx-runtime";
 var LOG_OPS_OPTS = [
   { label: "Any", value: "" },
   ...LOGICAL_OPS.map((op) => ({ label: op, value: op }))
@@ -1750,7 +1753,7 @@ var LogOpsInput = Comp(
       "setNumValue",
       "setNumValueDisplay"
     ]);
-    return /* @__PURE__ */ jsxs10(HeaderWrapper, __spreadProps(__spreadValues({ row: true, overflow: "hidden", header, headerProps }, props), { children: [
+    return /* @__PURE__ */ jsxs9(HeaderWrapper, __spreadProps(__spreadValues({ row: true, overflow: "hidden", header, headerProps }, props), { children: [
       /* @__PURE__ */ jsx18(
         Dropdown,
         __spreadValues({
@@ -1789,7 +1792,7 @@ import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList } from "react-window";
 
 // trabecula/components/inputs/multi-input-row.tsx
-import { jsx as jsx19, jsxs as jsxs11 } from "react/jsx-runtime";
+import { jsx as jsx19, jsxs as jsxs10 } from "react/jsx-runtime";
 var MULTI_INPUT_ROW_HEIGHT = 35;
 var MultiInputRow = (_a) => {
   var _b = _a, { bgColor } = _b, props = __objRest(_b, ["bgColor"]);
@@ -1808,7 +1811,7 @@ var MultiInputRow = (_a) => {
       return ((_b3 = (_a3 = props.valueExtractor) == null ? void 0 : _a3.call(props, v)) != null ? _b3 : v) !== value;
     })
   );
-  return /* @__PURE__ */ jsxs11(View, { row: true, className: css.root, style: props.style, children: [
+  return /* @__PURE__ */ jsxs10(View, { row: true, className: css.root, style: props.style, children: [
     props.leftNode,
     /* @__PURE__ */ jsx19(
       View,
@@ -1865,7 +1868,7 @@ var useClasses11 = makeClasses((props) => ({
 }));
 
 // trabecula/components/inputs/multi-input-list.tsx
-import { jsx as jsx20, jsxs as jsxs12 } from "react/jsx-runtime";
+import { jsx as jsx20, jsxs as jsxs11 } from "react/jsx-runtime";
 var MultiInputList = forwardRef2(
   ({
     hasDelete,
@@ -1877,7 +1880,7 @@ var MultiInputList = forwardRef2(
   }, ref) => {
     const { css } = useClasses12({ hasDeleteAll, hasInput });
     const handleDeleteAll = () => search.onChange([]);
-    return /* @__PURE__ */ jsxs12(View, { column: true, height: "100%", children: [
+    return /* @__PURE__ */ jsxs11(View, { column: true, height: "100%", children: [
       /* @__PURE__ */ jsx20(
         View,
         __spreadProps(__spreadValues({}, viewProps), {
@@ -1940,7 +1943,7 @@ var useClasses12 = makeClasses((props) => ({
 }));
 
 // trabecula/components/inputs/multi-input.tsx
-import { Fragment as Fragment3, jsx as jsx21, jsxs as jsxs13 } from "react/jsx-runtime";
+import { Fragment as Fragment3, jsx as jsx21, jsxs as jsxs12 } from "react/jsx-runtime";
 var MultiInput = Comp(
   ({
     hasDelete = true,
@@ -1974,7 +1977,7 @@ var MultiInput = Comp(
         hasInput: true
       }
     );
-    return /* @__PURE__ */ jsx21(View, { column: true, height: "100%", width: "100%", children: single && value.length > 0 ? /* @__PURE__ */ jsx21(HeaderWrapper, { header, headerProps, children: renderList() }) : /* @__PURE__ */ jsxs13(Fragment3, { children: [
+    return /* @__PURE__ */ jsx21(View, { column: true, height: "100%", width: "100%", children: single && value.length > 0 ? /* @__PURE__ */ jsx21(HeaderWrapper, { header, headerProps, children: renderList() }) : /* @__PURE__ */ jsxs12(Fragment3, { children: [
       /* @__PURE__ */ jsx21(
         Input,
         __spreadProps(__spreadValues({
@@ -2096,9 +2099,9 @@ var NumRange = Comp(
 );
 
 // trabecula/components/inputs/range-wrapper.tsx
-import { jsx as jsx24, jsxs as jsxs14 } from "react/jsx-runtime";
+import { jsx as jsx24, jsxs as jsxs13 } from "react/jsx-runtime";
 var RangeWrapper = Comp((props) => {
-  return /* @__PURE__ */ jsxs14(HeaderWrapper, { row: true, header: props.header, headerProps: props.headerProps, children: [
+  return /* @__PURE__ */ jsxs13(HeaderWrapper, { row: true, header: props.header, headerProps: props.headerProps, children: [
     props.startInput,
     /* @__PURE__ */ jsx24(
       View,
@@ -2189,10 +2192,10 @@ var useClasses13 = makeClasses({
 });
 
 // trabecula/components/list/detail-rows.tsx
-import { jsx as jsx26, jsxs as jsxs15 } from "react/jsx-runtime";
+import { jsx as jsx26, jsxs as jsxs14 } from "react/jsx-runtime";
 var DetailRows = ({ labelWidth = "8rem", rows }) => {
   const { css } = useClasses14({ labelWidth });
-  return /* @__PURE__ */ jsx26(View, { className: css.table, children: rows.map(({ label, value }, i) => /* @__PURE__ */ jsxs15(View, { className: css.row, children: [
+  return /* @__PURE__ */ jsx26(View, { className: css.table, children: rows.map(({ label, value }, i) => /* @__PURE__ */ jsxs14(View, { className: css.row, children: [
     typeof label === "string" ? /* @__PURE__ */ jsx26(Text, { className: css.label, children: label }) : label,
     typeof value === "string" ? /* @__PURE__ */ jsx26(Text, { noWrap: true, tooltip: value, children: value }) : value
   ] }, `${i}-${label}`)) });
@@ -2251,7 +2254,7 @@ import {
   ListItemText
 } from "@mui/material";
 import Color4 from "color";
-import { jsx as jsx28, jsxs as jsxs16 } from "react/jsx-runtime";
+import { jsx as jsx28, jsxs as jsxs15 } from "react/jsx-runtime";
 var DEFAULT_ICON_END_MARGINS = { left: "1em" };
 var DEFAULT_ICON_MARGINS = { right: "1em" };
 var ListItem = (_a) => {
@@ -2290,7 +2293,7 @@ var ListItem = (_a) => {
         placement: "right-start",
         PopperProps: { className: css.tooltipPopper }
       },
-      children: /* @__PURE__ */ jsxs16(
+      children: /* @__PURE__ */ jsxs15(
         MuiListItem,
         __spreadProps(__spreadValues({
           button: Boolean(onClick),
@@ -2410,7 +2413,7 @@ var useClasses17 = makeClasses((props) => {
 
 // trabecula/components/modals/confirm-modal.tsx
 import { useState as useState10 } from "react";
-import { jsx as jsx30, jsxs as jsxs17 } from "react/jsx-runtime";
+import { jsx as jsx30, jsxs as jsxs16 } from "react/jsx-runtime";
 var ConfirmModal = ({
   cancelColor = colors.custom.grey,
   cancelIcon = "Close",
@@ -2439,14 +2442,14 @@ var ConfirmModal = ({
     setIsLoading(false);
     if (success) handleClose();
   });
-  return /* @__PURE__ */ jsxs17(Modal.Container, { isLoading, onClose: handleCancel, height, width, children: [
+  return /* @__PURE__ */ jsxs16(Modal.Container, { isLoading, onClose: handleCancel, height, width, children: [
     /* @__PURE__ */ jsx30(Modal.Header, { children: /* @__PURE__ */ jsx30(Text, { preset: "title", children: headerText }) }),
-    /* @__PURE__ */ jsxs17(Modal.Content, { align: "center", justify: "center", children: [
+    /* @__PURE__ */ jsxs16(Modal.Content, { align: "center", justify: "center", children: [
       /* @__PURE__ */ jsx30(Icon, { name: "Delete", color: colors.custom.red, size: "5rem" }),
       (subText == null ? void 0 : subText.length) > 0 ? /* @__PURE__ */ jsx30(Text, { fontSize: "1.3em", textAlign: "center", whiteSpace: "normal", children: subText }) : null,
       children
     ] }),
-    /* @__PURE__ */ jsxs17(Modal.Footer, { children: [
+    /* @__PURE__ */ jsxs16(Modal.Footer, { children: [
       /* @__PURE__ */ jsx30(
         Button,
         {
@@ -2475,7 +2478,7 @@ var ConfirmModal = ({
 import { useRef as useRef2 } from "react";
 import Draggable from "react-draggable";
 import { Dialog, Paper } from "@mui/material";
-import { jsx as jsx31, jsxs as jsxs18 } from "react/jsx-runtime";
+import { jsx as jsx31, jsxs as jsxs17 } from "react/jsx-runtime";
 var Container = (_a) => {
   var _b = _a, {
     children,
@@ -2506,7 +2509,7 @@ var Container = (_a) => {
   ]);
   const { css, cx } = useClasses18({ height, maxHeight, maxWidth, width });
   const handleClose = (_, reason) => (reason === "backdropClick" ? closeOnBackdrop : true) && (onClose == null ? void 0 : onClose());
-  return /* @__PURE__ */ jsxs18(
+  return /* @__PURE__ */ jsxs17(
     Dialog,
     __spreadProps(__spreadValues({}, props), {
       scroll,
@@ -2614,7 +2617,7 @@ var Footer = (_a) => {
 
 // trabecula/components/modals/modal/header.tsx
 import { DialogTitle } from "@mui/material";
-import { jsx as jsx34, jsxs as jsxs19 } from "react/jsx-runtime";
+import { jsx as jsx34 } from "react/jsx-runtime";
 var Header = ({
   children,
   className,
@@ -2623,18 +2626,7 @@ var Header = ({
   rightNode
 }) => {
   const { css, cx } = useClasses20({ justify });
-  return /* @__PURE__ */ jsx34(DialogTitle, { className: cx(css.root, className), children: /* @__PURE__ */ jsx34(
-    ConditionalWrap,
-    {
-      condition: leftNode !== void 0 || rightNode !== void 0,
-      wrap: (wrappedChildren) => /* @__PURE__ */ jsxs19(UniformList, { row: true, flex: 1, align: "center", children: [
-        leftNode ? /* @__PURE__ */ jsx34(View, { row: true, align: "center", justify: "flex-start", children: leftNode }) : /* @__PURE__ */ jsx34(View, {}),
-        wrappedChildren,
-        rightNode ? /* @__PURE__ */ jsx34(View, { row: true, align: "center", justify: "flex-end", children: rightNode }) : /* @__PURE__ */ jsx34(View, {})
-      ] }),
-      children
-    }
-  ) });
+  return /* @__PURE__ */ jsx34(DialogTitle, { className: cx(css.root, className), children: /* @__PURE__ */ jsx34(HeaderContent, { leftNode, rightNode, children }) });
 };
 var useClasses20 = makeClasses((props) => ({
   root: {
@@ -2658,13 +2650,13 @@ var Modal = {
 // trabecula/components/progress/bar.tsx
 import { LinearProgress } from "@mui/material";
 import Color5 from "color";
-import { jsx as jsx35, jsxs as jsxs20 } from "react/jsx-runtime";
+import { jsx as jsx35, jsxs as jsxs18 } from "react/jsx-runtime";
 var ProgressBar = Comp((props) => {
   var _a, _b, _c, _d;
   const minWidth = (props == null ? void 0 : props.minWidth) || "2em";
   const { css } = useClasses21(null);
-  return /* @__PURE__ */ jsxs20(View, __spreadProps(__spreadValues({ row: true, flex: 1, align: "center", spacing: "1rem" }, props.viewProps), { children: [
-    props.withText ? /* @__PURE__ */ jsxs20(View, { row: true, spacing: "0.5rem", children: [
+  return /* @__PURE__ */ jsxs18(View, __spreadProps(__spreadValues({ row: true, flex: 1, align: "center", spacing: "1rem" }, props.viewProps), { children: [
+    props.withText ? /* @__PURE__ */ jsxs18(View, { row: true, spacing: "0.5rem", children: [
       /* @__PURE__ */ jsx35(Text, { minWidth, textAlign: "center", children: props.numerator > -1 ? (_b = (_a = props.numeratorFormatter) == null ? void 0 : _a.call(props, props.numerator)) != null ? _b : props.numerator : "--" }),
       /* @__PURE__ */ jsx35(Text, { children: "/" }),
       /* @__PURE__ */ jsx35(Text, { minWidth, textAlign: "center", color: colors.custom.lightGrey, children: props.denominator > -1 ? (_d = (_c = props.denominatorFormatter) == null ? void 0 : _c.call(props, props.denominator)) != null ? _d : props.denominator : "--" })
@@ -2692,14 +2684,14 @@ var useClasses21 = makeClasses({
 // trabecula/components/progress/circle.tsx
 import { CircularProgress } from "@mui/material";
 import Color6 from "color";
-import { jsx as jsx36, jsxs as jsxs21 } from "react/jsx-runtime";
+import { jsx as jsx36, jsxs as jsxs19 } from "react/jsx-runtime";
 var ProgressCircle = Comp((props) => {
   const color = props.color || colors.custom.white;
   const { css } = useClasses22({
     bgColor: props.bgColor || Color6(color).fade(0.5).hex(),
     color
   });
-  return /* @__PURE__ */ jsxs21(View, { column: true, position: "relative", justify: "center", align: "center", children: [
+  return /* @__PURE__ */ jsxs19(View, { column: true, position: "relative", justify: "center", align: "center", children: [
     /* @__PURE__ */ jsx36(View, { column: true, position: "absolute", children: props.children }),
     /* @__PURE__ */ jsx36(
       CircularProgress,
@@ -2734,7 +2726,7 @@ var useClasses22 = makeClasses((props) => ({
 
 // trabecula/components/table/data-grid.tsx
 import { useEffect as useEffect6, useMemo, useState as useState11 } from "react";
-import { jsx as jsx37, jsxs as jsxs22 } from "react/jsx-runtime";
+import { jsx as jsx37, jsxs as jsxs20 } from "react/jsx-runtime";
 function DataGrid(rawProps) {
   const {
     alternatingBgColor = colors.foregroundCard,
@@ -2849,8 +2841,8 @@ function DataGrid(rawProps) {
       startWidth
     });
   };
-  return !data.length ? /* @__PURE__ */ jsx37(View, { display: "flex", justify: emptyJustify, children: /* @__PURE__ */ jsx37(Text, { preset: textPreset, color: emptyColor, children: emptyMessage }) }) : /* @__PURE__ */ jsxs22(View, { column: true, spacing, width: "100%", children: [
-    !hasSearch ? null : /* @__PURE__ */ jsxs22(View, { row: true, justify: "flex-end", align: "center", spacing: "0.5rem", width: "100%", children: [
+  return !data.length ? /* @__PURE__ */ jsx37(View, { display: "flex", justify: emptyJustify, children: /* @__PURE__ */ jsx37(Text, { preset: textPreset, color: emptyColor, children: emptyMessage }) }) : /* @__PURE__ */ jsxs20(View, { column: true, spacing, width: "100%", children: [
+    !hasSearch ? null : /* @__PURE__ */ jsxs20(View, { row: true, justify: "flex-end", align: "center", spacing: "0.5rem", width: "100%", children: [
       /* @__PURE__ */ jsx37(Text, { preset: textPreset, whiteSpace: "nowrap", children: "Search all columns:" }),
       /* @__PURE__ */ jsx37(Input, { dense: true, value: search, setValue: setSearch, height: "1.5rem", width: "16rem" })
     ] }),
@@ -2958,7 +2950,7 @@ import {
   useRef as useRef3,
   useState as useState12
 } from "react";
-import { jsx as jsx38, jsxs as jsxs23 } from "react/jsx-runtime";
+import { jsx as jsx38, jsxs as jsxs21 } from "react/jsx-runtime";
 var DataGridHeader = ({
   columns,
   expandableContent,
@@ -2975,7 +2967,7 @@ var DataGridHeader = ({
   const { css, cx } = useClasses23(null);
   const suppressSortClickRef = useRef3(false);
   const [hoveredColumnKey, setHoveredColumnKey] = useState12(null);
-  return /* @__PURE__ */ jsxs23(
+  return /* @__PURE__ */ jsxs21(
     View,
     {
       row: true,
@@ -3015,7 +3007,7 @@ var DataGridHeader = ({
               event.clientX
             );
           };
-          return /* @__PURE__ */ jsxs23(
+          return /* @__PURE__ */ jsxs21(
             View,
             __spreadProps(__spreadValues({
               row: true,
@@ -3101,7 +3093,7 @@ var useClasses23 = makeClasses({
 // trabecula/components/table/data-grid-row.tsx
 import React from "react";
 import { Collapse } from "@mui/material";
-import { jsx as jsx39, jsxs as jsxs24 } from "react/jsx-runtime";
+import { jsx as jsx39, jsxs as jsxs22 } from "react/jsx-runtime";
 var DataGridRow = ({
   alternatingBgColor,
   alternatingColors,
@@ -3178,8 +3170,8 @@ var DataGridRow = ({
       }
     );
   };
-  return /* @__PURE__ */ jsxs24(React.Fragment, { children: [
-    /* @__PURE__ */ jsxs24(
+  return /* @__PURE__ */ jsxs22(React.Fragment, { children: [
+    /* @__PURE__ */ jsxs22(
       View,
       {
         row: true,
@@ -3281,7 +3273,7 @@ import {
   Pagination as PaginationBase,
   PaginationItem
 } from "@mui/material";
-import { jsx as jsx40, jsxs as jsxs25 } from "react/jsx-runtime";
+import { jsx as jsx40, jsxs as jsxs23 } from "react/jsx-runtime";
 var Pagination = Comp(
   (_a) => {
     var _b = _a, {
@@ -3320,8 +3312,8 @@ var Pagination = Comp(
       if (onFullLoad) event.preventDefault(), onFullLoad();
       else (_a2 = item.onClick) == null ? void 0 : _a2.call(item, event);
     };
-    return /* @__PURE__ */ jsxs25(View, __spreadProps(__spreadValues({}, viewProps), { className: cx(css.root, viewProps == null ? void 0 : viewProps.className), children: [
-      /* @__PURE__ */ jsxs25(View, { position: "relative", overflow: "hidden", children: [
+    return /* @__PURE__ */ jsxs23(View, __spreadProps(__spreadValues({}, viewProps), { className: cx(css.root, viewProps == null ? void 0 : viewProps.className), children: [
+      /* @__PURE__ */ jsxs23(View, { position: "relative", overflow: "hidden", children: [
         /* @__PURE__ */ jsx40(LoadingOverlay, { isLoading }),
         /* @__PURE__ */ jsx40(
           PaginationBase,
@@ -3348,7 +3340,7 @@ var Pagination = Comp(
           }, props)
         )
       ] }),
-      isJumpModalOpen && /* @__PURE__ */ jsxs25(Modal.Container, { onClose: () => setIsJumpModalOpen(false), width: "24rem", children: [
+      isJumpModalOpen && /* @__PURE__ */ jsxs23(Modal.Container, { onClose: () => setIsJumpModalOpen(false), width: "24rem", children: [
         /* @__PURE__ */ jsx40(Modal.Header, { children: /* @__PURE__ */ jsx40(Text, { preset: "title", children: "Jump to Page" }) }),
         /* @__PURE__ */ jsx40(Modal.Content, { row: true, dividers: false, justify: "center", children: /* @__PURE__ */ jsx40(
           NumInput,
@@ -3366,7 +3358,7 @@ var Pagination = Comp(
             dense: true
           }
         ) }),
-        /* @__PURE__ */ jsxs25(Modal.Footer, { uniformWidth: "7rem", children: [
+        /* @__PURE__ */ jsxs23(Modal.Footer, { uniformWidth: "7rem", children: [
           /* @__PURE__ */ jsx40(
             Button,
             {
@@ -3425,7 +3417,7 @@ import {
   TablePagination,
   TableRow
 } from "@mui/material";
-import { Fragment as Fragment4, jsx as jsx41, jsxs as jsxs26 } from "react/jsx-runtime";
+import { Fragment as Fragment4, jsx as jsx41, jsxs as jsxs24 } from "react/jsx-runtime";
 var MUI_TABLE_ROW_HEIGHT = 33;
 var Table = ({
   className,
@@ -3448,10 +3440,10 @@ var Table = ({
     [page, rowsPerPage, rows]
   );
   const emptyRows = rowsPerPage - displayedRows.length;
-  return /* @__PURE__ */ jsxs26(Fragment4, { children: [
-    /* @__PURE__ */ jsx41(TableContainer, { component: Paper2, className, children: /* @__PURE__ */ jsxs26(MuiTable, { size: "small", children: [
+  return /* @__PURE__ */ jsxs24(Fragment4, { children: [
+    /* @__PURE__ */ jsx41(TableContainer, { component: Paper2, className, children: /* @__PURE__ */ jsxs24(MuiTable, { size: "small", children: [
       /* @__PURE__ */ jsx41(TableHead, { children: /* @__PURE__ */ jsx41(TableRow, { className: css.tableHeader, children: columns.map((column, i) => /* @__PURE__ */ jsx41(TableCell, { className: css.tableHeaderCell, children: column.header }, `${i}-${column.header}`)) }) }),
-      /* @__PURE__ */ jsxs26(TableBody, { children: [
+      /* @__PURE__ */ jsxs24(TableBody, { children: [
         displayedRows.map((row, rowKey) => /* @__PURE__ */ jsx41(TableRow, { className: css.tableRowAlt, children: columns.map((column, cellKey) => /* @__PURE__ */ jsx41(
           TableCellTrunc,
           {
@@ -3553,7 +3545,7 @@ var DateDetail = (props) => {
 };
 
 // trabecula/components/text/detail.tsx
-import { jsx as jsx44, jsxs as jsxs27 } from "react/jsx-runtime";
+import { jsx as jsx44, jsxs as jsxs25 } from "react/jsx-runtime";
 var Detail = (_a) => {
   var _b = _a, {
     emptyValueText = "--",
@@ -3578,7 +3570,7 @@ var Detail = (_a) => {
     "whiteSpace",
     "withTooltip"
   ]);
-  return /* @__PURE__ */ jsxs27(View, __spreadProps(__spreadValues({ column: !row, row, spacing: row ? "0.5rem" : null }, props), { children: [
+  return /* @__PURE__ */ jsxs25(View, __spreadProps(__spreadValues({ column: !row, row, spacing: row ? "0.5rem" : null }, props), { children: [
     ["number", "string"].includes(typeof label) ? /* @__PURE__ */ jsx44(Text, __spreadProps(__spreadValues({ preset: "detail-label", fontSize: "0.9em", fontWeight: 600 }, labelProps), { children: label })) : label,
     !value || ["number", "string"].includes(typeof value) ? /* @__PURE__ */ jsx44(
       Text,
@@ -3768,7 +3760,7 @@ var useClasses28 = makeClasses((props) => {
 });
 
 // trabecula/components/text/truncated-text.tsx
-import { jsx as jsx47, jsxs as jsxs28 } from "react/jsx-runtime";
+import { jsx as jsx47, jsxs as jsxs26 } from "react/jsx-runtime";
 var getTextTruncation = (text, maxLength, wordBoundaryRatio = 0.8) => {
   if (text.length <= maxLength) {
     return {
@@ -3818,7 +3810,7 @@ var TruncatedText = (_a) => {
   ]);
   const { isTruncated, preview } = getTextTruncation(text, maxLength, wordBoundaryRatio);
   const shouldClamp = lineClamp > 0;
-  return /* @__PURE__ */ jsxs28(
+  return /* @__PURE__ */ jsxs26(
     Text,
     __spreadProps(__spreadValues({
       display: display != null ? display : shouldClamp ? "-webkit-box" : void 0,
@@ -3858,7 +3850,7 @@ import { useState as useState15 } from "react";
 import {
   Accordion as MuiAccordion
 } from "@mui/material";
-import { jsx as jsx48, jsxs as jsxs29 } from "react/jsx-runtime";
+import { jsx as jsx48, jsxs as jsxs27 } from "react/jsx-runtime";
 var Accordion = (rawProps) => {
   const _a = rawProps, {
     buttonProps = {},
@@ -3940,9 +3932,9 @@ var Accordion = (rawProps) => {
   const renderHeader = () => {
     var _a2, _b;
     if (title !== void 0) {
-      return /* @__PURE__ */ jsxs29(View, { row: true, align: "center", justify: "space-between", width: "100%", children: [
+      return /* @__PURE__ */ jsxs27(View, { row: true, align: "center", justify: "space-between", width: "100%", children: [
         typeof title === "string" ? /* @__PURE__ */ jsx48(Text, __spreadProps(__spreadValues({}, titleProps), { children: title })) : title,
-        /* @__PURE__ */ jsxs29(View, { row: true, align: "center", spacing: "0.6rem", children: [
+        /* @__PURE__ */ jsxs27(View, { row: true, align: "center", spacing: "0.6rem", children: [
           headerButton,
           showExpandToggle ? /* @__PURE__ */ jsx48(
             Button,
@@ -3978,7 +3970,7 @@ var Accordion = (rawProps) => {
       }, buttonProps)
     );
   };
-  return /* @__PURE__ */ jsxs29(
+  return /* @__PURE__ */ jsxs27(
     MuiAccordion,
     __spreadProps(__spreadValues({}, props), {
       expanded: contentExpanded,
@@ -3987,7 +3979,7 @@ var Accordion = (rawProps) => {
       className: cx(css.accordion, className),
       children: [
         hasHeaderWrapper ? /* @__PURE__ */ jsx48(View, { className: css.header, children: renderHeader() }) : renderHeader(),
-        /* @__PURE__ */ jsxs29(View, { column: true, className: css.content, children: [
+        /* @__PURE__ */ jsxs27(View, { column: true, className: css.content, children: [
           /* @__PURE__ */ jsx48(LoadingOverlay, { isLoading }),
           children
         ] })
@@ -4636,7 +4628,7 @@ import {
   useRef as useRef4,
   useState as useState17
 } from "react";
-import { jsx as jsx59, jsxs as jsxs30 } from "react/jsx-runtime";
+import { jsx as jsx59, jsxs as jsxs28 } from "react/jsx-runtime";
 var Image = ({
   autoAnimate = false,
   children,
@@ -4690,7 +4682,7 @@ var Image = ({
     const pos = `${Math.max(0, offsetX) / width * 100}% ${Math.max(0, offsetY) / height2 * 100}%`;
     setImagePos(pos);
   };
-  return /* @__PURE__ */ jsxs30(
+  return /* @__PURE__ */ jsxs28(
     View,
     {
       onMouseEnter: hasListeners ? handleMouseEnter : void 0,
@@ -4787,7 +4779,7 @@ var CardBase = {
 };
 
 // trabecula/components/wrappers/card-grid.tsx
-import { jsx as jsx61, jsxs as jsxs31 } from "react/jsx-runtime";
+import { jsx as jsx61, jsxs as jsxs29 } from "react/jsx-runtime";
 var CardGrid = Comp(
   (_a, ref) => {
     var _b = _a, {
@@ -4812,7 +4804,7 @@ var CardGrid = Comp(
       "position"
     ]);
     const { css, cx } = useClasses38({ hasCards: cards.length > 0, flexFlow, maxCards, position });
-    return /* @__PURE__ */ jsxs31(View, __spreadProps(__spreadValues({}, props), { className: cx(css.root, className), children: [
+    return /* @__PURE__ */ jsxs29(View, __spreadProps(__spreadValues({}, props), { className: cx(css.root, className), children: [
       cards.length ? /* @__PURE__ */ jsx61(
         View,
         __spreadProps(__spreadValues({}, cardsProps), {
@@ -4947,7 +4939,7 @@ var ConditionalWrap = ({
 import { useState as useState18 } from "react";
 import { Menu as Menu2 } from "@mui/material";
 import Color11 from "color";
-import { jsx as jsx64, jsxs as jsxs32 } from "react/jsx-runtime";
+import { jsx as jsx64, jsxs as jsxs30 } from "react/jsx-runtime";
 var ContextMenu = (_a) => {
   var _b = _a, { children, disabled, id, menuItems } = _b, props = __objRest(_b, ["children", "disabled", "id", "menuItems"]);
   const { css } = useClasses40(null);
@@ -4963,7 +4955,7 @@ var ContextMenu = (_a) => {
     setMouseX(null);
     setMouseY(null);
   };
-  return /* @__PURE__ */ jsxs32(View, __spreadProps(__spreadValues({}, props), { id, onContextMenu: handleContext, children: [
+  return /* @__PURE__ */ jsxs30(View, __spreadProps(__spreadValues({}, props), { id, onContextMenu: handleContext, children: [
     children,
     /* @__PURE__ */ jsx64(
       Menu2,
@@ -5032,14 +5024,14 @@ var useClasses40 = makeClasses({
 });
 
 // trabecula/components/wrappers/disabled-overlay.tsx
-import { Fragment as Fragment6, jsx as jsx65, jsxs as jsxs33 } from "react/jsx-runtime";
+import { Fragment as Fragment6, jsx as jsx65, jsxs as jsxs31 } from "react/jsx-runtime";
 var DisabledOverlay = ({
   children,
   isDisabled = false,
   zIndex = 2
 }) => {
   const { css } = useClasses41({ isDisabled, zIndex });
-  return /* @__PURE__ */ jsxs33(Fragment6, { children: [
+  return /* @__PURE__ */ jsxs31(Fragment6, { children: [
     children,
     isDisabled && /* @__PURE__ */ jsx65(View, { className: css.disabledOverlay })
   ] });
@@ -5110,7 +5102,7 @@ var useClasses42 = makeClasses((props) => ({
 }));
 
 // trabecula/components/wrappers/header.tsx
-import { jsx as jsx67, jsxs as jsxs34 } from "react/jsx-runtime";
+import { jsx as jsx67, jsxs as jsxs32 } from "react/jsx-runtime";
 var DEFAULT_HEADER_PROPS = {
   bgColor: colors.custom.black,
   borderRadiuses: { top: 6 },
@@ -5147,7 +5139,7 @@ var HeaderWrapper = Comp(
       "width"
     ]);
     headerProps = deepMerge(DEFAULT_HEADER_PROPS, headerProps);
-    const wrap = (content) => /* @__PURE__ */ jsxs34(
+    const wrap = (content) => /* @__PURE__ */ jsxs32(
       View,
       __spreadProps(__spreadValues({}, viewProps), {
         ref,
@@ -5182,14 +5174,29 @@ var HeaderWrapper = Comp(
   }
 );
 
+// trabecula/components/wrappers/header-content.tsx
+import { jsx as jsx68, jsxs as jsxs33 } from "react/jsx-runtime";
+var HeaderContent = ({ children, leftNode, rightNode }) => /* @__PURE__ */ jsx68(
+  ConditionalWrap,
+  {
+    condition: leftNode !== void 0 || rightNode !== void 0,
+    wrap: (wrappedChildren) => /* @__PURE__ */ jsxs33(UniformList, { row: true, flex: 1, align: "center", children: [
+      leftNode ? /* @__PURE__ */ jsx68(View, { row: true, align: "center", justify: "flex-start", children: leftNode }) : /* @__PURE__ */ jsx68(View, {}),
+      wrappedChildren,
+      rightNode ? /* @__PURE__ */ jsx68(View, { row: true, align: "center", justify: "flex-end", children: rightNode }) : /* @__PURE__ */ jsx68(View, {})
+    ] }),
+    children
+  }
+);
+
 // trabecula/components/wrappers/loading-overlay.tsx
 import { CircularProgress as CircularProgress2 } from "@mui/material";
-import { Fragment as Fragment7, jsx as jsx68, jsxs as jsxs35 } from "react/jsx-runtime";
+import { Fragment as Fragment7, jsx as jsx69, jsxs as jsxs34 } from "react/jsx-runtime";
 var LoadingOverlay = ({ children, isLoading, sub }) => {
   const { css } = useClasses43({ isLoading });
-  return /* @__PURE__ */ jsxs35(Fragment7, { children: [
+  return /* @__PURE__ */ jsxs34(Fragment7, { children: [
     children,
-    /* @__PURE__ */ jsxs35(
+    /* @__PURE__ */ jsxs34(
       View,
       {
         column: true,
@@ -5201,8 +5208,8 @@ var LoadingOverlay = ({ children, isLoading, sub }) => {
         opacity: isLoading ? 1 : 0,
         className: css.loadingOverlay,
         children: [
-          /* @__PURE__ */ jsx68(CircularProgress2, { color: "inherit" }),
-          typeof sub === "string" ? /* @__PURE__ */ jsx68(Text, { preset: "title", fontSize: "0.9em", children: sub }) : sub
+          /* @__PURE__ */ jsx69(CircularProgress2, { color: "inherit" }),
+          typeof sub === "string" ? /* @__PURE__ */ jsx69(Text, { preset: "title", fontSize: "0.9em", children: sub }) : sub
         ]
       }
     )
@@ -5222,7 +5229,7 @@ var useClasses43 = makeClasses((props) => ({
 
 // trabecula/components/wrappers/side-scroller.tsx
 import { useEffect as useEffect9, useRef as useRef5, useState as useState19 } from "react";
-import { jsx as jsx69, jsxs as jsxs36 } from "react/jsx-runtime";
+import { jsx as jsx70, jsxs as jsxs35 } from "react/jsx-runtime";
 var SideScroller = ({ children, className, innerClassName }) => {
   const ref = useRef5(null);
   const { width } = useElementResize(ref);
@@ -5255,8 +5262,8 @@ var SideScroller = ({ children, className, innerClassName }) => {
     setIsLeftButtonVisible(left);
     setIsRightButtonVisible(right);
   }, [scrollPos]);
-  return /* @__PURE__ */ jsxs36(View, { className: cx(css.root, className), children: [
-    /* @__PURE__ */ jsx69(
+  return /* @__PURE__ */ jsxs35(View, { className: cx(css.root, className), children: [
+    /* @__PURE__ */ jsx70(
       IconButton,
       {
         name: "ChevronLeft",
@@ -5265,8 +5272,8 @@ var SideScroller = ({ children, className, innerClassName }) => {
         size: "large"
       }
     ),
-    /* @__PURE__ */ jsx69(View, { ref, className: cx(css.items, innerClassName), children }),
-    /* @__PURE__ */ jsx69(
+    /* @__PURE__ */ jsx70(View, { ref, className: cx(css.items, innerClassName), children }),
+    /* @__PURE__ */ jsx70(
       IconButton,
       {
         name: "ChevronRight",
@@ -5324,11 +5331,11 @@ var useClasses44 = makeClasses((props) => ({
 }));
 
 // trabecula/components/wrappers/uniform-list.tsx
-import { jsx as jsx70 } from "react/jsx-runtime";
+import { jsx as jsx71 } from "react/jsx-runtime";
 var UniformList = (_a) => {
   var _b = _a, { children, uniformWidth } = _b, props = __objRest(_b, ["children", "uniformWidth"]);
   const { css, cx } = useClasses45({ uniformWidth });
-  return /* @__PURE__ */ jsx70(View, __spreadProps(__spreadValues({}, props), { className: cx(css.uniform, props == null ? void 0 : props.className), children }));
+  return /* @__PURE__ */ jsx71(View, __spreadProps(__spreadValues({}, props), { className: cx(css.uniform, props == null ? void 0 : props.className), children }));
 };
 var useClasses45 = makeClasses((props) => ({
   uniform: {
@@ -5340,7 +5347,7 @@ var useClasses45 = makeClasses((props) => ({
 }));
 
 // trabecula/components/wrappers/view.tsx
-import { jsx as jsx71 } from "react/jsx-runtime";
+import { jsx as jsx72 } from "react/jsx-runtime";
 var View = Comp(
   (_a, ref) => {
     var _b = _a, {
@@ -5422,7 +5429,7 @@ var View = Comp(
       width,
       wrap
     });
-    return /* @__PURE__ */ jsx71("div", __spreadProps(__spreadValues({}, props), { ref, className: cx(className, css.view), children }));
+    return /* @__PURE__ */ jsx72("div", __spreadProps(__spreadValues({}, props), { ref, className: cx(className, css.view), children }));
   }
 );
 var useClasses46 = makeClasses((props) => {
@@ -5461,7 +5468,7 @@ import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 import { createTheme, ThemeProvider } from "@mui/material";
 import { TssCacheProvider } from "tss-react";
-import { jsx as jsx72 } from "react/jsx-runtime";
+import { jsx as jsx73 } from "react/jsx-runtime";
 var MuiProvider = ({
   children,
   portalContainer,
@@ -5483,7 +5490,7 @@ var MuiProvider = ({
   const tssCacheRef = useRef6(
     createCache({ container: styleContainer, key: "tss", stylisPlugins: [] })
   );
-  return /* @__PURE__ */ jsx72(StrictMode, { children: /* @__PURE__ */ jsx72(CacheProvider, { value: muiCacheRef.current, children: /* @__PURE__ */ jsx72(TssCacheProvider, { value: tssCacheRef.current, children: /* @__PURE__ */ jsx72(ThemeProvider, { theme: themeRef.current, children }) }) }) });
+  return /* @__PURE__ */ jsx73(StrictMode, { children: /* @__PURE__ */ jsx73(CacheProvider, { value: muiCacheRef.current, children: /* @__PURE__ */ jsx73(TssCacheProvider, { value: tssCacheRef.current, children: /* @__PURE__ */ jsx73(ThemeProvider, { theme: themeRef.current, children }) }) }) });
 };
 export {
   Accordion,
@@ -5518,6 +5525,7 @@ export {
   Dropdown,
   FilterHeader,
   FilterMenu,
+  HeaderContent,
   HeaderWrapper,
   Icon,
   IconButton,

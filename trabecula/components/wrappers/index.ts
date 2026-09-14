@@ -7,6 +7,7 @@ export * from "./context-menu";
 export * from "./disabled-overlay";
 export * from "./divider";
 export * from "./header";
+export * from "./header-content";
 export * from "./loading-overlay";
 export * from "./side-scroller";
 export * from "./uniform-list";

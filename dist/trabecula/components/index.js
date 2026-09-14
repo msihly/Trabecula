@@ -111,6 +111,7 @@ __export(components_exports, {
   Dropdown: () => Dropdown,
   FilterHeader: () => FilterHeader,
   FilterMenu: () => FilterMenu,
+  HeaderContent: () => HeaderContent,
   HeaderWrapper: () => HeaderWrapper,
   Icon: () => Icon,
   IconButton: () => IconButton,
@@ -4301,21 +4302,24 @@ var useClasses11 = makeClasses((props) => {
 var import_jsx_runtime17 = require("react/jsx-runtime");
 var FilterHeader = Comp(({ label, mode, setMode }) => {
   const toggleMode = () => setMode(mode === "required" ? "optional" : "required");
-  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(View, { row: true, align: "center", width: "100%", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Text, { flex: 1, fontSize: "0.8em", textAlign: "center", children: label }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
-      Button,
-      {
-        color: mode === "optional" ? colors.custom.lightBlue : colors.custom.grey,
-        fontSize: "0.8em",
-        onClick: toggleMode,
-        padding: { all: "0 0.3rem" },
-        text: mode === "optional" ? "OR" : "AND",
-        tooltip: mode === "optional" ? "Optional: match at least one optional filter. Click to make required." : "Required: match this filter. Click to make optional.",
-        variant: "text"
-      }
-    )
-  ] });
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+    HeaderContent,
+    {
+      rightNode: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+        Button,
+        {
+          color: mode === "optional" ? colors.custom.lightBlue : colors.custom.grey,
+          fontSize: "0.8em",
+          onClick: toggleMode,
+          padding: { all: "0 0.3rem" },
+          text: mode === "optional" ? "OR" : "AND",
+          tooltip: mode === "optional" ? "Optional: match at least one optional filter. Click to make required." : "Required: match this filter. Click to make optional.",
+          variant: "text"
+        }
+      ),
+      children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Text, { fontSize: "0.8em", textAlign: "center", children: label })
+    }
+  );
 });
 
 // trabecula/components/inputs/filter-menu.tsx
@@ -5409,18 +5413,7 @@ var Header = ({
   rightNode
 }) => {
   const { css, cx } = useClasses21({ justify });
-  return /* @__PURE__ */ (0, import_jsx_runtime35.jsx)(import_material17.DialogTitle, { className: cx(css.root, className), children: /* @__PURE__ */ (0, import_jsx_runtime35.jsx)(
-    ConditionalWrap,
-    {
-      condition: leftNode !== void 0 || rightNode !== void 0,
-      wrap: (wrappedChildren) => /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)(UniformList, { row: true, flex: 1, align: "center", children: [
-        leftNode ? /* @__PURE__ */ (0, import_jsx_runtime35.jsx)(View, { row: true, align: "center", justify: "flex-start", children: leftNode }) : /* @__PURE__ */ (0, import_jsx_runtime35.jsx)(View, {}),
-        wrappedChildren,
-        rightNode ? /* @__PURE__ */ (0, import_jsx_runtime35.jsx)(View, { row: true, align: "center", justify: "flex-end", children: rightNode }) : /* @__PURE__ */ (0, import_jsx_runtime35.jsx)(View, {})
-      ] }),
-      children
-    }
-  ) });
+  return /* @__PURE__ */ (0, import_jsx_runtime35.jsx)(import_material17.DialogTitle, { className: cx(css.root, className), children: /* @__PURE__ */ (0, import_jsx_runtime35.jsx)(HeaderContent, { leftNode, rightNode, children }) });
 };
 var useClasses21 = makeClasses((props) => ({
   root: {
@@ -7947,14 +7940,29 @@ var HeaderWrapper = Comp(
   }
 );
 
+// trabecula/components/wrappers/header-content.tsx
+var import_jsx_runtime69 = require("react/jsx-runtime");
+var HeaderContent = ({ children, leftNode, rightNode }) => /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
+  ConditionalWrap,
+  {
+    condition: leftNode !== void 0 || rightNode !== void 0,
+    wrap: (wrappedChildren) => /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(UniformList, { row: true, flex: 1, align: "center", children: [
+      leftNode ? /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(View, { row: true, align: "center", justify: "flex-start", children: leftNode }) : /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(View, {}),
+      wrappedChildren,
+      rightNode ? /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(View, { row: true, align: "center", justify: "flex-end", children: rightNode }) : /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(View, {})
+    ] }),
+    children
+  }
+);
+
 // trabecula/components/wrappers/loading-overlay.tsx
 var import_material33 = require("@mui/material");
-var import_jsx_runtime69 = require("react/jsx-runtime");
+var import_jsx_runtime70 = require("react/jsx-runtime");
 var LoadingOverlay = ({ children, isLoading, sub }) => {
   const { css } = useClasses44({ isLoading });
-  return /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(import_jsx_runtime69.Fragment, { children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)(import_jsx_runtime70.Fragment, { children: [
     children,
-    /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(
+    /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)(
       View,
       {
         column: true,
@@ -7966,8 +7974,8 @@ var LoadingOverlay = ({ children, isLoading, sub }) => {
         opacity: isLoading ? 1 : 0,
         className: css.loadingOverlay,
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(import_material33.CircularProgress, { color: "inherit" }),
-          typeof sub === "string" ? /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(Text, { preset: "title", fontSize: "0.9em", children: sub }) : sub
+          /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(import_material33.CircularProgress, { color: "inherit" }),
+          typeof sub === "string" ? /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(Text, { preset: "title", fontSize: "0.9em", children: sub }) : sub
         ]
       }
     )
@@ -7987,7 +7995,7 @@ var useClasses44 = makeClasses((props) => ({
 
 // trabecula/components/wrappers/side-scroller.tsx
 var import_react29 = require("react");
-var import_jsx_runtime70 = require("react/jsx-runtime");
+var import_jsx_runtime71 = require("react/jsx-runtime");
 var SideScroller = ({ children, className, innerClassName }) => {
   const ref = (0, import_react29.useRef)(null);
   const { width } = useElementResize(ref);
@@ -8020,8 +8028,8 @@ var SideScroller = ({ children, className, innerClassName }) => {
     setIsLeftButtonVisible(left);
     setIsRightButtonVisible(right);
   }, [scrollPos]);
-  return /* @__PURE__ */ (0, import_jsx_runtime70.jsxs)(View, { className: cx(css.root, className), children: [
-    /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime71.jsxs)(View, { className: cx(css.root, className), children: [
+    /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
       IconButton,
       {
         name: "ChevronLeft",
@@ -8030,8 +8038,8 @@ var SideScroller = ({ children, className, innerClassName }) => {
         size: "large"
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(View, { ref, className: cx(css.items, innerClassName), children }),
-    /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(View, { ref, className: cx(css.items, innerClassName), children }),
+    /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(
       IconButton,
       {
         name: "ChevronRight",
@@ -8089,11 +8097,11 @@ var useClasses45 = makeClasses((props) => ({
 }));
 
 // trabecula/components/wrappers/uniform-list.tsx
-var import_jsx_runtime71 = require("react/jsx-runtime");
+var import_jsx_runtime72 = require("react/jsx-runtime");
 var UniformList = (_a) => {
   var _b = _a, { children, uniformWidth } = _b, props = __objRest(_b, ["children", "uniformWidth"]);
   const { css, cx } = useClasses46({ uniformWidth });
-  return /* @__PURE__ */ (0, import_jsx_runtime71.jsx)(View, __spreadProps(__spreadValues({}, props), { className: cx(css.uniform, props == null ? void 0 : props.className), children }));
+  return /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(View, __spreadProps(__spreadValues({}, props), { className: cx(css.uniform, props == null ? void 0 : props.className), children }));
 };
 var useClasses46 = makeClasses((props) => ({
   uniform: {
@@ -8105,7 +8113,7 @@ var useClasses46 = makeClasses((props) => ({
 }));
 
 // trabecula/components/wrappers/view.tsx
-var import_jsx_runtime72 = require("react/jsx-runtime");
+var import_jsx_runtime73 = require("react/jsx-runtime");
 var View = Comp(
   (_a, ref) => {
     var _b = _a, {
@@ -8187,7 +8195,7 @@ var View = Comp(
       width,
       wrap
     });
-    return /* @__PURE__ */ (0, import_jsx_runtime72.jsx)("div", __spreadProps(__spreadValues({}, props), { ref, className: cx(className, css.view), children }));
+    return /* @__PURE__ */ (0, import_jsx_runtime73.jsx)("div", __spreadProps(__spreadValues({}, props), { ref, className: cx(className, css.view), children }));
   }
 );
 var useClasses47 = makeClasses((props) => {
@@ -8226,7 +8234,7 @@ var import_cache = __toESM(require("@emotion/cache"));
 var import_react31 = require("@emotion/react");
 var import_material34 = require("@mui/material");
 var import_tss_react2 = require("tss-react");
-var import_jsx_runtime73 = require("react/jsx-runtime");
+var import_jsx_runtime74 = require("react/jsx-runtime");
 var MuiProvider = ({
   children,
   portalContainer,
@@ -8248,7 +8256,7 @@ var MuiProvider = ({
   const tssCacheRef = (0, import_react30.useRef)(
     (0, import_cache.default)({ container: styleContainer, key: "tss", stylisPlugins: [] })
   );
-  return /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(import_react30.StrictMode, { children: /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(import_react31.CacheProvider, { value: muiCacheRef.current, children: /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(import_tss_react2.TssCacheProvider, { value: tssCacheRef.current, children: /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(import_material34.ThemeProvider, { theme: themeRef.current, children }) }) }) });
+  return /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(import_react30.StrictMode, { children: /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(import_react31.CacheProvider, { value: muiCacheRef.current, children: /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(import_tss_react2.TssCacheProvider, { value: tssCacheRef.current, children: /* @__PURE__ */ (0, import_jsx_runtime74.jsx)(import_material34.ThemeProvider, { theme: themeRef.current, children }) }) }) });
 };
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
@@ -8284,6 +8292,7 @@ var MuiProvider = ({
   Dropdown,
   FilterHeader,
   FilterMenu,
+  HeaderContent,
   HeaderWrapper,
   Icon,
   IconButton,
