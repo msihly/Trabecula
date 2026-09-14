@@ -25,7 +25,7 @@ declare const objectToFloat32Array: (obj: object) => Float32Array;
 declare const range: (length: number, start?: number) => number[];
 declare const rotateArrayPos: (direction: "prev" | "next", current: number, length: number) => number;
 declare const sortArray: <T>(arr: T[], key: string, isDesc?: boolean, isNumber?: boolean) => T[];
-/** @return [falsy values, truthy values] */
+/** @return [truthy values, falsy values] */
 declare const splitArray: <T>(arr: T[], filterFn: (element: T) => boolean) => T[][];
 declare const sumArray: <T>(arr: T[], fn: (num: T) => number) => number;
 declare const uniqueArrayFilter: <T>(...arrays: T[][]) => T[];

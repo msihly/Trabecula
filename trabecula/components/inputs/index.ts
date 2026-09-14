@@ -3,6 +3,7 @@ export * from "./chip-input";
 export * from "./date-input";
 export * from "./date-range";
 export * from "./dropdown";
+export * from "./filter-header";
 export * from "./filter-menu";
 export * from "./input";
 export * from "./log-ops-input";
