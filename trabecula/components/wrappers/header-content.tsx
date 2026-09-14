@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { ConditionalWrap, UniformList, View } from "trabecula/components";
+import { ConditionalWrap, View } from "trabecula/components";
 
 export interface HeaderContentProps {
   children: JSX.Element | JSX.Element[];
@@ -11,25 +11,17 @@ export const HeaderContent = ({ children, leftNode, rightNode }: HeaderContentPr
   <ConditionalWrap
     condition={leftNode !== undefined || rightNode !== undefined}
     wrap={(wrappedChildren) => (
-      <UniformList row flex={1} align="center">
-        {leftNode ? (
-          <View row align="center" justify="flex-start">
-            {leftNode}
-          </View>
-        ) : (
-          <View />
-        )}
+      <View row flex={1} minWidth={0} align="center">
+        <View row flex="1 1 0" minWidth={0} align="center" justify="flex-start">
+          {leftNode}
+        </View>
 
         {wrappedChildren}
 
-        {rightNode ? (
-          <View row align="center" justify="flex-end">
-            {rightNode}
-          </View>
-        ) : (
-          <View />
-        )}
-      </UniformList>
+        <View row flex="1 1 0" minWidth={0} align="center" justify="flex-end">
+          {rightNode}
+        </View>
+      </View>
     )}
   >
     {children}

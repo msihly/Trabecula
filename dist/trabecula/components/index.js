@@ -7946,10 +7946,10 @@ var HeaderContent = ({ children, leftNode, rightNode }) => /* @__PURE__ */ (0, i
   ConditionalWrap,
   {
     condition: leftNode !== void 0 || rightNode !== void 0,
-    wrap: (wrappedChildren) => /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(UniformList, { row: true, flex: 1, align: "center", children: [
-      leftNode ? /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(View, { row: true, align: "center", justify: "flex-start", children: leftNode }) : /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(View, {}),
+    wrap: (wrappedChildren) => /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(View, { row: true, flex: 1, minWidth: 0, align: "center", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(View, { row: true, flex: "1 1 0", minWidth: 0, align: "center", justify: "flex-start", children: leftNode }),
       wrappedChildren,
-      rightNode ? /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(View, { row: true, align: "center", justify: "flex-end", children: rightNode }) : /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(View, {})
+      /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(View, { row: true, flex: "1 1 0", minWidth: 0, align: "center", justify: "flex-end", children: rightNode })
     ] }),
     children
   }
