@@ -1,4 +1,4 @@
-import { Button, Comp, HeaderContent, Text } from "trabecula/components";
+import { Comp, HeaderContent, IconButton, Text } from "trabecula/components";
 import { colors } from "trabecula/utils/client";
 
 export interface FilterHeaderProps {
@@ -13,18 +13,13 @@ export const FilterHeader = Comp(({ label, mode, setMode }: FilterHeaderProps) =
   return (
     <HeaderContent
       rightNode={
-        <Button
+        <IconButton
           color={mode === "optional" ? colors.custom.lightBlue : colors.custom.grey}
-          fontSize="0.8em"
+          iconProps={{ size: "0.8rem" }}
+          name={mode === "optional" ? "AddCircle" : "Circle"}
           onClick={toggleMode}
-          padding={{ all: "0 0.3rem" }}
-          text={mode === "optional" ? "OR" : "AND"}
-          tooltip={
-            mode === "optional"
-              ? "Optional: match at least one optional filter. Click to make required."
-              : "Required: match this filter. Click to make optional."
-          }
-          variant="text"
+          padding={{ all: 0 }}
+          tooltip={mode === "optional" ? "Optional" : "Required"}
         />
       }
     >
