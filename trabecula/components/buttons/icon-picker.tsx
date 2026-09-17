@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
-import { MUI_ICONS } from "trabecula/_generated/client";
+import { ICON_NAMES } from "trabecula/_generated/client";
 import {
   Button,
   ButtonProps,
@@ -55,13 +55,15 @@ export const IconPicker = Comp(
 
     const searchTerms = searchVal.split(" ").filter((t) => t.length > 0);
 
-    const filteredIcons = MUI_ICONS.filter((icon) => {
+    const filteredIcons = ICON_NAMES.filter((icon) => {
       const name = icon.toLowerCase();
-      if (value?.length && name.includes(value.toLowerCase())) return false;
+      if (icon === value) return false;
 
-      if (searchStyle === "Filled") {
-        if (SEARCH_STYLES_UNFILLED.some((s) => name.includes(s.toLowerCase()))) return false;
-      } else if (!name.includes(searchStyle.toLowerCase())) return false;
+      if (withStylePicker) {
+        if (searchStyle === "Filled") {
+          if (SEARCH_STYLES_UNFILLED.some((s) => name.includes(s.toLowerCase()))) return false;
+        } else if (!name.includes(searchStyle.toLowerCase())) return false;
+      }
 
       if (!searchTerms.length) return true;
       return searchTerms.every((term) => name.includes(term.toLowerCase()));

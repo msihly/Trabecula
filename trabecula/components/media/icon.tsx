@@ -1,11 +1,14 @@
 // eslint-disable-next-line @typescript-eslint/no-restricted-imports
 import { Icon as MuiIcon, IconProps as MuiIconProps } from "@mui/material";
-import { IconName as MuiIconName } from "trabecula/_generated/client/icons";
+import {
+  COUNTRY_FLAG_LIGATURES,
+  ICON_LIGATURES,
+  IconName as GeneratedIconName,
+} from "trabecula/_generated/client/icons";
 import { View, ViewProps } from "trabecula/components";
 import { CssColor, makeClasses, Margins } from "trabecula/utils/client";
-import { Fmt } from "trabecula/utils/common";
 
-export type IconName = MuiIconName;
+export type IconName = GeneratedIconName;
 
 export interface IconLayer {
   color?: CssColor;
@@ -50,6 +53,7 @@ export const Icon = ({
         layers.map((layer, i) => (
           <MuiIcon
             {...props}
+            baseClassName={getIconClassName(layer.name)}
             key={`${layer.name}-${i}`}
             className={css.layer}
             style={{
@@ -58,12 +62,16 @@ export const Icon = ({
               transform: makeLayerTransform(layer),
             }}
           >
-            {Fmt.pascalToSnake(layer.name)}
+            {ICON_LIGATURES[layer.name]}
           </MuiIcon>
         ))
       ) : name ? (
-        <MuiIcon {...props} style={{ ...style, color, fontSize: size }}>
-          {Fmt.pascalToSnake(name)}
+        <MuiIcon
+          {...props}
+          baseClassName={getIconClassName(name)}
+          style={{ ...style, color, fontSize: size }}
+        >
+          {ICON_LIGATURES[name]}
         </MuiIcon>
       ) : (
         ""
@@ -71,6 +79,9 @@ export const Icon = ({
     </View>
   );
 };
+
+const getIconClassName = (name: IconName) =>
+  name in COUNTRY_FLAG_LIGATURES ? "country-flags" : "material-icons";
 
 /* -------------------------------------------------------------------------- */
 /*                                   CLASSES                                  */

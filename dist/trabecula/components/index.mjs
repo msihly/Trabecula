@@ -1,6 +1,8 @@
 import {
-  MUI_ICONS
-} from "../chunk-7TIIU46R.mjs";
+  COUNTRY_FLAG_LIGATURES,
+  ICON_LIGATURES,
+  ICON_NAMES
+} from "../chunk-M7SRQWZA.mjs";
 import {
   colors,
   makeBorderRadiuses,
@@ -14,7 +16,6 @@ import {
 import {
   DENSE_FORM_ROW_HEIGHT,
   FORM_ROW_HEIGHT,
-  Fmt,
   LOGICAL_OPS,
   _CONSTANTS,
   chunkArray,
@@ -441,12 +442,14 @@ var IconPicker = Comp(
     const [searchStyle, setSearchStyle] = useState("Filled");
     const [searchVal, setSearchVal] = useState("");
     const searchTerms = searchVal.split(" ").filter((t) => t.length > 0);
-    const filteredIcons = MUI_ICONS.filter((icon) => {
+    const filteredIcons = ICON_NAMES.filter((icon) => {
       const name = icon.toLowerCase();
-      if ((value == null ? void 0 : value.length) && name.includes(value.toLowerCase())) return false;
-      if (searchStyle === "Filled") {
-        if (SEARCH_STYLES_UNFILLED.some((s) => name.includes(s.toLowerCase()))) return false;
-      } else if (!name.includes(searchStyle.toLowerCase())) return false;
+      if (icon === value) return false;
+      if (withStylePicker) {
+        if (searchStyle === "Filled") {
+          if (SEARCH_STYLES_UNFILLED.some((s) => name.includes(s.toLowerCase()))) return false;
+        } else if (!name.includes(searchStyle.toLowerCase())) return false;
+      }
       if (!searchTerms.length) return true;
       return searchTerms.every((term) => name.includes(term.toLowerCase()));
     });
@@ -2368,6 +2371,7 @@ var Icon = (_a) => {
     return /* @__PURE__ */ createElement4(
       MuiIcon,
       __spreadProps(__spreadValues({}, props), {
+        baseClassName: getIconClassName(layer.name),
         key: `${layer.name}-${i}`,
         className: css.layer,
         style: {
@@ -2376,10 +2380,18 @@ var Icon = (_a) => {
           transform: makeLayerTransform(layer)
         }
       }),
-      Fmt.pascalToSnake(layer.name)
+      ICON_LIGATURES[layer.name]
     );
-  }) : name ? /* @__PURE__ */ jsx29(MuiIcon, __spreadProps(__spreadValues({}, props), { style: __spreadProps(__spreadValues({}, style), { color, fontSize: size }), children: Fmt.pascalToSnake(name) })) : "" }));
+  }) : name ? /* @__PURE__ */ jsx29(
+    MuiIcon,
+    __spreadProps(__spreadValues({}, props), {
+      baseClassName: getIconClassName(name),
+      style: __spreadProps(__spreadValues({}, style), { color, fontSize: size }),
+      children: ICON_LIGATURES[name]
+    })
+  ) : "" }));
 };
+var getIconClassName = (name) => name in COUNTRY_FLAG_LIGATURES ? "country-flags" : "material-icons";
 var defaultCssValue = (value) => {
   if (value === void 0) return "0";
   return typeof value === "number" ? `${value}px` : value;

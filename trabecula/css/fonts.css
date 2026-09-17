@@ -40,8 +40,23 @@
   src: url("./fonts/material-icons-round.woff2") format("woff2");
 }
 
+@font-face {
+  font-family: "Country Flags";
+  font-weight: 400;
+  font-style: normal;
+  src: url("./fonts/country-flags.woff2") format("woff2");
+}
+
+.country-flags {
+  font-family: "Country Flags";
+}
+
 .material-icons {
   font-family: "Material Icons";
+}
+
+.country-flags,
+.material-icons {
   font-weight: normal;
   font-style: normal;
   font-size: 24px;
