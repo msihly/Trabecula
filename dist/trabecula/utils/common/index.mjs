@@ -5,6 +5,7 @@ import {
   LOGICAL_OPS,
   PromiseQueue,
   _CONSTANTS,
+  applySelectionChanges,
   arrayIntersect,
   attempt,
   bisectArrayChanges,
@@ -23,6 +24,7 @@ import {
   durationToSeconds,
   fractionStringToNumber,
   getArrayDiff,
+  getSelectionRange,
   handleErrors,
   isArchive,
   isArchiveFirstPart,
@@ -47,7 +49,7 @@ import {
   uniqueArrayFilter,
   uniqueArrayMerge,
   uuid
-} from "../../chunk-UMQ3RUBW.mjs";
+} from "../../chunk-PX3POEJF.mjs";
 import "../../chunk-DM4QYMVJ.mjs";
 export {
   DENSE_FORM_ROW_HEIGHT,
@@ -56,6 +58,7 @@ export {
   LOGICAL_OPS,
   PromiseQueue,
   _CONSTANTS,
+  applySelectionChanges,
   arrayIntersect,
   attempt,
   bisectArrayChanges,
@@ -74,6 +77,7 @@ export {
   durationToSeconds,
   fractionStringToNumber,
   getArrayDiff,
+  getSelectionRange,
   handleErrors,
   isArchive,
   isArchiveFirstPart,

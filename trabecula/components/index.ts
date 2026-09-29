@@ -1,6 +1,7 @@
 import { Comp } from "./comp";
 export { Comp };
 
+export * from "./activity";
 export * from "./buttons";
 export * from "./inputs";
 export * from "./list";

@@ -1,8 +1,8 @@
 import * as react from 'react';
 import react__default, { Ref, ForwardRefExoticComponent, PropsWithoutRef, RefAttributes, ReactNode, MouseEvent, ComponentProps, Dispatch, SetStateAction, ElementType, DetailedHTMLProps, ImgHTMLAttributes, HTMLAttributes } from 'react';
+import { b as CssColor, B as BorderRadiuses, a as Borders, C as CSS, M as Margins, P as Padding } from '../css-BUA_CbgU.js';
 import * as react_jsx_runtime from 'react/jsx-runtime';
 import { ButtonProps as ButtonProps$1, IconButtonProps as IconButtonProps$1, AutocompleteProps, Autocomplete, TextFieldProps, ListProps as ListProps$1, ListItemProps as ListItemProps$1, IconProps as IconProps$1, DialogProps, PaginationProps as PaginationProps$1, LinkProps as LinkProps$1, TypographyProps, AccordionProps as AccordionProps$1, TooltipProps as TooltipProps$2, ChipProps as ChipProps$2, DividerProps as DividerProps$1 } from '@mui/material';
-import { b as CssColor, B as BorderRadiuses, a as Borders, C as CSS, M as Margins, P as Padding } from '../css-BUA_CbgU.js';
 import { IconName as IconName$1 } from '../_generated/client/index.js';
 import { DatePickerProps } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
@@ -15,6 +15,36 @@ import 'tss-react';
 
 type Forwarded<P, R> = (props: P, ref: Ref<R>) => JSX.Element;
 declare function Comp<P, R = HTMLDivElement>(component: Forwarded<P, R>): ForwardRefExoticComponent<PropsWithoutRef<P> & RefAttributes<R>>;
+
+interface ActivityModalProps {
+    children: ReactNode;
+    error?: string;
+    isEmpty?: boolean;
+    isLoading?: boolean;
+    onClose: () => void;
+    onPageChange: (page: number) => void;
+    onRefresh: () => void;
+    page: number;
+    pageCount: number;
+    title?: string;
+}
+declare const ActivityModal: react.ForwardRefExoticComponent<ActivityModalProps & react.RefAttributes<HTMLDivElement>>;
+
+interface ActivityOperationCardProps {
+    children?: ReactNode;
+    controls?: ReactNode;
+    dateText?: string;
+    error?: string;
+    icon: IconName;
+    isActive?: boolean;
+    label: string;
+    message?: string;
+    processedCount: number;
+    statusColor: CssColor;
+    statusText: string;
+    totalCount: number;
+}
+declare const ActivityOperationCard: react.ForwardRefExoticComponent<ActivityOperationCardProps & react.RefAttributes<HTMLDivElement>>;
 
 interface ButtonProps extends Omit<ButtonProps$1, "children" | "color" | "component" | "endIcon" | "fullWidth" | "startIcon" | "type" | "variant"> {
     borderColorOnHover?: CssColor;
@@ -653,6 +683,7 @@ interface DataGridRowProps<T extends object> extends Pick<DataGridProps<T>, "alt
 declare const DataGridRow: <T extends object>({ alternatingBgColor, alternatingColors, className, columns, defaultTextPreset, expandableContent, expandedRows, expandColumnWidth, getRowBgColor, index, isRowSelected, onRowClick, row, rowGap, selectedBgColor, selectedTextColor, setExpandedRows, textPreset, }: DataGridRowProps<T>) => react_jsx_runtime.JSX.Element;
 
 interface PaginationProps extends Omit<PaginationProps$1, "onChange"> {
+    inline?: boolean;
     isLoading?: boolean;
     onChange: (page: number) => void;
     onFullLoad?: () => void;
@@ -1081,4 +1112,4 @@ declare const MuiProvider: ({ children, portalContainer, styleContainer, }: {
     styleContainer?: Node;
 }) => react_jsx_runtime.JSX.Element;
 
-export { Accordion, AccordionGroup, type AccordionProps, AutoComplete, type AutoCompleteOption, type AutoCompleteProps, Button, type ButtonProps, ButtonWithInset, type ButtonWithInsetProps, Card, CardBase, CardGrid, type CardGridProps, type CardProps, CenteredText, type CenteredTextProps, Checkbox, type CheckboxProps, Chip, ChipInput, type ChipInputProps, type ChipOption, type ChipProps, ColorPicker, type ColorPickerProps, Comp, ConditionalWrap, ConfirmModal, type ConfirmModalProps, type ContainerProps$1 as ContainerProps, type ContentProps, ContextMenu, type ContextMenuProps, DEFAULT_INPUT_HEADER_PROPS, DENSE_INPUT_PADDING, DataGrid, type DataGridCellLayoutProps, type DataGridColumn, type DataGridColumnConfig, type DataGridColumnKey, DataGridHeader, type DataGridHeaderProps, type DataGridProps, type DataGridRender, type DataGridRenderContext, DataGridRow, type DataGridRowData, type DataGridRowProps, type DataGridSort, type DataGridSortDirection, type DataGridValue, DateDetail, type DateDetailProps, DateInput, type DateInputProps, DateRange, type DateRangeProps, Detail, type DetailProps, DetailRows, DisabledOverlay, type DisabledOverlayProps, Divider, type DividerProps, Dropdown, type DropdownOption, type DropdownProps, FilterHeader, type FilterHeaderProps, FilterMenu, type FilterMenuProps, type FooterProps$1 as FooterProps, HeaderContent, type HeaderContentProps, type HeaderProps, HeaderWrapper, type HeaderWrapperProps, Icon, IconButton, type IconButtonProps, type IconLayer, type IconName, IconPicker, type IconPickerProps, type IconProps, Input, type InputProps, Link, List, ListItem, type ListItemProps, type ListProps, LoadingOverlay, type LoadingOverlayProps, LogOpsInput, type LogOpsInputProps, MULTI_INPUT_ROW_HEIGHT, MenuButton, type MenuButtonProps, Modal, MuiProvider, MultiActionButton, type MultiActionButtonProps, MultiInput, MultiInputList, type MultiInputListProps, type MultiInputProps, MultiInputRow, type MultiInputRowOption, type MultiInputRowProps, NumInput, type NumInputProps, NumRange, type NumRangeProps, Pagination, type PaginationProps, ProgressBar, type ProgressBarProps, ProgressCircle, type ProgressCircleProps, Radio, type RadioProps, RangeWrapper, type RangeWrapperProps, SideScroller, SortMenu, type SortMenuProps, SortRow, type SortRowProps, PRESETS as TEXT_PRESETS, Table, type TableColumn, type TableProps, Text, type TextPreset, type TextProps, type TextTruncation, TimeInput, type TimeInputProps, Tooltip, type TooltipProps$1 as TooltipProps, TooltipWrapper, type TooltipWrapperProps, TruncatedText, type TruncatedTextProps, type TruncatedTextRemainderProps, UniformList, type UniformListProps, View, type ViewProps, clampDataGridColumnWidth, compareDataGridValues, createAutoCompleteOptions, getDataGridCellLayout, getDataGridColumnValue, getDataGridValueText, getTextTruncation, useAccordionGroup, useAccordionGroupSection };
+export { Accordion, AccordionGroup, type AccordionProps, ActivityModal, type ActivityModalProps, ActivityOperationCard, type ActivityOperationCardProps, AutoComplete, type AutoCompleteOption, type AutoCompleteProps, Button, type ButtonProps, ButtonWithInset, type ButtonWithInsetProps, Card, CardBase, CardGrid, type CardGridProps, type CardProps, CenteredText, type CenteredTextProps, Checkbox, type CheckboxProps, Chip, ChipInput, type ChipInputProps, type ChipOption, type ChipProps, ColorPicker, type ColorPickerProps, Comp, ConditionalWrap, ConfirmModal, type ConfirmModalProps, type ContainerProps$1 as ContainerProps, type ContentProps, ContextMenu, type ContextMenuProps, DEFAULT_INPUT_HEADER_PROPS, DENSE_INPUT_PADDING, DataGrid, type DataGridCellLayoutProps, type DataGridColumn, type DataGridColumnConfig, type DataGridColumnKey, DataGridHeader, type DataGridHeaderProps, type DataGridProps, type DataGridRender, type DataGridRenderContext, DataGridRow, type DataGridRowData, type DataGridRowProps, type DataGridSort, type DataGridSortDirection, type DataGridValue, DateDetail, type DateDetailProps, DateInput, type DateInputProps, DateRange, type DateRangeProps, Detail, type DetailProps, DetailRows, DisabledOverlay, type DisabledOverlayProps, Divider, type DividerProps, Dropdown, type DropdownOption, type DropdownProps, FilterHeader, type FilterHeaderProps, FilterMenu, type FilterMenuProps, type FooterProps$1 as FooterProps, HeaderContent, type HeaderContentProps, type HeaderProps, HeaderWrapper, type HeaderWrapperProps, Icon, IconButton, type IconButtonProps, type IconLayer, type IconName, IconPicker, type IconPickerProps, type IconProps, Input, type InputProps, Link, List, ListItem, type ListItemProps, type ListProps, LoadingOverlay, type LoadingOverlayProps, LogOpsInput, type LogOpsInputProps, MULTI_INPUT_ROW_HEIGHT, MenuButton, type MenuButtonProps, Modal, MuiProvider, MultiActionButton, type MultiActionButtonProps, MultiInput, MultiInputList, type MultiInputListProps, type MultiInputProps, MultiInputRow, type MultiInputRowOption, type MultiInputRowProps, NumInput, type NumInputProps, NumRange, type NumRangeProps, Pagination, type PaginationProps, ProgressBar, type ProgressBarProps, ProgressCircle, type ProgressCircleProps, Radio, type RadioProps, RangeWrapper, type RangeWrapperProps, SideScroller, SortMenu, type SortMenuProps, SortRow, type SortRowProps, PRESETS as TEXT_PRESETS, Table, type TableColumn, type TableProps, Text, type TextPreset, type TextProps, type TextTruncation, TimeInput, type TimeInputProps, Tooltip, type TooltipProps$1 as TooltipProps, TooltipWrapper, type TooltipWrapperProps, TruncatedText, type TruncatedTextProps, type TruncatedTextRemainderProps, UniformList, type UniformListProps, View, type ViewProps, clampDataGridColumnWidth, compareDataGridValues, createAutoCompleteOptions, getDataGridCellLayout, getDataGridColumnValue, getDataGridValueText, getTextTruncation, useAccordionGroup, useAccordionGroupSection };

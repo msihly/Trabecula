@@ -6,3 +6,4 @@ export * from "./formatting";
 export * from "./math";
 export * from "./miscellaneous";
 export * from "./queue";
+export * from "./selection";

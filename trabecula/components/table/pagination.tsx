@@ -19,6 +19,7 @@ import {
 import { colors, makeClasses } from "trabecula/utils/client";
 
 export interface PaginationProps extends Omit<PaginationBaseProps, "onChange"> {
+  inline?: boolean;
   isLoading?: boolean;
   onChange: (page: number) => void;
   onFullLoad?: () => void;
@@ -29,6 +30,7 @@ export const Pagination = Comp(
   ({
     className,
     count,
+    inline = false,
     isLoading,
     onChange,
     onFullLoad,
@@ -62,7 +64,14 @@ export const Pagination = Comp(
     };
 
     return (
-      <View {...viewProps} className={cx(css.root, viewProps?.className)}>
+      <View
+        {...viewProps}
+        className={cx(css.root, viewProps?.className)}
+        style={{
+          ...(inline ? { flex: "0 0 auto", position: "relative" } : {}),
+          ...viewProps.style,
+        }}
+      >
         <View position="relative" overflow="hidden">
           <LoadingOverlay isLoading={isLoading} />
 

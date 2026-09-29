@@ -1,7 +1,7 @@
 import {
   handleErrors,
   isDeepEqual
-} from "./chunk-UMQ3RUBW.mjs";
+} from "./chunk-PX3POEJF.mjs";
 import {
   __async,
   __publicField,
@@ -199,6 +199,50 @@ var getMobx = () => {
   return mobxKeystoneBindings;
 };
 
+// trabecula/utils/client/pagination.ts
+import { useEffect as useEffect2, useState as useState2 } from "react";
+var usePaginatedList = (loadPage, { pollIntervalMs = 0 } = {}) => {
+  const [error, setError] = useState2("");
+  const [isLoading, setIsLoading] = useState2(true);
+  const [items, setItems] = useState2([]);
+  const [page, setPage] = useState2(1);
+  const [pageCount, setPageCount] = useState2(1);
+  const [revision, setRevision] = useState2(0);
+  useEffect2(() => {
+    const controller = new AbortController();
+    let timer;
+    setIsLoading(true);
+    setError("");
+    const load = () => __async(null, null, function* () {
+      try {
+        const result = yield loadPage(page, controller.signal);
+        if (!controller.signal.aborted) {
+          const count = Math.max(1, result.pageCount);
+          setError("");
+          setPageCount(count);
+          if (page > count) setPage(count);
+          else setItems(result.items);
+        }
+      } catch (error2) {
+        if (!controller.signal.aborted)
+          setError(error2 instanceof Error ? error2.message : String(error2));
+      } finally {
+        if (!controller.signal.aborted) {
+          setIsLoading(false);
+          if (pollIntervalMs > 0) timer = setTimeout(load, pollIntervalMs);
+        }
+      }
+    });
+    void load();
+    return () => {
+      controller.abort();
+      clearTimeout(timer);
+    };
+  }, [loadPage, page, pollIntervalMs, revision]);
+  const refresh = () => setRevision((value) => value + 1);
+  return { error, isLoading, items, page, pageCount, refresh, setError, setPage };
+};
+
 // trabecula/utils/client/queue.ts
 var makeQueue = ({
   action,
@@ -254,7 +298,7 @@ var makeQueue = ({
 };
 
 // trabecula/utils/client/scrolling.ts
-import { useRef as useRef2, useState as useState2 } from "react";
+import { useRef as useRef2, useState as useState3 } from "react";
 var useDragScroll = ({
   listRef,
   listOuterRef,
@@ -268,7 +312,7 @@ var useDragScroll = ({
   const scrollFinal = useRef2(0);
   const scrollStart = useRef2(0);
   const velocity = useRef2(0);
-  const [isDragging, setIsDragging] = useState2(false);
+  const [isDragging, setIsDragging] = useState3(false);
   const handleMouseDown = (event) => {
     if (!listRef.current) return;
     initialMouseX.current = event.clientX;
@@ -498,6 +542,7 @@ export {
   copyToClipboard,
   initMobx,
   getMobx,
+  usePaginatedList,
   makeQueue,
   useDragScroll,
   asyncAction,
@@ -511,4 +556,4 @@ export {
   Toaster,
   ToastContainer
 };
-//# sourceMappingURL=chunk-D25GIYZU.mjs.map
+//# sourceMappingURL=chunk-7IUHSXLP.mjs.map

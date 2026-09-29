@@ -24,9 +24,10 @@ import {
   useElementResize,
   useForceUpdate,
   useLazyLoad,
+  usePaginatedList,
   validateProp
-} from "../../chunk-D25GIYZU.mjs";
-import "../../chunk-UMQ3RUBW.mjs";
+} from "../../chunk-7IUHSXLP.mjs";
+import "../../chunk-PX3POEJF.mjs";
 import "../../chunk-DM4QYMVJ.mjs";
 export {
   ToastContainer,
@@ -54,6 +55,7 @@ export {
   useElementResize,
   useForceUpdate,
   useLazyLoad,
+  usePaginatedList,
   validateProp
 };
 //# sourceMappingURL=index.mjs.map

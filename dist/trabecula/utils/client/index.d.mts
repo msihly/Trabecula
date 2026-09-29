@@ -1,4 +1,5 @@
 export { B as BorderRadiuses, a as Borders, C as CSS, b as CssColor, c as CssNamedColor, M as Margins, P as Padding, d as colors, m as makeBorderRadiuses, e as makeBorders, f as makeClasses, g as makeMargins, h as makePadding } from '../../css-BUA_CbgU.mjs';
+import * as react from 'react';
 import { EffectCallback, DependencyList, MutableRefObject, ReactNode } from 'react';
 import * as mobx_keystone from 'mobx-keystone';
 import { P as PromiseQueue } from '../../queue-CNnYljaI.mjs';
@@ -37,6 +38,23 @@ type MobxKeystoneBindings = {
 };
 declare const initMobx: (bindings: MobxKeystoneBindings) => MobxKeystoneBindings;
 declare const getMobx: () => MobxKeystoneBindings;
+
+interface PaginatedResult<T> {
+    items: T[];
+    pageCount: number;
+}
+declare const usePaginatedList: <T>(loadPage: (page: number, signal: AbortSignal) => Promise<PaginatedResult<T>>, { pollIntervalMs }?: {
+    pollIntervalMs?: number;
+}) => {
+    error: string;
+    isLoading: boolean;
+    items: T[];
+    page: number;
+    pageCount: number;
+    refresh: () => void;
+    setError: react.Dispatch<react.SetStateAction<string>>;
+    setPage: react.Dispatch<react.SetStateAction<number>>;
+};
 
 declare const makeQueue: <T>({ action, items, logPrefix, logSuffix, onComplete, queue, withTabTitle, }: {
     action: (item: T, escapeFn: () => Promise<void>) => Promise<any>;
@@ -98,4 +116,4 @@ declare class Toaster {
 }
 declare const ToastContainer: (props: ToastContainerProps) => react_jsx_runtime.JSX.Element;
 
-export { ToastContainer, Toaster, asyncAction, attachTouchedTracker, clearTouched, copyToClipboard, derefMobx, getMobx, initMobx, makeQueue, makeTouchedProp, toast, triggerAllTouched, useDeepEffect, useDeepMemo, useDragScroll, useElementResize, useForceUpdate, useLazyLoad, validateProp };
+export { type PaginatedResult, ToastContainer, Toaster, asyncAction, attachTouchedTracker, clearTouched, copyToClipboard, derefMobx, getMobx, initMobx, makeQueue, makeTouchedProp, toast, triggerAllTouched, useDeepEffect, useDeepMemo, useDragScroll, useElementResize, useForceUpdate, useLazyLoad, usePaginatedList, validateProp };

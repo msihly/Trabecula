@@ -125,6 +125,7 @@ __export(client_exports, {
   useElementResize: () => useElementResize,
   useForceUpdate: () => useForceUpdate,
   useLazyLoad: () => useLazyLoad,
+  usePaginatedList: () => usePaginatedList,
   validateProp: () => validateProp
 });
 module.exports = __toCommonJS(client_exports);
@@ -501,6 +502,50 @@ var getMobx = () => {
   return mobxKeystoneBindings;
 };
 
+// trabecula/utils/client/pagination.ts
+var import_react2 = require("react");
+var usePaginatedList = (loadPage, { pollIntervalMs = 0 } = {}) => {
+  const [error, setError] = (0, import_react2.useState)("");
+  const [isLoading, setIsLoading] = (0, import_react2.useState)(true);
+  const [items, setItems] = (0, import_react2.useState)([]);
+  const [page, setPage] = (0, import_react2.useState)(1);
+  const [pageCount, setPageCount] = (0, import_react2.useState)(1);
+  const [revision, setRevision] = (0, import_react2.useState)(0);
+  (0, import_react2.useEffect)(() => {
+    const controller = new AbortController();
+    let timer;
+    setIsLoading(true);
+    setError("");
+    const load = () => __async(null, null, function* () {
+      try {
+        const result = yield loadPage(page, controller.signal);
+        if (!controller.signal.aborted) {
+          const count = Math.max(1, result.pageCount);
+          setError("");
+          setPageCount(count);
+          if (page > count) setPage(count);
+          else setItems(result.items);
+        }
+      } catch (error2) {
+        if (!controller.signal.aborted)
+          setError(error2 instanceof Error ? error2.message : String(error2));
+      } finally {
+        if (!controller.signal.aborted) {
+          setIsLoading(false);
+          if (pollIntervalMs > 0) timer = setTimeout(load, pollIntervalMs);
+        }
+      }
+    });
+    void load();
+    return () => {
+      controller.abort();
+      clearTimeout(timer);
+    };
+  }, [loadPage, page, pollIntervalMs, revision]);
+  const refresh = () => setRevision((value) => value + 1);
+  return { error, isLoading, items, page, pageCount, refresh, setError, setPage };
+};
+
 // trabecula/utils/client/queue.ts
 var makeQueue = ({
   action,
@@ -556,7 +601,7 @@ var makeQueue = ({
 };
 
 // trabecula/utils/client/scrolling.ts
-var import_react2 = require("react");
+var import_react3 = require("react");
 var useDragScroll = ({
   listRef,
   listOuterRef,
@@ -564,13 +609,13 @@ var useDragScroll = ({
   scrollLeft,
   width
 }) => {
-  const dragDirection = (0, import_react2.useRef)(null);
-  const initialMouseX = (0, import_react2.useRef)(null);
-  const momentumId = (0, import_react2.useRef)(null);
-  const scrollFinal = (0, import_react2.useRef)(0);
-  const scrollStart = (0, import_react2.useRef)(0);
-  const velocity = (0, import_react2.useRef)(0);
-  const [isDragging, setIsDragging] = (0, import_react2.useState)(false);
+  const dragDirection = (0, import_react3.useRef)(null);
+  const initialMouseX = (0, import_react3.useRef)(null);
+  const momentumId = (0, import_react3.useRef)(null);
+  const scrollFinal = (0, import_react3.useRef)(0);
+  const scrollStart = (0, import_react3.useRef)(0);
+  const velocity = (0, import_react3.useRef)(0);
+  const [isDragging, setIsDragging] = (0, import_react3.useState)(false);
   const handleMouseDown = (event) => {
     if (!listRef.current) return;
     initialMouseX.current = event.clientX;
@@ -808,6 +853,7 @@ var useClasses = makeClasses({
   useElementResize,
   useForceUpdate,
   useLazyLoad,
+  usePaginatedList,
   validateProp
 });
 //# sourceMappingURL=index.js.map
