@@ -5443,14 +5443,145 @@ var useClasses44 = makeClasses((props) => ({
   }
 }));
 
+// trabecula/components/wrappers/tab-container.tsx
+import { useState as useState20 } from "react";
+import { Tab, Tabs } from "@mui/material";
+import Color12 from "color";
+import { jsx as jsx73, jsxs as jsxs38 } from "react/jsx-runtime";
+var TabContainer = ({
+  activeTab,
+  borderRadius = "0.5rem",
+  color = colors.custom.blue,
+  contentClassName,
+  headerRightNode,
+  maxWidth,
+  minHeight,
+  onTabChange,
+  tabHeight = "1.5rem",
+  tabs,
+  viewProps = {},
+  withBorder = false
+}) => {
+  const { css, cx } = useClasses45({
+    borderRadius,
+    color,
+    maxWidth,
+    minHeight,
+    tabHeight,
+    withBorder
+  });
+  const [selectedTab, setSelectedTab] = useState20("0");
+  const currentTab = activeTab != null ? activeTab : selectedTab;
+  const handleChange = (_event, tabIndex) => {
+    if (activeTab === void 0) setSelectedTab(tabIndex);
+    onTabChange == null ? void 0 : onTabChange(tabIndex);
+  };
+  return /* @__PURE__ */ jsxs38(View, __spreadProps(__spreadValues({ column: true, height: "100%", minHeight: 0 }, viewProps), { children: [
+    /* @__PURE__ */ jsxs38(View, { row: true, height: tabHeight, className: css.header, children: [
+      /* @__PURE__ */ jsx73(
+        Tabs,
+        {
+          "aria-label": "tabs",
+          className: css.tabList,
+          onChange: handleChange,
+          value: currentTab,
+          variant: "scrollable",
+          children: tabs.map((tab, index) => /* @__PURE__ */ jsx73(
+            Tab,
+            {
+              className: css.tab,
+              label: tab.label,
+              value: index.toString(),
+              wrapped: true
+            },
+            index
+          ))
+        }
+      ),
+      headerRightNode && /* @__PURE__ */ jsx73(View, { flex: "none", height: "100%", children: headerRightNode })
+    ] }),
+    /* @__PURE__ */ jsx73(View, { className: cx(css.content, contentClassName), "aria-label": "tab-content", children: tabs.map((tab, index) => {
+      const isActive = currentTab === index.toString();
+      return tab.keepMounted || isActive ? /* @__PURE__ */ jsx73(
+        View,
+        {
+          "aria-label": tab.label,
+          className: cx(css.tabPanel, !isActive && css.hidden),
+          role: "tabpanel",
+          children: tab.content
+        },
+        index
+      ) : null;
+    }) })
+  ] }));
+};
+var useClasses45 = makeClasses((props) => {
+  var _a;
+  return {
+    content: {
+      border: props.withBorder ? `3px solid ${props.color}` : void 0,
+      borderRadius: props.withBorder ? `0 0 ${props.borderRadius} ${props.borderRadius}` : void 0,
+      borderTop: "none",
+      flex: 1,
+      maxWidth: props.maxWidth,
+      minHeight: (_a = props.minHeight) != null ? _a : 0,
+      padding: "0.4rem"
+    },
+    header: {
+      backgroundColor: props.color,
+      borderRadius: props.withBorder ? `${props.borderRadius} ${props.borderRadius} 0 0` : void 0,
+      flexShrink: 0
+    },
+    hidden: {
+      display: "none"
+    },
+    tab: {
+      "&.Mui-selected": {
+        backgroundColor: props.color,
+        borderBottom: "none",
+        color: colors.custom.white
+      },
+      "&:hover": {
+        backgroundColor: Color12(props.color).lighten(0.3).string(),
+        transition: "all 200ms ease-in-out"
+      },
+      "&:not(:last-child)": {
+        borderRight: `2px solid ${Color12(props.color).lighten(0.4).string()}`
+      },
+      backgroundColor: props.color,
+      color: colors.custom.grey,
+      height: props.tabHeight,
+      minHeight: 0,
+      minWidth: "7em",
+      padding: "0.3rem 0.5rem",
+      textTransform: "none",
+      transition: "all 200ms ease-in-out",
+      whiteSpace: "break-spaces"
+    },
+    tabList: {
+      "& .MuiTabs-indicator": { display: "none" },
+      backgroundColor: props.color,
+      borderRadius: props.withBorder ? `${props.borderRadius} ${props.borderRadius} 0 0` : void 0,
+      flex: 1,
+      height: props.tabHeight,
+      minHeight: 0,
+      minWidth: 0
+    },
+    tabPanel: {
+      height: "100%",
+      padding: 0
+    }
+  };
+});
+
 // trabecula/components/wrappers/uniform-list.tsx
-import { jsx as jsx73 } from "react/jsx-runtime";
+import { jsx as jsx74 } from "react/jsx-runtime";
 var UniformList = (_a) => {
   var _b = _a, { children, uniformWidth } = _b, props = __objRest(_b, ["children", "uniformWidth"]);
-  const { css, cx } = useClasses45({ uniformWidth });
-  return /* @__PURE__ */ jsx73(View, __spreadProps(__spreadValues({}, props), { className: cx(css.uniform, props == null ? void 0 : props.className), children }));
+  const { css, cx } = useClasses46({ uniformWidth });
+  return /* @__PURE__ */ jsx74(View, __spreadProps(__spreadValues({}, props), { className: cx(css.uniform, props == null ? void 0 : props.className), children }));
 };
-var useClasses45 = makeClasses((props) => ({
+var useClasses46 = makeClasses((props) => ({
   uniform: {
     "& > *": {
       flexBasis: "100%",
@@ -5460,7 +5591,7 @@ var useClasses45 = makeClasses((props) => ({
 }));
 
 // trabecula/components/wrappers/view.tsx
-import { jsx as jsx74 } from "react/jsx-runtime";
+import { jsx as jsx75 } from "react/jsx-runtime";
 var View = Comp(
   (_a, ref) => {
     var _b = _a, {
@@ -5517,7 +5648,7 @@ var View = Comp(
       "wrap"
     ]);
     if (row) column = false;
-    const { css, cx } = useClasses46({
+    const { css, cx } = useClasses47({
       align,
       bgColor,
       borders,
@@ -5542,10 +5673,10 @@ var View = Comp(
       width,
       wrap
     });
-    return /* @__PURE__ */ jsx74("div", __spreadProps(__spreadValues({}, props), { ref, className: cx(className, css.view), children }));
+    return /* @__PURE__ */ jsx75("div", __spreadProps(__spreadValues({}, props), { ref, className: cx(className, css.view), children }));
   }
 );
-var useClasses46 = makeClasses((props) => {
+var useClasses47 = makeClasses((props) => {
   var _a;
   return {
     view: __spreadValues(__spreadProps(__spreadValues(__spreadValues(__spreadValues(__spreadValues({
@@ -5581,7 +5712,7 @@ import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 import { createTheme, ThemeProvider } from "@mui/material";
 import { TssCacheProvider } from "tss-react";
-import { jsx as jsx75 } from "react/jsx-runtime";
+import { jsx as jsx76 } from "react/jsx-runtime";
 var MuiProvider = ({
   children,
   portalContainer,
@@ -5603,7 +5734,7 @@ var MuiProvider = ({
   const tssCacheRef = useRef6(
     createCache({ container: styleContainer, key: "tss", stylisPlugins: [] })
   );
-  return /* @__PURE__ */ jsx75(StrictMode, { children: /* @__PURE__ */ jsx75(CacheProvider, { value: muiCacheRef.current, children: /* @__PURE__ */ jsx75(TssCacheProvider, { value: tssCacheRef.current, children: /* @__PURE__ */ jsx75(ThemeProvider, { theme: themeRef.current, children }) }) }) });
+  return /* @__PURE__ */ jsx76(StrictMode, { children: /* @__PURE__ */ jsx76(CacheProvider, { value: muiCacheRef.current, children: /* @__PURE__ */ jsx76(TssCacheProvider, { value: tssCacheRef.current, children: /* @__PURE__ */ jsx76(ThemeProvider, { theme: themeRef.current, children }) }) }) });
 };
 export {
   Accordion,
@@ -5670,6 +5801,7 @@ export {
   SortMenu,
   SortRow,
   PRESETS as TEXT_PRESETS,
+  TabContainer,
   Table,
   Text,
   TimeInput,

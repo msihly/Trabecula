@@ -10,5 +10,6 @@ export * from "./header";
 export * from "./header-content";
 export * from "./loading-overlay";
 export * from "./side-scroller";
+export * from "./tab-container";
 export * from "./uniform-list";
 export * from "./view";
