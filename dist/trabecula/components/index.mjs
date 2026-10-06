@@ -12,7 +12,7 @@ import {
   makePadding,
   toast,
   useElementResize
-} from "../chunk-Q2WKNVAM.mjs";
+} from "../chunk-BE3UTLYC.mjs";
 import {
   DENSE_FORM_ROW_HEIGHT,
   FORM_ROW_HEIGHT,
@@ -4758,11 +4758,7 @@ var FooterText = (props) => {
 };
 
 // trabecula/components/wrappers/card-base/image.tsx
-import {
-  useEffect as useEffect8,
-  useRef as useRef4,
-  useState as useState17
-} from "react";
+import { useEffect as useEffect8, useState as useState17 } from "react";
 import { jsx as jsx61, jsxs as jsxs30 } from "react/jsx-runtime";
 var Image = ({
   autoAnimate = false,
@@ -4779,72 +4775,66 @@ var Image = ({
   thumbPaths,
   title
 }) => {
-  const thumbInterval = useRef4(null);
+  var _a;
   const [hasError, setHasError] = useState17(false);
   const [imagePos, setImagePos] = useState17(null);
+  const [isHovered, setIsHovered] = useState17(false);
   const [thumbIndex, setThumbIndex] = useState17(0);
   const { css, cx } = useClasses37({ fit, height, imagePos, rounded });
-  const hasListeners = !disabled && !autoAnimate && (thumbPaths == null ? void 0 : thumbPaths.length) > 1;
-  const createThumbInterval = () => {
-    thumbInterval.current = setInterval(() => {
-      setHasError(false);
-      setThumbIndex((thumbIndex2) => thumbIndex2 + 1 === (thumbPaths == null ? void 0 : thumbPaths.length) ? 0 : thumbIndex2 + 1);
-    }, 300);
-  };
+  const thumbPath = (_a = thumbPaths == null ? void 0 : thumbPaths[thumbIndex]) != null ? _a : thumbPaths == null ? void 0 : thumbPaths[0];
   useEffect8(() => {
-    if (!autoAnimate) return;
-    createThumbInterval();
-    return () => clearInterval(thumbInterval.current);
-  }, []);
+    const interval = !disabled && (autoAnimate || isHovered) && (thumbPaths == null ? void 0 : thumbPaths.length) > 1 ? setInterval(() => setThumbIndex((index) => (index + 1) % thumbPaths.length), 300) : null;
+    return () => clearInterval(interval);
+  }, [autoAnimate, disabled, isHovered, thumbPaths == null ? void 0 : thumbPaths.length]);
+  useEffect8(() => {
+    setHasError(false);
+  }, [thumbPath]);
   const handleError = () => {
     setHasError(true);
   };
   const handleMouseEnter = () => {
-    clearInterval(thumbInterval.current);
-    createThumbInterval();
+    setIsHovered(true);
   };
   const handleMouseLeave = () => {
-    clearInterval(thumbInterval.current);
-    thumbInterval.current = null;
-    setThumbIndex(0);
+    setIsHovered(false);
     setImagePos(null);
     setHasError(false);
+    if (!autoAnimate) setThumbIndex(0);
   };
   const handleMouseMove = (event) => {
     const { height: height2, left, top, width } = event.currentTarget.getBoundingClientRect();
-    const offsetX = event.pageX - left;
-    const offsetY = event.pageY - top;
+    const offsetX = event.clientX - left;
+    const offsetY = event.clientY - top;
     const pos = `${Math.max(0, offsetX) / width * 100}% ${Math.max(0, offsetY) / height2 * 100}%`;
     setImagePos(pos);
   };
   return /* @__PURE__ */ jsxs30(
     View,
     {
-      onMouseEnter: hasListeners ? handleMouseEnter : void 0,
-      onMouseLeave: hasListeners ? handleMouseLeave : void 0,
       className: cx(css.imageContainer, className),
+      onMouseEnter: !disabled ? handleMouseEnter : void 0,
+      onMouseLeave: handleMouseLeave,
       children: [
         hasError ? /* @__PURE__ */ jsx61(View, { className: css.image, children: /* @__PURE__ */ jsx61(
           Icon,
           {
+            color: colors.custom.grey,
             name: "ImageNotSupported",
             size: "4rem",
-            color: colors.custom.grey,
             viewProps: { align: "center", height: "100%" }
           }
-        ) }) : (thumbPaths == null ? void 0 : thumbPaths.length) > 0 ? /* @__PURE__ */ jsx61(
+        ) }) : thumbPath ? /* @__PURE__ */ jsx61(
           "img",
           {
+            alt: title,
+            className: css.image,
             draggable,
             loading,
             onDragEnd,
             onDragStart,
-            src: thumbPaths[thumbIndex],
-            alt: title,
             onError: handleError,
             onMouseMove: fit === "cover" ? handleMouseMove : void 0,
-            onMouseLeave: fit === "cover" ? handleMouseLeave : void 0,
-            className: css.image
+            src: thumbPath
           }
         ) : /* @__PURE__ */ jsx61(View, { className: css.image }),
         children
@@ -5363,10 +5353,10 @@ var useClasses43 = makeClasses((props) => ({
 }));
 
 // trabecula/components/wrappers/side-scroller.tsx
-import { useEffect as useEffect9, useRef as useRef5, useState as useState19 } from "react";
+import { useEffect as useEffect9, useRef as useRef4, useState as useState19 } from "react";
 import { jsx as jsx72, jsxs as jsxs37 } from "react/jsx-runtime";
 var SideScroller = ({ children, className, innerClassName }) => {
-  const ref = useRef5(null);
+  const ref = useRef4(null);
   const { width } = useElementResize(ref);
   const [isLeftButtonVisible, setIsLeftButtonVisible] = useState19(false);
   const [isRightButtonVisible, setIsRightButtonVisible] = useState19(false);
@@ -5729,7 +5719,7 @@ var useClasses47 = makeClasses((props) => {
 });
 
 // trabecula/views/mui-provider.tsx
-import { StrictMode, useRef as useRef6 } from "react";
+import { StrictMode, useRef as useRef5 } from "react";
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 import { createTheme, ThemeProvider } from "@mui/material";
@@ -5740,7 +5730,7 @@ var MuiProvider = ({
   portalContainer,
   styleContainer
 }) => {
-  const themeRef = useRef6(
+  const themeRef = useRef5(
     createTheme({
       components: {
         MuiModal: { defaultProps: { container: portalContainer } },
@@ -5750,10 +5740,10 @@ var MuiProvider = ({
       palette: { mode: "dark" }
     })
   );
-  const muiCacheRef = useRef6(
+  const muiCacheRef = useRef5(
     createCache({ container: styleContainer, key: "mui", prepend: true, stylisPlugins: [] })
   );
-  const tssCacheRef = useRef6(
+  const tssCacheRef = useRef5(
     createCache({ container: styleContainer, key: "tss", stylisPlugins: [] })
   );
   return /* @__PURE__ */ jsx76(StrictMode, { children: /* @__PURE__ */ jsx76(CacheProvider, { value: muiCacheRef.current, children: /* @__PURE__ */ jsx76(TssCacheProvider, { value: tssCacheRef.current, children: /* @__PURE__ */ jsx76(ThemeProvider, { theme: themeRef.current, children }) }) }) });

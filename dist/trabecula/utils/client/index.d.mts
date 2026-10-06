@@ -15,10 +15,10 @@ import 'tss-react';
 declare const useDeepEffect: (cb: EffectCallback, deps: DependencyList) => void;
 declare const useDeepMemo: <T>(value: T) => T;
 declare const useElementResize: (ref: MutableRefObject<any>, condition?: any) => {
-    top: number;
     left: number;
-    width: number;
+    top: number;
     height: number;
+    width: number;
 };
 declare const useForceUpdate: () => () => void;
 declare const useLazyLoad: (containerRef: React.RefObject<HTMLElement>, options?: {

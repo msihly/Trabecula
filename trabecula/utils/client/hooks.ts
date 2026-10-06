@@ -37,20 +37,21 @@ export const useDeepMemo = <T>(value: T) => {
 };
 
 export const useElementResize = (ref: MutableRefObject<any>, condition?: any) => {
-  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-  const [absPosition, setAbsPosition] = useState({ top: 0, left: 0 });
+  const [absPosition, setAbsPosition] = useState({ left: 0, top: 0 });
+  const [dimensions, setDimensions] = useState({ height: 0, width: 0 });
 
   useEffect(() => {
     const nodeRef = ref?.current;
 
     const getDimensions = () => ({
-      width: nodeRef?.offsetWidth || 0,
       height: nodeRef?.offsetHeight || 0,
+      width: nodeRef?.offsetWidth || 0,
     });
 
     const getPosition = () => {
       const rect = nodeRef?.getBoundingClientRect?.();
-      return { top: rect?.top || 0, left: rect?.left || 0 };
+
+      return { left: rect?.left || 0, top: rect?.top || 0 };
     };
 
     const handleResize = () => {
@@ -58,11 +59,19 @@ export const useElementResize = (ref: MutableRefObject<any>, condition?: any) =>
       setAbsPosition(getPosition());
     };
 
-    if (nodeRef) handleResize();
+    const observer = new ResizeObserver(handleResize);
+
+    if (nodeRef) {
+      handleResize();
+      observer.observe(nodeRef, { box: "border-box" });
+    }
 
     window.addEventListener("resize", handleResize);
 
-    return () => window.removeEventListener("resize", handleResize);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", handleResize);
+    };
   }, [ref, condition]);
 
   return { ...dimensions, ...absPosition };

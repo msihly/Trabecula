@@ -480,26 +480,33 @@ var deepMerge = import_es_toolkit.toMerged;
 
 // trabecula/utils/client/hooks.ts
 var useElementResize = (ref, condition) => {
-  const [dimensions, setDimensions] = (0, import_react2.useState)({ width: 0, height: 0 });
-  const [absPosition, setAbsPosition] = (0, import_react2.useState)({ top: 0, left: 0 });
+  const [absPosition, setAbsPosition] = (0, import_react2.useState)({ left: 0, top: 0 });
+  const [dimensions, setDimensions] = (0, import_react2.useState)({ height: 0, width: 0 });
   (0, import_react2.useEffect)(() => {
     const nodeRef = ref == null ? void 0 : ref.current;
     const getDimensions = () => ({
-      width: (nodeRef == null ? void 0 : nodeRef.offsetWidth) || 0,
-      height: (nodeRef == null ? void 0 : nodeRef.offsetHeight) || 0
+      height: (nodeRef == null ? void 0 : nodeRef.offsetHeight) || 0,
+      width: (nodeRef == null ? void 0 : nodeRef.offsetWidth) || 0
     });
     const getPosition = () => {
       var _a;
       const rect = (_a = nodeRef == null ? void 0 : nodeRef.getBoundingClientRect) == null ? void 0 : _a.call(nodeRef);
-      return { top: (rect == null ? void 0 : rect.top) || 0, left: (rect == null ? void 0 : rect.left) || 0 };
+      return { left: (rect == null ? void 0 : rect.left) || 0, top: (rect == null ? void 0 : rect.top) || 0 };
     };
     const handleResize = () => {
       setDimensions(getDimensions());
       setAbsPosition(getPosition());
     };
-    if (nodeRef) handleResize();
+    const observer2 = new ResizeObserver(handleResize);
+    if (nodeRef) {
+      handleResize();
+      observer2.observe(nodeRef, { box: "border-box" });
+    }
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    return () => {
+      observer2.disconnect();
+      window.removeEventListener("resize", handleResize);
+    };
   }, [ref, condition]);
   return __spreadValues(__spreadValues({}, dimensions), absPosition);
 };
@@ -10170,72 +10177,66 @@ var Image = ({
   thumbPaths,
   title
 }) => {
-  const thumbInterval = (0, import_react28.useRef)(null);
+  var _a;
   const [hasError, setHasError] = (0, import_react28.useState)(false);
   const [imagePos, setImagePos] = (0, import_react28.useState)(null);
+  const [isHovered, setIsHovered] = (0, import_react28.useState)(false);
   const [thumbIndex, setThumbIndex] = (0, import_react28.useState)(0);
   const { css, cx } = useClasses38({ fit, height, imagePos, rounded });
-  const hasListeners = !disabled && !autoAnimate && (thumbPaths == null ? void 0 : thumbPaths.length) > 1;
-  const createThumbInterval = () => {
-    thumbInterval.current = setInterval(() => {
-      setHasError(false);
-      setThumbIndex((thumbIndex2) => thumbIndex2 + 1 === (thumbPaths == null ? void 0 : thumbPaths.length) ? 0 : thumbIndex2 + 1);
-    }, 300);
-  };
+  const thumbPath = (_a = thumbPaths == null ? void 0 : thumbPaths[thumbIndex]) != null ? _a : thumbPaths == null ? void 0 : thumbPaths[0];
   (0, import_react28.useEffect)(() => {
-    if (!autoAnimate) return;
-    createThumbInterval();
-    return () => clearInterval(thumbInterval.current);
-  }, []);
+    const interval = !disabled && (autoAnimate || isHovered) && (thumbPaths == null ? void 0 : thumbPaths.length) > 1 ? setInterval(() => setThumbIndex((index) => (index + 1) % thumbPaths.length), 300) : null;
+    return () => clearInterval(interval);
+  }, [autoAnimate, disabled, isHovered, thumbPaths == null ? void 0 : thumbPaths.length]);
+  (0, import_react28.useEffect)(() => {
+    setHasError(false);
+  }, [thumbPath]);
   const handleError = () => {
     setHasError(true);
   };
   const handleMouseEnter = () => {
-    clearInterval(thumbInterval.current);
-    createThumbInterval();
+    setIsHovered(true);
   };
   const handleMouseLeave = () => {
-    clearInterval(thumbInterval.current);
-    thumbInterval.current = null;
-    setThumbIndex(0);
+    setIsHovered(false);
     setImagePos(null);
     setHasError(false);
+    if (!autoAnimate) setThumbIndex(0);
   };
   const handleMouseMove = (event) => {
     const { height: height2, left, top, width } = event.currentTarget.getBoundingClientRect();
-    const offsetX = event.pageX - left;
-    const offsetY = event.pageY - top;
+    const offsetX = event.clientX - left;
+    const offsetY = event.clientY - top;
     const pos = `${Math.max(0, offsetX) / width * 100}% ${Math.max(0, offsetY) / height2 * 100}%`;
     setImagePos(pos);
   };
   return /* @__PURE__ */ (0, import_jsx_runtime62.jsxs)(
     View,
     {
-      onMouseEnter: hasListeners ? handleMouseEnter : void 0,
-      onMouseLeave: hasListeners ? handleMouseLeave : void 0,
       className: cx(css.imageContainer, className),
+      onMouseEnter: !disabled ? handleMouseEnter : void 0,
+      onMouseLeave: handleMouseLeave,
       children: [
         hasError ? /* @__PURE__ */ (0, import_jsx_runtime62.jsx)(View, { className: css.image, children: /* @__PURE__ */ (0, import_jsx_runtime62.jsx)(
           Icon,
           {
+            color: colors.custom.grey,
             name: "ImageNotSupported",
             size: "4rem",
-            color: colors.custom.grey,
             viewProps: { align: "center", height: "100%" }
           }
-        ) }) : (thumbPaths == null ? void 0 : thumbPaths.length) > 0 ? /* @__PURE__ */ (0, import_jsx_runtime62.jsx)(
+        ) }) : thumbPath ? /* @__PURE__ */ (0, import_jsx_runtime62.jsx)(
           "img",
           {
+            alt: title,
+            className: css.image,
             draggable,
             loading,
             onDragEnd,
             onDragStart,
-            src: thumbPaths[thumbIndex],
-            alt: title,
             onError: handleError,
             onMouseMove: fit === "cover" ? handleMouseMove : void 0,
-            onMouseLeave: fit === "cover" ? handleMouseLeave : void 0,
-            className: css.image
+            src: thumbPath
           }
         ) : /* @__PURE__ */ (0, import_jsx_runtime62.jsx)(View, { className: css.image }),
         children

@@ -427,26 +427,33 @@ var useDeepMemo = (value) => {
   return (0, import_react.useMemo)(() => valueRef.current, [depRef.current]);
 };
 var useElementResize = (ref, condition) => {
-  const [dimensions, setDimensions] = (0, import_react.useState)({ width: 0, height: 0 });
-  const [absPosition, setAbsPosition] = (0, import_react.useState)({ top: 0, left: 0 });
+  const [absPosition, setAbsPosition] = (0, import_react.useState)({ left: 0, top: 0 });
+  const [dimensions, setDimensions] = (0, import_react.useState)({ height: 0, width: 0 });
   (0, import_react.useEffect)(() => {
     const nodeRef = ref == null ? void 0 : ref.current;
     const getDimensions = () => ({
-      width: (nodeRef == null ? void 0 : nodeRef.offsetWidth) || 0,
-      height: (nodeRef == null ? void 0 : nodeRef.offsetHeight) || 0
+      height: (nodeRef == null ? void 0 : nodeRef.offsetHeight) || 0,
+      width: (nodeRef == null ? void 0 : nodeRef.offsetWidth) || 0
     });
     const getPosition = () => {
       var _a;
       const rect = (_a = nodeRef == null ? void 0 : nodeRef.getBoundingClientRect) == null ? void 0 : _a.call(nodeRef);
-      return { top: (rect == null ? void 0 : rect.top) || 0, left: (rect == null ? void 0 : rect.left) || 0 };
+      return { left: (rect == null ? void 0 : rect.left) || 0, top: (rect == null ? void 0 : rect.top) || 0 };
     };
     const handleResize = () => {
       setDimensions(getDimensions());
       setAbsPosition(getPosition());
     };
-    if (nodeRef) handleResize();
+    const observer = new ResizeObserver(handleResize);
+    if (nodeRef) {
+      handleResize();
+      observer.observe(nodeRef, { box: "border-box" });
+    }
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", handleResize);
+    };
   }, [ref, condition]);
   return __spreadValues(__spreadValues({}, dimensions), absPosition);
 };

@@ -1,11 +1,4 @@
-import {
-  DetailedHTMLProps,
-  ImgHTMLAttributes,
-  ReactNode,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { DetailedHTMLProps, ImgHTMLAttributes, ReactNode, useEffect, useState } from "react";
 import { Icon, View } from "trabecula/components";
 import { colors, CSS, makeClasses } from "trabecula/utils/client";
 
@@ -20,8 +13,8 @@ export interface ImageProps extends Omit<
   fit?: "contain" | "cover";
   height?: CSS["height"];
   rounded?: "all" | "bottom" | "top";
-  title?: string;
   thumbPaths: string[];
+  title?: string;
 }
 
 export const Image = ({
@@ -39,50 +32,46 @@ export const Image = ({
   thumbPaths,
   title,
 }: ImageProps) => {
-  const thumbInterval = useRef(null);
-
   const [hasError, setHasError] = useState(false);
   const [imagePos, setImagePos] = useState<CSS["objectPosition"]>(null);
+  const [isHovered, setIsHovered] = useState(false);
   const [thumbIndex, setThumbIndex] = useState(0);
-
   const { css, cx } = useClasses({ fit, height, imagePos, rounded });
-
-  const hasListeners = !disabled && !autoAnimate && thumbPaths?.length > 1;
-
-  const createThumbInterval = () => {
-    thumbInterval.current = setInterval(() => {
-      setHasError(false);
-      setThumbIndex((thumbIndex) => (thumbIndex + 1 === thumbPaths?.length ? 0 : thumbIndex + 1));
-    }, 300);
-  };
+  const thumbPath = thumbPaths?.[thumbIndex] ?? thumbPaths?.[0];
 
   useEffect(() => {
-    if (!autoAnimate) return;
-    createThumbInterval();
-    return () => clearInterval(thumbInterval.current);
-  }, []);
+    const interval =
+      !disabled && (autoAnimate || isHovered) && thumbPaths?.length > 1
+        ? setInterval(() => setThumbIndex((index) => (index + 1) % thumbPaths.length), 300)
+        : null;
+
+    return () => clearInterval(interval);
+  }, [autoAnimate, disabled, isHovered, thumbPaths?.length]);
+
+  useEffect(() => {
+    setHasError(false);
+  }, [thumbPath]);
 
   const handleError = () => {
     setHasError(true);
   };
 
   const handleMouseEnter = () => {
-    clearInterval(thumbInterval.current);
-    createThumbInterval();
+    setIsHovered(true);
   };
 
   const handleMouseLeave = () => {
-    clearInterval(thumbInterval.current);
-    thumbInterval.current = null;
-    setThumbIndex(0);
+    setIsHovered(false);
     setImagePos(null);
     setHasError(false);
+
+    if (!autoAnimate) setThumbIndex(0);
   };
 
   const handleMouseMove = (event: React.MouseEvent) => {
     const { height, left, top, width } = event.currentTarget.getBoundingClientRect();
-    const offsetX = event.pageX - left;
-    const offsetY = event.pageY - top;
+    const offsetX = event.clientX - left;
+    const offsetY = event.clientY - top;
     const pos = `${(Math.max(0, offsetX) / width) * 100}% ${
       (Math.max(0, offsetY) / height) * 100
     }%`;
@@ -92,31 +81,30 @@ export const Image = ({
 
   return (
     <View
-      onMouseEnter={hasListeners ? handleMouseEnter : undefined}
-      onMouseLeave={hasListeners ? handleMouseLeave : undefined}
       className={cx(css.imageContainer, className)}
+      onMouseEnter={!disabled ? handleMouseEnter : undefined}
+      onMouseLeave={handleMouseLeave}
     >
       {hasError ? (
         <View className={css.image}>
           <Icon
+            color={colors.custom.grey}
             name="ImageNotSupported"
             size="4rem"
-            color={colors.custom.grey}
             viewProps={{ align: "center", height: "100%" }}
           />
         </View>
-      ) : thumbPaths?.length > 0 ? (
+      ) : thumbPath ? (
         <img
+          alt={title}
+          className={css.image}
           draggable={draggable}
           loading={loading}
           onDragEnd={onDragEnd}
           onDragStart={onDragStart}
-          src={thumbPaths[thumbIndex]}
-          alt={title}
           onError={handleError}
           onMouseMove={fit === "cover" ? handleMouseMove : undefined}
-          onMouseLeave={fit === "cover" ? handleMouseLeave : undefined}
-          className={css.image}
+          src={thumbPath}
         />
       ) : (
         <View className={css.image} />

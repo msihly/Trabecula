@@ -927,8 +927,8 @@ interface ImageProps extends Omit<DetailedHTMLProps<ImgHTMLAttributes<HTMLImageE
     fit?: "contain" | "cover";
     height?: CSS["height"];
     rounded?: "all" | "bottom" | "top";
-    title?: string;
     thumbPaths: string[];
+    title?: string;
 }
 
 interface FooterTextProps {
