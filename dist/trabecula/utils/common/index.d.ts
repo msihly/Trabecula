@@ -7,6 +7,7 @@ export { P as PromiseQueue, a as PromiseQueueOptions } from '../../queue-CNnYlja
 export { default as customParseFormat } from 'dayjs/plugin/customParseFormat';
 export { default as duration } from 'dayjs/plugin/duration';
 export { default as relativeTime } from 'dayjs/plugin/relativeTime';
+export { default as utc } from 'dayjs/plugin/utc';
 
 declare const arrayIntersect: <T>(...arrays: T[][]) => T[];
 declare const bisectArrayChanges: <T>(oldArr: T[], newArr: T[]) => {

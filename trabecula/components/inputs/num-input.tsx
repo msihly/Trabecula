@@ -38,9 +38,10 @@ export const NumInput = Comp(
         toast.error("Must be a number");
       } else {
         setValue?.(+val);
-        if (maxValue && +val > maxValue)
+
+        if (maxValue != null && +val > maxValue)
           hasHelper ? setError(`Max: ${maxValue}`) : toast.error(`Max: ${maxValue}`);
-        else if (minValue && +val < minValue)
+        else if (minValue != null && +val < minValue)
           hasHelper ? setError(`Min: ${minValue}`) : toast.error(`Min: ${minValue}`);
         else setError(null);
       }

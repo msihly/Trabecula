@@ -64,6 +64,10 @@ export function DataGrid<T extends object = DataGridRowData>(rawProps: DataGridP
   }, [isExpanded]);
 
   useEffect(() => {
+    setExpandedRows(new Set());
+  }, [data]);
+
+  useEffect(() => {
     if (!columnResize) return;
 
     const bodyCursor = document.body.style.cursor;
@@ -109,11 +113,12 @@ export function DataGrid<T extends object = DataGridRowData>(rawProps: DataGridP
   );
 
   const filteredData = useMemo(() => {
+    const indexedData = data.map((row, index) => ({ index, row }));
     const searchTerms = search.trim().toLowerCase().split(/\s+/).filter(Boolean);
 
-    if (!searchTerms.length) return data;
+    if (!searchTerms.length) return indexedData;
 
-    return data.filter((row) => {
+    return indexedData.filter(({ row }) => {
       const rowSearchText = resizedColumns
         .filter((column) => column.searchable !== false)
         .map((column) => getDataGridValueText(getDataGridColumnValue(row, column, "search")))
@@ -128,25 +133,29 @@ export function DataGrid<T extends object = DataGridRowData>(rawProps: DataGridP
     if (!hasSorting || !sort) return filteredData;
 
     const column = resizedColumns.find(({ key }) => key === sort.key);
+
     if (!column || column.sortable === false) return filteredData;
 
-    return filteredData
-      .map((row, index) => ({ index, row }))
-      .sort((a, b) => {
-        const compared = compareDataGridValues(
-          getDataGridColumnValue(a.row, column, "sort"),
-          getDataGridColumnValue(b.row, column, "sort"),
-        );
+    return [...filteredData].sort((a, b) => {
+      const compared = compareDataGridValues(
+        getDataGridColumnValue(a.row, column, "sort"),
+        getDataGridColumnValue(b.row, column, "sort"),
+      );
 
-        return compared === 0 ? a.index - b.index : sort.direction === "asc" ? compared : -compared;
-      })
-      .map(({ row }) => row);
+      return compared === 0 ? a.index - b.index : sort.direction === "asc" ? compared : -compared;
+    });
   }, [filteredData, hasSorting, resizedColumns, sort]);
 
+  const pageSize = Number.isSafeInteger(rowsPerPage) && rowsPerPage > 0 ? rowsPerPage : 15;
+  const pageCount = hasPagination ? Math.ceil(sortedData.length / pageSize) : 1;
+  const currentPage = Math.min(page, Math.max(pageCount, 1));
   const displayedData = hasPagination
-    ? sortedData.slice((page - 1) * rowsPerPage, page * rowsPerPage)
+    ? sortedData.slice((currentPage - 1) * pageSize, currentPage * pageSize)
     : sortedData;
-  const pageCount = hasPagination ? Math.ceil(sortedData.length / rowsPerPage) : 1;
+
+  useEffect(() => {
+    setPage((previous) => Math.min(previous, Math.max(pageCount, 1)));
+  }, [pageCount]);
 
   const handleSort = (column: DataGridColumn<T>) => {
     setSort((prev) => ({
@@ -210,9 +219,9 @@ export function DataGrid<T extends object = DataGridRowData>(rawProps: DataGridP
         </View>
       ) : (
         <View column width="100%">
-          {displayedData.map((row, index) => (
+          {displayedData.map(({ index: sourceIndex, row }, index) => (
             <DataGridRow
-              key={index}
+              key={sourceIndex}
               alternatingBgColor={alternatingBgColor}
               alternatingColors={alternatingColors}
               className={className}
@@ -221,6 +230,7 @@ export function DataGrid<T extends object = DataGridRowData>(rawProps: DataGridP
               expandableContent={expandableContent}
               expandedRows={expandedRows}
               expandColumnWidth={expandColumnWidth}
+              expansionIndex={sourceIndex}
               getRowBgColor={getRowBgColor}
               index={index}
               isRowSelected={isRowSelected}
@@ -236,7 +246,9 @@ export function DataGrid<T extends object = DataGridRowData>(rawProps: DataGridP
         </View>
       )}
 
-      {!hasPagination ? null : <Pagination count={pageCount} onChange={setPage} page={page} />}
+      {!hasPagination ? null : (
+        <Pagination inline count={pageCount} onChange={setPage} page={currentPage} />
+      )}
     </View>
   );
 }

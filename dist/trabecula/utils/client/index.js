@@ -387,13 +387,16 @@ var import_dayjs = __toESM(require("dayjs"));
 var import_customParseFormat = __toESM(require("dayjs/plugin/customParseFormat"));
 var import_duration = __toESM(require("dayjs/plugin/duration"));
 var import_relativeTime = __toESM(require("dayjs/plugin/relativeTime"));
+var import_utc = __toESM(require("dayjs/plugin/utc"));
 import_dayjs.default.extend(import_customParseFormat.default);
 import_dayjs.default.extend(import_duration.default);
 import_dayjs.default.extend(import_relativeTime.default);
+import_dayjs.default.extend(import_utc.default);
 
 // trabecula/utils/common/miscellaneous.ts
 var import_es_toolkit = require("es-toolkit");
 var import_compat = require("es-toolkit/compat");
+var deepClone = import_es_toolkit.cloneDeep;
 var handleErrors = (fn) => __async(null, null, function* () {
   try {
     return { success: true, data: yield fn() };
@@ -406,30 +409,20 @@ var handleErrors = (fn) => __async(null, null, function* () {
 var isDeepEqual = import_es_toolkit.isEqual;
 
 // trabecula/utils/client/hooks.ts
-var useDeepEffect = (cb, deps) => (0, import_react.useEffect)(cb, [
-  ...deps.map((dep) => {
-    try {
-      return (0, import_mobx.isObservable)(dep) ? (0, import_mobx_keystone.getSnapshot)(dep) : useDeepMemo(dep);
-    } catch (err) {
-      return JSON.stringify(dep);
-    }
-  })
-]);
+var getComparisonValue = (value) => (0, import_mobx_keystone.isTreeNode)(value) ? (0, import_mobx_keystone.getSnapshot)(value) : (0, import_mobx.isObservable)(value) ? (0, import_mobx.toJS)(value) : value;
+var useDeepEffect = (cb, deps) => {
+  const dependencies = useDeepMemo(deps.map(getComparisonValue));
+  (0, import_react.useEffect)(cb, [dependencies]);
+};
 var useDeepMemo = (value) => {
-  const valueRef = (0, import_react.useRef)(value);
+  const comparisonValue = getComparisonValue(value);
+  const comparisonRef = (0, import_react.useRef)();
   const depRef = (0, import_react.useRef)(0);
-  let compareValue;
-  let compareValueRef;
-  try {
-    compareValue = (0, import_mobx.isObservable)(value) ? (0, import_mobx_keystone.getSnapshot)(value) : value;
-    compareValueRef = (0, import_mobx.isObservable)(valueRef.current) ? (0, import_mobx_keystone.getSnapshot)(valueRef.current) : valueRef.current;
-  } catch (err) {
-    compareValue = JSON.stringify(value);
-    compareValueRef = JSON.stringify(valueRef.current);
-  }
-  if (!isDeepEqual(compareValue, compareValueRef)) {
-    valueRef.current = value;
+  const valueRef = (0, import_react.useRef)(value);
+  if (!isDeepEqual(comparisonValue, comparisonRef.current)) {
+    comparisonRef.current = deepClone(comparisonValue);
     depRef.current += 1;
+    valueRef.current = value;
   }
   return (0, import_react.useMemo)(() => valueRef.current, [depRef.current]);
 };
@@ -556,46 +549,52 @@ var makeQueue = ({
   queue,
   withTabTitle
 }) => {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     const totalCount = items.length;
     let completedCount = 0;
+    let completion;
     let hasError = false;
     let isComplete = false;
     const getToastText = () => `${logPrefix} ${completedCount} / ${totalCount} ${logSuffix}${isComplete ? "." : "..."}`;
     const toaster = new Toaster();
-    toaster.toast(getToastText(), { autoClose: false, type: "info" });
-    const onEscape = () => __async(null, null, function* () {
-      updateCompleted();
-      resolve();
-      yield onComplete == null ? void 0 : onComplete(hasError);
-    });
-    const setHasError = (error) => hasError = error;
-    const updateCompleted = () => {
-      if (completedCount < totalCount) completedCount++;
-      isComplete = completedCount >= totalCount;
-      updateToast();
-      if (withTabTitle) updateTabTitle();
+    const complete = () => {
+      if (!completion) {
+        isComplete = true;
+        updateProgress();
+        completion = Promise.resolve().then(() => onComplete == null ? void 0 : onComplete(hasError)).then(() => resolve(), reject);
+      }
+      return completion;
     };
-    const updateTabTitle = () => document.title = completedCount >= totalCount ? hasError ? "\u274C Error!" : "\u2705 Done!" : `[${completedCount}/${totalCount}] Downloading`;
-    const updateToast = () => toaster.toast(getToastText(), {
-      autoClose: isComplete ? 3e3 : false,
-      type: isComplete ? "success" : void 0
-    });
-    if (withTabTitle) updateTabTitle();
-    if (!(items == null ? void 0 : items.length)) return onEscape();
-    for (const item of items) {
-      queue.add(() => __async(null, null, function* () {
-        try {
-          yield action(item, onEscape);
-        } catch (err) {
-          console.error(err);
-          toast.error(err.message);
-          setHasError(true);
-        } finally {
-          updateCompleted();
-          if (isComplete) yield onEscape();
-        }
-      }));
+    const onEscape = () => {
+      queue.cancel();
+      return complete();
+    };
+    const updateProgress = () => {
+      toaster.toast(getToastText(), {
+        autoClose: isComplete ? 3e3 : false,
+        type: isComplete ? hasError ? "error" : "success" : "info"
+      });
+      if (withTabTitle)
+        document.title = isComplete ? hasError ? "\u274C Error!" : "\u2705 Done!" : `[${completedCount}/${totalCount}] Downloading`;
+    };
+    updateProgress();
+    if (!totalCount) void complete();
+    else {
+      for (const item of items) {
+        void queue.add(() => action(item, onEscape)).catch((error) => {
+          if (!isComplete) {
+            hasError = true;
+            console.error(error);
+            toast.error(error instanceof Error ? error.message : String(error));
+          }
+        }).finally(() => {
+          if (!isComplete) {
+            completedCount++;
+            if (completedCount >= totalCount) void complete();
+            else updateProgress();
+          }
+        });
+      }
     }
   });
 };
@@ -603,26 +602,45 @@ var makeQueue = ({
 // trabecula/utils/client/scrolling.ts
 var import_react3 = require("react");
 var useDragScroll = ({
-  listRef,
   listOuterRef,
+  listRef,
   momentum = 0.8,
   scrollLeft,
   width
 }) => {
   const dragDirection = (0, import_react3.useRef)(null);
+  const dragResetTimeout = (0, import_react3.useRef)(null);
   const initialMouseX = (0, import_react3.useRef)(null);
   const momentumId = (0, import_react3.useRef)(null);
+  const removeDragListeners = (0, import_react3.useRef)(null);
   const scrollFinal = (0, import_react3.useRef)(0);
   const scrollStart = (0, import_react3.useRef)(0);
   const velocity = (0, import_react3.useRef)(0);
   const [isDragging, setIsDragging] = (0, import_react3.useState)(false);
+  (0, import_react3.useEffect)(() => {
+    return () => {
+      var _a;
+      clearTimeout(dragResetTimeout.current);
+      cancelAnimationFrame(momentumId.current);
+      (_a = removeDragListeners.current) == null ? void 0 : _a.call(removeDragListeners);
+    };
+  }, []);
   const handleMouseDown = (event) => {
-    if (!listRef.current) return;
+    var _a;
+    if (!listRef.current || event.button !== 0) return;
+    clearTimeout(dragResetTimeout.current);
+    (_a = removeDragListeners.current) == null ? void 0 : _a.call(removeDragListeners);
+    setIsDragging(false);
     initialMouseX.current = event.clientX;
     scrollStart.current = scrollLeft.current;
+    velocity.current = 0;
     cancelMomentumTracking();
     document.addEventListener("mousemove", mouseMoveHandler);
     document.addEventListener("mouseup", mouseUpHandler);
+    removeDragListeners.current = () => {
+      document.removeEventListener("mousemove", mouseMoveHandler);
+      document.removeEventListener("mouseup", mouseUpHandler);
+    };
   };
   const mouseMoveHandler = (event) => {
     if (!listRef.current) return;
@@ -633,17 +651,18 @@ var useDragScroll = ({
     listRef.current.scrollTo(newScrollLeft);
     velocity.current = newScrollLeft - scrollStart.current;
     dragDirection.current = velocity.current > 0 ? "left" : "right";
-    if (velocity.current > 0 && !isDragging) setIsDragging(true);
+    if (Math.abs(velocity.current) > 5) setIsDragging(true);
   };
   const mouseUpHandler = () => {
+    var _a;
     scrollFinal.current = scrollLeft.current;
     if (Math.abs(scrollFinal.current - scrollStart.current) > 5) {
       velocity.current = Math.max(Math.abs(velocity.current), 30) * (dragDirection.current === "right" ? -1 : 1);
       beginMomentumTracking();
     }
-    setTimeout(() => setIsDragging(false), 0);
-    document.removeEventListener("mousemove", mouseMoveHandler);
-    document.removeEventListener("mouseup", mouseUpHandler);
+    dragResetTimeout.current = setTimeout(() => setIsDragging(false), 0);
+    (_a = removeDragListeners.current) == null ? void 0 : _a.call(removeDragListeners);
+    removeDragListeners.current = null;
   };
   const validateScrollLeft = (newScrollLeft) => {
     var _a;
@@ -657,7 +676,7 @@ var useDragScroll = ({
   const momentumLoop = () => {
     const newScrollLeft = scrollLeft.current + velocity.current;
     const isScrollValid = validateScrollLeft(newScrollLeft);
-    if (!isScrollValid) return;
+    if (!isScrollValid || !listRef.current) return;
     listRef.current.scrollTo(newScrollLeft);
     velocity.current *= momentum;
     if (Math.abs(velocity.current) > 0.5) momentumId.current = requestAnimationFrame(momentumLoop);
@@ -693,9 +712,9 @@ var clearTouched = (model, keys) => {
   for (const k of keys) model._touched[k] = false;
 };
 var derefMobx = (value) => {
-  const { getSnapshot: getSnapshot2, isTreeNode } = getMobx();
+  const { getSnapshot: getSnapshot2, isTreeNode: isTreeNode2 } = getMobx();
   if (value === null || typeof value !== "object") return value;
-  if (isTreeNode(value)) return getSnapshot2(value);
+  if (isTreeNode2(value)) return getSnapshot2(value);
   if (Array.isArray(value)) {
     const len = value.length;
     let changed2 = false;

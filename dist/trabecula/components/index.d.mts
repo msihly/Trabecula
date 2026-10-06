@@ -676,11 +676,12 @@ declare const DataGridHeader: <T extends object>({ columns, expandableContent, e
 
 interface DataGridRowProps<T extends object> extends Pick<DataGridProps<T>, "alternatingBgColor" | "alternatingColors" | "className" | "columns" | "defaultTextPreset" | "expandableContent" | "expandColumnWidth" | "getRowBgColor" | "isRowSelected" | "onRowClick" | "rowGap" | "selectedBgColor" | "selectedTextColor" | "textPreset"> {
     expandedRows: Set<number>;
+    expansionIndex: number;
     index: number;
     row: T;
     setExpandedRows: react__default.Dispatch<Set<number>>;
 }
-declare const DataGridRow: <T extends object>({ alternatingBgColor, alternatingColors, className, columns, defaultTextPreset, expandableContent, expandedRows, expandColumnWidth, getRowBgColor, index, isRowSelected, onRowClick, row, rowGap, selectedBgColor, selectedTextColor, setExpandedRows, textPreset, }: DataGridRowProps<T>) => react_jsx_runtime.JSX.Element;
+declare const DataGridRow: <T extends object>({ alternatingBgColor, alternatingColors, className, columns, defaultTextPreset, expandableContent, expandedRows, expandColumnWidth, expansionIndex, getRowBgColor, index, isRowSelected, onRowClick, row, rowGap, selectedBgColor, selectedTextColor, setExpandedRows, textPreset, }: DataGridRowProps<T>) => react_jsx_runtime.JSX.Element;
 
 interface PaginationProps extends Omit<PaginationProps$1, "onChange"> {
     inline?: boolean;

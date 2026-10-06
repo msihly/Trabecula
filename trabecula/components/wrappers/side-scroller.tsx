@@ -21,39 +21,40 @@ export const SideScroller = ({ children, className, innerClassName }: SideScroll
 
   const getButtonVisibility = () => {
     if (!ref.current) return [false, false];
-    const { clientWidth, scrollWidth, scrollLeft } = ref.current;
+
+    const { clientWidth, scrollLeft, scrollWidth } = ref.current;
 
     if (!(clientWidth < scrollWidth)) return [false, false];
+
     return [scrollLeft > 0, clientWidth + scrollLeft < scrollWidth - 5];
   };
 
   const handleScroll = (direction: "left" | "right") => {
     if (!ref.current) return false;
 
-    const maxLeft = ref.current.clientWidth;
     const scrollAmount = ((direction === "left" ? -1 : 1) * width) / 2;
-    const newScrollPos =
-      direction === "left"
-        ? Math.max(ref.current.scrollLeft - width / 2, 0)
-        : Math.min(ref.current.scrollLeft + width / 2, maxLeft);
 
     ref.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
-    setScrollPos(newScrollPos);
   };
 
   useEffect(() => {
     const node = ref.current;
-    const scrollListener = debounce(setScrollPos.bind(node.scrollLeft), 50);
+    const scrollListener = debounce(() => setScrollPos(node.scrollLeft), 50);
 
     node.addEventListener("scroll", scrollListener);
-    return () => node.removeEventListener("scroll", scrollListener);
+
+    return () => {
+      node.removeEventListener("scroll", scrollListener);
+      scrollListener.cancel();
+    };
   }, []);
 
   useEffect(() => {
     const [left, right] = getButtonVisibility();
+
     setIsLeftButtonVisible(left);
     setIsRightButtonVisible(right);
-  }, [scrollPos]);
+  }, [children, scrollPos, width]);
 
   return (
     <View className={cx(css.root, className)}>

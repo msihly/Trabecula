@@ -1,6 +1,6 @@
 import { Dispatch, ReactNode, SetStateAction, useState } from "react";
 import { Button, Icon, IconName, Modal, Text } from "trabecula/components";
-import { colors, CSS, CssColor } from "trabecula/utils/client";
+import { colors, CSS, CssColor, toast } from "trabecula/utils/client";
 
 export interface ConfirmModalProps {
   cancelColor?: CssColor;
@@ -40,15 +40,26 @@ export const ConfirmModal = ({
   const handleClose = () => setVisible(false);
 
   const handleCancel = () => {
-    onCancel?.();
-    handleClose();
+    if (!isLoading) {
+      onCancel?.();
+      handleClose();
+    }
   };
 
   const handleConfirm = async () => {
-    setIsLoading(true);
-    const success = await onConfirm();
-    setIsLoading(false);
-    if (success) handleClose();
+    if (!isLoading) {
+      setIsLoading(true);
+
+      try {
+        const success = await onConfirm();
+
+        if (success) handleClose();
+      } catch (error) {
+        toast.error(error instanceof Error ? error.message : String(error));
+      } finally {
+        setIsLoading(false);
+      }
+    }
   };
 
   return (

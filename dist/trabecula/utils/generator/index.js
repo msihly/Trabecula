@@ -141,12 +141,8 @@ var import_picocolors = __toESM(require_picocolors());
 var import_prettier = __toESM(require("prettier"));
 var ROOT_PATH = import_path.default.resolve(".", "trabecula");
 var createFiles = (folder, fileDefs) => __async(null, null, function* () {
-  try {
-    yield import_promises.default.mkdir(folder, { recursive: true });
-    makeIndexDef(fileDefs);
-  } catch (err) {
-    console.error(err);
-  }
+  yield import_promises.default.mkdir(folder, { recursive: true });
+  makeIndexDef(fileDefs);
   for (const fileDef of fileDefs) {
     try {
       const filePath = import_path.default.resolve(folder, `${fileDef.name}.ts`);
@@ -162,6 +158,7 @@ ${yield fileDef.makeFile()}`
 
 ${err.stack}
 `));
+      throw err;
     }
   }
 });

@@ -9,5 +9,6 @@ import { createFiles, ROOT_PATH } from "trabecula/utils/generator";
     console.log(chalk.green("\nDone!"));
   } catch (err) {
     console.error(chalk.red(err.message));
+    process.exitCode = 1;
   }
 })();

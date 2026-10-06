@@ -6,12 +6,8 @@ import prettier from "prettier";
 export const ROOT_PATH = path.resolve(".", "trabecula");
 
 export const createFiles = async (folder: string, fileDefs: FileDef[]) => {
-  try {
-    await fs.mkdir(folder, { recursive: true });
-    makeIndexDef(fileDefs);
-  } catch (err) {
-    console.error(err);
-  }
+  await fs.mkdir(folder, { recursive: true });
+  makeIndexDef(fileDefs);
 
   for (const fileDef of fileDefs) {
     try {
@@ -20,10 +16,13 @@ export const createFiles = async (folder: string, fileDefs: FileDef[]) => {
       const file = await formatFile(
         `${makeSectionComment("THIS IS A GENERATED FILE. DO NOT EDIT.")}\n${await fileDef.makeFile()}`,
       );
+
       await fs.writeFile(filePath, file);
       console.log(chalk.green(`Created ${filePath}`));
     } catch (err) {
       console.error(chalk.red(`\n[ERROR] '${fileDef.name}': ${err.message}\n\n${err.stack}\n`));
+
+      throw err;
     }
   }
 };

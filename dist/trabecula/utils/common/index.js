@@ -389,13 +389,16 @@ var import_dayjs = __toESM(require("dayjs"));
 var import_customParseFormat = __toESM(require("dayjs/plugin/customParseFormat"));
 var import_duration = __toESM(require("dayjs/plugin/duration"));
 var import_relativeTime = __toESM(require("dayjs/plugin/relativeTime"));
+var import_utc = __toESM(require("dayjs/plugin/utc"));
 import_dayjs.default.extend(import_customParseFormat.default);
 import_dayjs.default.extend(import_duration.default);
 import_dayjs.default.extend(import_relativeTime.default);
+import_dayjs.default.extend(import_utc.default);
 var dateWithTzToIso = (dateStr) => {
   const timezone = dateStr.split(" ")[4];
+  if (!/^[+-](?:[01]\d|2[0-3])[0-5]\d$/.test(timezone != null ? timezone : "")) return null;
   const dateWithoutTz = dateStr.replace(timezone, "").trim();
-  const date = (0, import_dayjs.default)(dateWithoutTz, "ddd MMM DD HH:mm:ss YYYY");
+  const date = import_dayjs.default.utc(dateWithoutTz, "ddd MMM DD HH:mm:ss YYYY");
   if (date.isValid()) {
     const hours = parseInt(timezone.slice(1, 3));
     const minutes = parseInt(timezone.slice(3));
@@ -419,15 +422,20 @@ var bytes = (bytes2) => {
   const power = Math.floor(Math.log2(bytes2) / 10);
   return `${(bytes2 / __pow(1024, power)).toFixed(2)} ${"KMGTPEZY"[power - 1] || ""}B`;
 };
-var camelCase = (str) => `${str[0].toLowerCase()}${str.slice(1)}`;
-var capitalize = (str, restLower = false) => str[0].toUpperCase() + (restLower ? str.substring(1).toLocaleLowerCase() : str.substring(1));
+var camelCase = (str) => `${str.charAt(0).toLowerCase()}${str.slice(1)}`;
+var capitalize = (str, restLower = false) => str.charAt(0).toUpperCase() + (restLower ? str.substring(1).toLocaleLowerCase() : str.substring(1));
 var commas = (num) => Intl.NumberFormat().format(num);
 var decodeHtmlEntities = (s) => s.replace(htmlEntityRegex, (m) => {
   var _a;
-  if (m.startsWith("&#x") || m.startsWith("&#X"))
-    return String.fromCharCode(parseInt(m.slice(3, -1), 16));
-  if (m.startsWith("&#")) return String.fromCharCode(parseInt(m.slice(2, -1), 10));
-  return (_a = { amp: "&", lt: "<", gt: ">", quot: '"', apos: "'" }[m.slice(1, -1)]) != null ? _a : m;
+  let decoded = m;
+  if (m.startsWith("&#")) {
+    const isHex = m[2].toLowerCase() === "x";
+    const codePoint = parseInt(m.slice(isHex ? 3 : 2, -1), isHex ? 16 : 10);
+    decoded = codePoint > 0 && codePoint <= 1114111 && !(codePoint >= 55296 && codePoint <= 57343) ? String.fromCodePoint(codePoint) : "\uFFFD";
+  } else {
+    decoded = (_a = { amp: "&", apos: "'", gt: ">", lt: "<", quot: '"' }[m.slice(1, -1)]) != null ? _a : m;
+  }
+  return decoded;
 });
 var duration2 = (val, isMs = false) => !isNaN(val) ? import_dayjs.default.duration(val, isMs ? "ms" : "s").format("HH:mm:ss") : null;
 var frameToSec = (frame, frameRate) => round(frame / frameRate, 3);
@@ -439,7 +447,7 @@ var regexEscape = (string, replacementOnly = false) => string ? replacementOnly 
 var sanitizeWinPath = (winPath, isBasename = false, isFolderOnly = false) => {
   if (!winPath) return winPath;
   const sanitize = (part, isBase = false) => {
-    return part.replaceAll(".", isBase ? "." : "\u2024").replaceAll("<", "\uFE64").replaceAll(">", "\uFE65").replaceAll(":", " \u02D0 ").replaceAll('"', "\u201C").replaceAll("/", " \u2044 ").replaceAll("|", "\u2F01").replaceAll("?", "\uFE56").replaceAll("*", "\uFE61").trim();
+    return part.replaceAll(".", isBase ? "." : "\u2024").replaceAll("<", "\uFE64").replaceAll(">", "\uFE65").replaceAll(":", " \u02D0 ").replaceAll('"', "\u201C").replaceAll("/", " \u2044 ").replaceAll("\\", " \uFF3C ").replaceAll("|", "\u2F01").replaceAll("?", "\uFE56").replaceAll("*", "\uFE61").replace(/[\u0000-\u001f]/g, "").trim().replace(/\.+$/, (dots) => "\u2024".repeat(dots.length)).replace(/^(con|prn|aux|nul|com[1-9¹²³]|lpt[1-9¹²³])(?=\.|$)/i, "_$1");
   };
   return isBasename ? sanitize(winPath, true) : winPath.split(/[/\\]/).map(
     (part, idx, parts) => idx === 0 && /^[a-zA-Z]:$/.test(part) ? part : sanitize(part, isFolderOnly ? false : idx === parts.length - 1)
@@ -545,12 +553,21 @@ var attempt = (fn, retries = 2, delay = 1e3) => __async(null, null, function* ()
   })) : fn();
 });
 var convertNestedKeys = (updates) => {
-  return Object.entries(updates).reduce((acc, [key, value]) => {
-    key.split(".").reduce((nested, k, i, arr) => {
-      return nested[k] || (nested[k] = i === arr.length - 1 ? value : {});
-    }, acc);
-    return acc;
-  }, {});
+  const result = {};
+  for (const [key, value] of Object.entries(updates)) {
+    const parts = key.split(".");
+    let nested = result;
+    if (parts.some((part) => ["__proto__", "constructor", "prototype"].includes(part)))
+      throw new Error(`Unsafe nested key: ${key}`);
+    for (const [index, part] of parts.entries()) {
+      if (index === parts.length - 1) nested[part] = value;
+      else {
+        if (!Object.hasOwn(nested, part) || !isPlainObject(nested[part])) nested[part] = {};
+        nested = nested[part];
+      }
+    }
+  }
+  return result;
 };
 var debounce = import_es_toolkit.debounce;
 var deepClone = import_es_toolkit.cloneDeep;
@@ -595,7 +612,7 @@ var CancelledError = class extends Error {
   }
 };
 var PromiseQueue = class {
-  constructor({ concurrency, delayRange } = {}) {
+  constructor({ concurrency = 1, delayRange } = {}) {
     __publicField(this, "cancelled", false);
     __publicField(this, "concurrency");
     __publicField(this, "delayRange");
@@ -603,7 +620,9 @@ var PromiseQueue = class {
     __publicField(this, "queue", []);
     __publicField(this, "resolver", null);
     __publicField(this, "runningCount", 0);
-    this.concurrency = concurrency != null ? concurrency : 1;
+    if (!Number.isInteger(concurrency) || concurrency < 1)
+      throw new RangeError("PromiseQueue concurrency must be a positive integer");
+    this.concurrency = concurrency;
     this.delayRange = delayRange;
   }
   add(fn) {
@@ -611,20 +630,19 @@ var PromiseQueue = class {
     if (!this.promise) this.promise = new Promise((res) => this.resolver = res);
     return new Promise((resolve, reject) => {
       const task = () => __async(this, null, function* () {
+        this.runningCount++;
         try {
-          if (this.cancelled) return reject(new CancelledError());
-          this.runningCount++;
           const result = yield fn();
           resolve(result);
         } catch (err) {
           reject(err);
         } finally {
-          if (this.delayRange) yield sleep(...this.delayRange);
+          if (this.delayRange && !this.cancelled) yield sleep(...this.delayRange);
           this.runningCount--;
           this.next();
         }
       });
-      this.queue.push(task);
+      this.queue.push({ cancel: () => reject(new CancelledError()), run: task });
       this.next();
     });
   }
@@ -632,17 +650,13 @@ var PromiseQueue = class {
     var _a;
     if (this.cancelled) return;
     this.cancelled = true;
-    while (this.queue.length) (_a = this.queue.shift()) == null ? void 0 : _a();
-    if (this.runningCount === 0 && this.resolver) {
-      this.resolver();
-      this.promise = null;
-      this.resolver = null;
-    }
+    while (this.queue.length) (_a = this.queue.shift()) == null ? void 0 : _a.cancel();
+    this.next();
   }
   next() {
     var _a;
     while (!this.cancelled && this.runningCount < this.concurrency && this.queue.length)
-      (_a = this.queue.shift()) == null ? void 0 : _a();
+      void ((_a = this.queue.shift()) == null ? void 0 : _a.run());
     if (!this.queue.length && this.runningCount === 0 && this.resolver) {
       this.resolver();
       this.promise = null;

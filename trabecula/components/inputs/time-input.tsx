@@ -47,7 +47,9 @@ export const TimeInput = (rawProps: TimeInputProps) => {
 
   const handleChange = (val: dayjs.Dayjs | null) => {
     setTimeValue(val);
-    setValue?.(val ? val.format(TIME_FORMAT) : "");
+
+    if (val === null) setValue?.("");
+    else if (val.isValid()) setValue?.(val.format(TIME_FORMAT));
   };
 
   const textFieldProps: Omit<InputProps, "color" | "value"> = {

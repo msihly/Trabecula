@@ -17,12 +17,15 @@ export class PromiseQueue {
   private concurrency: number;
   private delayRange?: [number, number];
   private promise: Promise<void> | null = null;
-  private queue: (() => Promise<void>)[] = [];
+  private queue: { cancel: () => void; run: () => Promise<void> }[] = [];
   private resolver: (() => void) | null = null;
   private runningCount = 0;
 
-  constructor({ concurrency, delayRange }: PromiseQueueOptions = {}) {
-    this.concurrency = concurrency ?? 1;
+  constructor({ concurrency = 1, delayRange }: PromiseQueueOptions = {}) {
+    if (!Number.isInteger(concurrency) || concurrency < 1)
+      throw new RangeError("PromiseQueue concurrency must be a positive integer");
+
+    this.concurrency = concurrency;
     this.delayRange = delayRange;
   }
 
@@ -33,41 +36,40 @@ export class PromiseQueue {
 
     return new Promise<T>((resolve, reject) => {
       const task = async () => {
+        this.runningCount++;
+
         try {
-          if (this.cancelled) return reject(new CancelledError());
-          this.runningCount++;
           const result = await fn();
+
           resolve(result);
         } catch (err) {
           reject(err);
         } finally {
-          if (this.delayRange) await sleep(...this.delayRange);
+          if (this.delayRange && !this.cancelled) await sleep(...this.delayRange);
+
           this.runningCount--;
           this.next();
         }
       };
 
-      this.queue.push(task);
+      this.queue.push({ cancel: () => reject(new CancelledError()), run: task });
       this.next();
     });
   }
 
   cancel() {
     if (this.cancelled) return;
+
     this.cancelled = true;
 
-    while (this.queue.length) this.queue.shift()?.();
+    while (this.queue.length) this.queue.shift()?.cancel();
 
-    if (this.runningCount === 0 && this.resolver) {
-      this.resolver();
-      this.promise = null;
-      this.resolver = null;
-    }
+    this.next();
   }
 
   private next() {
     while (!this.cancelled && this.runningCount < this.concurrency && this.queue.length)
-      this.queue.shift()?.();
+      void this.queue.shift()?.run();
 
     if (!this.queue.length && this.runningCount === 0 && this.resolver) {
       this.resolver();

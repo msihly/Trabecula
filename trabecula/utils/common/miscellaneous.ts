@@ -36,12 +36,26 @@ export const attempt = async <T>(fn: () => Promise<T>, retries = 2, delay = 1000
     : fn();
 
 export const convertNestedKeys = (updates: Record<string, any>): Record<string, any> => {
-  return Object.entries(updates).reduce((acc, [key, value]) => {
-    key.split(".").reduce((nested, k, i, arr) => {
-      return nested[k] || (nested[k] = i === arr.length - 1 ? value : {});
-    }, acc);
-    return acc;
-  }, {});
+  const result: Record<string, any> = {};
+
+  for (const [key, value] of Object.entries(updates)) {
+    const parts = key.split(".");
+    let nested = result;
+
+    if (parts.some((part) => ["__proto__", "constructor", "prototype"].includes(part)))
+      throw new Error(`Unsafe nested key: ${key}`);
+
+    for (const [index, part] of parts.entries()) {
+      if (index === parts.length - 1) nested[part] = value;
+      else {
+        if (!Object.hasOwn(nested, part) || !isPlainObject(nested[part])) nested[part] = {};
+
+        nested = nested[part];
+      }
+    }
+  }
+
+  return result;
 };
 
 export const debounce = _debounce;

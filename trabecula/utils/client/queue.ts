@@ -18,9 +18,10 @@ export const makeQueue = <T>({
   queue: PromiseQueue;
   withTabTitle?: boolean;
 }): Promise<void> => {
-  return new Promise<void>((resolve) => {
+  return new Promise<void>((resolve, reject) => {
     const totalCount = items.length;
     let completedCount = 0;
+    let completion: Promise<void>;
     let hasError = false;
     let isComplete = false;
 
@@ -28,54 +29,62 @@ export const makeQueue = <T>({
       `${logPrefix} ${completedCount} / ${totalCount} ${logSuffix}${isComplete ? "." : "..."}`;
 
     const toaster = new Toaster();
-    toaster.toast(getToastText(), { autoClose: false, type: "info" });
 
-    const onEscape = async () => {
-      updateCompleted();
-      resolve();
-      await onComplete?.(hasError);
+    const complete = () => {
+      if (!completion) {
+        isComplete = true;
+        updateProgress();
+        completion = Promise.resolve()
+          .then(() => onComplete?.(hasError))
+          .then(() => resolve(), reject);
+      }
+
+      return completion;
     };
 
-    const setHasError = (error: boolean) => (hasError = error);
+    const onEscape = () => {
+      queue.cancel();
 
-    const updateCompleted = () => {
-      if (completedCount < totalCount) completedCount++;
-      isComplete = completedCount >= totalCount;
-      updateToast();
-      if (withTabTitle) updateTabTitle();
+      return complete();
     };
 
-    const updateTabTitle = () =>
-      (document.title =
-        completedCount >= totalCount
+    const updateProgress = () => {
+      toaster.toast(getToastText(), {
+        autoClose: isComplete ? 3000 : false,
+        type: isComplete ? (hasError ? "error" : "success") : "info",
+      });
+
+      if (withTabTitle)
+        document.title = isComplete
           ? hasError
             ? "\u274c Error!"
             : "\u2705 Done!"
-          : `[${completedCount}/${totalCount}] Downloading`);
+          : `[${completedCount}/${totalCount}] Downloading`;
+    };
 
-    const updateToast = () =>
-      toaster.toast(getToastText(), {
-        autoClose: isComplete ? 3000 : false,
-        type: isComplete ? "success" : undefined,
-      });
+    updateProgress();
 
-    if (withTabTitle) updateTabTitle();
+    if (!totalCount) void complete();
+    else {
+      for (const item of items) {
+        void queue
+          .add(() => action(item, onEscape))
+          .catch((error) => {
+            if (!isComplete) {
+              hasError = true;
+              console.error(error);
+              toast.error(error instanceof Error ? error.message : String(error));
+            }
+          })
+          .finally(() => {
+            if (!isComplete) {
+              completedCount++;
 
-    if (!items?.length) return onEscape();
-
-    for (const item of items) {
-      queue.add(async () => {
-        try {
-          await action(item, onEscape);
-        } catch (err) {
-          console.error(err);
-          toast.error(err.message);
-          setHasError(true);
-        } finally {
-          updateCompleted();
-          if (isComplete) await onEscape();
-        }
-      });
+              if (completedCount >= totalCount) void complete();
+              else updateProgress();
+            }
+          });
+      }
     }
   });
 };

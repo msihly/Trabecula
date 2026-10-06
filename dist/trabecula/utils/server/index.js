@@ -239,9 +239,11 @@ var import_dayjs = __toESM(require("dayjs"));
 var import_customParseFormat = __toESM(require("dayjs/plugin/customParseFormat"));
 var import_duration = __toESM(require("dayjs/plugin/duration"));
 var import_relativeTime = __toESM(require("dayjs/plugin/relativeTime"));
+var import_utc = __toESM(require("dayjs/plugin/utc"));
 import_dayjs.default.extend(import_customParseFormat.default);
 import_dayjs.default.extend(import_duration.default);
 import_dayjs.default.extend(import_relativeTime.default);
+import_dayjs.default.extend(import_utc.default);
 
 // trabecula/utils/common/math.ts
 var round = (num, decimals = 2) => {
@@ -291,36 +293,45 @@ var dirToFolderPaths = (dirPath) => __async(null, null, function* () {
   return (yield new import_fdir.fdir().onlyDirs().withFullPaths().crawl(dirPath).withPromise()).map((dir) => dir.split(import_path.default.sep).slice(0, -1).join(import_path.default.sep)).filter((dir) => import_path.default.normalize(dir) !== import_path.default.normalize(dirPath));
 });
 var extendFileName = (fileName, ext) => `${import_path.default.relative(".", fileName).replace(/\.\w+$/, "")}.${ext}`;
+var isWithinFolder = (parent, child) => {
+  const relative = import_path.default.relative(parent, child);
+  return !import_path.default.isAbsolute(relative) && relative !== ".." && !relative.startsWith(`..${import_path.default.sep}`);
+};
 var makeFolder = (path3) => __async(null, null, function* () {
   return yield import_fs.promises.mkdir(path3, { recursive: true });
 });
 var md5File = import_md5_file.default;
 var removeEmptyFolders = (..._0) => __async(null, [..._0], function* (dirPath = ".", options = {}) {
-  const dirPathsParts = [.../* @__PURE__ */ new Set([dirPath, ...yield dirToFolderPaths(dirPath)])].filter((p) => {
-    var _a;
-    return !((_a = options.excludedPaths) == null ? void 0 : _a.includes(p));
-  }).map((p) => p.split(import_path.default.sep));
-  const dirPathsDeepToShallow = [...dirPathsParts].sort((a, b) => b.length - a.length).map((p) => p.join(import_path.default.sep));
-  const emptyFolders = /* @__PURE__ */ new Set();
-  yield Promise.all(
-    dirPathsDeepToShallow.map((dir) => __async(null, null, function* () {
-      if ((yield dirToFilePaths(dir)).length === 0) emptyFolders.add(dir);
-    }))
-  );
-  const rootDirsToEmpty = /* @__PURE__ */ new Set();
-  for (const dir of dirPathsDeepToShallow) {
-    if (emptyFolders.has(dir)) {
-      const parts = dir.split(import_path.default.sep);
-      parts.pop();
-      const ancestors = parts.map((_, i) => parts.slice(0, i + 1).join(import_path.default.sep));
-      if (!ancestors.some((a) => emptyFolders.has(a))) rootDirsToEmpty.add(dir);
-    }
-  }
-  yield Promise.all(
-    [...rootDirsToEmpty].map(
-      (dir) => options.hardDelete ? import_fs.promises.rm(dir, { recursive: true }) : (0, import_trash.default)(dir)
+  var _a;
+  const excludedPaths = ((_a = options.excludedPaths) != null ? _a : []).map((excluded) => import_path.default.resolve(excluded));
+  const rootDir = import_path.default.resolve(dirPath);
+  const dirPathsDeepToShallow = [
+    ...new Set([rootDir, ...yield dirToFolderPaths(rootDir)].map((dir) => import_path.default.resolve(dir)))
+  ].filter(
+    (dir) => isWithinFolder(rootDir, dir) && !excludedPaths.some(
+      (excluded) => isWithinFolder(dir, excluded) || isWithinFolder(excluded, dir)
     )
-  );
+  ).sort((a, b) => b.split(import_path.default.sep).length - a.split(import_path.default.sep).length);
+  if (options.hardDelete) {
+    for (const dir of dirPathsDeepToShallow) {
+      try {
+        yield import_fs.promises.rmdir(dir);
+      } catch (error) {
+        if (!["EEXIST", "ENOENT", "ENOTEMPTY"].includes(error.code)) throw error;
+      }
+    }
+  } else {
+    const emptyFolders = /* @__PURE__ */ new Set();
+    for (const dir of dirPathsDeepToShallow) {
+      const entries = yield import_fs.promises.readdir(dir, { withFileTypes: true });
+      if (entries.every(
+        (entry) => entry.isDirectory() && emptyFolders.has(import_path.default.join(dir, entry.name))
+      ))
+        emptyFolders.add(dir);
+    }
+    const rootDirsToEmpty = [...emptyFolders].filter((dir) => !emptyFolders.has(import_path.default.dirname(dir)));
+    yield Promise.all(rootDirsToEmpty.map((dir) => (0, import_trash.default)(dir)));
+  }
 });
 
 // trabecula/utils/server/logging.ts
@@ -330,17 +341,17 @@ var import_path2 = __toESM(require("path"));
 var logsPath;
 var logStream = null;
 var setLogsPath = (filePath) => __async(null, null, function* () {
-  logsPath = import_path2.default.resolve(filePath);
-  yield import_promises.default.mkdir(import_path2.default.dirname(logsPath), { recursive: true });
-  if (logStream) {
-    logStream.end();
-    logStream = null;
-  }
-  logStream = import_fs2.default.createWriteStream(logsPath, { flags: "a", encoding: "utf8" });
-  logStream.on("error", (err) => {
+  const nextLogsPath = import_path2.default.resolve(filePath);
+  yield import_promises.default.mkdir(import_path2.default.dirname(nextLogsPath), { recursive: true });
+  const previousStream = logStream;
+  const stream = import_fs2.default.createWriteStream(nextLogsPath, { encoding: "utf8", flags: "a" });
+  stream.on("error", (err) => {
     console.error("Log stream error:", err);
-    logStream = null;
+    if (logStream === stream) logStream = null;
   });
+  logsPath = nextLogsPath;
+  logStream = stream;
+  previousStream == null ? void 0 : previousStream.end();
 });
 var stringify = (args) => {
   try {
@@ -359,8 +370,13 @@ var fileLog = (args, options) => __async(null, null, function* () {
     const logContent = `[${timestamp}] [${logType}] ${stringify(args)}
 `;
     if (!logStream) yield setLogsPath(logsPath);
-    if (!logStream.write(logContent))
-      yield new Promise((resolve) => logStream.once("drain", () => resolve()));
+    const stream = logStream;
+    yield new Promise((resolve, reject) => {
+      stream.write(logContent, (error) => {
+        if (error) reject(error);
+        else resolve();
+      });
+    });
   } catch (err) {
     console.error("Failed to log to file:", err);
   }

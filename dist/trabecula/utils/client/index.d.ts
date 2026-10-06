@@ -67,13 +67,13 @@ declare const makeQueue: <T>({ action, items, logPrefix, logSuffix, onComplete, 
 }) => Promise<void>;
 
 interface UseDragScrollProps {
-    momentum?: number;
-    listRef: MutableRefObject<FixedSizeList<any> | VariableSizeList<any>>;
     listOuterRef: MutableRefObject<any>;
+    listRef: MutableRefObject<FixedSizeList<any> | VariableSizeList<any>>;
+    momentum?: number;
     scrollLeft: MutableRefObject<number>;
     width: number;
 }
-declare const useDragScroll: ({ listRef, listOuterRef, momentum, scrollLeft, width, }: UseDragScrollProps) => {
+declare const useDragScroll: ({ listOuterRef, listRef, momentum, scrollLeft, width, }: UseDragScrollProps) => {
     handleMouseDown: (event: React.MouseEvent) => void;
     isDragging: boolean;
 };

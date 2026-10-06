@@ -8,41 +8,29 @@ import {
   useRef,
   useState,
 } from "react";
-import { isObservable } from "mobx";
-import { getSnapshot } from "mobx-keystone";
-import { isDeepEqual } from "trabecula/utils/common";
+import { isObservable, toJS } from "mobx";
+import { getSnapshot, isTreeNode } from "mobx-keystone";
+import { deepClone, isDeepEqual } from "trabecula/utils/common";
 
-export const useDeepEffect = (cb: EffectCallback, deps: DependencyList) =>
-  useEffect(cb, [
-    ...deps.map((dep) => {
-      try {
-        return isObservable(dep) ? getSnapshot(dep) : useDeepMemo(dep);
-      } catch (err) {
-        return JSON.stringify(dep);
-      }
-    }),
-  ]);
+const getComparisonValue = (value: any) =>
+  isTreeNode(value) ? getSnapshot(value) : isObservable(value) ? toJS(value) : value;
+
+export const useDeepEffect = (cb: EffectCallback, deps: DependencyList) => {
+  const dependencies = useDeepMemo(deps.map(getComparisonValue));
+
+  useEffect(cb, [dependencies]);
+};
 
 export const useDeepMemo = <T>(value: T) => {
-  const valueRef = useRef<T>(value);
-  const depRef = useRef<number>(0);
+  const comparisonValue = getComparisonValue(value);
+  const comparisonRef = useRef<any>();
+  const depRef = useRef(0);
+  const valueRef = useRef(value);
 
-  let compareValue: any;
-  let compareValueRef: any;
-
-  try {
-    compareValue = isObservable(value) ? getSnapshot(value) : value;
-    compareValueRef = isObservable(valueRef.current)
-      ? getSnapshot(valueRef.current)
-      : valueRef.current;
-  } catch (err) {
-    compareValue = JSON.stringify(value);
-    compareValueRef = JSON.stringify(valueRef.current);
-  }
-
-  if (!isDeepEqual(compareValue, compareValueRef)) {
-    valueRef.current = value;
+  if (!isDeepEqual(comparisonValue, comparisonRef.current)) {
+    comparisonRef.current = deepClone(comparisonValue);
     depRef.current += 1;
+    valueRef.current = value;
   }
 
   return useMemo(() => valueRef.current, [depRef.current]);

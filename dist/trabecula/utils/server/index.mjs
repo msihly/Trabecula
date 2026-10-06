@@ -2,7 +2,7 @@ import {
   dayjs,
   handleErrors,
   round
-} from "../../chunk-PX3POEJF.mjs";
+} from "../../chunk-2UO6TGNC.mjs";
 import {
   __async
 } from "../../chunk-DM4QYMVJ.mjs";
@@ -41,36 +41,45 @@ var dirToFolderPaths = (dirPath) => __async(null, null, function* () {
   return (yield new fdir().onlyDirs().withFullPaths().crawl(dirPath).withPromise()).map((dir) => dir.split(path.sep).slice(0, -1).join(path.sep)).filter((dir) => path.normalize(dir) !== path.normalize(dirPath));
 });
 var extendFileName = (fileName, ext) => `${path.relative(".", fileName).replace(/\.\w+$/, "")}.${ext}`;
+var isWithinFolder = (parent, child) => {
+  const relative = path.relative(parent, child);
+  return !path.isAbsolute(relative) && relative !== ".." && !relative.startsWith(`..${path.sep}`);
+};
 var makeFolder = (path3) => __async(null, null, function* () {
   return yield fs.mkdir(path3, { recursive: true });
 });
 var md5File = _md5File;
 var removeEmptyFolders = (..._0) => __async(null, [..._0], function* (dirPath = ".", options = {}) {
-  const dirPathsParts = [.../* @__PURE__ */ new Set([dirPath, ...yield dirToFolderPaths(dirPath)])].filter((p) => {
-    var _a;
-    return !((_a = options.excludedPaths) == null ? void 0 : _a.includes(p));
-  }).map((p) => p.split(path.sep));
-  const dirPathsDeepToShallow = [...dirPathsParts].sort((a, b) => b.length - a.length).map((p) => p.join(path.sep));
-  const emptyFolders = /* @__PURE__ */ new Set();
-  yield Promise.all(
-    dirPathsDeepToShallow.map((dir) => __async(null, null, function* () {
-      if ((yield dirToFilePaths(dir)).length === 0) emptyFolders.add(dir);
-    }))
-  );
-  const rootDirsToEmpty = /* @__PURE__ */ new Set();
-  for (const dir of dirPathsDeepToShallow) {
-    if (emptyFolders.has(dir)) {
-      const parts = dir.split(path.sep);
-      parts.pop();
-      const ancestors = parts.map((_, i) => parts.slice(0, i + 1).join(path.sep));
-      if (!ancestors.some((a) => emptyFolders.has(a))) rootDirsToEmpty.add(dir);
-    }
-  }
-  yield Promise.all(
-    [...rootDirsToEmpty].map(
-      (dir) => options.hardDelete ? fs.rm(dir, { recursive: true }) : trash(dir)
+  var _a;
+  const excludedPaths = ((_a = options.excludedPaths) != null ? _a : []).map((excluded) => path.resolve(excluded));
+  const rootDir = path.resolve(dirPath);
+  const dirPathsDeepToShallow = [
+    ...new Set([rootDir, ...yield dirToFolderPaths(rootDir)].map((dir) => path.resolve(dir)))
+  ].filter(
+    (dir) => isWithinFolder(rootDir, dir) && !excludedPaths.some(
+      (excluded) => isWithinFolder(dir, excluded) || isWithinFolder(excluded, dir)
     )
-  );
+  ).sort((a, b) => b.split(path.sep).length - a.split(path.sep).length);
+  if (options.hardDelete) {
+    for (const dir of dirPathsDeepToShallow) {
+      try {
+        yield fs.rmdir(dir);
+      } catch (error) {
+        if (!["EEXIST", "ENOENT", "ENOTEMPTY"].includes(error.code)) throw error;
+      }
+    }
+  } else {
+    const emptyFolders = /* @__PURE__ */ new Set();
+    for (const dir of dirPathsDeepToShallow) {
+      const entries = yield fs.readdir(dir, { withFileTypes: true });
+      if (entries.every(
+        (entry) => entry.isDirectory() && emptyFolders.has(path.join(dir, entry.name))
+      ))
+        emptyFolders.add(dir);
+    }
+    const rootDirsToEmpty = [...emptyFolders].filter((dir) => !emptyFolders.has(path.dirname(dir)));
+    yield Promise.all(rootDirsToEmpty.map((dir) => trash(dir)));
+  }
 });
 
 // trabecula/utils/server/logging.ts
@@ -80,17 +89,17 @@ import path2 from "path";
 var logsPath;
 var logStream = null;
 var setLogsPath = (filePath) => __async(null, null, function* () {
-  logsPath = path2.resolve(filePath);
-  yield fsPromises.mkdir(path2.dirname(logsPath), { recursive: true });
-  if (logStream) {
-    logStream.end();
-    logStream = null;
-  }
-  logStream = fs2.createWriteStream(logsPath, { flags: "a", encoding: "utf8" });
-  logStream.on("error", (err) => {
+  const nextLogsPath = path2.resolve(filePath);
+  yield fsPromises.mkdir(path2.dirname(nextLogsPath), { recursive: true });
+  const previousStream = logStream;
+  const stream = fs2.createWriteStream(nextLogsPath, { encoding: "utf8", flags: "a" });
+  stream.on("error", (err) => {
     console.error("Log stream error:", err);
-    logStream = null;
+    if (logStream === stream) logStream = null;
   });
+  logsPath = nextLogsPath;
+  logStream = stream;
+  previousStream == null ? void 0 : previousStream.end();
 });
 var stringify = (args) => {
   try {
@@ -109,8 +118,13 @@ var fileLog = (args, options) => __async(null, null, function* () {
     const logContent = `[${timestamp}] [${logType}] ${stringify(args)}
 `;
     if (!logStream) yield setLogsPath(logsPath);
-    if (!logStream.write(logContent))
-      yield new Promise((resolve) => logStream.once("drain", () => resolve()));
+    const stream = logStream;
+    yield new Promise((resolve, reject) => {
+      stream.write(logContent, (error) => {
+        if (error) reject(error);
+        else resolve();
+      });
+    });
   } catch (err) {
     console.error("Failed to log to file:", err);
   }

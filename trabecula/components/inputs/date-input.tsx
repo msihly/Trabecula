@@ -42,9 +42,11 @@ export const DateInput = Comp(
       else setDateValue(null);
     }, [value]);
 
-    const handleChange = (val: dayjs.Dayjs) => {
+    const handleChange = (val: dayjs.Dayjs | null) => {
       setDateValue(val);
-      setValue?.(val.format("YYYY-MM-DD"));
+
+      if (val === null) setValue?.("");
+      else if (val.isValid()) setValue?.(val.format("YYYY-MM-DD"));
     };
 
     const textFieldProps: Omit<InputProps, "color" | "value"> = {

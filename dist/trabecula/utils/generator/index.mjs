@@ -83,12 +83,8 @@ import path from "path";
 import prettier from "prettier";
 var ROOT_PATH = path.resolve(".", "trabecula");
 var createFiles = (folder, fileDefs) => __async(null, null, function* () {
-  try {
-    yield fs.mkdir(folder, { recursive: true });
-    makeIndexDef(fileDefs);
-  } catch (err) {
-    console.error(err);
-  }
+  yield fs.mkdir(folder, { recursive: true });
+  makeIndexDef(fileDefs);
   for (const fileDef of fileDefs) {
     try {
       const filePath = path.resolve(folder, `${fileDef.name}.ts`);
@@ -104,6 +100,7 @@ ${yield fileDef.makeFile()}`
 
 ${err.stack}
 `));
+      throw err;
     }
   }
 });

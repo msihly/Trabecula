@@ -8,19 +8,31 @@ const bytes = (bytes: number) => {
   return `${(bytes / 1024 ** power).toFixed(2)} ${"KMGTPEZY"[power - 1] || ""}B`;
 };
 
-const camelCase = (str: string) => `${str[0].toLowerCase()}${str.slice(1)}`;
+const camelCase = (str: string) => `${str.charAt(0).toLowerCase()}${str.slice(1)}`;
 
 const capitalize = (str: string, restLower = false) =>
-  str[0].toUpperCase() + (restLower ? str.substring(1).toLocaleLowerCase() : str.substring(1));
+  str.charAt(0).toUpperCase() +
+  (restLower ? str.substring(1).toLocaleLowerCase() : str.substring(1));
 
 const commas = (num: number) => Intl.NumberFormat().format(num);
 
 const decodeHtmlEntities = (s: string) =>
   s.replace(htmlEntityRegex, (m) => {
-    if (m.startsWith("&#x") || m.startsWith("&#X"))
-      return String.fromCharCode(parseInt(m.slice(3, -1), 16));
-    if (m.startsWith("&#")) return String.fromCharCode(parseInt(m.slice(2, -1), 10));
-    return { amp: "&", lt: "<", gt: ">", quot: '"', apos: "'" }[m.slice(1, -1)] ?? m;
+    let decoded = m;
+
+    if (m.startsWith("&#")) {
+      const isHex = m[2].toLowerCase() === "x";
+      const codePoint = parseInt(m.slice(isHex ? 3 : 2, -1), isHex ? 16 : 10);
+
+      decoded =
+        codePoint > 0 && codePoint <= 0x10ffff && !(codePoint >= 0xd800 && codePoint <= 0xdfff)
+          ? String.fromCodePoint(codePoint)
+          : "\uFFFD";
+    } else {
+      decoded = { amp: "&", apos: "'", gt: ">", lt: "<", quot: '"' }[m.slice(1, -1)] ?? m;
+    }
+
+    return decoded;
   });
 
 const duration = (val: number, isMs = false) =>
@@ -60,10 +72,14 @@ const sanitizeWinPath = (winPath: string, isBasename = false, isFolderOnly = fal
       .replaceAll(":", " ː ")
       .replaceAll('"', "“")
       .replaceAll("/", " ⁄ ")
+      .replaceAll("\\", " ＼ ")
       .replaceAll("|", "⼁")
       .replaceAll("?", "﹖")
       .replaceAll("*", "﹡")
-      .trim();
+      .replace(/[\u0000-\u001f]/g, "")
+      .trim()
+      .replace(/\.+$/, (dots) => "․".repeat(dots.length))
+      .replace(/^(con|prn|aux|nul|com[1-9¹²³]|lpt[1-9¹²³])(?=\.|$)/i, "_$1");
   };
 
   return isBasename

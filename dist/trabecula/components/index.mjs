@@ -12,7 +12,7 @@ import {
   makePadding,
   toast,
   useElementResize
-} from "../chunk-7IUHSXLP.mjs";
+} from "../chunk-Q2WKNVAM.mjs";
 import {
   DENSE_FORM_ROW_HEIGHT,
   FORM_ROW_HEIGHT,
@@ -22,7 +22,7 @@ import {
   dayjs,
   debounce,
   deepMerge
-} from "../chunk-PX3POEJF.mjs";
+} from "../chunk-2UO6TGNC.mjs";
 import {
   __async,
   __objRest,
@@ -949,7 +949,8 @@ var DateInput = Comp(
     }, [value]);
     const handleChange = (val) => {
       setDateValue(val);
-      setValue == null ? void 0 : setValue(val.format("YYYY-MM-DD"));
+      if (val === null) setValue == null ? void 0 : setValue("");
+      else if (val.isValid()) setValue == null ? void 0 : setValue(val.format("YYYY-MM-DD"));
     };
     const textFieldProps = __spreadProps(__spreadValues(__spreadValues({}, inputProps), slotProps == null ? void 0 : slotProps.textField), {
       header,
@@ -2127,9 +2128,9 @@ var NumInput = Comp(
         toast.error("Must be a number");
       } else {
         setValue == null ? void 0 : setValue(+val);
-        if (maxValue && +val > maxValue)
+        if (maxValue != null && +val > maxValue)
           hasHelper ? setError(`Max: ${maxValue}`) : toast.error(`Max: ${maxValue}`);
-        else if (minValue && +val < minValue)
+        else if (minValue != null && +val < minValue)
           hasHelper ? setError(`Min: ${minValue}`) : toast.error(`Min: ${minValue}`);
         else setError(null);
       }
@@ -2252,7 +2253,8 @@ var TimeInput = (rawProps) => {
   }, [value]);
   const handleChange = (val) => {
     setTimeValue(val);
-    setValue == null ? void 0 : setValue(val ? val.format(TIME_FORMAT) : "");
+    if (val === null) setValue == null ? void 0 : setValue("");
+    else if (val.isValid()) setValue == null ? void 0 : setValue(val.format(TIME_FORMAT));
   };
   const textFieldProps = __spreadProps(__spreadValues(__spreadValues({}, inputProps), slotProps == null ? void 0 : slotProps.textField), {
     label,
@@ -2537,14 +2539,23 @@ var ConfirmModal = ({
   const [isLoading, setIsLoading] = useState10(false);
   const handleClose = () => setVisible(false);
   const handleCancel = () => {
-    onCancel == null ? void 0 : onCancel();
-    handleClose();
+    if (!isLoading) {
+      onCancel == null ? void 0 : onCancel();
+      handleClose();
+    }
   };
   const handleConfirm = () => __async(null, null, function* () {
-    setIsLoading(true);
-    const success = yield onConfirm();
-    setIsLoading(false);
-    if (success) handleClose();
+    if (!isLoading) {
+      setIsLoading(true);
+      try {
+        const success = yield onConfirm();
+        if (success) handleClose();
+      } catch (error) {
+        toast.error(error instanceof Error ? error.message : String(error));
+      } finally {
+        setIsLoading(false);
+      }
+    }
   });
   return /* @__PURE__ */ jsxs18(Modal.Container, { isLoading, onClose: handleCancel, height, width, children: [
     /* @__PURE__ */ jsx32(Modal.Header, { children: /* @__PURE__ */ jsx32(Text, { preset: "title", children: headerText }) }),
@@ -2874,6 +2885,9 @@ function DataGrid(rawProps) {
     if (isExpanded === false) setExpandedRows(/* @__PURE__ */ new Set());
   }, [isExpanded]);
   useEffect6(() => {
+    setExpandedRows(/* @__PURE__ */ new Set());
+  }, [data]);
+  useEffect6(() => {
     if (!columnResize) return;
     const bodyCursor = document.body.style.cursor;
     const bodyUserSelect = document.body.style.userSelect;
@@ -2908,9 +2922,10 @@ function DataGrid(rawProps) {
     [columns, columnWidths]
   );
   const filteredData = useMemo(() => {
+    const indexedData = data.map((row, index) => ({ index, row }));
     const searchTerms = search.trim().toLowerCase().split(/\s+/).filter(Boolean);
-    if (!searchTerms.length) return data;
-    return data.filter((row) => {
+    if (!searchTerms.length) return indexedData;
+    return indexedData.filter(({ row }) => {
       const rowSearchText = resizedColumns.filter((column) => column.searchable !== false).map((column) => getDataGridValueText(getDataGridColumnValue(row, column, "search"))).join(" ").toLowerCase();
       return searchTerms.every((term) => rowSearchText.includes(term));
     });
@@ -2919,16 +2934,21 @@ function DataGrid(rawProps) {
     if (!hasSorting || !sort) return filteredData;
     const column = resizedColumns.find(({ key }) => key === sort.key);
     if (!column || column.sortable === false) return filteredData;
-    return filteredData.map((row, index) => ({ index, row })).sort((a, b) => {
+    return [...filteredData].sort((a, b) => {
       const compared = compareDataGridValues(
         getDataGridColumnValue(a.row, column, "sort"),
         getDataGridColumnValue(b.row, column, "sort")
       );
       return compared === 0 ? a.index - b.index : sort.direction === "asc" ? compared : -compared;
-    }).map(({ row }) => row);
+    });
   }, [filteredData, hasSorting, resizedColumns, sort]);
-  const displayedData = hasPagination ? sortedData.slice((page - 1) * rowsPerPage, page * rowsPerPage) : sortedData;
-  const pageCount = hasPagination ? Math.ceil(sortedData.length / rowsPerPage) : 1;
+  const pageSize = Number.isSafeInteger(rowsPerPage) && rowsPerPage > 0 ? rowsPerPage : 15;
+  const pageCount = hasPagination ? Math.ceil(sortedData.length / pageSize) : 1;
+  const currentPage = Math.min(page, Math.max(pageCount, 1));
+  const displayedData = hasPagination ? sortedData.slice((currentPage - 1) * pageSize, currentPage * pageSize) : sortedData;
+  useEffect6(() => {
+    setPage((previous) => Math.min(previous, Math.max(pageCount, 1)));
+  }, [pageCount]);
   const handleSort = (column) => {
     setSort((prev) => ({
       key: column.key,
@@ -2966,7 +2986,7 @@ function DataGrid(rawProps) {
         textPreset
       }
     ),
-    !displayedData.length ? /* @__PURE__ */ jsx39(View, { display: "flex", justify: emptyJustify, children: /* @__PURE__ */ jsx39(Text, { preset: textPreset, color: emptyColor, children: emptyMessage }) }) : /* @__PURE__ */ jsx39(View, { column: true, width: "100%", children: displayedData.map((row, index) => /* @__PURE__ */ jsx39(
+    !displayedData.length ? /* @__PURE__ */ jsx39(View, { display: "flex", justify: emptyJustify, children: /* @__PURE__ */ jsx39(Text, { preset: textPreset, color: emptyColor, children: emptyMessage }) }) : /* @__PURE__ */ jsx39(View, { column: true, width: "100%", children: displayedData.map(({ index: sourceIndex, row }, index) => /* @__PURE__ */ jsx39(
       DataGridRow,
       {
         alternatingBgColor,
@@ -2977,6 +2997,7 @@ function DataGrid(rawProps) {
         expandableContent,
         expandedRows,
         expandColumnWidth,
+        expansionIndex: sourceIndex,
         getRowBgColor,
         index,
         isRowSelected,
@@ -2988,9 +3009,9 @@ function DataGrid(rawProps) {
         setExpandedRows,
         textPreset
       },
-      index
+      sourceIndex
     )) }),
-    !hasPagination ? null : /* @__PURE__ */ jsx39(Pagination, { count: pageCount, onChange: setPage, page })
+    !hasPagination ? null : /* @__PURE__ */ jsx39(Pagination, { inline: true, count: pageCount, onChange: setPage, page: currentPage })
   ] });
 }
 
@@ -3207,6 +3228,7 @@ var DataGridRow = ({
   expandableContent,
   expandedRows,
   expandColumnWidth,
+  expansionIndex,
   getRowBgColor,
   index,
   isRowSelected,
@@ -3220,7 +3242,7 @@ var DataGridRow = ({
 }) => {
   var _a;
   const { css, cx } = useClasses24(null);
-  const isExpanded = expandedRows.has(index);
+  const isExpanded = expandedRows.has(expansionIndex);
   const isSelected = (_a = isRowSelected == null ? void 0 : isRowSelected(row, index)) != null ? _a : false;
   const getBackgroundColor = () => {
     var _a2;
@@ -3228,8 +3250,8 @@ var DataGridRow = ({
   };
   const handleRowExpand = () => {
     const newExpandedRows = new Set(expandedRows);
-    if (newExpandedRows.has(index)) newExpandedRows.delete(index);
-    else newExpandedRows.add(index);
+    if (newExpandedRows.has(expansionIndex)) newExpandedRows.delete(expansionIndex);
+    else newExpandedRows.add(expansionIndex);
     setExpandedRows(newExpandedRows);
   };
   const renderCell = (column) => {
@@ -5352,29 +5374,29 @@ var SideScroller = ({ children, className, innerClassName }) => {
   const { css, cx } = useClasses44({ isLeftButtonVisible, isRightButtonVisible });
   const getButtonVisibility = () => {
     if (!ref.current) return [false, false];
-    const { clientWidth, scrollWidth, scrollLeft } = ref.current;
+    const { clientWidth, scrollLeft, scrollWidth } = ref.current;
     if (!(clientWidth < scrollWidth)) return [false, false];
     return [scrollLeft > 0, clientWidth + scrollLeft < scrollWidth - 5];
   };
   const handleScroll = (direction) => {
     if (!ref.current) return false;
-    const maxLeft = ref.current.clientWidth;
     const scrollAmount = (direction === "left" ? -1 : 1) * width / 2;
-    const newScrollPos = direction === "left" ? Math.max(ref.current.scrollLeft - width / 2, 0) : Math.min(ref.current.scrollLeft + width / 2, maxLeft);
     ref.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
-    setScrollPos(newScrollPos);
   };
   useEffect9(() => {
     const node = ref.current;
-    const scrollListener = debounce(setScrollPos.bind(node.scrollLeft), 50);
+    const scrollListener = debounce(() => setScrollPos(node.scrollLeft), 50);
     node.addEventListener("scroll", scrollListener);
-    return () => node.removeEventListener("scroll", scrollListener);
+    return () => {
+      node.removeEventListener("scroll", scrollListener);
+      scrollListener.cancel();
+    };
   }, []);
   useEffect9(() => {
     const [left, right] = getButtonVisibility();
     setIsLeftButtonVisible(left);
     setIsRightButtonVisible(right);
-  }, [scrollPos]);
+  }, [children, scrollPos, width]);
   return /* @__PURE__ */ jsxs37(View, { className: cx(css.root, className), children: [
     /* @__PURE__ */ jsx72(
       IconButton,

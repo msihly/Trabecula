@@ -463,9 +463,11 @@ var import_dayjs = __toESM(require("dayjs"));
 var import_customParseFormat = __toESM(require("dayjs/plugin/customParseFormat"));
 var import_duration = __toESM(require("dayjs/plugin/duration"));
 var import_relativeTime = __toESM(require("dayjs/plugin/relativeTime"));
+var import_utc = __toESM(require("dayjs/plugin/utc"));
 import_dayjs.default.extend(import_customParseFormat.default);
 import_dayjs.default.extend(import_duration.default);
 import_dayjs.default.extend(import_relativeTime.default);
+import_dayjs.default.extend(import_utc.default);
 
 // trabecula/utils/common/math.ts
 var LOGICAL_OPS = ["=", "!=", ">", ">=", "<", "<="];
@@ -6366,7 +6368,8 @@ var DateInput = Comp(
     }, [value]);
     const handleChange = (val) => {
       setDateValue(val);
-      setValue == null ? void 0 : setValue(val.format("YYYY-MM-DD"));
+      if (val === null) setValue == null ? void 0 : setValue("");
+      else if (val.isValid()) setValue == null ? void 0 : setValue(val.format("YYYY-MM-DD"));
     };
     const textFieldProps = __spreadProps(__spreadValues(__spreadValues({}, inputProps), slotProps == null ? void 0 : slotProps.textField), {
       header,
@@ -7541,9 +7544,9 @@ var NumInput = Comp(
         toast.error("Must be a number");
       } else {
         setValue == null ? void 0 : setValue(+val);
-        if (maxValue && +val > maxValue)
+        if (maxValue != null && +val > maxValue)
           hasHelper ? setError(`Max: ${maxValue}`) : toast.error(`Max: ${maxValue}`);
-        else if (minValue && +val < minValue)
+        else if (minValue != null && +val < minValue)
           hasHelper ? setError(`Min: ${minValue}`) : toast.error(`Min: ${minValue}`);
         else setError(null);
       }
@@ -7666,7 +7669,8 @@ var TimeInput = (rawProps) => {
   }, [value]);
   const handleChange = (val) => {
     setTimeValue(val);
-    setValue == null ? void 0 : setValue(val ? val.format(TIME_FORMAT) : "");
+    if (val === null) setValue == null ? void 0 : setValue("");
+    else if (val.isValid()) setValue == null ? void 0 : setValue(val.format(TIME_FORMAT));
   };
   const textFieldProps = __spreadProps(__spreadValues(__spreadValues({}, inputProps), slotProps == null ? void 0 : slotProps.textField), {
     label,
@@ -7947,14 +7951,23 @@ var ConfirmModal = ({
   const [isLoading, setIsLoading] = (0, import_react19.useState)(false);
   const handleClose = () => setVisible(false);
   const handleCancel = () => {
-    onCancel == null ? void 0 : onCancel();
-    handleClose();
+    if (!isLoading) {
+      onCancel == null ? void 0 : onCancel();
+      handleClose();
+    }
   };
   const handleConfirm = () => __async(null, null, function* () {
-    setIsLoading(true);
-    const success = yield onConfirm();
-    setIsLoading(false);
-    if (success) handleClose();
+    if (!isLoading) {
+      setIsLoading(true);
+      try {
+        const success = yield onConfirm();
+        if (success) handleClose();
+      } catch (error) {
+        toast.error(error instanceof Error ? error.message : String(error));
+      } finally {
+        setIsLoading(false);
+      }
+    }
   });
   return /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(Modal.Container, { isLoading, onClose: handleCancel, height, width, children: [
     /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(Modal.Header, { children: /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(Text, { preset: "title", children: headerText }) }),
@@ -8284,6 +8297,9 @@ function DataGrid(rawProps) {
     if (isExpanded === false) setExpandedRows(/* @__PURE__ */ new Set());
   }, [isExpanded]);
   (0, import_react21.useEffect)(() => {
+    setExpandedRows(/* @__PURE__ */ new Set());
+  }, [data]);
+  (0, import_react21.useEffect)(() => {
     if (!columnResize) return;
     const bodyCursor = document.body.style.cursor;
     const bodyUserSelect = document.body.style.userSelect;
@@ -8318,9 +8334,10 @@ function DataGrid(rawProps) {
     [columns, columnWidths]
   );
   const filteredData = (0, import_react21.useMemo)(() => {
+    const indexedData = data.map((row, index) => ({ index, row }));
     const searchTerms = search.trim().toLowerCase().split(/\s+/).filter(Boolean);
-    if (!searchTerms.length) return data;
-    return data.filter((row) => {
+    if (!searchTerms.length) return indexedData;
+    return indexedData.filter(({ row }) => {
       const rowSearchText = resizedColumns.filter((column) => column.searchable !== false).map((column) => getDataGridValueText(getDataGridColumnValue(row, column, "search"))).join(" ").toLowerCase();
       return searchTerms.every((term) => rowSearchText.includes(term));
     });
@@ -8329,16 +8346,21 @@ function DataGrid(rawProps) {
     if (!hasSorting || !sort) return filteredData;
     const column = resizedColumns.find(({ key }) => key === sort.key);
     if (!column || column.sortable === false) return filteredData;
-    return filteredData.map((row, index) => ({ index, row })).sort((a, b) => {
+    return [...filteredData].sort((a, b) => {
       const compared = compareDataGridValues(
         getDataGridColumnValue(a.row, column, "sort"),
         getDataGridColumnValue(b.row, column, "sort")
       );
       return compared === 0 ? a.index - b.index : sort.direction === "asc" ? compared : -compared;
-    }).map(({ row }) => row);
+    });
   }, [filteredData, hasSorting, resizedColumns, sort]);
-  const displayedData = hasPagination ? sortedData.slice((page - 1) * rowsPerPage, page * rowsPerPage) : sortedData;
-  const pageCount = hasPagination ? Math.ceil(sortedData.length / rowsPerPage) : 1;
+  const pageSize = Number.isSafeInteger(rowsPerPage) && rowsPerPage > 0 ? rowsPerPage : 15;
+  const pageCount = hasPagination ? Math.ceil(sortedData.length / pageSize) : 1;
+  const currentPage = Math.min(page, Math.max(pageCount, 1));
+  const displayedData = hasPagination ? sortedData.slice((currentPage - 1) * pageSize, currentPage * pageSize) : sortedData;
+  (0, import_react21.useEffect)(() => {
+    setPage((previous) => Math.min(previous, Math.max(pageCount, 1)));
+  }, [pageCount]);
   const handleSort = (column) => {
     setSort((prev) => ({
       key: column.key,
@@ -8376,7 +8398,7 @@ function DataGrid(rawProps) {
         textPreset
       }
     ),
-    !displayedData.length ? /* @__PURE__ */ (0, import_jsx_runtime40.jsx)(View, { display: "flex", justify: emptyJustify, children: /* @__PURE__ */ (0, import_jsx_runtime40.jsx)(Text, { preset: textPreset, color: emptyColor, children: emptyMessage }) }) : /* @__PURE__ */ (0, import_jsx_runtime40.jsx)(View, { column: true, width: "100%", children: displayedData.map((row, index) => /* @__PURE__ */ (0, import_jsx_runtime40.jsx)(
+    !displayedData.length ? /* @__PURE__ */ (0, import_jsx_runtime40.jsx)(View, { display: "flex", justify: emptyJustify, children: /* @__PURE__ */ (0, import_jsx_runtime40.jsx)(Text, { preset: textPreset, color: emptyColor, children: emptyMessage }) }) : /* @__PURE__ */ (0, import_jsx_runtime40.jsx)(View, { column: true, width: "100%", children: displayedData.map(({ index: sourceIndex, row }, index) => /* @__PURE__ */ (0, import_jsx_runtime40.jsx)(
       DataGridRow,
       {
         alternatingBgColor,
@@ -8387,6 +8409,7 @@ function DataGrid(rawProps) {
         expandableContent,
         expandedRows,
         expandColumnWidth,
+        expansionIndex: sourceIndex,
         getRowBgColor,
         index,
         isRowSelected,
@@ -8398,9 +8421,9 @@ function DataGrid(rawProps) {
         setExpandedRows,
         textPreset
       },
-      index
+      sourceIndex
     )) }),
-    !hasPagination ? null : /* @__PURE__ */ (0, import_jsx_runtime40.jsx)(Pagination, { count: pageCount, onChange: setPage, page })
+    !hasPagination ? null : /* @__PURE__ */ (0, import_jsx_runtime40.jsx)(Pagination, { inline: true, count: pageCount, onChange: setPage, page: currentPage })
   ] });
 }
 
@@ -8614,6 +8637,7 @@ var DataGridRow = ({
   expandableContent,
   expandedRows,
   expandColumnWidth,
+  expansionIndex,
   getRowBgColor,
   index,
   isRowSelected,
@@ -8627,7 +8651,7 @@ var DataGridRow = ({
 }) => {
   var _a;
   const { css, cx } = useClasses25(null);
-  const isExpanded = expandedRows.has(index);
+  const isExpanded = expandedRows.has(expansionIndex);
   const isSelected = (_a = isRowSelected == null ? void 0 : isRowSelected(row, index)) != null ? _a : false;
   const getBackgroundColor = () => {
     var _a2;
@@ -8635,8 +8659,8 @@ var DataGridRow = ({
   };
   const handleRowExpand = () => {
     const newExpandedRows = new Set(expandedRows);
-    if (newExpandedRows.has(index)) newExpandedRows.delete(index);
-    else newExpandedRows.add(index);
+    if (newExpandedRows.has(expansionIndex)) newExpandedRows.delete(expansionIndex);
+    else newExpandedRows.add(expansionIndex);
     setExpandedRows(newExpandedRows);
   };
   const renderCell = (column) => {
@@ -10741,29 +10765,29 @@ var SideScroller = ({ children, className, innerClassName }) => {
   const { css, cx } = useClasses45({ isLeftButtonVisible, isRightButtonVisible });
   const getButtonVisibility = () => {
     if (!ref.current) return [false, false];
-    const { clientWidth, scrollWidth, scrollLeft } = ref.current;
+    const { clientWidth, scrollLeft, scrollWidth } = ref.current;
     if (!(clientWidth < scrollWidth)) return [false, false];
     return [scrollLeft > 0, clientWidth + scrollLeft < scrollWidth - 5];
   };
   const handleScroll = (direction) => {
     if (!ref.current) return false;
-    const maxLeft = ref.current.clientWidth;
     const scrollAmount = (direction === "left" ? -1 : 1) * width / 2;
-    const newScrollPos = direction === "left" ? Math.max(ref.current.scrollLeft - width / 2, 0) : Math.min(ref.current.scrollLeft + width / 2, maxLeft);
     ref.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
-    setScrollPos(newScrollPos);
   };
   (0, import_react30.useEffect)(() => {
     const node = ref.current;
-    const scrollListener = debounce(setScrollPos.bind(node.scrollLeft), 50);
+    const scrollListener = debounce(() => setScrollPos(node.scrollLeft), 50);
     node.addEventListener("scroll", scrollListener);
-    return () => node.removeEventListener("scroll", scrollListener);
+    return () => {
+      node.removeEventListener("scroll", scrollListener);
+      scrollListener.cancel();
+    };
   }, []);
   (0, import_react30.useEffect)(() => {
     const [left, right] = getButtonVisibility();
     setIsLeftButtonVisible(left);
     setIsRightButtonVisible(right);
-  }, [scrollPos]);
+  }, [children, scrollPos, width]);
   return /* @__PURE__ */ (0, import_jsx_runtime73.jsxs)(View, { className: cx(css.root, className), children: [
     /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
       IconButton,

@@ -51,6 +51,12 @@ export const dirToFolderPaths = async (dirPath: string): Promise<string[]> => {
 export const extendFileName = (fileName: string, ext: string) =>
   `${path.relative(".", fileName).replace(/\.\w+$/, "")}.${ext}`;
 
+const isWithinFolder = (parent: string, child: string) => {
+  const relative = path.relative(parent, child);
+
+  return !path.isAbsolute(relative) && relative !== ".." && !relative.startsWith(`..${path.sep}`);
+};
+
 export const makeFolder = async (path: string) => await fs.mkdir(path, { recursive: true });
 
 export const md5File = _md5File;
@@ -59,34 +65,44 @@ export const removeEmptyFolders = async (
   dirPath: string = ".",
   options: { excludedPaths?: string[]; hardDelete?: boolean } = {},
 ) => {
-  const dirPathsParts = [...new Set([dirPath, ...(await dirToFolderPaths(dirPath))])]
-    .filter((p) => !options.excludedPaths?.includes(p))
-    .map((p) => p.split(path.sep));
+  const excludedPaths = (options.excludedPaths ?? []).map((excluded) => path.resolve(excluded));
+  const rootDir = path.resolve(dirPath);
+  const dirPathsDeepToShallow = [
+    ...new Set([rootDir, ...(await dirToFolderPaths(rootDir))].map((dir) => path.resolve(dir))),
+  ]
+    .filter(
+      (dir) =>
+        isWithinFolder(rootDir, dir) &&
+        !excludedPaths.some(
+          (excluded) => isWithinFolder(dir, excluded) || isWithinFolder(excluded, dir),
+        ),
+    )
+    .sort((a, b) => b.split(path.sep).length - a.split(path.sep).length);
 
-  const dirPathsDeepToShallow = [...dirPathsParts]
-    .sort((a, b) => b.length - a.length)
-    .map((p) => p.join(path.sep));
-
-  const emptyFolders = new Set<string>();
-  await Promise.all(
-    dirPathsDeepToShallow.map(async (dir) => {
-      if ((await dirToFilePaths(dir)).length === 0) emptyFolders.add(dir);
-    }),
-  );
-
-  const rootDirsToEmpty = new Set<string>();
-  for (const dir of dirPathsDeepToShallow) {
-    if (emptyFolders.has(dir)) {
-      const parts = dir.split(path.sep);
-      parts.pop();
-      const ancestors = parts.map((_, i) => parts.slice(0, i + 1).join(path.sep));
-      if (!ancestors.some((a) => emptyFolders.has(a))) rootDirsToEmpty.add(dir);
+  if (options.hardDelete) {
+    for (const dir of dirPathsDeepToShallow) {
+      try {
+        await fs.rmdir(dir);
+      } catch (error) {
+        if (!["EEXIST", "ENOENT", "ENOTEMPTY"].includes(error.code)) throw error;
+      }
     }
-  }
+  } else {
+    const emptyFolders = new Set<string>();
 
-  await Promise.all(
-    [...rootDirsToEmpty].map((dir) =>
-      options.hardDelete ? fs.rm(dir, { recursive: true }) : trash(dir),
-    ),
-  );
+    for (const dir of dirPathsDeepToShallow) {
+      const entries = await fs.readdir(dir, { withFileTypes: true });
+
+      if (
+        entries.every(
+          (entry) => entry.isDirectory() && emptyFolders.has(path.join(dir, entry.name)),
+        )
+      )
+        emptyFolders.add(dir);
+    }
+
+    const rootDirsToEmpty = [...emptyFolders].filter((dir) => !emptyFolders.has(path.dirname(dir)));
+
+    await Promise.all(rootDirsToEmpty.map((dir) => trash(dir)));
+  }
 };

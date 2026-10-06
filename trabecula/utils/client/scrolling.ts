@@ -1,39 +1,57 @@
-import { MutableRefObject, useRef, useState } from "react";
+import { MutableRefObject, useEffect, useRef, useState } from "react";
 import { FixedSizeList, VariableSizeList } from "react-window";
 
 interface UseDragScrollProps {
-  momentum?: number;
-  listRef: MutableRefObject<FixedSizeList<any> | VariableSizeList<any>>;
   listOuterRef: MutableRefObject<any>;
+  listRef: MutableRefObject<FixedSizeList<any> | VariableSizeList<any>>;
+  momentum?: number;
   scrollLeft: MutableRefObject<number>;
   width: number;
 }
 
 export const useDragScroll = ({
-  listRef,
   listOuterRef,
+  listRef,
   momentum = 0.8,
   scrollLeft,
   width,
 }: UseDragScrollProps) => {
   const dragDirection = useRef<"left" | "right">(null);
+  const dragResetTimeout = useRef<ReturnType<typeof setTimeout>>(null);
   const initialMouseX = useRef(null);
   const momentumId = useRef(null);
+  const removeDragListeners = useRef<() => void>(null);
   const scrollFinal = useRef(0);
   const scrollStart = useRef(0);
   const velocity = useRef(0);
 
   const [isDragging, setIsDragging] = useState(false);
 
-  const handleMouseDown = (event: React.MouseEvent) => {
-    if (!listRef.current) return;
+  useEffect(() => {
+    return () => {
+      clearTimeout(dragResetTimeout.current);
+      cancelAnimationFrame(momentumId.current);
+      removeDragListeners.current?.();
+    };
+  }, []);
 
+  const handleMouseDown = (event: React.MouseEvent) => {
+    if (!listRef.current || event.button !== 0) return;
+
+    clearTimeout(dragResetTimeout.current);
+    removeDragListeners.current?.();
+    setIsDragging(false);
     initialMouseX.current = event.clientX;
     scrollStart.current = scrollLeft.current;
+    velocity.current = 0;
     cancelMomentumTracking();
 
     document.addEventListener("mousemove", mouseMoveHandler);
     document.addEventListener("mouseup", mouseUpHandler);
+    removeDragListeners.current = () => {
+      document.removeEventListener("mousemove", mouseMoveHandler);
+      document.removeEventListener("mouseup", mouseUpHandler);
+    };
   };
 
   const mouseMoveHandler = (event: MouseEvent) => {
@@ -44,12 +62,13 @@ export const useDragScroll = ({
     const isScrollValid = validateScrollLeft(newScrollLeft);
 
     if (!isScrollValid) return;
+
     listRef.current.scrollTo(newScrollLeft);
 
     velocity.current = newScrollLeft - scrollStart.current;
     dragDirection.current = velocity.current > 0 ? "left" : "right";
 
-    if (velocity.current > 0 && !isDragging) setIsDragging(true);
+    if (Math.abs(velocity.current) > 5) setIsDragging(true);
   };
 
   const mouseUpHandler = () => {
@@ -62,9 +81,9 @@ export const useDragScroll = ({
       beginMomentumTracking();
     }
 
-    setTimeout(() => setIsDragging(false), 0);
-    document.removeEventListener("mousemove", mouseMoveHandler);
-    document.removeEventListener("mouseup", mouseUpHandler);
+    dragResetTimeout.current = setTimeout(() => setIsDragging(false), 0);
+    removeDragListeners.current?.();
+    removeDragListeners.current = null;
   };
 
   const validateScrollLeft = (newScrollLeft: number) =>
@@ -81,7 +100,9 @@ export const useDragScroll = ({
   const momentumLoop = () => {
     const newScrollLeft = scrollLeft.current + velocity.current;
     const isScrollValid = validateScrollLeft(newScrollLeft);
-    if (!isScrollValid) return;
+
+    if (!isScrollValid || !listRef.current) return;
+
     listRef.current.scrollTo(newScrollLeft);
     velocity.current *= momentum;
 

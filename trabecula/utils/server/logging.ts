@@ -7,19 +7,21 @@ let logsPath: string;
 let logStream: fs.WriteStream | null = null;
 
 export const setLogsPath = async (filePath: string) => {
-  logsPath = path.resolve(filePath);
-  await fsPromises.mkdir(path.dirname(logsPath), { recursive: true });
+  const nextLogsPath = path.resolve(filePath);
 
-  if (logStream) {
-    logStream.end();
-    logStream = null;
-  }
+  await fsPromises.mkdir(path.dirname(nextLogsPath), { recursive: true });
 
-  logStream = fs.createWriteStream(logsPath, { flags: "a", encoding: "utf8" });
-  logStream.on("error", (err) => {
+  const previousStream = logStream;
+  const stream = fs.createWriteStream(nextLogsPath, { encoding: "utf8", flags: "a" });
+
+  stream.on("error", (err) => {
     console.error("Log stream error:", err);
-    logStream = null;
+
+    if (logStream === stream) logStream = null;
   });
+  logsPath = nextLogsPath;
+  logStream = stream;
+  previousStream?.end();
 };
 
 const stringify = (args: any | any[]) => {
@@ -44,8 +46,15 @@ export const fileLog = async (
     const logContent = `[${timestamp}] [${logType}] ${stringify(args)}\n`;
 
     if (!logStream) await setLogsPath(logsPath);
-    if (!logStream.write(logContent))
-      await new Promise<void>((resolve) => logStream!.once("drain", () => resolve()));
+
+    const stream = logStream;
+
+    await new Promise<void>((resolve, reject) => {
+      stream.write(logContent, (error) => {
+        if (error) reject(error);
+        else resolve();
+      });
+    });
   } catch (err) {
     console.error("Failed to log to file:", err);
   }
