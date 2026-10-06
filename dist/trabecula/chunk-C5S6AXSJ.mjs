@@ -6,17 +6,23 @@ import {
 } from "./chunk-DM4QYMVJ.mjs";
 
 // trabecula/utils/common/arrays.ts
-var arrayIntersect = (...arrays) => [...arrays].reduce((acc, cur) => acc.filter((e) => cur.includes(e)));
+var arrayIntersect = (...arrays) => {
+  const [first = [], ...rest] = arrays;
+  return rest.reduce((acc, cur) => {
+    const values = new Set(cur);
+    return acc.filter((value) => values.has(value));
+  }, first);
+};
 var bisectArrayChanges = (oldArr, newArr) => {
   if (!oldArr || !newArr) return { added: [], removed: [] };
-  else
-    return getArrayDiff(oldArr, newArr).reduce(
-      (acc, cur) => {
-        acc[newArr.includes(cur) ? "added" : "removed"].push(cur);
-        return acc;
-      },
-      { added: [], removed: [] }
-    );
+  else {
+    const newValues = new Set(newArr);
+    const oldValues = new Set(oldArr);
+    return {
+      added: newArr.filter((value) => !oldValues.has(value)),
+      removed: oldArr.filter((value) => !newValues.has(value))
+    };
+  }
 };
 var centeredSlice = (arr, indexToCenter, maxCount) => {
   if (!arr || indexToCenter < 0 || indexToCenter > arr.length - 1) return null;
@@ -34,18 +40,23 @@ var centeredSlice = (arr, indexToCenter, maxCount) => {
 };
 var chunkArray = (arr, size) => [...Array(Math.ceil(arr.length / size))].map((_, i) => arr.slice(i * size, i * size + size));
 var countItems = (arr) => {
-  const map = arr.reduce((acc, cur) => {
-    const group = acc.find((e) => e.value === cur);
-    if (!group) acc.push({ value: cur, count: 1 });
-    else group.count += 1;
-    return acc;
-  }, []);
-  return sortArray(map, "count", true, true);
+  const counts = /* @__PURE__ */ new Map();
+  const groups = [];
+  arr.forEach((value) => {
+    const group = counts.get(value);
+    if (group) group.count++;
+    else {
+      const next = { count: 1, value };
+      groups.push(next);
+      if (!Number.isNaN(value)) counts.set(value, next);
+    }
+  });
+  return sortArray(groups, "count", true, true);
 };
-var getArrayDiff = (a, b) => [
-  ...a.filter((e) => !b.includes(e)),
-  ...b.filter((e) => !a.includes(e))
-];
+var getArrayDiff = (a, b) => {
+  const { added, removed } = bisectArrayChanges(a, b);
+  return [...removed, ...added];
+};
 var objectToFloat32Array = (obj) => new Float32Array(Object.values(obj));
 var range = (length, start = 0) => Array(length).fill("").map((_, i) => start + i);
 var rotateArrayPos = (direction, current, length) => {
@@ -66,14 +77,17 @@ var sortArray = (arr, key, isDesc = true, isNumber = false) => {
 var splitArray = (arr, filterFn) => arr.reduce((acc, cur) => (acc[+!filterFn(cur)].push(cur), acc), [[], []]);
 var sumArray = (arr, fn) => arr.reduce((acc, cur) => acc += fn(cur), 0);
 var uniqueArrayFilter = (...arrays) => {
-  const all = [].concat(...arrays);
-  const nonUnique = all.filter(
-    /* @__PURE__ */ ((set) => (value) => set.has(value) || !set.add(value))(/* @__PURE__ */ new Set())
-  );
-  return all.filter((e) => !nonUnique.includes(e));
+  const all = arrays.flat();
+  const duplicates = /* @__PURE__ */ new Set();
+  const seen = /* @__PURE__ */ new Set();
+  for (const value of all) {
+    if (seen.has(value)) duplicates.add(value);
+    else seen.add(value);
+  }
+  return all.filter((value) => !duplicates.has(value));
 };
 var uniqueArrayMerge = (oldArray, newArrays) => [
-  .../* @__PURE__ */ new Set([...new Set(oldArray), ...[].concat(...newArrays)])
+  .../* @__PURE__ */ new Set([...oldArray, ...[].concat(...newArrays)])
 ];
 
 // trabecula/utils/common/constants.ts
@@ -510,7 +524,7 @@ var PromiseQueue = class {
     __publicField(this, "concurrency");
     __publicField(this, "delayRange");
     __publicField(this, "promise", null);
-    __publicField(this, "queue", []);
+    __publicField(this, "queue", /* @__PURE__ */ new Set());
     __publicField(this, "resolver", null);
     __publicField(this, "runningCount", 0);
     if (!Number.isInteger(concurrency) || concurrency < 1)
@@ -532,25 +546,27 @@ var PromiseQueue = class {
         } finally {
           if (this.delayRange && !this.cancelled) yield sleep(...this.delayRange);
           this.runningCount--;
-          this.next();
+          queueMicrotask(() => this.next());
         }
       });
-      this.queue.push({ cancel: () => reject(new CancelledError()), run: task });
+      this.queue.add({ cancel: () => reject(new CancelledError()), run: task });
       this.next();
     });
   }
   cancel() {
-    var _a;
     if (this.cancelled) return;
     this.cancelled = true;
-    while (this.queue.length) (_a = this.queue.shift()) == null ? void 0 : _a.cancel();
+    for (const task of this.queue) task.cancel();
+    this.queue.clear();
     this.next();
   }
   next() {
-    var _a;
-    while (!this.cancelled && this.runningCount < this.concurrency && this.queue.length)
-      void ((_a = this.queue.shift()) == null ? void 0 : _a.run());
-    if (!this.queue.length && this.runningCount === 0 && this.resolver) {
+    for (const task of this.queue) {
+      if (this.cancelled || this.runningCount >= this.concurrency) break;
+      this.queue.delete(task);
+      void task.run();
+    }
+    if (!this.queue.size && this.runningCount === 0 && this.resolver) {
       this.resolver();
       this.promise = null;
       this.resolver = null;
@@ -655,4 +671,4 @@ export {
   applySelectionChanges,
   getSelectionRange
 };
-//# sourceMappingURL=chunk-2UO6TGNC.mjs.map
+//# sourceMappingURL=chunk-C5S6AXSJ.mjs.map

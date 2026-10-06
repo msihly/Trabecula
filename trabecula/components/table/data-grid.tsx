@@ -18,38 +18,35 @@ import {
 } from "trabecula/components";
 import { colors } from "trabecula/utils/client";
 
-export function DataGrid<T extends object = DataGridRowData>(rawProps: DataGridProps<T>) {
-  const {
-    alternatingBgColor = colors.foregroundCard,
-    alternatingColors = true,
-    className,
-    columns,
-    data,
-    defaultTextPreset: rawDefaultTextPreset,
-    emptyColor = colors.custom.lightBlue,
-    emptyJustify = "center",
-    emptyMessage = "No data available",
-    expandColumnWidth = "5rem",
-    expandableContent,
-    getRowBgColor,
-    hasPagination = false,
-    hasResizableColumns = false,
-    hasSearch = false,
-    hasSorting = false,
-    headerBorder = "1px solid #000",
-    initialSort,
-    isExpanded,
-    isRowSelected,
-    onRowClick,
-    rowGap = "0.5rem",
-    rowsPerPage = 15,
-    selectedBgColor = colors.custom.blue,
-    selectedTextColor = colors.custom.white,
-    spacing = "0.3rem",
-    textPreset = "default",
-  } = rawProps;
-  const defaultTextPreset = rawDefaultTextPreset ?? textPreset;
-
+export const DataGrid = <T extends object = DataGridRowData>({
+  alternatingBgColor = colors.foregroundCard,
+  alternatingColors = true,
+  className,
+  columns,
+  data,
+  defaultTextPreset,
+  emptyColor = colors.custom.lightBlue,
+  emptyJustify = "center",
+  emptyMessage = "No data available",
+  expandColumnWidth = "5rem",
+  expandableContent,
+  getRowBgColor,
+  hasPagination = false,
+  hasResizableColumns = false,
+  hasSearch = false,
+  hasSorting = false,
+  headerBorder = "1px solid #000",
+  initialSort,
+  isExpanded,
+  isRowSelected,
+  onRowClick,
+  rowGap = "0.5rem",
+  rowsPerPage = 15,
+  selectedBgColor = colors.custom.blue,
+  selectedTextColor = colors.custom.white,
+  spacing = "0.3rem",
+  textPreset = "default",
+}: DataGridProps<T>) => {
   const [columnResize, setColumnResize] = useState<DataGridColumnResize<T> | null>(null);
   const [columnWidths, setColumnWidths] = useState<Partial<Record<DataGridColumnKey<T>, number>>>(
     {},
@@ -80,7 +77,9 @@ export function DataGrid<T extends object = DataGridRowData>(rawProps: DataGridP
         columnResize.maxWidth,
       );
 
-      setColumnWidths((prev) => ({ ...prev, [columnResize.key]: width }));
+      setColumnWidths((prev) =>
+        prev[columnResize.key] === width ? prev : { ...prev, [columnResize.key]: width },
+      );
     };
 
     const handlePointerUp = () => setColumnResize(null);
@@ -118,33 +117,38 @@ export function DataGrid<T extends object = DataGridRowData>(rawProps: DataGridP
 
     if (!searchTerms.length) return indexedData;
 
+    const searchColumns = columns.filter((column) => column.searchable !== false);
+
     return indexedData.filter(({ row }) => {
-      const rowSearchText = resizedColumns
-        .filter((column) => column.searchable !== false)
+      const searchText = searchColumns
         .map((column) => getDataGridValueText(getDataGridColumnValue(row, column, "search")))
         .join(" ")
         .toLowerCase();
 
-      return searchTerms.every((term) => rowSearchText.includes(term));
+      return searchTerms.every((term) => searchText.includes(term));
     });
-  }, [data, resizedColumns, search]);
+  }, [columns, data, search]);
 
   const sortedData = useMemo(() => {
     if (!hasSorting || !sort) return filteredData;
 
-    const column = resizedColumns.find(({ key }) => key === sort.key);
+    const column = columns.find(({ key }) => key === sort.key);
 
     if (!column || column.sortable === false) return filteredData;
 
-    return [...filteredData].sort((a, b) => {
-      const compared = compareDataGridValues(
-        getDataGridColumnValue(a.row, column, "sort"),
-        getDataGridColumnValue(b.row, column, "sort"),
-      );
+    return filteredData
+      .map((item) => ({ item, value: getDataGridColumnValue(item.row, column, "sort") }))
+      .sort((a, b) => {
+        const compared = compareDataGridValues(a.value, b.value);
 
-      return compared === 0 ? a.index - b.index : sort.direction === "asc" ? compared : -compared;
-    });
-  }, [filteredData, hasSorting, resizedColumns, sort]);
+        return compared === 0
+          ? a.item.index - b.item.index
+          : sort.direction === "asc"
+            ? compared
+            : -compared;
+      })
+      .map(({ item }) => item);
+  }, [columns, filteredData, hasSorting, sort]);
 
   const pageSize = Number.isSafeInteger(rowsPerPage) && rowsPerPage > 0 ? rowsPerPage : 15;
   const pageCount = hasPagination ? Math.ceil(sortedData.length / pageSize) : 1;
@@ -159,8 +163,8 @@ export function DataGrid<T extends object = DataGridRowData>(rawProps: DataGridP
 
   const handleSort = (column: DataGridColumn<T>) => {
     setSort((prev) => ({
-      key: column.key,
       direction: prev?.key === column.key && prev.direction === "asc" ? "desc" : "asc",
+      key: column.key,
     }));
   };
 
@@ -170,6 +174,7 @@ export function DataGrid<T extends object = DataGridRowData>(rawProps: DataGridP
     startClientX: number,
   ) => {
     if (!startWidth) return;
+
     setColumnResize({
       key: column.key,
       maxWidth: column.maxWidth,
@@ -226,7 +231,7 @@ export function DataGrid<T extends object = DataGridRowData>(rawProps: DataGridP
               alternatingColors={alternatingColors}
               className={className}
               columns={resizedColumns}
-              defaultTextPreset={defaultTextPreset}
+              defaultTextPreset={defaultTextPreset ?? textPreset}
               expandableContent={expandableContent}
               expandedRows={expandedRows}
               expandColumnWidth={expandColumnWidth}
@@ -251,7 +256,7 @@ export function DataGrid<T extends object = DataGridRowData>(rawProps: DataGridP
       )}
     </View>
   );
-}
+};
 
 interface DataGridColumnResize<T extends object> extends Pick<
   DataGridColumn<T>,

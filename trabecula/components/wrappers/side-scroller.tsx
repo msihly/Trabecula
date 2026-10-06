@@ -13,33 +13,38 @@ export const SideScroller = ({ children, className, innerClassName }: SideScroll
   const ref = useRef<HTMLDivElement>(null);
   const { width } = useElementResize(ref);
 
-  const [isLeftButtonVisible, setIsLeftButtonVisible] = useState(false);
-  const [isRightButtonVisible, setIsRightButtonVisible] = useState(false);
-  const [scrollPos, setScrollPos] = useState(0);
-
-  const { css, cx } = useClasses({ isLeftButtonVisible, isRightButtonVisible });
-
-  const getButtonVisibility = () => {
-    if (!ref.current) return [false, false];
-
-    const { clientWidth, scrollLeft, scrollWidth } = ref.current;
-
-    if (!(clientWidth < scrollWidth)) return [false, false];
-
-    return [scrollLeft > 0, clientWidth + scrollLeft < scrollWidth - 5];
-  };
+  const [buttonVisibility, setButtonVisibility] = useState({
+    isLeftButtonVisible: false,
+    isRightButtonVisible: false,
+  });
+  const { css, cx } = useClasses(buttonVisibility);
 
   const handleScroll = (direction: "left" | "right") => {
-    if (!ref.current) return false;
+    if (!ref.current) return;
 
     const scrollAmount = ((direction === "left" ? -1 : 1) * width) / 2;
 
     ref.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
   };
 
+  const updateButtonVisibility = () => {
+    const node = ref.current;
+    const hasOverflow = node && node.clientWidth < node.scrollWidth;
+    const isLeftButtonVisible = !!hasOverflow && node.scrollLeft > 0;
+    const isRightButtonVisible =
+      !!hasOverflow && node.clientWidth + node.scrollLeft < node.scrollWidth - 5;
+
+    setButtonVisibility((prev) =>
+      prev.isLeftButtonVisible === isLeftButtonVisible &&
+      prev.isRightButtonVisible === isRightButtonVisible
+        ? prev
+        : { isLeftButtonVisible, isRightButtonVisible },
+    );
+  };
+
   useEffect(() => {
     const node = ref.current;
-    const scrollListener = debounce(() => setScrollPos(node.scrollLeft), 50);
+    const scrollListener = debounce(updateButtonVisibility, 50);
 
     node.addEventListener("scroll", scrollListener);
 
@@ -50,11 +55,8 @@ export const SideScroller = ({ children, className, innerClassName }: SideScroll
   }, []);
 
   useEffect(() => {
-    const [left, right] = getButtonVisibility();
-
-    setIsLeftButtonVisible(left);
-    setIsRightButtonVisible(right);
-  }, [children, scrollPos, width]);
+    updateButtonVisibility();
+  }, [children, width]);
 
   return (
     <View className={cx(css.root, className)}>

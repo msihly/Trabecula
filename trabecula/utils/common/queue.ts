@@ -17,7 +17,7 @@ export class PromiseQueue {
   private concurrency: number;
   private delayRange?: [number, number];
   private promise: Promise<void> | null = null;
-  private queue: { cancel: () => void; run: () => Promise<void> }[] = [];
+  private queue = new Set<{ cancel: () => void; run: () => Promise<void> }>();
   private resolver: (() => void) | null = null;
   private runningCount = 0;
 
@@ -48,11 +48,11 @@ export class PromiseQueue {
           if (this.delayRange && !this.cancelled) await sleep(...this.delayRange);
 
           this.runningCount--;
-          this.next();
+          queueMicrotask(() => this.next());
         }
       };
 
-      this.queue.push({ cancel: () => reject(new CancelledError()), run: task });
+      this.queue.add({ cancel: () => reject(new CancelledError()), run: task });
       this.next();
     });
   }
@@ -62,16 +62,21 @@ export class PromiseQueue {
 
     this.cancelled = true;
 
-    while (this.queue.length) this.queue.shift()?.cancel();
+    for (const task of this.queue) task.cancel();
 
+    this.queue.clear();
     this.next();
   }
 
   private next() {
-    while (!this.cancelled && this.runningCount < this.concurrency && this.queue.length)
-      void this.queue.shift()?.run();
+    for (const task of this.queue) {
+      if (this.cancelled || this.runningCount >= this.concurrency) break;
 
-    if (!this.queue.length && this.runningCount === 0 && this.resolver) {
+      this.queue.delete(task);
+      void task.run();
+    }
+
+    if (!this.queue.size && this.runningCount === 0 && this.resolver) {
       this.resolver();
       this.promise = null;
       this.resolver = null;

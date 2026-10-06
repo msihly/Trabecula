@@ -586,7 +586,7 @@ interface ProgressCircleProps {
 }
 declare const ProgressCircle: react.ForwardRefExoticComponent<ProgressCircleProps & react.RefAttributes<HTMLDivElement>>;
 
-declare function DataGrid<T extends object = DataGridRowData>(rawProps: DataGridProps<T>): react_jsx_runtime.JSX.Element;
+declare const DataGrid: <T extends object = DataGridRowData>({ alternatingBgColor, alternatingColors, className, columns, data, defaultTextPreset, emptyColor, emptyJustify, emptyMessage, expandColumnWidth, expandableContent, getRowBgColor, hasPagination, hasResizableColumns, hasSearch, hasSorting, headerBorder, initialSort, isExpanded, isRowSelected, onRowClick, rowGap, rowsPerPage, selectedBgColor, selectedTextColor, spacing, textPreset, }: DataGridProps<T>) => react_jsx_runtime.JSX.Element;
 
 type DataGridRowData = Record<string, unknown>;
 type DataGridColumnKey<T extends object> = Extract<keyof T, string>;

@@ -37,26 +37,28 @@ export const useDeepMemo = <T>(value: T) => {
 };
 
 export const useElementResize = (ref: MutableRefObject<any>, condition?: any) => {
-  const [absPosition, setAbsPosition] = useState({ left: 0, top: 0 });
-  const [dimensions, setDimensions] = useState({ height: 0, width: 0 });
+  const [dimensions, setDimensions] = useState({ height: 0, left: 0, top: 0, width: 0 });
 
   useEffect(() => {
     const nodeRef = ref?.current;
 
-    const getDimensions = () => ({
-      height: nodeRef?.offsetHeight || 0,
-      width: nodeRef?.offsetWidth || 0,
-    });
-
-    const getPosition = () => {
-      const rect = nodeRef?.getBoundingClientRect?.();
-
-      return { left: rect?.left || 0, top: rect?.top || 0 };
-    };
-
     const handleResize = () => {
-      setDimensions(getDimensions());
-      setAbsPosition(getPosition());
+      const rect = nodeRef?.getBoundingClientRect?.();
+      const next = {
+        height: nodeRef?.offsetHeight || 0,
+        left: rect?.left || 0,
+        top: rect?.top || 0,
+        width: nodeRef?.offsetWidth || 0,
+      };
+
+      setDimensions((prev) =>
+        prev.height === next.height &&
+        prev.left === next.left &&
+        prev.top === next.top &&
+        prev.width === next.width
+          ? prev
+          : next,
+      );
     };
 
     const observer = new ResizeObserver(handleResize);
@@ -74,7 +76,7 @@ export const useElementResize = (ref: MutableRefObject<any>, condition?: any) =>
     };
   }, [ref, condition]);
 
-  return { ...dimensions, ...absPosition };
+  return dimensions;
 };
 
 export const useForceUpdate = () => {

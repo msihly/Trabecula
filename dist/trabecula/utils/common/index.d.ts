@@ -17,8 +17,8 @@ declare const bisectArrayChanges: <T>(oldArr: T[], newArr: T[]) => {
 declare const centeredSlice: <T>(arr: T[], indexToCenter: number, maxCount?: number) => T[];
 declare const chunkArray: <T>(arr: T[], size: number) => T[][];
 interface CountItemsResult<T> {
-    value: T;
     count: number;
+    value: T;
 }
 declare const countItems: <T>(arr: T[]) => CountItemsResult<T>[];
 declare const getArrayDiff: <T>(a: T[], b: T[]) => T[];

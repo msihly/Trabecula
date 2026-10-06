@@ -1,6 +1,8 @@
 import type { DataGridColumn, DataGridValue } from "trabecula/components";
 import { CSS } from "trabecula/utils/client";
 
+const valueCollator = new Intl.Collator(undefined, { numeric: true, sensitivity: "base" });
+
 export interface DataGridCellLayoutProps {
   flex?: CSS["flex"];
   maxWidth?: CSS["maxWidth"];
@@ -34,23 +36,25 @@ export const clampDataGridColumnWidth = (
 ) => {
   const minWidthPx = getDataGridPixelValue(minWidth) ?? 40;
   const maxWidthPx = getDataGridPixelValue(maxWidth);
+
   return Math.min(Math.max(width, minWidthPx), maxWidthPx ?? Number.MAX_SAFE_INTEGER);
 };
 
 export const compareDataGridValues = (a: DataGridValue, b: DataGridValue) => {
   if (a == null && b == null) return 0;
-  if (a == null) return 1;
-  if (b == null) return -1;
+  else if (a == null) return 1;
+  else if (b == null) return -1;
 
   if (a instanceof Date || b instanceof Date) {
     const aTime = getTime(a);
     const bTime = getTime(b);
+
     if (Number.isFinite(aTime) && Number.isFinite(bTime)) return aTime - bTime;
   }
 
   if (typeof a === "number" && typeof b === "number") return a - b;
-  if (typeof a === "boolean" && typeof b === "boolean") return Number(a) - Number(b);
-  return String(a).localeCompare(String(b), undefined, { numeric: true, sensitivity: "base" });
+  else if (typeof a === "boolean" && typeof b === "boolean") return Number(a) - Number(b);
+  else return valueCollator.compare(String(a), String(b));
 };
 
 export const getDataGridColumnValue = <T extends object>(

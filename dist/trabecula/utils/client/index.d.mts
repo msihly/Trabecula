@@ -15,9 +15,9 @@ import 'tss-react';
 declare const useDeepEffect: (cb: EffectCallback, deps: DependencyList) => void;
 declare const useDeepMemo: <T>(value: T) => T;
 declare const useElementResize: (ref: MutableRefObject<any>, condition?: any) => {
+    height: number;
     left: number;
     top: number;
-    height: number;
     width: number;
 };
 declare const useForceUpdate: () => () => void;

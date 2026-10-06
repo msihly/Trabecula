@@ -480,22 +480,21 @@ var deepMerge = import_es_toolkit.toMerged;
 
 // trabecula/utils/client/hooks.ts
 var useElementResize = (ref, condition) => {
-  const [absPosition, setAbsPosition] = (0, import_react2.useState)({ left: 0, top: 0 });
-  const [dimensions, setDimensions] = (0, import_react2.useState)({ height: 0, width: 0 });
+  const [dimensions, setDimensions] = (0, import_react2.useState)({ height: 0, left: 0, top: 0, width: 0 });
   (0, import_react2.useEffect)(() => {
     const nodeRef = ref == null ? void 0 : ref.current;
-    const getDimensions = () => ({
-      height: (nodeRef == null ? void 0 : nodeRef.offsetHeight) || 0,
-      width: (nodeRef == null ? void 0 : nodeRef.offsetWidth) || 0
-    });
-    const getPosition = () => {
+    const handleResize = () => {
       var _a;
       const rect = (_a = nodeRef == null ? void 0 : nodeRef.getBoundingClientRect) == null ? void 0 : _a.call(nodeRef);
-      return { left: (rect == null ? void 0 : rect.left) || 0, top: (rect == null ? void 0 : rect.top) || 0 };
-    };
-    const handleResize = () => {
-      setDimensions(getDimensions());
-      setAbsPosition(getPosition());
+      const next = {
+        height: (nodeRef == null ? void 0 : nodeRef.offsetHeight) || 0,
+        left: (rect == null ? void 0 : rect.left) || 0,
+        top: (rect == null ? void 0 : rect.top) || 0,
+        width: (nodeRef == null ? void 0 : nodeRef.offsetWidth) || 0
+      };
+      setDimensions(
+        (prev) => prev.height === next.height && prev.left === next.left && prev.top === next.top && prev.width === next.width ? prev : next
+      );
     };
     const observer2 = new ResizeObserver(handleResize);
     if (nodeRef) {
@@ -508,7 +507,7 @@ var useElementResize = (ref, condition) => {
       window.removeEventListener("resize", handleResize);
     };
   }, [ref, condition]);
-  return __spreadValues(__spreadValues({}, dimensions), absPosition);
+  return dimensions;
 };
 
 // trabecula/utils/client/pagination.ts
@@ -8261,37 +8260,35 @@ var useClasses23 = makeClasses((props) => ({
 // trabecula/components/table/data-grid.tsx
 var import_react21 = require("react");
 var import_jsx_runtime40 = require("react/jsx-runtime");
-function DataGrid(rawProps) {
-  const {
-    alternatingBgColor = colors.foregroundCard,
-    alternatingColors = true,
-    className,
-    columns,
-    data,
-    defaultTextPreset: rawDefaultTextPreset,
-    emptyColor = colors.custom.lightBlue,
-    emptyJustify = "center",
-    emptyMessage = "No data available",
-    expandColumnWidth = "5rem",
-    expandableContent,
-    getRowBgColor,
-    hasPagination = false,
-    hasResizableColumns = false,
-    hasSearch = false,
-    hasSorting = false,
-    headerBorder = "1px solid #000",
-    initialSort,
-    isExpanded,
-    isRowSelected,
-    onRowClick,
-    rowGap = "0.5rem",
-    rowsPerPage = 15,
-    selectedBgColor = colors.custom.blue,
-    selectedTextColor = colors.custom.white,
-    spacing = "0.3rem",
-    textPreset = "default"
-  } = rawProps;
-  const defaultTextPreset = rawDefaultTextPreset != null ? rawDefaultTextPreset : textPreset;
+var DataGrid = ({
+  alternatingBgColor = colors.foregroundCard,
+  alternatingColors = true,
+  className,
+  columns,
+  data,
+  defaultTextPreset,
+  emptyColor = colors.custom.lightBlue,
+  emptyJustify = "center",
+  emptyMessage = "No data available",
+  expandColumnWidth = "5rem",
+  expandableContent,
+  getRowBgColor,
+  hasPagination = false,
+  hasResizableColumns = false,
+  hasSearch = false,
+  hasSorting = false,
+  headerBorder = "1px solid #000",
+  initialSort,
+  isExpanded,
+  isRowSelected,
+  onRowClick,
+  rowGap = "0.5rem",
+  rowsPerPage = 15,
+  selectedBgColor = colors.custom.blue,
+  selectedTextColor = colors.custom.white,
+  spacing = "0.3rem",
+  textPreset = "default"
+}) => {
   const [columnResize, setColumnResize] = (0, import_react21.useState)(null);
   const [columnWidths, setColumnWidths] = (0, import_react21.useState)(
     {}
@@ -8316,7 +8313,9 @@ function DataGrid(rawProps) {
         columnResize.minWidth,
         columnResize.maxWidth
       );
-      setColumnWidths((prev) => __spreadProps(__spreadValues({}, prev), { [columnResize.key]: width }));
+      setColumnWidths(
+        (prev) => prev[columnResize.key] === width ? prev : __spreadProps(__spreadValues({}, prev), { [columnResize.key]: width })
+      );
     };
     const handlePointerUp = () => setColumnResize(null);
     document.body.style.cursor = "col-resize";
@@ -8344,23 +8343,21 @@ function DataGrid(rawProps) {
     const indexedData = data.map((row, index) => ({ index, row }));
     const searchTerms = search.trim().toLowerCase().split(/\s+/).filter(Boolean);
     if (!searchTerms.length) return indexedData;
+    const searchColumns = columns.filter((column) => column.searchable !== false);
     return indexedData.filter(({ row }) => {
-      const rowSearchText = resizedColumns.filter((column) => column.searchable !== false).map((column) => getDataGridValueText(getDataGridColumnValue(row, column, "search"))).join(" ").toLowerCase();
-      return searchTerms.every((term) => rowSearchText.includes(term));
+      const searchText = searchColumns.map((column) => getDataGridValueText(getDataGridColumnValue(row, column, "search"))).join(" ").toLowerCase();
+      return searchTerms.every((term) => searchText.includes(term));
     });
-  }, [data, resizedColumns, search]);
+  }, [columns, data, search]);
   const sortedData = (0, import_react21.useMemo)(() => {
     if (!hasSorting || !sort) return filteredData;
-    const column = resizedColumns.find(({ key }) => key === sort.key);
+    const column = columns.find(({ key }) => key === sort.key);
     if (!column || column.sortable === false) return filteredData;
-    return [...filteredData].sort((a, b) => {
-      const compared = compareDataGridValues(
-        getDataGridColumnValue(a.row, column, "sort"),
-        getDataGridColumnValue(b.row, column, "sort")
-      );
-      return compared === 0 ? a.index - b.index : sort.direction === "asc" ? compared : -compared;
-    });
-  }, [filteredData, hasSorting, resizedColumns, sort]);
+    return filteredData.map((item) => ({ item, value: getDataGridColumnValue(item.row, column, "sort") })).sort((a, b) => {
+      const compared = compareDataGridValues(a.value, b.value);
+      return compared === 0 ? a.item.index - b.item.index : sort.direction === "asc" ? compared : -compared;
+    }).map(({ item }) => item);
+  }, [columns, filteredData, hasSorting, sort]);
   const pageSize = Number.isSafeInteger(rowsPerPage) && rowsPerPage > 0 ? rowsPerPage : 15;
   const pageCount = hasPagination ? Math.ceil(sortedData.length / pageSize) : 1;
   const currentPage = Math.min(page, Math.max(pageCount, 1));
@@ -8370,8 +8367,8 @@ function DataGrid(rawProps) {
   }, [pageCount]);
   const handleSort = (column) => {
     setSort((prev) => ({
-      key: column.key,
-      direction: (prev == null ? void 0 : prev.key) === column.key && prev.direction === "asc" ? "desc" : "asc"
+      direction: (prev == null ? void 0 : prev.key) === column.key && prev.direction === "asc" ? "desc" : "asc",
+      key: column.key
     }));
   };
   const handleColumnResizeStart = (column, startWidth, startClientX) => {
@@ -8412,7 +8409,7 @@ function DataGrid(rawProps) {
         alternatingColors,
         className,
         columns: resizedColumns,
-        defaultTextPreset,
+        defaultTextPreset: defaultTextPreset != null ? defaultTextPreset : textPreset,
         expandableContent,
         expandedRows,
         expandColumnWidth,
@@ -8432,9 +8429,10 @@ function DataGrid(rawProps) {
     )) }),
     !hasPagination ? null : /* @__PURE__ */ (0, import_jsx_runtime40.jsx)(Pagination, { inline: true, count: pageCount, onChange: setPage, page: currentPage })
   ] });
-}
+};
 
 // trabecula/components/table/data-grid.utils.ts
+var valueCollator = new Intl.Collator(void 0, { numeric: true, sensitivity: "base" });
 var getDataGridCellLayout = (width, minWidth, maxWidth) => {
   if (!width || width === "1fr") return { flex: 1, maxWidth, minWidth };
   if (typeof width === "string" && width.endsWith("fr")) {
@@ -8456,16 +8454,16 @@ var clampDataGridColumnWidth = (width, minWidth, maxWidth) => {
 };
 var compareDataGridValues = (a, b) => {
   if (a == null && b == null) return 0;
-  if (a == null) return 1;
-  if (b == null) return -1;
+  else if (a == null) return 1;
+  else if (b == null) return -1;
   if (a instanceof Date || b instanceof Date) {
     const aTime = getTime(a);
     const bTime = getTime(b);
     if (Number.isFinite(aTime) && Number.isFinite(bTime)) return aTime - bTime;
   }
   if (typeof a === "number" && typeof b === "number") return a - b;
-  if (typeof a === "boolean" && typeof b === "boolean") return Number(a) - Number(b);
-  return String(a).localeCompare(String(b), void 0, { numeric: true, sensitivity: "base" });
+  else if (typeof a === "boolean" && typeof b === "boolean") return Number(a) - Number(b);
+  else return valueCollator.compare(String(a), String(b));
 };
 var getDataGridColumnValue = (row, column, mode) => {
   if (mode === "search" && column.searchValue) return column.searchValue(row);
@@ -10760,24 +10758,28 @@ var import_jsx_runtime73 = require("react/jsx-runtime");
 var SideScroller = ({ children, className, innerClassName }) => {
   const ref = (0, import_react30.useRef)(null);
   const { width } = useElementResize(ref);
-  const [isLeftButtonVisible, setIsLeftButtonVisible] = (0, import_react30.useState)(false);
-  const [isRightButtonVisible, setIsRightButtonVisible] = (0, import_react30.useState)(false);
-  const [scrollPos, setScrollPos] = (0, import_react30.useState)(0);
-  const { css, cx } = useClasses45({ isLeftButtonVisible, isRightButtonVisible });
-  const getButtonVisibility = () => {
-    if (!ref.current) return [false, false];
-    const { clientWidth, scrollLeft, scrollWidth } = ref.current;
-    if (!(clientWidth < scrollWidth)) return [false, false];
-    return [scrollLeft > 0, clientWidth + scrollLeft < scrollWidth - 5];
-  };
+  const [buttonVisibility, setButtonVisibility] = (0, import_react30.useState)({
+    isLeftButtonVisible: false,
+    isRightButtonVisible: false
+  });
+  const { css, cx } = useClasses45(buttonVisibility);
   const handleScroll = (direction) => {
-    if (!ref.current) return false;
+    if (!ref.current) return;
     const scrollAmount = (direction === "left" ? -1 : 1) * width / 2;
     ref.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
   };
+  const updateButtonVisibility = () => {
+    const node = ref.current;
+    const hasOverflow = node && node.clientWidth < node.scrollWidth;
+    const isLeftButtonVisible = !!hasOverflow && node.scrollLeft > 0;
+    const isRightButtonVisible = !!hasOverflow && node.clientWidth + node.scrollLeft < node.scrollWidth - 5;
+    setButtonVisibility(
+      (prev) => prev.isLeftButtonVisible === isLeftButtonVisible && prev.isRightButtonVisible === isRightButtonVisible ? prev : { isLeftButtonVisible, isRightButtonVisible }
+    );
+  };
   (0, import_react30.useEffect)(() => {
     const node = ref.current;
-    const scrollListener = debounce(() => setScrollPos(node.scrollLeft), 50);
+    const scrollListener = debounce(updateButtonVisibility, 50);
     node.addEventListener("scroll", scrollListener);
     return () => {
       node.removeEventListener("scroll", scrollListener);
@@ -10785,10 +10787,8 @@ var SideScroller = ({ children, className, innerClassName }) => {
     };
   }, []);
   (0, import_react30.useEffect)(() => {
-    const [left, right] = getButtonVisibility();
-    setIsLeftButtonVisible(left);
-    setIsRightButtonVisible(right);
-  }, [children, scrollPos, width]);
+    updateButtonVisibility();
+  }, [children, width]);
   return /* @__PURE__ */ (0, import_jsx_runtime73.jsxs)(View, { className: cx(css.root, className), children: [
     /* @__PURE__ */ (0, import_jsx_runtime73.jsx)(
       IconButton,

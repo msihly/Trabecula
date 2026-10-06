@@ -12,7 +12,7 @@ import {
   makePadding,
   toast,
   useElementResize
-} from "../chunk-BE3UTLYC.mjs";
+} from "../chunk-OY62GTMO.mjs";
 import {
   DENSE_FORM_ROW_HEIGHT,
   FORM_ROW_HEIGHT,
@@ -22,7 +22,7 @@ import {
   dayjs,
   debounce,
   deepMerge
-} from "../chunk-2UO6TGNC.mjs";
+} from "../chunk-C5S6AXSJ.mjs";
 import {
   __async,
   __objRest,
@@ -2842,37 +2842,35 @@ var useClasses22 = makeClasses((props) => ({
 // trabecula/components/table/data-grid.tsx
 import { useEffect as useEffect6, useMemo, useState as useState11 } from "react";
 import { jsx as jsx39, jsxs as jsxs22 } from "react/jsx-runtime";
-function DataGrid(rawProps) {
-  const {
-    alternatingBgColor = colors.foregroundCard,
-    alternatingColors = true,
-    className,
-    columns,
-    data,
-    defaultTextPreset: rawDefaultTextPreset,
-    emptyColor = colors.custom.lightBlue,
-    emptyJustify = "center",
-    emptyMessage = "No data available",
-    expandColumnWidth = "5rem",
-    expandableContent,
-    getRowBgColor,
-    hasPagination = false,
-    hasResizableColumns = false,
-    hasSearch = false,
-    hasSorting = false,
-    headerBorder = "1px solid #000",
-    initialSort,
-    isExpanded,
-    isRowSelected,
-    onRowClick,
-    rowGap = "0.5rem",
-    rowsPerPage = 15,
-    selectedBgColor = colors.custom.blue,
-    selectedTextColor = colors.custom.white,
-    spacing = "0.3rem",
-    textPreset = "default"
-  } = rawProps;
-  const defaultTextPreset = rawDefaultTextPreset != null ? rawDefaultTextPreset : textPreset;
+var DataGrid = ({
+  alternatingBgColor = colors.foregroundCard,
+  alternatingColors = true,
+  className,
+  columns,
+  data,
+  defaultTextPreset,
+  emptyColor = colors.custom.lightBlue,
+  emptyJustify = "center",
+  emptyMessage = "No data available",
+  expandColumnWidth = "5rem",
+  expandableContent,
+  getRowBgColor,
+  hasPagination = false,
+  hasResizableColumns = false,
+  hasSearch = false,
+  hasSorting = false,
+  headerBorder = "1px solid #000",
+  initialSort,
+  isExpanded,
+  isRowSelected,
+  onRowClick,
+  rowGap = "0.5rem",
+  rowsPerPage = 15,
+  selectedBgColor = colors.custom.blue,
+  selectedTextColor = colors.custom.white,
+  spacing = "0.3rem",
+  textPreset = "default"
+}) => {
   const [columnResize, setColumnResize] = useState11(null);
   const [columnWidths, setColumnWidths] = useState11(
     {}
@@ -2897,7 +2895,9 @@ function DataGrid(rawProps) {
         columnResize.minWidth,
         columnResize.maxWidth
       );
-      setColumnWidths((prev) => __spreadProps(__spreadValues({}, prev), { [columnResize.key]: width }));
+      setColumnWidths(
+        (prev) => prev[columnResize.key] === width ? prev : __spreadProps(__spreadValues({}, prev), { [columnResize.key]: width })
+      );
     };
     const handlePointerUp = () => setColumnResize(null);
     document.body.style.cursor = "col-resize";
@@ -2925,23 +2925,21 @@ function DataGrid(rawProps) {
     const indexedData = data.map((row, index) => ({ index, row }));
     const searchTerms = search.trim().toLowerCase().split(/\s+/).filter(Boolean);
     if (!searchTerms.length) return indexedData;
+    const searchColumns = columns.filter((column) => column.searchable !== false);
     return indexedData.filter(({ row }) => {
-      const rowSearchText = resizedColumns.filter((column) => column.searchable !== false).map((column) => getDataGridValueText(getDataGridColumnValue(row, column, "search"))).join(" ").toLowerCase();
-      return searchTerms.every((term) => rowSearchText.includes(term));
+      const searchText = searchColumns.map((column) => getDataGridValueText(getDataGridColumnValue(row, column, "search"))).join(" ").toLowerCase();
+      return searchTerms.every((term) => searchText.includes(term));
     });
-  }, [data, resizedColumns, search]);
+  }, [columns, data, search]);
   const sortedData = useMemo(() => {
     if (!hasSorting || !sort) return filteredData;
-    const column = resizedColumns.find(({ key }) => key === sort.key);
+    const column = columns.find(({ key }) => key === sort.key);
     if (!column || column.sortable === false) return filteredData;
-    return [...filteredData].sort((a, b) => {
-      const compared = compareDataGridValues(
-        getDataGridColumnValue(a.row, column, "sort"),
-        getDataGridColumnValue(b.row, column, "sort")
-      );
-      return compared === 0 ? a.index - b.index : sort.direction === "asc" ? compared : -compared;
-    });
-  }, [filteredData, hasSorting, resizedColumns, sort]);
+    return filteredData.map((item) => ({ item, value: getDataGridColumnValue(item.row, column, "sort") })).sort((a, b) => {
+      const compared = compareDataGridValues(a.value, b.value);
+      return compared === 0 ? a.item.index - b.item.index : sort.direction === "asc" ? compared : -compared;
+    }).map(({ item }) => item);
+  }, [columns, filteredData, hasSorting, sort]);
   const pageSize = Number.isSafeInteger(rowsPerPage) && rowsPerPage > 0 ? rowsPerPage : 15;
   const pageCount = hasPagination ? Math.ceil(sortedData.length / pageSize) : 1;
   const currentPage = Math.min(page, Math.max(pageCount, 1));
@@ -2951,8 +2949,8 @@ function DataGrid(rawProps) {
   }, [pageCount]);
   const handleSort = (column) => {
     setSort((prev) => ({
-      key: column.key,
-      direction: (prev == null ? void 0 : prev.key) === column.key && prev.direction === "asc" ? "desc" : "asc"
+      direction: (prev == null ? void 0 : prev.key) === column.key && prev.direction === "asc" ? "desc" : "asc",
+      key: column.key
     }));
   };
   const handleColumnResizeStart = (column, startWidth, startClientX) => {
@@ -2993,7 +2991,7 @@ function DataGrid(rawProps) {
         alternatingColors,
         className,
         columns: resizedColumns,
-        defaultTextPreset,
+        defaultTextPreset: defaultTextPreset != null ? defaultTextPreset : textPreset,
         expandableContent,
         expandedRows,
         expandColumnWidth,
@@ -3013,9 +3011,10 @@ function DataGrid(rawProps) {
     )) }),
     !hasPagination ? null : /* @__PURE__ */ jsx39(Pagination, { inline: true, count: pageCount, onChange: setPage, page: currentPage })
   ] });
-}
+};
 
 // trabecula/components/table/data-grid.utils.ts
+var valueCollator = new Intl.Collator(void 0, { numeric: true, sensitivity: "base" });
 var getDataGridCellLayout = (width, minWidth, maxWidth) => {
   if (!width || width === "1fr") return { flex: 1, maxWidth, minWidth };
   if (typeof width === "string" && width.endsWith("fr")) {
@@ -3037,16 +3036,16 @@ var clampDataGridColumnWidth = (width, minWidth, maxWidth) => {
 };
 var compareDataGridValues = (a, b) => {
   if (a == null && b == null) return 0;
-  if (a == null) return 1;
-  if (b == null) return -1;
+  else if (a == null) return 1;
+  else if (b == null) return -1;
   if (a instanceof Date || b instanceof Date) {
     const aTime = getTime(a);
     const bTime = getTime(b);
     if (Number.isFinite(aTime) && Number.isFinite(bTime)) return aTime - bTime;
   }
   if (typeof a === "number" && typeof b === "number") return a - b;
-  if (typeof a === "boolean" && typeof b === "boolean") return Number(a) - Number(b);
-  return String(a).localeCompare(String(b), void 0, { numeric: true, sensitivity: "base" });
+  else if (typeof a === "boolean" && typeof b === "boolean") return Number(a) - Number(b);
+  else return valueCollator.compare(String(a), String(b));
 };
 var getDataGridColumnValue = (row, column, mode) => {
   if (mode === "search" && column.searchValue) return column.searchValue(row);
@@ -5358,24 +5357,28 @@ import { jsx as jsx72, jsxs as jsxs37 } from "react/jsx-runtime";
 var SideScroller = ({ children, className, innerClassName }) => {
   const ref = useRef4(null);
   const { width } = useElementResize(ref);
-  const [isLeftButtonVisible, setIsLeftButtonVisible] = useState19(false);
-  const [isRightButtonVisible, setIsRightButtonVisible] = useState19(false);
-  const [scrollPos, setScrollPos] = useState19(0);
-  const { css, cx } = useClasses44({ isLeftButtonVisible, isRightButtonVisible });
-  const getButtonVisibility = () => {
-    if (!ref.current) return [false, false];
-    const { clientWidth, scrollLeft, scrollWidth } = ref.current;
-    if (!(clientWidth < scrollWidth)) return [false, false];
-    return [scrollLeft > 0, clientWidth + scrollLeft < scrollWidth - 5];
-  };
+  const [buttonVisibility, setButtonVisibility] = useState19({
+    isLeftButtonVisible: false,
+    isRightButtonVisible: false
+  });
+  const { css, cx } = useClasses44(buttonVisibility);
   const handleScroll = (direction) => {
-    if (!ref.current) return false;
+    if (!ref.current) return;
     const scrollAmount = (direction === "left" ? -1 : 1) * width / 2;
     ref.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
   };
+  const updateButtonVisibility = () => {
+    const node = ref.current;
+    const hasOverflow = node && node.clientWidth < node.scrollWidth;
+    const isLeftButtonVisible = !!hasOverflow && node.scrollLeft > 0;
+    const isRightButtonVisible = !!hasOverflow && node.clientWidth + node.scrollLeft < node.scrollWidth - 5;
+    setButtonVisibility(
+      (prev) => prev.isLeftButtonVisible === isLeftButtonVisible && prev.isRightButtonVisible === isRightButtonVisible ? prev : { isLeftButtonVisible, isRightButtonVisible }
+    );
+  };
   useEffect9(() => {
     const node = ref.current;
-    const scrollListener = debounce(() => setScrollPos(node.scrollLeft), 50);
+    const scrollListener = debounce(updateButtonVisibility, 50);
     node.addEventListener("scroll", scrollListener);
     return () => {
       node.removeEventListener("scroll", scrollListener);
@@ -5383,10 +5386,8 @@ var SideScroller = ({ children, className, innerClassName }) => {
     };
   }, []);
   useEffect9(() => {
-    const [left, right] = getButtonVisibility();
-    setIsLeftButtonVisible(left);
-    setIsRightButtonVisible(right);
-  }, [children, scrollPos, width]);
+    updateButtonVisibility();
+  }, [children, width]);
   return /* @__PURE__ */ jsxs37(View, { className: cx(css.root, className), children: [
     /* @__PURE__ */ jsx72(
       IconButton,

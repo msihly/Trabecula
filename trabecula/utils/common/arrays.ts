@@ -1,16 +1,24 @@
-export const arrayIntersect = <T>(...arrays: T[][]): T[] =>
-  [...arrays].reduce((acc, cur) => acc.filter((e) => cur.includes(e)));
+export const arrayIntersect = <T>(...arrays: T[][]): T[] => {
+  const [first = [], ...rest] = arrays;
+
+  return rest.reduce((acc, cur) => {
+    const values = new Set(cur);
+
+    return acc.filter((value) => values.has(value));
+  }, first);
+};
 
 export const bisectArrayChanges = <T>(oldArr: T[], newArr: T[]) => {
   if (!oldArr || !newArr) return { added: [], removed: [] };
-  else
-    return getArrayDiff(oldArr, newArr).reduce(
-      (acc, cur) => {
-        acc[newArr.includes(cur) ? "added" : "removed"].push(cur);
-        return acc;
-      },
-      { added: [], removed: [] } as { added: T[]; removed: T[] },
-    );
+  else {
+    const newValues = new Set(newArr);
+    const oldValues = new Set(oldArr);
+
+    return {
+      added: newArr.filter((value) => !oldValues.has(value)),
+      removed: oldArr.filter((value) => !newValues.has(value)),
+    };
+  }
 };
 
 export const centeredSlice = <T>(arr: T[], indexToCenter: number, maxCount?: number): T[] => {
@@ -42,25 +50,35 @@ export const chunkArray = <T>(arr: T[], size: number): T[][] =>
   [...Array(Math.ceil(arr.length / size))].map((_, i) => arr.slice(i * size, i * size + size));
 
 interface CountItemsResult<T> {
-  value: T;
   count: number;
+  value: T;
 }
 
 export const countItems = <T>(arr: T[]): CountItemsResult<T>[] => {
-  const map = arr.reduce((acc: CountItemsResult<T>[], cur: CountItemsResult<T>["value"]) => {
-    const group = acc.find((e) => e.value === cur);
-    if (!group) acc.push({ value: cur, count: 1 });
-    else group.count += 1;
-    return acc;
-  }, []);
+  const counts = new Map<T, CountItemsResult<T>>();
+  const groups: CountItemsResult<T>[] = [];
 
-  return sortArray(map, "count", true, true);
+  arr.forEach((value) => {
+    const group = counts.get(value);
+
+    if (group) group.count++;
+    else {
+      const next = { count: 1, value };
+
+      groups.push(next);
+
+      if (!Number.isNaN(value)) counts.set(value, next);
+    }
+  });
+
+  return sortArray(groups, "count", true, true);
 };
 
-export const getArrayDiff = <T>(a: T[], b: T[]): T[] => [
-  ...a.filter((e) => !b.includes(e)),
-  ...b.filter((e) => !a.includes(e)),
-];
+export const getArrayDiff = <T>(a: T[], b: T[]): T[] => {
+  const { added, removed } = bisectArrayChanges(a, b);
+
+  return [...removed, ...added];
+};
 
 export const objectToFloat32Array = (obj: object) => new Float32Array(Object.values(obj));
 
@@ -96,17 +114,18 @@ export const sumArray = <T>(arr: T[], fn: (num: T) => number) =>
   arr.reduce((acc, cur) => (acc += fn(cur)), 0);
 
 export const uniqueArrayFilter = <T>(...arrays: T[][]): T[] => {
-  const all = [].concat(...arrays);
-  const nonUnique = all.filter(
-    (
-      (set) => (value) =>
-        set.has(value) || !set.add(value)
-    )(new Set()),
-  );
+  const all = arrays.flat();
+  const duplicates = new Set<T>();
+  const seen = new Set<T>();
 
-  return all.filter((e) => !nonUnique.includes(e));
+  for (const value of all) {
+    if (seen.has(value)) duplicates.add(value);
+    else seen.add(value);
+  }
+
+  return all.filter((value) => !duplicates.has(value));
 };
 
 export const uniqueArrayMerge = <T>(oldArray: T[], newArrays: T[]): T[] => [
-  ...new Set([...new Set(oldArray), ...[].concat(...newArrays)]),
+  ...new Set([...oldArray, ...[].concat(...newArrays)]),
 ];

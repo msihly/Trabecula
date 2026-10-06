@@ -427,22 +427,21 @@ var useDeepMemo = (value) => {
   return (0, import_react.useMemo)(() => valueRef.current, [depRef.current]);
 };
 var useElementResize = (ref, condition) => {
-  const [absPosition, setAbsPosition] = (0, import_react.useState)({ left: 0, top: 0 });
-  const [dimensions, setDimensions] = (0, import_react.useState)({ height: 0, width: 0 });
+  const [dimensions, setDimensions] = (0, import_react.useState)({ height: 0, left: 0, top: 0, width: 0 });
   (0, import_react.useEffect)(() => {
     const nodeRef = ref == null ? void 0 : ref.current;
-    const getDimensions = () => ({
-      height: (nodeRef == null ? void 0 : nodeRef.offsetHeight) || 0,
-      width: (nodeRef == null ? void 0 : nodeRef.offsetWidth) || 0
-    });
-    const getPosition = () => {
+    const handleResize = () => {
       var _a;
       const rect = (_a = nodeRef == null ? void 0 : nodeRef.getBoundingClientRect) == null ? void 0 : _a.call(nodeRef);
-      return { left: (rect == null ? void 0 : rect.left) || 0, top: (rect == null ? void 0 : rect.top) || 0 };
-    };
-    const handleResize = () => {
-      setDimensions(getDimensions());
-      setAbsPosition(getPosition());
+      const next = {
+        height: (nodeRef == null ? void 0 : nodeRef.offsetHeight) || 0,
+        left: (rect == null ? void 0 : rect.left) || 0,
+        top: (rect == null ? void 0 : rect.top) || 0,
+        width: (nodeRef == null ? void 0 : nodeRef.offsetWidth) || 0
+      };
+      setDimensions(
+        (prev) => prev.height === next.height && prev.left === next.left && prev.top === next.top && prev.width === next.width ? prev : next
+      );
     };
     const observer = new ResizeObserver(handleResize);
     if (nodeRef) {
@@ -455,7 +454,7 @@ var useElementResize = (ref, condition) => {
       window.removeEventListener("resize", handleResize);
     };
   }, [ref, condition]);
-  return __spreadValues(__spreadValues({}, dimensions), absPosition);
+  return dimensions;
 };
 var useForceUpdate = () => {
   const [, setTick] = (0, import_react.useState)(0);
