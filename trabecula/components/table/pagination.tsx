@@ -47,30 +47,30 @@ export const Pagination = Comp(
     const handleChange = (_, page: number) => onChange(page);
 
     const handleJump = () => {
-      if (hasError) return;
-      setIsJumpModalOpen(false);
-      onChange(jumpPage);
+      if (!hasError) {
+        setIsJumpModalOpen(false);
+        onChange(jumpPage);
+      }
     };
 
     const handleJumpModalOpen = () => {
-      const page = props.page ?? null;
-      setJumpPage(page);
+      setJumpPage(props.page ?? null);
       setIsJumpModalOpen(true);
     };
 
     const handleLastPageClick = (event: React.MouseEvent, item: PaginationRenderItemParams) => {
-      if (onFullLoad) (event.preventDefault(), onFullLoad());
-      else item.onClick?.(event);
+      if (onFullLoad) {
+        event.preventDefault();
+        onFullLoad();
+      } else item.onClick?.(event);
     };
 
     return (
       <View
         {...viewProps}
         className={cx(css.root, viewProps?.className)}
-        style={{
-          ...(inline ? { flex: "0 0 auto", position: "relative" } : {}),
-          ...viewProps.style,
-        }}
+        flex={inline ? "0 0 auto" : viewProps.flex}
+        position={inline ? "relative" : viewProps.position}
       >
         <View position="relative" overflow="hidden">
           <LoadingOverlay isLoading={isLoading} />
@@ -84,7 +84,7 @@ export const Pagination = Comp(
             count={count}
             className={cx(css.pagination, className)}
             renderItem={(item) => {
-              const isEllipsis = ["start-ellipsis", "end-ellipsis"].includes(item.type);
+              const isEllipsis = ["end-ellipsis", "start-ellipsis"].includes(item.type);
 
               return (
                 <PaginationItem

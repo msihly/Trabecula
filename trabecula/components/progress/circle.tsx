@@ -8,15 +8,19 @@ export interface ProgressCircleProps {
   bgColor?: CssColor;
   children?: ReactNode | ReactNode[];
   color?: CssColor;
-  percent: number;
+  percent?: number;
   size?: number | string;
+  variant?: "determinate" | "indeterminate";
 }
 
 export const ProgressCircle = Comp((props: ProgressCircleProps) => {
   const color = props.color || colors.custom.white;
 
   const { css } = useClasses({
-    bgColor: props.bgColor || (Color(color).fade(0.5).hex() as CssColor),
+    bgColor:
+      props.variant === "indeterminate"
+        ? undefined
+        : props.bgColor || (Color(color).fade(0.5).string() as CssColor),
     color,
   });
 
@@ -27,20 +31,24 @@ export const ProgressCircle = Comp((props: ProgressCircleProps) => {
       </View>
 
       <CircularProgress
+        color="inherit"
         value={props.percent || 0}
-        variant="determinate"
+        variant={props.variant ?? "determinate"}
         size={props.size}
         className={css.circle}
       />
 
-      <View column position="absolute">
-        <CircularProgress
-          value={100}
-          variant="determinate"
-          size={props.size}
-          className={css.bgCircle}
-        />
-      </View>
+      {props.variant !== "indeterminate" && (
+        <View column position="absolute">
+          <CircularProgress
+            color="inherit"
+            value={100}
+            variant="determinate"
+            size={props.size}
+            className={css.bgCircle}
+          />
+        </View>
+      )}
     </View>
   );
 });

@@ -255,12 +255,13 @@ var round = (num, decimals = 2) => {
 var import_es_toolkit = require("es-toolkit");
 var import_compat = require("es-toolkit/compat");
 var handleErrors = (fn) => __async(null, null, function* () {
+  var _a;
   try {
-    return { success: true, data: yield fn() };
+    return { data: yield fn(), success: true };
   } catch (err) {
-    const errorStr = err instanceof Error ? err.message : String(err);
+    const errorStr = (_a = err == null ? void 0 : err.message) != null ? _a : String(err);
     console.error(errorStr);
-    return { success: false, error: errorStr };
+    return { error: errorStr, success: false };
   }
 });
 
@@ -272,7 +273,7 @@ var createTreeNode = (dirPath, tree) => {
   const dirNames = import_path.default.normalize(dirPath).split(import_path.default.sep);
   const [rootDirName, ...remainingDirNames] = dirNames;
   const treeNode = tree.find((t) => t.name === rootDirName);
-  if (!treeNode) tree.push({ name: rootDirName, children: [] });
+  if (!treeNode) tree.push({ children: [], name: rootDirName });
   if (remainingDirNames.length > 0)
     createTreeNode(import_path.default.join(...remainingDirNames), (treeNode != null ? treeNode : tree[tree.length - 1]).children);
 };
@@ -356,7 +357,7 @@ var setLogsPath = (filePath) => __async(null, null, function* () {
 var stringify = (args) => {
   try {
     if (Array.isArray(args)) return args.map((arg) => JSON.stringify(arg, null, 2)).join(" ");
-    return JSON.stringify(args, null, 2);
+    else return JSON.stringify(args, null, 2);
   } catch (e) {
     return String(args);
   }

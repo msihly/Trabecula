@@ -14,6 +14,7 @@ export const DisabledOverlay = ({
   zIndex = 2,
 }: DisabledOverlayProps) => {
   const { css } = useClasses({ isDisabled, zIndex });
+
   return (
     <>
       {children}

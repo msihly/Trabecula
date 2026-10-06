@@ -480,12 +480,13 @@ var debounce = _debounce;
 var deepClone = _cloneDeep;
 var deepMerge = _toMerged;
 var handleErrors = (fn) => __async(null, null, function* () {
+  var _a;
   try {
-    return { success: true, data: yield fn() };
+    return { data: yield fn(), success: true };
   } catch (err) {
-    const errorStr = err instanceof Error ? err.message : String(err);
+    const errorStr = (_a = err == null ? void 0 : err.message) != null ? _a : String(err);
     console.error(errorStr);
-    return { success: false, error: errorStr };
+    return { error: errorStr, success: false };
   }
 });
 var isDeepEqual = _isEqual;
@@ -564,7 +565,7 @@ var PromiseQueue = class {
     for (const task of this.queue) {
       if (this.cancelled || this.runningCount >= this.concurrency) break;
       this.queue.delete(task);
-      void task.run();
+      task.run();
     }
     if (!this.queue.size && this.runningCount === 0 && this.resolver) {
       this.resolver();
@@ -671,4 +672,4 @@ export {
   applySelectionChanges,
   getSelectionRange
 };
-//# sourceMappingURL=chunk-C5S6AXSJ.mjs.map
+//# sourceMappingURL=chunk-SSGU2HWC.mjs.map

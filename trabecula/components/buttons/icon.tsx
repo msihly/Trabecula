@@ -55,6 +55,7 @@ export const IconButton = ({
         className={cx(css.root, className)}
       >
         {name && <Icon {...iconProps} color={color ?? iconProps.color} name={name} />}
+
         {children}
       </MuiIconButton>
     </TooltipWrapper>

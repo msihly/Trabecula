@@ -22,9 +22,9 @@ export interface IconLayer {
 export interface IconProps extends Omit<MuiIconProps, "color" | "fontSize"> {
   color?: CssColor;
   layers?: IconLayer[];
+  margins?: Margins;
   name?: IconName & string;
   rotation?: number;
-  margins?: Margins;
   size?: number | string;
   viewProps?: Partial<Omit<ViewProps, "className" | "margins">>;
 }
@@ -42,9 +42,12 @@ export const Icon = ({
   ...props
 }: IconProps) => {
   const { css, cx } = useClasses({
+    color,
     hasLayers: !!layers?.length,
+    layers,
     layerSize: size ?? layers?.[0]?.size,
     rotation,
+    size,
   });
 
   return (
@@ -56,11 +59,7 @@ export const Icon = ({
             baseClassName={getIconClassName(layer.name)}
             key={`${layer.name}-${i}`}
             className={css.layer}
-            style={{
-              color: layer.color ?? color,
-              fontSize: layer.size ?? size,
-              transform: makeLayerTransform(layer),
-            }}
+            data-icon-layer={i}
           >
             {ICON_LIGATURES[layer.name]}
           </MuiIcon>
@@ -69,7 +68,8 @@ export const Icon = ({
         <MuiIcon
           {...props}
           baseClassName={getIconClassName(name)}
-          style={{ ...style, color, fontSize: size }}
+          className={css.icon}
+          style={style && { ...style, color, fontSize: size }}
         >
           {ICON_LIGATURES[name]}
         </MuiIcon>
@@ -86,34 +86,46 @@ const getIconClassName = (name: IconName) =>
 /* -------------------------------------------------------------------------- */
 /*                                   CLASSES                                  */
 /* -------------------------------------------------------------------------- */
-const defaultCssValue = (value?: number | string) => {
-  if (value === undefined) return "0";
-  return typeof value === "number" ? `${value}px` : value;
-};
+const defaultCssValue = (value?: number | string) =>
+  value === undefined ? "0" : typeof value === "number" ? `${value}px` : value;
 
 const makeLayerTransform = ({ rotation, x, y }: IconLayer) => {
   const offsetX = defaultCssValue(x);
   const offsetY = defaultCssValue(y);
   const rotate = rotation !== undefined ? ` rotate(${rotation}deg)` : "";
+
   return `translate(-50%, -50%) translate(${offsetX}, ${offsetY})${rotate}`;
 };
 
-interface ClassesProps {
+interface ClassesProps extends Pick<IconProps, "color" | "layers" | "rotation" | "size"> {
   hasLayers: boolean;
   layerSize?: number | string;
-  rotation?: number;
 }
 
 const useClasses = makeClasses((props: ClassesProps) => {
   const rootSize = !props.hasLayers ? undefined : defaultCssValue(props.layerSize);
 
   return {
+    icon: {
+      color: props.color,
+      fontSize: props.size,
+    },
     layer: {
       left: "50%",
       position: "absolute",
       top: "50%",
     },
     root: {
+      ...Object.fromEntries(
+        (props.layers ?? []).map((layer, index) => [
+          `& > [data-icon-layer="${index}"]`,
+          {
+            color: layer.color ?? props.color,
+            fontSize: layer.size ?? props.size,
+            transform: makeLayerTransform(layer),
+          },
+        ]),
+      ),
       alignItems: props.hasLayers ? "center" : undefined,
       height: rootSize,
       justifyContent: "center",

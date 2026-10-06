@@ -7,9 +7,9 @@ export interface SortMenuProps extends Omit<ButtonProps, "onChange" | "value"> {
   hasHeader?: boolean;
   rows: {
     attribute: string;
-    label: string;
     icon: IconName;
     iconProps?: Partial<IconProps>;
+    label: string;
   }[];
   setValue: (value: { isDesc: boolean; key: string }) => void;
   value: { isDesc: boolean; key: string };
@@ -47,6 +47,7 @@ export const SortMenu = ({
       text={
         <View column align="flex-start" justify="center" width="100%">
           <Text className={css.topText}>{"Sort By"}</Text>
+
           <Text className={css.label}>{activeRow?.label}</Text>
         </View>
       }

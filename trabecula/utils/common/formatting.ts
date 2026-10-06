@@ -4,7 +4,9 @@ const abbrevNum = (num: number) => Intl.NumberFormat("en", { notation: "compact"
 
 const bytes = (bytes: number) => {
   if (bytes < 1) return "0 B";
+
   const power = Math.floor(Math.log2(bytes) / 10);
+
   return `${(bytes / 1024 ** power).toFixed(2)} ${"KMGTPEZY"[power - 1] || ""}B`;
 };
 

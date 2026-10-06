@@ -81,33 +81,11 @@ export const DataGridRow = <T extends object>({
 
   const renderCell = (column: DataGridColumn<T>) => {
     const textPresetForColumn = column.textPreset ?? defaultTextPreset;
+    const value = column.render
+      ? column.render({ index, isExpanded, isSelected, row, value: row[column.key] })
+      : getDataGridValueText(getDataGridColumnValue(row, column, "search")) || "--";
 
-    if (column.render) {
-      const rendered = column.render({
-        index,
-        isExpanded,
-        isSelected,
-        row,
-        value: row[column.key],
-      });
-
-      if (typeof rendered !== "string") return rendered;
-
-      return (
-        <Text
-          preset={textPresetForColumn}
-          textAlign={column.align || "left"}
-          color={isSelected ? selectedTextColor : undefined}
-          overflow="hidden"
-          whiteSpace={column.wrapText === false ? "nowrap" : undefined}
-          textOverflow={column.wrapText === false ? "ellipsis" : undefined}
-          overflowWrap={column.wrapText !== false ? "break-word" : undefined}
-          wordBreak={column.wrapText !== false ? "break-word" : undefined}
-        >
-          {rendered}
-        </Text>
-      );
-    }
+    if (typeof value !== "string") return value;
 
     return (
       <Text
@@ -120,7 +98,7 @@ export const DataGridRow = <T extends object>({
         overflowWrap={column.wrapText !== false ? "break-word" : undefined}
         wordBreak={column.wrapText !== false ? "break-word" : undefined}
       >
-        {getDataGridValueText(getDataGridColumnValue(row, column, "search")) || "--"}
+        {value}
       </Text>
     );
   };
@@ -190,7 +168,7 @@ export const DataGridRow = <T extends object>({
       </View>
 
       {expandableContent ? (
-        <Collapse in={isExpanded} sx={{ margin: 0, padding: 0 }} timeout={300} easing={"smooth"}>
+        <Collapse in={isExpanded} className={css.expansion} timeout={300} easing={"smooth"}>
           <View
             padding={{ all: 0 }}
             bgColor={getBackgroundColor()}
@@ -210,6 +188,10 @@ const useClasses = makeClasses({
       maxWidth: "100%",
       minWidth: "0 !important",
     },
+  },
+  expansion: {
+    margin: 0,
+    padding: 0,
   },
   noWrapCell: {
     "& .MuiButton-root": {

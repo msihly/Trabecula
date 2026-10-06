@@ -49,7 +49,9 @@ export const MultiInput = Comp(
     const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
       if (e.key === "Enter" && !isMax) {
         e.preventDefault();
+
         if (!value.includes(inputValue)) onChange([...value, inputValue]);
+
         setInputValue("");
       }
     };

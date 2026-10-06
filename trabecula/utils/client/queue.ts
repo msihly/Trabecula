@@ -64,23 +64,23 @@ export const makeQueue = <T>({
 
     updateProgress();
 
-    if (!totalCount) void complete();
+    if (!totalCount) complete();
     else {
       for (const item of items) {
-        void queue
+        queue
           .add(() => action(item, onEscape))
           .catch((error) => {
             if (!isComplete) {
               hasError = true;
               console.error(error);
-              toast.error(error instanceof Error ? error.message : String(error));
+              toast.error(error?.message ?? String(error));
             }
           })
           .finally(() => {
             if (!isComplete) {
               completedCount++;
 
-              if (completedCount >= totalCount) void complete();
+              if (completedCount >= totalCount) complete();
               else updateProgress();
             }
           });

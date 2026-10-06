@@ -147,6 +147,7 @@ interface ClassesProps extends Pick<
 
 const useClasses = makeClasses((props: ClassesProps) => {
   const preset = PRESETS[props.preset];
+
   return {
     root: {
       ...preset,

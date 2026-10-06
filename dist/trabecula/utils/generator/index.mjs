@@ -107,9 +107,9 @@ ${err.stack}
 var formatFile = (str) => prettier.format(str, { parser: "typescript", printWidth: 100, tabWidth: 2, useTabs: false });
 var makeIndexDef = (fileDefs) => {
   const imports = fileDefs.map((fileDef) => `export * from "./${fileDef.name}";`).join("\n");
-  fileDefs.push({ name: "index", makeFile: () => __async(null, null, function* () {
+  fileDefs.push({ makeFile: () => __async(null, null, function* () {
     return imports;
-  }) });
+  }), name: "index" });
 };
 var makeSectionComment = (sectionName) => `/* ${"-".repeat(75)} */
 /* ${" ".repeat(30)}${sectionName}

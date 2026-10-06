@@ -11,18 +11,18 @@ import { colors, makeClasses } from "trabecula/utils/client";
 
 export interface SortRowProps {
   attribute: string;
-  label: string;
   icon: IconName;
   iconProps?: Partial<IconProps>;
+  label: string;
   setValue: SortMenuProps["setValue"];
   value: SortMenuProps["value"];
 }
 
 export const SortRow = ({
   attribute,
-  label,
   icon,
   iconProps = {},
+  label,
   setValue,
   value,
 }: SortRowProps) => {
@@ -31,8 +31,11 @@ export const SortRow = ({
   return (
     <View className={css.row}>
       <Icon name={icon} {...iconProps} />
+
       <Text className={css.label}>{label}</Text>
+
       <SortButton attribute={attribute} setValue={setValue} value={value} isDesc />
+
       <SortButton attribute={attribute} setValue={setValue} value={value} />
     </View>
   );
@@ -49,7 +52,7 @@ const SortButton = ({ attribute, isDesc = false, setValue, value }: SortButtonPr
   const isActive = attribute === value?.key && isDesc === value?.isDesc;
   const color = isActive ? colors.custom.blue : colors.custom.lightGrey;
 
-  const updateSort = () => setValue({ key: attribute, isDesc });
+  const updateSort = () => setValue({ isDesc, key: attribute });
 
   return (
     <IconButton

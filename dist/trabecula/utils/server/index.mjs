@@ -2,7 +2,7 @@ import {
   dayjs,
   handleErrors,
   round
-} from "../../chunk-C5S6AXSJ.mjs";
+} from "../../chunk-SSGU2HWC.mjs";
 import {
   __async
 } from "../../chunk-DM4QYMVJ.mjs";
@@ -20,7 +20,7 @@ var createTreeNode = (dirPath, tree) => {
   const dirNames = path.normalize(dirPath).split(path.sep);
   const [rootDirName, ...remainingDirNames] = dirNames;
   const treeNode = tree.find((t) => t.name === rootDirName);
-  if (!treeNode) tree.push({ name: rootDirName, children: [] });
+  if (!treeNode) tree.push({ children: [], name: rootDirName });
   if (remainingDirNames.length > 0)
     createTreeNode(path.join(...remainingDirNames), (treeNode != null ? treeNode : tree[tree.length - 1]).children);
 };
@@ -104,7 +104,7 @@ var setLogsPath = (filePath) => __async(null, null, function* () {
 var stringify = (args) => {
   try {
     if (Array.isArray(args)) return args.map((arg) => JSON.stringify(arg, null, 2)).join(" ");
-    return JSON.stringify(args, null, 2);
+    else return JSON.stringify(args, null, 2);
   } catch (e) {
     return String(args);
   }

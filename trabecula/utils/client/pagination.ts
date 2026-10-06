@@ -37,8 +37,7 @@ export const usePaginatedList = <T>(
           else setItems(result.items);
         }
       } catch (error) {
-        if (!controller.signal.aborted)
-          setError(error instanceof Error ? error.message : String(error));
+        if (!controller.signal.aborted) setError(error?.message ?? String(error));
       } finally {
         if (!controller.signal.aborted) {
           setIsLoading(false);
@@ -48,7 +47,7 @@ export const usePaginatedList = <T>(
       }
     };
 
-    void load();
+    load();
 
     return () => {
       controller.abort();

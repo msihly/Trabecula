@@ -33,7 +33,9 @@ export const ContextMenu = ({ children, disabled, id, menuItems, ...props }: Con
 
   const handleContext = (event) => {
     event.preventDefault();
+
     if (disabled) return;
+
     setMouseX(event.clientX - 2);
     setMouseY(event.clientY - 4);
   };

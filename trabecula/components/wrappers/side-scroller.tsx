@@ -11,12 +11,14 @@ interface SideScrollerProps {
 
 export const SideScroller = ({ children, className, innerClassName }: SideScrollerProps) => {
   const ref = useRef<HTMLDivElement>(null);
+
   const { width } = useElementResize(ref);
 
   const [buttonVisibility, setButtonVisibility] = useState({
     isLeftButtonVisible: false,
     isRightButtonVisible: false,
   });
+
   const { css, cx } = useClasses(buttonVisibility);
 
   const handleScroll = (direction: "left" | "right") => {

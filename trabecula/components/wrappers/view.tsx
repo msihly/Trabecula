@@ -1,4 +1,10 @@
-import { HTMLAttributes, ReactNode } from "react";
+import {
+  ComponentPropsWithoutRef,
+  createElement,
+  ElementRef,
+  ReactHTML,
+  RefAttributes,
+} from "react";
 import { Comp } from "trabecula/components";
 import {
   BorderRadiuses,
@@ -14,14 +20,16 @@ import {
   Padding,
 } from "trabecula/utils/client";
 
-export interface ViewProps extends HTMLAttributes<HTMLDivElement> {
+export type ViewProps<Component extends keyof ReactHTML = "div"> = Omit<
+  ComponentPropsWithoutRef<Component>,
+  "align" | "height" | "width" | "wrap"
+> & {
   align?: CSS["alignItems"];
   bgColor?: CssColor;
-  borders?: Borders;
   borderRadiuses?: BorderRadiuses;
-  children?: ReactNode | ReactNode[];
-  className?: string;
+  borders?: Borders;
   column?: boolean;
+  component?: Component;
   cursor?: CSS["cursor"];
   display?: CSS["display"];
   flex?: CSS["flex"];
@@ -40,18 +48,19 @@ export interface ViewProps extends HTMLAttributes<HTMLDivElement> {
   spacing?: CSS["marginRight"];
   width?: CSS["width"];
   wrap?: CSS["flexWrap"];
-}
+};
 
-export const View = Comp(
+export const View = Comp<ViewProps<keyof ReactHTML>, HTMLElement>(
   (
     {
       align,
       bgColor,
-      borders,
       borderRadiuses,
+      borders,
       children,
       className,
       column,
+      component = "div",
       cursor,
       display,
       flex,
@@ -71,7 +80,7 @@ export const View = Comp(
       width,
       wrap,
       ...props
-    }: ViewProps,
+    },
     ref,
   ) => {
     if (row) column = false;
@@ -79,8 +88,8 @@ export const View = Comp(
     const { css, cx } = useClasses({
       align,
       bgColor,
-      borders,
       borderRadiuses,
+      borders,
       column,
       cursor,
       display,
@@ -102,18 +111,22 @@ export const View = Comp(
       wrap,
     });
 
-    return (
-      <div {...props} ref={ref} className={cx(className, css.view)}>
-        {children}
-      </div>
+    return createElement(
+      component,
+      { ...props, className: cx(className, css.view), ref },
+      children,
     );
   },
-);
+) as <Component extends keyof ReactHTML = "div">(
+  props: ViewProps<Component> & RefAttributes<ElementRef<Component>>,
+) => JSX.Element;
 
 interface ClassesProps extends Pick<
   ViewProps,
   | "align"
   | "bgColor"
+  | "borderRadiuses"
+  | "borders"
   | "column"
   | "cursor"
   | "display"
@@ -133,10 +146,7 @@ interface ClassesProps extends Pick<
   | "spacing"
   | "width"
   | "wrap"
-> {
-  borders?: Borders;
-  borderRadiuses?: BorderRadiuses;
-}
+> {}
 
 const useClasses = makeClasses((props: ClassesProps) => ({
   view: {

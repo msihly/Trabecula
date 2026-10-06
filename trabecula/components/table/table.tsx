@@ -9,14 +9,15 @@ import {
   TablePagination,
   TableRow,
 } from "@mui/material";
+import { Text } from "trabecula/components";
 import { colors, makeClasses } from "trabecula/utils/client";
 
 const MUI_TABLE_ROW_HEIGHT = 33;
 
 export interface TableColumn<T> {
+  className?: string;
   header: string;
   valueFunc: (row: T) => ReactNode;
-  className?: string;
   wrap?: boolean;
 }
 
@@ -25,8 +26,8 @@ export interface TableProps<T> {
   columns: TableColumn<T>[];
   hasEmptyRows?: boolean;
   hasPagination?: boolean;
-  rowCountOptions?: number[];
   paginationClassName?: string;
+  rowCountOptions?: number[];
   rows: T[];
 }
 
@@ -35,21 +36,12 @@ export const Table = <T extends object>({
   columns,
   hasEmptyRows = false,
   hasPagination = false,
+  paginationClassName,
   rowCountOptions = [10, 25, 50],
   rows,
-  paginationClassName,
 }: TableProps<T>) => {
-  const { css, cx } = useClasses(null);
-
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(rowCountOptions[0]);
-
-  const handleRowsPerPageChange = (
-    event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
-  ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
 
   const displayedRows = useMemo(
     () => rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
@@ -57,6 +49,15 @@ export const Table = <T extends object>({
   );
 
   const emptyRows = rowsPerPage - displayedRows.length;
+
+  const { css, cx } = useClasses({ emptyRows });
+
+  const handleRowsPerPageChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+  ) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
   return (
     <>
@@ -87,10 +88,7 @@ export const Table = <T extends object>({
             ))}
 
             {hasEmptyRows && emptyRows > 0 && (
-              <TableRow
-                className={css.tableRowAlt}
-                style={{ height: MUI_TABLE_ROW_HEIGHT * emptyRows }}
-              >
+              <TableRow className={cx(css.emptyRow, css.tableRowAlt)}>
                 <TableCell colSpan={columns.length} />
               </TableRow>
             )}
@@ -125,12 +123,27 @@ const TableCellTrunc = ({ className, value, wrap = false }: TableCellTruncProps)
 
   return (
     <TableCell className={cx(css.tableCell, className)} title={String(value)}>
-      {wrap ? <span className={css.wrapped}>{value}</span> : value}
+      {wrap ? (
+        <Text
+          className={css.wrapped}
+          component="span"
+          fontFamily="inherit"
+          fontSize="inherit"
+          fontWeight="inherit"
+          lineHeight="inherit"
+          whiteSpace="normal"
+        >
+          {value}
+        </Text>
+      ) : (
+        value
+      )}
     </TableCell>
   );
 };
 
-const useClasses = makeClasses({
+const useClasses = makeClasses((props?: { emptyRows: number }) => ({
+  emptyRow: { height: MUI_TABLE_ROW_HEIGHT * (props?.emptyRows ?? 0) },
   pagination: {
     borderBottom: "none",
     padding: 0,
@@ -163,4 +176,4 @@ const useClasses = makeClasses({
     WebkitBoxOrient: "vertical",
     WebkitLineClamp: 2,
   },
-});
+}));

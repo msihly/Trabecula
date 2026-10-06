@@ -23,6 +23,7 @@ export const useDeepEffect = (cb: EffectCallback, deps: DependencyList) => {
 
 export const useDeepMemo = <T>(value: T) => {
   const comparisonValue = getComparisonValue(value);
+
   const comparisonRef = useRef<any>();
   const depRef = useRef(0);
   const valueRef = useRef(value);
@@ -81,7 +82,9 @@ export const useElementResize = (ref: MutableRefObject<any>, condition?: any) =>
 
 export const useForceUpdate = () => {
   const [, setTick] = useState(0);
+
   const update = useCallback(() => setTick((tick) => tick + 1), []);
+
   return update;
 };
 
@@ -93,6 +96,7 @@ export const useLazyLoad = (
   },
 ) => {
   const [isVisible, setIsVisible] = useState(false);
+
   const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {

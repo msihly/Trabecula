@@ -31,6 +31,7 @@ export const attempt = async <T>(fn: () => Promise<T>, retries = 2, delay = 1000
   retries > 0
     ? await fn().catch(async (error) => {
         console.error(`Function failed, error: ${error}. Retrying after ${delay}ms...`);
+
         return sleep(delay).then(() => attempt(fn, retries - 1, delay));
       })
     : fn();
@@ -70,11 +71,13 @@ export const handleErrors = async <T>(
   fn: () => Promise<T>,
 ): Promise<{ data?: T; error?: string; success: boolean }> => {
   try {
-    return { success: true, data: await fn() };
+    return { data: await fn(), success: true };
   } catch (err) {
-    const errorStr = err instanceof Error ? err.message : String(err);
+    const errorStr = err?.message ?? String(err);
+
     console.error(errorStr);
-    return { success: false, error: errorStr };
+
+    return { error: errorStr, success: false };
   }
 };
 
@@ -85,17 +88,22 @@ export const isObject = (item: any): boolean =>
 
 export const isPlainObject = (value: unknown): value is Record<string, any> => {
   if (!value || typeof value !== "object") return false;
+
   const proto = Object.getPrototypeOf(value);
+
   return proto === Object.prototype || proto === null;
 };
 
 export const mergePreset = <T>(preset: Partial<T>, props: T): T => {
   const merge = (presetValue: any, propValue: any): any => {
     if (propValue === undefined) return presetValue;
+
     if (!isPlainObject(presetValue) || !isPlainObject(propValue)) return propValue;
 
     const result: Record<string, any> = { ...presetValue };
+
     for (const key of Object.keys(propValue)) result[key] = merge(presetValue[key], propValue[key]);
+
     return result;
   };
 

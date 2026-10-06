@@ -73,7 +73,7 @@ export class PromiseQueue {
       if (this.cancelled || this.runningCount >= this.concurrency) break;
 
       this.queue.delete(task);
-      void task.run();
+      task.run();
     }
 
     if (!this.queue.size && this.runningCount === 0 && this.resolver) {

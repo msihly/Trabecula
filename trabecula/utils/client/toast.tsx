@@ -7,9 +7,7 @@ import {
   ToastContainerProps,
   TypeOptions,
 } from "react-toastify";
-// eslint-disable-next-line @typescript-eslint/no-restricted-imports
-import { Icon as MuiIcon } from "@mui/material";
-import { IconName } from "trabecula/_generated/client/icons";
+import { Icon, IconName } from "trabecula/components";
 import { colors, CssColor, makeClasses } from "trabecula/utils/client";
 
 export const toast = {
@@ -20,13 +18,16 @@ export const toast = {
 };
 
 export class Toaster {
-  private toastTimeoutRef = null;
   private toastRef = null;
+  private toastTimeoutRef = null;
 
   public toast(text: ReactNode, options?: { autoClose?: number | false; type?: TypeOptions }) {
     const autoClose = options?.autoClose === false ? false : options?.autoClose || 1000;
+
     clearTimeout(this.toastTimeoutRef);
+
     if (autoClose) this.toastTimeoutRef = setTimeout(() => (this.toastRef = null), autoClose);
+
     if (this.toastRef)
       _toast.update(this.toastRef, { autoClose, render: text, type: options?.type || "info" });
     else this.toastRef = _toast(() => text, { autoClose, type: options?.type || "info" });
@@ -35,24 +36,19 @@ export class Toaster {
 
 export const ToastContainer = (props: ToastContainerProps) => {
   const { css } = useClasses(null);
+
   return (
     <ToastContainerBase
       autoClose={2000}
       className={css.toast}
       hideProgressBar
       icon={({ type }) => (
-        <MuiIcon style={{ color: colors.custom.white }}>
-          {(STATUSES[type]?.icon ?? "Error")
-            .split(/(?=[A-Z])/)
-            .join("_")
-            .toLowerCase()}
-        </MuiIcon>
+        <Icon color={colors.custom.white} name={STATUSES[type]?.icon ?? "Error"} />
       )}
       limit={3}
       pauseOnFocusLoss={false}
       position="bottom-left"
       newestOnTop
-      style={{ bottom: "3rem" }}
       {...props}
     />
   );
@@ -110,5 +106,6 @@ const useClasses = makeClasses({
         },
       },
     },
+    bottom: "3rem",
   },
 });

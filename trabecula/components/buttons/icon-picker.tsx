@@ -57,6 +57,7 @@ export const IconPicker = Comp(
 
     const filteredIcons = ICON_NAMES.filter((icon) => {
       const name = icon.toLowerCase();
+
       if (icon === value) return false;
 
       if (withStylePicker) {
@@ -66,6 +67,7 @@ export const IconPicker = Comp(
       }
 
       if (!searchTerms.length) return true;
+
       return searchTerms.every((term) => name.includes(term.toLowerCase()));
     });
 
@@ -121,9 +123,13 @@ export const IconPicker = Comp(
               <Card column header="Style">
                 <RadioGroup value={searchStyle} onChange={handleSearchStyleChange}>
                   <FormControlLabel label="Filled" value="Filled" control={<Radio />} />
+
                   <FormControlLabel label="Outlined" value="Outlined" control={<Radio />} />
+
                   <FormControlLabel label="Rounded" value="Rounded" control={<Radio />} />
+
                   <FormControlLabel label="Two Tone" value="TwoTone" control={<Radio />} />
+
                   <FormControlLabel label="Sharp" value="Sharp" control={<Radio />} />
                 </RadioGroup>
               </Card>

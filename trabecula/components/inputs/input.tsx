@@ -59,6 +59,7 @@ export interface InputProps extends Omit<
   onEnter?: () => any;
   padding?: Padding;
   setValue?: (value: string) => any;
+  stopKeyPropagation?: boolean;
   textAlign?: CSS["textAlign"];
   textColor?: CssColor;
   value?: string;
@@ -101,6 +102,7 @@ export const Input = Comp((rawProps: InputProps, ref?: MutableRefObject<HTMLDivE
     onKeyDown,
     padding = {},
     setValue,
+    stopKeyPropagation = true,
     textAlign,
     textColor,
     value,
@@ -161,9 +163,12 @@ export const Input = Comp((rawProps: InputProps, ref?: MutableRefObject<HTMLDivE
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    event.stopPropagation();
+    if (stopKeyPropagation) event.stopPropagation();
+
     onKeyDown?.(event);
+
     if (!onEnter || event.defaultPrevented || event.key !== "Enter" || event.shiftKey) return;
+
     event.preventDefault();
     onEnter();
   };

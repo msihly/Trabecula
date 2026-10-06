@@ -55,7 +55,7 @@ export const ConfirmModal = ({
 
         if (success) handleClose();
       } catch (error) {
-        toast.error(error instanceof Error ? error.message : String(error));
+        toast.error(error?.message ?? String(error));
       } finally {
         setIsLoading(false);
       }

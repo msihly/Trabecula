@@ -19,6 +19,7 @@ export const setLogsPath = async (filePath: string) => {
 
     if (logStream === stream) logStream = null;
   });
+
   logsPath = nextLogsPath;
   logStream = stream;
   previousStream?.end();
@@ -27,7 +28,7 @@ export const setLogsPath = async (filePath: string) => {
 const stringify = (args: any | any[]) => {
   try {
     if (Array.isArray(args)) return args.map((arg) => JSON.stringify(arg, null, 2)).join(" ");
-    return JSON.stringify(args, null, 2);
+    else return JSON.stringify(args, null, 2);
   } catch {
     return String(args);
   }
@@ -66,12 +67,14 @@ export const makePerfLog = (logTag: string, toFile = false) => {
 
   const perfLog = (logStr: string) => {
     const str = `${logTag} ${round(performance.now() - perfStart, 0)} ms - ${logStr}`;
+
     toFile ? fileLog(str) : console.debug(str);
     perfStart = performance.now();
   };
 
   const perfLogTotal = (logStr: string) => {
     const str = `${logTag} Total: ${round(performance.now() - funcPerfStart, 0)} ms - ${logStr}`;
+
     toFile ? fileLog(str) : console.debug(str);
   };
 

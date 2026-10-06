@@ -16,8 +16,9 @@ export const getDataGridCellLayout = (
   maxWidth?: CSS["maxWidth"],
 ): DataGridCellLayoutProps => {
   if (!width || width === "1fr") return { flex: 1, maxWidth, minWidth };
-  if (typeof width === "string" && width.endsWith("fr")) {
+  else if (typeof width === "string" && width.endsWith("fr")) {
     const flex = Number(width.replace("fr", ""));
+
     return { flex: Number.isFinite(flex) && flex > 0 ? flex : 1, maxWidth, minWidth };
   }
 
@@ -63,25 +64,27 @@ export const getDataGridColumnValue = <T extends object>(
   mode: "search" | "sort",
 ) => {
   if (mode === "search" && column.searchValue) return column.searchValue(row);
-  if (mode === "sort" && column.sortValue) return column.sortValue(row);
-  return row[column.key] as DataGridValue;
+  else if (mode === "sort" && column.sortValue) return column.sortValue(row);
+  else return row[column.key] as DataGridValue;
 };
 
 export const getDataGridValueText = (value: DataGridValue) => {
   if (value == null) return "";
-  if (value instanceof Date) return value.toISOString();
-  return String(value);
+  else if (value instanceof Date) return value.toISOString();
+  else return String(value);
 };
 
 const getTime = (value: DataGridValue) => {
   if (value instanceof Date) return value.getTime();
-  if (typeof value === "boolean" || value == null) return NaN;
-  return new Date(value).getTime();
+  else if (typeof value === "boolean" || value == null) return NaN;
+  else return new Date(value).getTime();
 };
 
 const getDataGridPixelValue = (value: CSS["maxWidth"] | CSS["minWidth"]) => {
   if (typeof value === "number") return value;
-  if (typeof value !== "string" || !value.endsWith("px")) return undefined;
+  else if (typeof value !== "string" || !value.endsWith("px")) return undefined;
+
   const parsed = Number(value.replace("px", ""));
+
   return Number.isFinite(parsed) ? parsed : undefined;
 };

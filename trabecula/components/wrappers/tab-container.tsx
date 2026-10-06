@@ -47,7 +47,9 @@ export const TabContainer = ({
     tabHeight,
     withBorder,
   });
+
   const [selectedTab, setSelectedTab] = useState("0");
+
   const currentTab = activeTab ?? selectedTab;
 
   const handleChange = (_event: SyntheticEvent, tabIndex: string) => {

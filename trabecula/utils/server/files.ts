@@ -13,7 +13,9 @@ const createTreeNode = (dirPath: string, tree: TreeNode[]) => {
   const dirNames = path.normalize(dirPath).split(path.sep) as string[];
   const [rootDirName, ...remainingDirNames] = dirNames;
   const treeNode = tree.find((t) => t.name === rootDirName);
-  if (!treeNode) tree.push({ name: rootDirName, children: [] });
+
+  if (!treeNode) tree.push({ children: [], name: rootDirName });
+
   if (remainingDirNames.length > 0)
     createTreeNode(path.join(...remainingDirNames), (treeNode ?? tree[tree.length - 1]).children);
 };
@@ -24,12 +26,14 @@ export const createTree = (paths: string[]): TreeNode[] =>
 export const deleteFile = (path: string, copiedPath?: string) =>
   handleErrors(async () => {
     if (!(await checkFileExists(path))) return false;
+
     if (copiedPath && !(await checkFileExists(copiedPath)))
       throw new Error(
         `Failed to delete ${path}. File does not exist at copied path ${copiedPath}.`,
       );
 
     await fs.unlink(path);
+
     return true;
   });
 

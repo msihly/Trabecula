@@ -51,9 +51,11 @@ export const AccordionGroup = ({
       setAllExpanded: (expanded: boolean) => {
         setExpandedSections((prev) => {
           const next = { ...prev };
+
           sectionIds.forEach((sectionId) => {
             next[sectionId] = expanded;
           });
+
           return next;
         });
       },
@@ -103,6 +105,7 @@ const useAccordionGroupContext = () => {
 const getInitialExpandedSections = (sectionIds: readonly string[], defaultExpanded: boolean) => {
   return sectionIds.reduce((acc, sectionId) => {
     acc[sectionId] = defaultExpanded;
+
     return acc;
   }, {} as ExpandedSections);
 };

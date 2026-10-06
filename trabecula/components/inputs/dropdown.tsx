@@ -130,19 +130,26 @@ export function Dropdown<T = string>({
   const resolvedLabel = label ?? header;
   const resolvedHeader =
     typeof resolvedLabel === "string" && required ? `${resolvedLabel} *` : resolvedLabel;
-  const [valueOption, setValueOption] = useState<DropdownOption<T> | null>(null);
   const committedLabel =
     value === ""
       ? ""
       : (options.find((option) => option.value === value)?.label ??
         (freeSolo && typeof value === "string" ? value : ""));
+
   const [inputValue, setInputValue] = useState(committedLabel);
+  const [valueOption, setValueOption] = useState<DropdownOption<T> | null>(null);
+
+  const containerRef = useRef<HTMLDivElement>(null);
   const isTypingRef = useRef(false);
+
+  const { width: inputWidth } = useElementResize(containerRef);
 
   useEffect(() => {
     const matched =
       value === "" ? null : (options.find((option) => option.value === value) ?? null);
+
     setValueOption(matched);
+
     if (!isTypingRef.current)
       setInputValue(matched?.label ?? (freeSolo && typeof value === "string" ? value : ""));
   }, [freeSolo, options, value]);
@@ -156,12 +163,14 @@ export function Dropdown<T = string>({
     const searchString = state.inputValue.trim().toLowerCase();
     const searchTerms = searchString.split(" ");
     const joinedTerms = searchTerms.join(" ");
+
     const scoreOption = (option: DropdownOption<T>) => {
       const optionLabel = option.label.toLowerCase();
+
       if (optionLabel === searchString) return 100;
-      if (optionLabel.startsWith(searchString)) return 50;
-      if (optionLabel.includes(joinedTerms)) return 25;
-      return 10;
+      else if (optionLabel.startsWith(searchString)) return 50;
+      else if (optionLabel.includes(joinedTerms)) return 25;
+      else return 10;
     };
 
     return availableOptions
@@ -171,6 +180,7 @@ export function Dropdown<T = string>({
           withValueTest && typeof option.value === "string"
             ? option.value.toLowerCase().includes(searchString)
             : false;
+
         return labelMatches || valueMatches;
       })
       .map((option) => ({ option, score: scoreOption(option) }))
@@ -180,29 +190,34 @@ export function Dropdown<T = string>({
 
   const handleChange = (_: unknown, newValue: DropdownOption<T> | string | null) => {
     isTypingRef.current = false;
+
     if (typeof newValue === "string") {
       setValue(newValue as T);
       setValueOption(null);
       setInputValue(newValue);
-      return;
-    }
+    } else {
+      const newValueOption = newValue?.value === "" ? null : newValue;
 
-    const newValueOption = newValue?.value === "" ? null : newValue;
-    setValue(newValue?.value);
-    setValueOption(newValueOption);
-    setInputValue(newValueOption?.label ?? "");
+      setValue(newValue?.value);
+      setValueOption(newValueOption);
+      setInputValue(newValueOption?.label ?? "");
+    }
   };
 
   const handleInputChange = (_: unknown, newInputValue: string, reason: string) => {
     if (reason !== "input") return;
+
     isTypingRef.current = true;
     setInputValue(newInputValue);
+
     if (freeSolo) setValue(newInputValue as T);
   };
 
   const handleInputKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     inputProps?.onKeyDown?.(event);
+
     if (event.defaultPrevented || !freeSolo || event.key !== "Enter") return;
+
     event.preventDefault();
     event.stopPropagation();
     isTypingRef.current = false;
@@ -213,7 +228,9 @@ export function Dropdown<T = string>({
 
   const handleClose = (_: unknown, reason: string) => {
     if (reason !== "blur" && reason !== "escape") return;
+
     isTypingRef.current = false;
+
     if (!freeSolo) setInputValue(valueOption?.label ?? "");
   };
 
@@ -246,9 +263,6 @@ export function Dropdown<T = string>({
       <Text {...optionTextProps}>{option.label}</Text>
     </MenuItem>
   );
-
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { width: inputWidth } = useElementResize(containerRef);
 
   return (
     <HeaderWrapper

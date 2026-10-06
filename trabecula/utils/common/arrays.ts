@@ -100,6 +100,7 @@ export const sortArray = <T>(arr: T[], key: string, isDesc = true, isNumber = fa
     const second = b[key] ?? (isNumber ? 0 : "");
 
     const comparison = isNumber ? second - first : String(second).localeCompare(String(first));
+
     return isDesc ? comparison : comparison * -1;
   };
 

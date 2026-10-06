@@ -79,8 +79,9 @@ export const Checkbox = ({
 
   const toggleChecked = () => {
     if (disabled) return;
-    if (ternary === undefined) return setChecked(!checked);
-    if (ternary) setChecked(true, false);
+
+    if (ternary === undefined) setChecked(!checked);
+    else if (ternary) setChecked(true, false);
     else if (checked) setChecked(false, false);
     else setChecked(false, true);
   };

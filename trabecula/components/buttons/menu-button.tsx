@@ -1,30 +1,36 @@
 import { MouseEvent, ReactNode, useState } from "react";
-import { Menu } from "@mui/material";
+import { Menu, MenuProps } from "@mui/material";
 import { IconName } from "trabecula/components";
 import { IconButton, IconButtonProps } from "trabecula/components/buttons";
 import { colors, CSS, CssColor, makeClasses } from "trabecula/utils/client";
 
 export interface MenuButtonProps extends IconButtonProps {
+  anchorOrigin?: MenuProps["anchorOrigin"];
   bgColor?: CssColor;
   button?: (onOpen: (event: MouseEvent) => void) => ReactNode;
   children: ReactNode | ((onClose: () => void) => ReactNode);
   color?: CssColor;
   icon?: IconName;
   keepMounted?: boolean;
+  menuClassName?: string;
   menuWidth?: CSS["width"];
+  transformOrigin?: MenuProps["transformOrigin"];
 }
 
 export const MenuButton = ({
+  anchorOrigin = { horizontal: "right", vertical: "bottom" },
   bgColor = colors.background,
   button,
   children,
   color,
   icon = "MoreVert",
   keepMounted = true,
+  menuClassName,
   menuWidth,
+  transformOrigin = { horizontal: "right", vertical: "top" },
   ...props
 }: MenuButtonProps) => {
-  const { css } = useClasses({ bgColor, menuWidth });
+  const { css, cx } = useClasses({ bgColor, menuWidth });
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -48,9 +54,9 @@ export const MenuButton = ({
         keepMounted={keepMounted}
         open={Boolean(anchorEl)}
         onClose={handleClose}
-        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-        transformOrigin={{ horizontal: "right", vertical: "top" }}
-        className={css.menu}
+        anchorOrigin={anchorOrigin}
+        transformOrigin={transformOrigin}
+        className={cx(css.menu, menuClassName)}
       >
         {typeof children === "function" ? children(handleClose) : children}
       </Menu>

@@ -36,7 +36,9 @@ export const Image = ({
   const [imagePos, setImagePos] = useState<CSS["objectPosition"]>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [thumbIndex, setThumbIndex] = useState(0);
+
   const { css, cx } = useClasses({ fit, height, imagePos, rounded });
+
   const thumbPath = thumbPaths?.[thumbIndex] ?? thumbPaths?.[0];
 
   useEffect(() => {
@@ -95,7 +97,8 @@ export const Image = ({
           />
         </View>
       ) : thumbPath ? (
-        <img
+        <View
+          component="img"
           alt={title}
           className={css.image}
           draggable={draggable}

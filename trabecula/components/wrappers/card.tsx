@@ -13,34 +13,64 @@ export interface CardProps extends ViewProps {
 export const Card = Comp(
   (
     {
+      align,
       bgColor = colors.foreground,
       borderRadiuses = {},
+      borders,
+      boxShadow,
       children,
       className,
       column = true,
+      cursor,
       display = "flex",
       elevated = false,
+      flex,
       header,
-      height,
       headerProps,
+      height,
+      justify,
       margins,
-      boxShadow,
+      maxHeight,
+      maxWidth,
+      minHeight,
+      minWidth,
+      onScroll,
+      opacity,
       overflow,
       padding = {},
+      position,
       row = false,
       spacing,
       width,
+      wrap,
       ...viewProps
     }: CardProps,
     ref,
   ) => {
+    const layoutProps = {
+      align,
+      borders,
+      cursor,
+      flex,
+      justify,
+      maxHeight,
+      maxWidth,
+      minHeight,
+      minWidth,
+      opacity,
+      position,
+      wrap,
+    };
+
     borderRadiuses = deepMerge({ bottom: "0.5rem", top: !!header ? 0 : "0.5rem" }, borderRadiuses);
     headerProps = deepMerge({ width: "100%" }, headerProps ?? {});
     padding = deepMerge({ all: "0.5rem" }, padding);
+
     const { css, cx } = useClasses({ boxShadow, elevated });
 
     return (
       <HeaderWrapper
+        {...layoutProps}
         {...viewProps}
         borderRadiuses={borderRadiuses}
         className={className}
@@ -49,24 +79,26 @@ export const Card = Comp(
         headerProps={headerProps}
         height={height}
         margins={margins}
+        onScroll={onScroll}
         overflow={overflow}
         width={width}
       >
         <View
+          {...layoutProps}
           className={cx(css.root, className)}
-          position="relative"
+          position={position ?? "relative"}
           column={column && !row}
-          flex={1}
+          flex={flex ?? 1}
           bgColor={bgColor}
           borderRadiuses={borderRadiuses}
           height={height}
+          onScroll={onScroll}
           overflow={overflow}
           padding={padding}
           ref={ref}
           row={row}
           spacing={spacing}
           width={header ? "100%" : width}
-          {...viewProps}
           aria-label="card"
         >
           {children}

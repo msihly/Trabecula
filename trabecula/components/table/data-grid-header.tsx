@@ -4,8 +4,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { Icon, Text, View } from "trabecula/components";
-import { DataGridProps, getDataGridCellLayout } from "trabecula/components";
+import { DataGridProps, getDataGridCellLayout, Icon, Text, View } from "trabecula/components";
 import { colors, makeClasses } from "trabecula/utils/client";
 
 export interface DataGridHeaderProps<T extends object> extends Pick<
@@ -13,12 +12,12 @@ export interface DataGridHeaderProps<T extends object> extends Pick<
   "columns" | "expandableContent" | "expandColumnWidth" | "headerBorder" | "rowGap" | "textPreset"
 > {
   hasResizableColumns: boolean;
+  hasSorting: boolean;
   onColumnResizeStart: (
     column: DataGridProps<T>["columns"][number],
     startWidth: number,
     startClientX: number,
   ) => void;
-  hasSorting: boolean;
   onSort: (column: DataGridProps<T>["columns"][number]) => void;
   sort: DataGridProps<T>["initialSort"] | null;
 }
@@ -27,9 +26,9 @@ export const DataGridHeader = <T extends object>({
   columns,
   expandableContent,
   expandColumnWidth,
-  headerBorder,
   hasResizableColumns,
   hasSorting,
+  headerBorder,
   onColumnResizeStart,
   onSort,
   rowGap,
@@ -38,9 +37,9 @@ export const DataGridHeader = <T extends object>({
 }: DataGridHeaderProps<T>) => {
   const { css, cx } = useClasses(null);
 
-  const suppressSortClickRef = useRef(false);
-
   const [hoveredColumnKey, setHoveredColumnKey] = useState<string | null>(null);
+
+  const suppressSortClickRef = useRef(false);
 
   return (
     <View
@@ -59,12 +58,8 @@ export const DataGridHeader = <T extends object>({
         const isHovered = hoveredColumnKey === column.key;
 
         const handleHeaderClick = () => {
-          if (suppressSortClickRef.current) {
-            suppressSortClickRef.current = false;
-            return;
-          }
-
-          if (isSortable) onSort(column);
+          if (suppressSortClickRef.current) suppressSortClickRef.current = false;
+          else if (isSortable) onSort(column);
         };
 
         const handleResizeClick = (event: ReactMouseEvent<HTMLDivElement>) => {
@@ -114,7 +109,7 @@ export const DataGridHeader = <T extends object>({
                 name={isSorted && sort?.direction === "asc" ? "ArrowDropUp" : "ArrowDropDown"}
                 color={colors.custom.darkGrey}
                 size="1rem"
-                style={{ opacity: isSorted ? 1 : isHovered ? 0.35 : 0 }}
+                viewProps={{ opacity: isSorted ? 1 : isHovered ? 0.35 : 0 }}
               />
             )}
 

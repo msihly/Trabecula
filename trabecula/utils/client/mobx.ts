@@ -13,6 +13,7 @@ export const initMobx = (bindings: MobxKeystoneBindings) => (mobxKeystoneBinding
 
 const getMobx = (): MobxKeystoneBindings => {
   if (!mobxKeystoneBindings) throw new Error("Call initMobx() at app startup");
+
   return mobxKeystoneBindings;
 };
 

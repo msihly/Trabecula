@@ -77,6 +77,7 @@ export const Accordion = (rawProps: AccordionProps) => {
   } = rawProps;
 
   const [internalExpanded, setInternalExpanded] = useState(expanded ?? false);
+
   const effectiveExpanded = isExpanded ?? internalExpanded;
   const contentExpanded = showExpandToggle ? effectiveExpanded : true;
 
@@ -197,9 +198,9 @@ interface ClassesProps extends Pick<
 
 const shouldShowHeaderBorder = (props: ClassesProps) => {
   if (!props.headerBorderColor) return false;
-  if (props.headerBorderMode === "always") return true;
-  if (props.headerBorderMode === "expanded") return props.contentExpanded;
-  return props.showExpandToggle ? props.showBorder : true;
+  else if (props.headerBorderMode === "always") return true;
+  else if (props.headerBorderMode === "expanded") return props.contentExpanded;
+  else return props.showExpandToggle ? props.showBorder : true;
 };
 
 const useClasses = makeClasses((props: ClassesProps) => ({

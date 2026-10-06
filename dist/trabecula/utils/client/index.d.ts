@@ -107,8 +107,8 @@ declare const toast: {
     warn: <TData_3 = unknown>(content: react_toastify.ToastContent<TData_3>, options?: react_toastify.ToastOptions<{}>) => react_toastify.Id;
 };
 declare class Toaster {
-    private toastTimeoutRef;
     private toastRef;
+    private toastTimeoutRef;
     toast(text: ReactNode, options?: {
         autoClose?: number | false;
         type?: TypeOptions;

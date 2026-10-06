@@ -1,6 +1,7 @@
 import { ReactNode, useEffect, useState } from "react";
 import {
   AutoComplete,
+  AutoCompleteProps,
   Button,
   ButtonProps,
   Comp,
@@ -166,6 +167,7 @@ const SavedSearchMenu = Comp(({ store }: SavedSearchMenuProps) => {
 
   const handleDelete = async () => {
     await store.deleteSavedSearch(store.selectedSavedSearchId);
+
     return true;
   };
 
@@ -176,9 +178,13 @@ const SavedSearchMenu = Comp(({ store }: SavedSearchMenuProps) => {
 
   const handleSave = () => store.saveSavedSearch(label);
 
-  const handleSelect = (value: string) => {
+  const handleSelect: AutoCompleteProps["onInputChange"] = (_, value, reason) => {
+    if (value === "" && reason === "reset") return;
+
     setInputValue(value);
+
     const selectedSearch = options.find((option) => option.label === value);
+
     if (selectedSearch) store.applySavedSearch(selectedSearch.value);
   };
 
@@ -186,11 +192,12 @@ const SavedSearchMenu = Comp(({ store }: SavedSearchMenuProps) => {
     <>
       <AutoComplete
         options={options}
-        value={inputValue}
-        onChange={handleSelect}
+        inputValue={inputValue}
+        isOptionEqualToValue={(option, value) => option.value === value.value}
+        onInputChange={handleSelect}
         inputProps={{
-          placeholder: "Saved Searches",
           height: "1em",
+          placeholder: "Saved Searches",
           width: "100%",
         }}
       />

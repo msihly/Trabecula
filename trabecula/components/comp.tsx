@@ -8,5 +8,6 @@ export function Comp<P, R = HTMLDivElement>(
   component: Forwarded<P, R>,
 ): ForwardRefExoticComponent<PropsWithoutRef<P> & RefAttributes<R>> {
   const Wrapped = forwardRef<R, P>((props, ref) => component(props, ref));
+
   return observer(Wrapped);
 }

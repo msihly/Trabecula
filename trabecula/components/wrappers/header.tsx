@@ -18,68 +18,107 @@ export interface HeaderWrapperProps extends ViewProps {
   textProps?: Partial<TextProps>;
 }
 
-export const HeaderWrapper = Comp(
-  (
-    {
-      children,
-      display,
-      header,
-      height = "auto",
-      headerProps = {},
-      margins,
-      position = "relative",
-      row,
-      spacing,
-      textProps = {},
-      width,
-      ...viewProps
-    }: HeaderWrapperProps,
-    ref,
-  ) => {
-    headerProps = deepMerge(DEFAULT_HEADER_PROPS, headerProps);
+export const HeaderWrapper = Comp((rawProps: HeaderWrapperProps, ref) => {
+  const {
+    align,
+    bgColor,
+    borderRadiuses,
+    borders,
+    children,
+    className,
+    column,
+    cursor,
+    display,
+    flex,
+    header,
+    headerProps = {},
+    height = "auto",
+    justify,
+    margins,
+    maxHeight,
+    maxWidth,
+    minHeight,
+    minWidth,
+    onScroll,
+    opacity,
+    overflow,
+    padding,
+    position = "relative",
+    row,
+    spacing,
+    textProps = {},
+    width,
+    wrap,
+    ...viewProps
+  } = rawProps;
 
-    const wrap = (content: ReactNode) => (
-      <View
-        {...viewProps}
-        ref={ref}
-        column
-        height={height}
-        margins={margins}
-        width={width}
-        aria-label="header-wrapper"
-      >
-        <View {...headerProps} aria-label="header">
-          {typeof header === "string" ? (
-            <Text flex={1} fontSize={headerProps.fontSize} textAlign="center" {...textProps}>
-              {header}
-            </Text>
-          ) : (
-            header
-          )}
-        </View>
+  const layoutProps = {
+    align,
+    bgColor,
+    borderRadiuses,
+    borders,
+    className,
+    column,
+    cursor,
+    flex,
+    justify,
+    maxHeight,
+    maxWidth,
+    minHeight,
+    minWidth,
+    opacity,
+    padding,
+    wrap,
+  };
 
-        {content}
+  const mergedHeaderProps = deepMerge(DEFAULT_HEADER_PROPS, headerProps);
+
+  const wrapHeader = (content: ReactNode) => (
+    <View
+      {...layoutProps}
+      aria-label="header-wrapper"
+      {...viewProps}
+      ref={ref}
+      column
+      height={height}
+      margins={margins}
+      onScroll={onScroll}
+      overflow={overflow}
+      width={width}
+    >
+      <View {...mergedHeaderProps} aria-label="header">
+        {typeof header === "string" ? (
+          <Text flex={1} fontSize={mergedHeaderProps.fontSize} textAlign="center" {...textProps}>
+            {header}
+          </Text>
+        ) : (
+          header
+        )}
       </View>
-    );
 
-    return (
-      <ConditionalWrap condition={!!header} wrap={wrap}>
-        <View
-          overflow="auto"
-          {...viewProps}
-          ref={header ? undefined : ref}
-          aria-label="header-wrapper-content"
-          display={display}
-          height={height}
-          margins={header ? undefined : margins}
-          position={position}
-          row={row}
-          spacing={spacing}
-          width={header ? "100%" : width}
-        >
-          {children}
-        </View>
-      </ConditionalWrap>
-    );
-  },
-);
+      {content}
+    </View>
+  );
+
+  return (
+    <ConditionalWrap condition={!!header} wrap={wrapHeader}>
+      <View
+        {...layoutProps}
+        aria-label="header-wrapper-content"
+        {...(header ? {} : viewProps)}
+        ref={header ? undefined : ref}
+        display={display}
+        height={height}
+        margins={header ? undefined : margins}
+        onScroll={onScroll}
+        overflow={"overflow" in rawProps ? overflow : "auto"}
+        position={position}
+        row={row}
+        spacing={spacing}
+        width={header ? "100%" : width}
+      >
+        {children}
+      </View>
+    </ConditionalWrap>
+  );
+});

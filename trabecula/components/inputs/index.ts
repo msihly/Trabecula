@@ -13,4 +13,5 @@ export * from "./multi-input-row";
 export * from "./num-input";
 export * from "./num-range";
 export * from "./range-wrapper";
+export * from "./slider";
 export * from "./time-input";

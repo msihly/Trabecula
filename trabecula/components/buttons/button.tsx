@@ -1,4 +1,4 @@
-import type { MouseEvent, ReactNode } from "react";
+import type { ReactNode } from "react";
 import {
   // eslint-disable-next-line @typescript-eslint/no-restricted-imports
   Button as MuiButton,
@@ -133,10 +133,8 @@ export const Button = ({
   const defaultHeight = !isLinkDisplay && dense ? DENSE_FORM_ROW_HEIGHT : undefined;
   const resolvedTextColor =
     textColor ?? (outlined ? color : isLinkDisplay ? colors.custom.lightBlue : colors.custom.white);
-  const resolvedColorOnHover = colorOnHover;
   const resolvedTextColorOnHover =
-    textColorOnHover ??
-    (resolvedColorOnHover && outlined ? resolvedColorOnHover : resolvedTextColor);
+    textColorOnHover ?? (colorOnHover && outlined ? colorOnHover : resolvedTextColor);
 
   const { css, cx } = useClasses({
     borderColorOnHover,
@@ -144,7 +142,7 @@ export const Button = ({
     borders,
     boxShadow,
     color,
-    colorOnHover: resolvedColorOnHover,
+    colorOnHover,
     height: height ?? defaultHeight,
     isLinkDisplay,
     justify,
@@ -162,8 +160,6 @@ export const Button = ({
     width,
   });
 
-  const handleClick = (event: MouseEvent<HTMLButtonElement>) => onClick?.(event);
-
   return (
     <TooltipWrapper tooltip={tooltip} tooltipProps={tooltipProps}>
       <MuiButton
@@ -171,7 +167,7 @@ export const Button = ({
         size={size}
         variant={variant}
         {...(isAnchor ? { component: "a", href } : {})}
-        onClick={handleClick}
+        onClick={onClick}
         className={cx(css.root, className)}
       >
         <LoadingOverlay isLoading={loading} />
@@ -272,11 +268,11 @@ const useClasses = makeClasses((props: ClassesProps) => {
       height: props.height,
       width: props.width,
       backgroundColor: bgColor,
+      boxShadow: props.boxShadow ?? "none",
       color: textColor,
       textDecoration,
       textTransform: props.textTransform,
       overflow: "hidden",
-      boxShadow: props.boxShadow ?? "none",
       "&:active": {
         color: textColor,
         textDecoration,

@@ -1,8 +1,8 @@
 import * as react from 'react';
-import react__default, { Ref, ForwardRefExoticComponent, PropsWithoutRef, RefAttributes, ReactNode, MouseEvent, ComponentProps, Dispatch, SetStateAction, ElementType, DetailedHTMLProps, ImgHTMLAttributes, HTMLAttributes } from 'react';
+import react__default, { Ref, ForwardRefExoticComponent, PropsWithoutRef, RefAttributes, ReactNode, MouseEvent, ComponentProps, Dispatch, SetStateAction, AriaAttributes, ElementType, DetailedHTMLProps, ImgHTMLAttributes, ReactHTML, ComponentPropsWithoutRef, ElementRef } from 'react';
 import { b as CssColor, B as BorderRadiuses, a as Borders, C as CSS, M as Margins, P as Padding } from '../css-BUA_CbgU.mjs';
 import * as react_jsx_runtime from 'react/jsx-runtime';
-import { ButtonProps as ButtonProps$1, IconButtonProps as IconButtonProps$1, AutocompleteProps, Autocomplete, TextFieldProps, ListProps as ListProps$1, ListItemProps as ListItemProps$1, IconProps as IconProps$1, DialogProps, PaginationProps as PaginationProps$1, LinkProps as LinkProps$1, TypographyProps, AccordionProps as AccordionProps$1, TooltipProps as TooltipProps$2, ChipProps as ChipProps$2, DividerProps as DividerProps$1 } from '@mui/material';
+import { ButtonProps as ButtonProps$1, IconButtonProps as IconButtonProps$1, MenuProps, AutocompleteProps, Autocomplete, TextFieldProps, SliderProps as SliderProps$1, ListProps as ListProps$1, ListItemProps as ListItemProps$1, IconProps as IconProps$1, DialogProps, PaginationProps as PaginationProps$1, LinkProps as LinkProps$1, TypographyProps, AccordionProps as AccordionProps$1, TooltipProps as TooltipProps$2, ChipProps as ChipProps$2, DividerProps as DividerProps$1 } from '@mui/material';
 import { IconName as IconName$1 } from '../_generated/client/index.mjs';
 import { DatePickerProps } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
@@ -132,15 +132,18 @@ interface IconPickerProps extends Omit<ButtonProps, "onChange" | "value"> {
 declare const IconPicker: react.ForwardRefExoticComponent<Omit<IconPickerProps, "ref"> & react.RefAttributes<HTMLDivElement>>;
 
 interface MenuButtonProps extends IconButtonProps {
+    anchorOrigin?: MenuProps["anchorOrigin"];
     bgColor?: CssColor;
     button?: (onOpen: (event: MouseEvent) => void) => ReactNode;
     children: ReactNode | ((onClose: () => void) => ReactNode);
     color?: CssColor;
     icon?: IconName;
     keepMounted?: boolean;
+    menuClassName?: string;
     menuWidth?: CSS["width"];
+    transformOrigin?: MenuProps["transformOrigin"];
 }
-declare const MenuButton: ({ bgColor, button, children, color, icon, keepMounted, menuWidth, ...props }: MenuButtonProps) => react_jsx_runtime.JSX.Element;
+declare const MenuButton: ({ anchorOrigin, bgColor, button, children, color, icon, keepMounted, menuClassName, menuWidth, transformOrigin, ...props }: MenuButtonProps) => react_jsx_runtime.JSX.Element;
 
 interface MultiActionButtonProps extends IconButtonProps {
 }
@@ -151,9 +154,9 @@ interface SortMenuProps extends Omit<ButtonProps, "onChange" | "value"> {
     hasHeader?: boolean;
     rows: {
         attribute: string;
-        label: string;
         icon: IconName;
         iconProps?: Partial<IconProps>;
+        label: string;
     }[];
     setValue: (value: {
         isDesc: boolean;
@@ -169,27 +172,26 @@ declare const SortMenu: ({ color, hasHeader, height, rows, setValue, value, widt
 
 interface SortRowProps {
     attribute: string;
-    label: string;
     icon: IconName;
     iconProps?: Partial<IconProps>;
+    label: string;
     setValue: SortMenuProps["setValue"];
     value: SortMenuProps["value"];
 }
-declare const SortRow: ({ attribute, label, icon, iconProps, setValue, value, }: SortRowProps) => react_jsx_runtime.JSX.Element;
+declare const SortRow: ({ attribute, icon, iconProps, label, setValue, value, }: SortRowProps) => react_jsx_runtime.JSX.Element;
 
 type AutoCompleteOption = {
     label: string;
     value: any;
 };
 declare const createAutoCompleteOptions: (values: any[]) => AutoCompleteOption[];
-interface AutoCompleteProps extends Omit<AutocompleteProps<any, any, any, any>, "fullWidth" | "onChange" | "options" | "renderInput"> {
-    inputProps?: InputProps;
+interface AutoCompleteProps<Option = AutoCompleteOption, Multiple extends boolean = false, DisableClearable extends boolean = false, FreeSolo extends boolean = false> extends Omit<AutocompleteProps<Option, Multiple, DisableClearable, FreeSolo>, "renderInput"> {
     header?: InputProps["header"];
-    onChange?: (val: any) => any;
-    options: AutoCompleteOption[];
+    inputProps?: InputProps;
+    renderInput?: AutocompleteProps<Option, Multiple, DisableClearable, FreeSolo>["renderInput"];
     required?: boolean;
 }
-declare const AutoComplete: react.ForwardRefExoticComponent<Omit<AutoCompleteProps, "ref"> & react.RefAttributes<HTMLDivElement>>;
+declare const AutoComplete: <Option = AutoCompleteOption, Multiple extends boolean = false, DisableClearable extends boolean = false, FreeSolo extends boolean = false>(props: AutoCompleteProps<Option, Multiple, DisableClearable, FreeSolo> & RefAttributes<HTMLDivElement>) => JSX.Element;
 
 type ChipOption = {
     label: string;
@@ -349,6 +351,7 @@ interface InputProps extends Omit<TextFieldProps, "color" | "fullWidth" | "helpe
     onEnter?: () => any;
     padding?: Padding;
     setValue?: (value: string) => any;
+    stopKeyPropagation?: boolean;
     textAlign?: CSS["textAlign"];
     textColor?: CssColor;
     value?: string;
@@ -450,6 +453,24 @@ type RangeWrapperProps = {
 };
 declare const RangeWrapper: react.ForwardRefExoticComponent<RangeWrapperProps & react.RefAttributes<HTMLDivElement>>;
 
+interface SliderMark {
+    label?: ReactNode;
+    value: number;
+}
+interface SliderProps extends Omit<SliderProps$1, "color" | "defaultValue" | "marks" | "onChange" | "onChangeCommitted" | "style" | "sx" | "value"> {
+    color?: CssColor;
+    flex?: CSS["flex"];
+    height?: CSS["height"];
+    margins?: Margins;
+    marks?: boolean | SliderMark[];
+    onCommit?: (value: number) => void;
+    padding?: Padding;
+    setValue?: (value: number) => void;
+    value: number;
+    width?: CSS["width"];
+}
+declare const Slider: react.ForwardRefExoticComponent<Omit<SliderProps, "ref"> & react.RefAttributes<HTMLSpanElement>>;
+
 interface TimeInputProps extends Omit<TimePickerProps<dayjs.Dayjs>, "label" | "onChange" | "value"> {
     inputProps?: Omit<Partial<InputProps>, "label" | "labelProps">;
     label?: InputProps["label"];
@@ -502,9 +523,9 @@ interface IconLayer {
 interface IconProps extends Omit<IconProps$1, "color" | "fontSize"> {
     color?: CssColor;
     layers?: IconLayer[];
+    margins?: Margins;
     name?: IconName & string;
     rotation?: number;
-    margins?: Margins;
     size?: number | string;
     viewProps?: Partial<Omit<ViewProps, "className" | "margins">>;
 }
@@ -566,12 +587,13 @@ declare const Modal: {
     Header: ({ children, className, justify, leftNode, rightNode, }: HeaderProps) => react_jsx_runtime.JSX.Element;
 };
 
-interface ProgressBarProps {
-    denominator: number;
+interface ProgressBarProps extends Pick<AriaAttributes, "aria-label" | "aria-labelledby"> {
+    denominator?: number;
     denominatorFormatter?: (num: number) => string;
     minWidth?: CSS["minWidth"];
-    numerator: number;
+    numerator?: number;
     numeratorFormatter?: (num: number) => string;
+    variant?: "determinate" | "indeterminate";
     viewProps?: ViewProps;
     withText?: boolean;
 }
@@ -581,8 +603,9 @@ interface ProgressCircleProps {
     bgColor?: CssColor;
     children?: ReactNode | ReactNode[];
     color?: CssColor;
-    percent: number;
+    percent?: number;
     size?: number | string;
+    variant?: "determinate" | "indeterminate";
 }
 declare const ProgressCircle: react.ForwardRefExoticComponent<ProgressCircleProps & react.RefAttributes<HTMLDivElement>>;
 
@@ -667,12 +690,12 @@ declare const getDataGridValueText: (value: DataGridValue) => string;
 
 interface DataGridHeaderProps<T extends object> extends Pick<DataGridProps<T>, "columns" | "expandableContent" | "expandColumnWidth" | "headerBorder" | "rowGap" | "textPreset"> {
     hasResizableColumns: boolean;
-    onColumnResizeStart: (column: DataGridProps<T>["columns"][number], startWidth: number, startClientX: number) => void;
     hasSorting: boolean;
+    onColumnResizeStart: (column: DataGridProps<T>["columns"][number], startWidth: number, startClientX: number) => void;
     onSort: (column: DataGridProps<T>["columns"][number]) => void;
     sort: DataGridProps<T>["initialSort"] | null;
 }
-declare const DataGridHeader: <T extends object>({ columns, expandableContent, expandColumnWidth, headerBorder, hasResizableColumns, hasSorting, onColumnResizeStart, onSort, rowGap, sort, textPreset, }: DataGridHeaderProps<T>) => react_jsx_runtime.JSX.Element;
+declare const DataGridHeader: <T extends object>({ columns, expandableContent, expandColumnWidth, hasResizableColumns, hasSorting, headerBorder, onColumnResizeStart, onSort, rowGap, sort, textPreset, }: DataGridHeaderProps<T>) => react_jsx_runtime.JSX.Element;
 
 interface DataGridRowProps<T extends object> extends Pick<DataGridProps<T>, "alternatingBgColor" | "alternatingColors" | "className" | "columns" | "defaultTextPreset" | "expandableContent" | "expandColumnWidth" | "getRowBgColor" | "isRowSelected" | "onRowClick" | "rowGap" | "selectedBgColor" | "selectedTextColor" | "textPreset"> {
     expandedRows: Set<number>;
@@ -693,9 +716,9 @@ interface PaginationProps extends Omit<PaginationProps$1, "onChange"> {
 declare const Pagination: react.ForwardRefExoticComponent<Omit<PaginationProps, "ref"> & react.RefAttributes<HTMLDivElement>>;
 
 interface TableColumn<T> {
+    className?: string;
     header: string;
     valueFunc: (row: T) => ReactNode;
-    className?: string;
     wrap?: boolean;
 }
 interface TableProps<T> {
@@ -703,11 +726,11 @@ interface TableProps<T> {
     columns: TableColumn<T>[];
     hasEmptyRows?: boolean;
     hasPagination?: boolean;
-    rowCountOptions?: number[];
     paginationClassName?: string;
+    rowCountOptions?: number[];
     rows: T[];
 }
-declare const Table: <T extends object>({ className, columns, hasEmptyRows, hasPagination, rowCountOptions, rows, paginationClassName, }: TableProps<T>) => react_jsx_runtime.JSX.Element;
+declare const Table: <T extends object>({ className, columns, hasEmptyRows, hasPagination, paginationClassName, rowCountOptions, rows, }: TableProps<T>) => react_jsx_runtime.JSX.Element;
 
 interface CenteredTextProps extends TextProps {
     color?: CssColor;
@@ -772,11 +795,11 @@ interface TextTruncation {
     truncationIndex: number;
 }
 interface TruncatedTextProps extends Omit<TextProps, "children"> {
+    ellipsis?: ReactNode;
     expanded?: boolean;
+    lineClamp?: number;
     maxLength: number;
     text: string;
-    ellipsis?: ReactNode;
-    lineClamp?: number;
     wordBoundaryRatio?: number;
 }
 interface TruncatedTextRemainderProps extends Omit<TextProps, "children"> {
@@ -786,7 +809,7 @@ interface TruncatedTextRemainderProps extends Omit<TextProps, "children"> {
 }
 declare const getTextTruncation: (text: string, maxLength: number, wordBoundaryRatio?: number) => TextTruncation;
 declare const TruncatedText: {
-    ({ expanded, maxLength, text, ellipsis, lineClamp, wordBoundaryRatio, display, overflow, overflowWrap, sx, textOverflow, wordBreak, ...textProps }: TruncatedTextProps): react_jsx_runtime.JSX.Element;
+    ({ className, display, ellipsis, expanded, lineClamp, maxLength, overflow, overflowWrap, sx, text, textOverflow, wordBoundaryRatio, wordBreak, ...textProps }: TruncatedTextProps): react_jsx_runtime.JSX.Element;
     Remainder({ maxLength, text, wordBoundaryRatio, ...textProps }: TruncatedTextRemainderProps): react_jsx_runtime.JSX.Element;
 };
 
@@ -1099,14 +1122,13 @@ interface UniformListProps extends ViewProps {
 }
 declare const UniformList: ({ children, uniformWidth, ...props }: UniformListProps) => react_jsx_runtime.JSX.Element;
 
-interface ViewProps extends HTMLAttributes<HTMLDivElement> {
+type ViewProps<Component extends keyof ReactHTML = "div"> = Omit<ComponentPropsWithoutRef<Component>, "align" | "height" | "width" | "wrap"> & {
     align?: CSS["alignItems"];
     bgColor?: CssColor;
-    borders?: Borders;
     borderRadiuses?: BorderRadiuses;
-    children?: ReactNode | ReactNode[];
-    className?: string;
+    borders?: Borders;
     column?: boolean;
+    component?: Component;
     cursor?: CSS["cursor"];
     display?: CSS["display"];
     flex?: CSS["flex"];
@@ -1125,8 +1147,33 @@ interface ViewProps extends HTMLAttributes<HTMLDivElement> {
     spacing?: CSS["marginRight"];
     width?: CSS["width"];
     wrap?: CSS["flexWrap"];
-}
-declare const View: react.ForwardRefExoticComponent<ViewProps & react.RefAttributes<HTMLDivElement>>;
+};
+declare const View: <Component extends keyof ReactHTML = "div">(props: Omit<react.PropsWithoutRef<react.ComponentProps<Component>>, "height" | "width" | "wrap" | "align"> & {
+    align?: CSS["alignItems"];
+    bgColor?: CssColor;
+    borderRadiuses?: BorderRadiuses;
+    borders?: Borders;
+    column?: boolean;
+    component?: Component;
+    cursor?: CSS["cursor"];
+    display?: CSS["display"];
+    flex?: CSS["flex"];
+    height?: CSS["height"];
+    justify?: CSS["justifyContent"];
+    margins?: Margins;
+    maxHeight?: CSS["maxHeight"];
+    maxWidth?: CSS["maxWidth"];
+    minHeight?: CSS["minHeight"];
+    minWidth?: CSS["minWidth"];
+    opacity?: CSS["opacity"];
+    overflow?: CSS["overflow"];
+    padding?: Padding;
+    position?: CSS["position"];
+    row?: boolean;
+    spacing?: CSS["marginRight"];
+    width?: CSS["width"];
+    wrap?: CSS["flexWrap"];
+} & RefAttributes<ElementRef<Component>>) => JSX.Element;
 
 declare const MuiProvider: ({ children, portalContainer, styleContainer, }: {
     children: React.ReactNode;
@@ -1134,4 +1181,4 @@ declare const MuiProvider: ({ children, portalContainer, styleContainer, }: {
     styleContainer?: Node;
 }) => react_jsx_runtime.JSX.Element;
 
-export { Accordion, AccordionGroup, type AccordionProps, ActivityModal, type ActivityModalProps, ActivityOperationCard, type ActivityOperationCardProps, AutoComplete, type AutoCompleteOption, type AutoCompleteProps, Button, type ButtonProps, ButtonWithInset, type ButtonWithInsetProps, Card, CardBase, CardGrid, type CardGridProps, type CardProps, CenteredText, type CenteredTextProps, Checkbox, type CheckboxProps, Chip, ChipInput, type ChipInputProps, type ChipOption, type ChipProps, ColorPicker, type ColorPickerProps, Comp, ConditionalWrap, ConfirmModal, type ConfirmModalProps, type ContainerProps$1 as ContainerProps, type ContentProps, ContextMenu, type ContextMenuProps, DEFAULT_INPUT_HEADER_PROPS, DENSE_INPUT_PADDING, DataGrid, type DataGridCellLayoutProps, type DataGridColumn, type DataGridColumnConfig, type DataGridColumnKey, DataGridHeader, type DataGridHeaderProps, type DataGridProps, type DataGridRender, type DataGridRenderContext, DataGridRow, type DataGridRowData, type DataGridRowProps, type DataGridSort, type DataGridSortDirection, type DataGridValue, DateDetail, type DateDetailProps, DateInput, type DateInputProps, DateRange, type DateRangeProps, Detail, type DetailProps, DetailRows, DisabledOverlay, type DisabledOverlayProps, Divider, type DividerProps, Dropdown, type DropdownOption, type DropdownProps, FilterHeader, type FilterHeaderProps, FilterMenu, type FilterMenuProps, type FooterProps$1 as FooterProps, HeaderContent, type HeaderContentProps, type HeaderProps, HeaderWrapper, type HeaderWrapperProps, Icon, IconButton, type IconButtonProps, type IconLayer, type IconName, IconPicker, type IconPickerProps, type IconProps, Input, type InputProps, Link, List, ListItem, type ListItemProps, type ListProps, LoadingOverlay, type LoadingOverlayProps, LogOpsInput, type LogOpsInputProps, MULTI_INPUT_ROW_HEIGHT, MenuButton, type MenuButtonProps, Modal, MuiProvider, MultiActionButton, type MultiActionButtonProps, MultiInput, MultiInputList, type MultiInputListProps, type MultiInputProps, MultiInputRow, type MultiInputRowOption, type MultiInputRowProps, NumInput, type NumInputProps, NumRange, type NumRangeProps, Pagination, type PaginationProps, ProgressBar, type ProgressBarProps, ProgressCircle, type ProgressCircleProps, Radio, type RadioProps, RangeWrapper, type RangeWrapperProps, SideScroller, SortMenu, type SortMenuProps, SortRow, type SortRowProps, PRESETS as TEXT_PRESETS, TabContainer, type TabContainerProps, Table, type TableColumn, type TableProps, Text, type TextPreset, type TextProps, type TextTruncation, TimeInput, type TimeInputProps, Tooltip, type TooltipProps$1 as TooltipProps, TooltipWrapper, type TooltipWrapperProps, TruncatedText, type TruncatedTextProps, type TruncatedTextRemainderProps, UniformList, type UniformListProps, View, type ViewProps, clampDataGridColumnWidth, compareDataGridValues, createAutoCompleteOptions, getDataGridCellLayout, getDataGridColumnValue, getDataGridValueText, getTextTruncation, useAccordionGroup, useAccordionGroupSection };
+export { Accordion, AccordionGroup, type AccordionProps, ActivityModal, type ActivityModalProps, ActivityOperationCard, type ActivityOperationCardProps, AutoComplete, type AutoCompleteOption, type AutoCompleteProps, Button, type ButtonProps, ButtonWithInset, type ButtonWithInsetProps, Card, CardBase, CardGrid, type CardGridProps, type CardProps, CenteredText, type CenteredTextProps, Checkbox, type CheckboxProps, Chip, ChipInput, type ChipInputProps, type ChipOption, type ChipProps, ColorPicker, type ColorPickerProps, Comp, ConditionalWrap, ConfirmModal, type ConfirmModalProps, type ContainerProps$1 as ContainerProps, type ContentProps, ContextMenu, type ContextMenuProps, DEFAULT_INPUT_HEADER_PROPS, DENSE_INPUT_PADDING, DataGrid, type DataGridCellLayoutProps, type DataGridColumn, type DataGridColumnConfig, type DataGridColumnKey, DataGridHeader, type DataGridHeaderProps, type DataGridProps, type DataGridRender, type DataGridRenderContext, DataGridRow, type DataGridRowData, type DataGridRowProps, type DataGridSort, type DataGridSortDirection, type DataGridValue, DateDetail, type DateDetailProps, DateInput, type DateInputProps, DateRange, type DateRangeProps, Detail, type DetailProps, DetailRows, DisabledOverlay, type DisabledOverlayProps, Divider, type DividerProps, Dropdown, type DropdownOption, type DropdownProps, FilterHeader, type FilterHeaderProps, FilterMenu, type FilterMenuProps, type FooterProps$1 as FooterProps, HeaderContent, type HeaderContentProps, type HeaderProps, HeaderWrapper, type HeaderWrapperProps, Icon, IconButton, type IconButtonProps, type IconLayer, type IconName, IconPicker, type IconPickerProps, type IconProps, Input, type InputProps, Link, List, ListItem, type ListItemProps, type ListProps, LoadingOverlay, type LoadingOverlayProps, LogOpsInput, type LogOpsInputProps, MULTI_INPUT_ROW_HEIGHT, MenuButton, type MenuButtonProps, Modal, MuiProvider, MultiActionButton, type MultiActionButtonProps, MultiInput, MultiInputList, type MultiInputListProps, type MultiInputProps, MultiInputRow, type MultiInputRowOption, type MultiInputRowProps, NumInput, type NumInputProps, NumRange, type NumRangeProps, Pagination, type PaginationProps, ProgressBar, type ProgressBarProps, ProgressCircle, type ProgressCircleProps, Radio, type RadioProps, RangeWrapper, type RangeWrapperProps, SideScroller, Slider, type SliderMark, type SliderProps, SortMenu, type SortMenuProps, SortRow, type SortRowProps, PRESETS as TEXT_PRESETS, TabContainer, type TabContainerProps, Table, type TableColumn, type TableProps, Text, type TextPreset, type TextProps, type TextTruncation, TimeInput, type TimeInputProps, Tooltip, type TooltipProps$1 as TooltipProps, TooltipWrapper, type TooltipWrapperProps, TruncatedText, type TruncatedTextProps, type TruncatedTextRemainderProps, UniformList, type UniformListProps, View, type ViewProps, clampDataGridColumnWidth, compareDataGridValues, createAutoCompleteOptions, getDataGridCellLayout, getDataGridColumnValue, getDataGridValueText, getTextTruncation, useAccordionGroup, useAccordionGroupSection };

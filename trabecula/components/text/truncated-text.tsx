@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { Text, TextProps } from "trabecula/components";
-import { CSS } from "trabecula/utils/client";
+import { CSS, makeClasses } from "trabecula/utils/client";
 
 export interface TextTruncation {
   isTruncated: boolean;
@@ -10,11 +10,11 @@ export interface TextTruncation {
 }
 
 export interface TruncatedTextProps extends Omit<TextProps, "children"> {
+  ellipsis?: ReactNode;
   expanded?: boolean;
+  lineClamp?: number;
   maxLength: number;
   text: string;
-  ellipsis?: ReactNode;
-  lineClamp?: number;
   wordBoundaryRatio?: number;
 }
 
@@ -52,42 +52,41 @@ export const getTextTruncation = (
 };
 
 export const TruncatedText = ({
-  expanded = false,
-  maxLength,
-  text,
-  ellipsis = "...",
-  lineClamp = 1,
-  wordBoundaryRatio,
+  className,
   display,
+  ellipsis = "...",
+  expanded = false,
+  lineClamp = 1,
+  maxLength,
   overflow,
   overflowWrap,
   sx,
+  text,
   textOverflow,
+  wordBoundaryRatio,
   wordBreak,
   ...textProps
 }: TruncatedTextProps) => {
+  const { css, cx } = useClasses({ lineClamp });
+
   const { isTruncated, preview } = getTextTruncation(text, maxLength, wordBoundaryRatio);
   const shouldClamp = lineClamp > 0;
 
   return (
     <Text
+      className={cx(!sx && css.text, className)}
       display={display ?? (shouldClamp ? ("-webkit-box" as CSS["display"]) : undefined)}
       overflow={overflow ?? (shouldClamp ? "hidden" : undefined)}
       overflowWrap={overflowWrap ?? "break-word"}
       textOverflow={textOverflow ?? (shouldClamp ? "ellipsis" : undefined)}
       wordBreak={wordBreak ?? "break-word"}
       sx={
-        shouldClamp
-          ? {
-              WebkitBoxOrient: "vertical",
-              WebkitLineClamp: lineClamp,
-              ...sx,
-            }
-          : sx
+        sx && shouldClamp ? { WebkitBoxOrient: "vertical", WebkitLineClamp: lineClamp, ...sx } : sx
       }
       {...textProps}
     >
       {preview}
+
       {!expanded && isTruncated ? ellipsis : null}
     </Text>
   );
@@ -105,3 +104,12 @@ TruncatedText.Remainder = ({
 
   return <Text {...textProps}>{remainder}</Text>;
 };
+
+interface ClassesProps extends Pick<TruncatedTextProps, "lineClamp"> {}
+
+const useClasses = makeClasses((props: ClassesProps) => ({
+  text: {
+    WebkitBoxOrient: props.lineClamp > 0 ? "vertical" : undefined,
+    WebkitLineClamp: props.lineClamp > 0 ? props.lineClamp : undefined,
+  },
+}));
