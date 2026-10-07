@@ -30,7 +30,6 @@ export interface DataGridRowProps<T extends object> extends Pick<
   | "textPreset"
 > {
   expandedRows: Set<number>;
-  expansionIndex: number;
   index: number;
   row: T;
   setExpandedRows: React.Dispatch<Set<number>>;
@@ -45,7 +44,6 @@ export const DataGridRow = <T extends object>({
   expandableContent,
   expandedRows,
   expandColumnWidth,
-  expansionIndex,
   getRowBgColor,
   index,
   isRowSelected,
@@ -59,7 +57,7 @@ export const DataGridRow = <T extends object>({
 }: DataGridRowProps<T>) => {
   const { css, cx } = useClasses(null);
 
-  const isExpanded = expandedRows.has(expansionIndex);
+  const isExpanded = expandedRows.has(index);
   const isSelected = isRowSelected?.(row, index) ?? false;
 
   const getBackgroundColor = () =>
@@ -73,8 +71,8 @@ export const DataGridRow = <T extends object>({
   const handleRowExpand = () => {
     const newExpandedRows = new Set(expandedRows);
 
-    if (newExpandedRows.has(expansionIndex)) newExpandedRows.delete(expansionIndex);
-    else newExpandedRows.add(expansionIndex);
+    if (newExpandedRows.has(index)) newExpandedRows.delete(index);
+    else newExpandedRows.add(index);
 
     setExpandedRows(newExpandedRows);
   };

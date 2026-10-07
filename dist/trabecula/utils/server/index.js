@@ -324,7 +324,13 @@ var removeEmptyFolders = (..._0) => __async(null, [..._0], function* (dirPath = 
   } else {
     const emptyFolders = /* @__PURE__ */ new Set();
     for (const dir of dirPathsDeepToShallow) {
-      const entries = yield import_fs.promises.readdir(dir, { withFileTypes: true });
+      let entries;
+      try {
+        entries = yield import_fs.promises.readdir(dir, { withFileTypes: true });
+      } catch (error) {
+        if (error.code === "ENOENT") continue;
+        throw error;
+      }
       if (entries.every(
         (entry) => entry.isDirectory() && emptyFolders.has(import_path.default.join(dir, entry.name))
       ))

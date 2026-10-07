@@ -61,10 +61,6 @@ export const DataGrid = <T extends object = DataGridRowData>({
   }, [isExpanded]);
 
   useEffect(() => {
-    setExpandedRows(new Set());
-  }, [data]);
-
-  useEffect(() => {
     if (!columnResize) return;
 
     const bodyCursor = document.body.style.cursor;
@@ -224,9 +220,9 @@ export const DataGrid = <T extends object = DataGridRowData>({
         </View>
       ) : (
         <View column width="100%">
-          {displayedData.map(({ index: sourceIndex, row }, index) => (
+          {displayedData.map(({ row }, index) => (
             <DataGridRow
-              key={sourceIndex}
+              key={index}
               alternatingBgColor={alternatingBgColor}
               alternatingColors={alternatingColors}
               className={className}
@@ -235,7 +231,6 @@ export const DataGrid = <T extends object = DataGridRowData>({
               expandableContent={expandableContent}
               expandedRows={expandedRows}
               expandColumnWidth={expandColumnWidth}
-              expansionIndex={sourceIndex}
               getRowBgColor={getRowBgColor}
               index={index}
               isRowSelected={isRowSelected}

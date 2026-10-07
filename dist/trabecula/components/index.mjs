@@ -82,7 +82,7 @@ import {
   getTextTruncation,
   useAccordionGroup,
   useAccordionGroupSection
-} from "../chunk-JDFMCVMA.mjs";
+} from "../chunk-2TMCQJOS.mjs";
 import "../chunk-M7SRQWZA.mjs";
 import "../chunk-SSGU2HWC.mjs";
 import "../chunk-DM4QYMVJ.mjs";

@@ -65,7 +65,6 @@ export const Image = ({
   const handleMouseLeave = () => {
     setIsHovered(false);
     setImagePos(null);
-    setHasError(false);
 
     if (!autoAnimate) setThumbIndex(0);
   };

@@ -1,4 +1,4 @@
-import { promises as fs } from "fs";
+import { Dirent, promises as fs } from "fs";
 import path from "path";
 import { fdir } from "fdir";
 import _md5File from "md5-file";
@@ -95,7 +95,14 @@ export const removeEmptyFolders = async (
     const emptyFolders = new Set<string>();
 
     for (const dir of dirPathsDeepToShallow) {
-      const entries = await fs.readdir(dir, { withFileTypes: true });
+      let entries: Dirent[];
+
+      try {
+        entries = await fs.readdir(dir, { withFileTypes: true });
+      } catch (error) {
+        if (error.code === "ENOENT") continue;
+        throw error;
+      }
 
       if (
         entries.every(

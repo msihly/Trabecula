@@ -8083,8 +8083,10 @@ var useClasses19 = makeClasses((props) => {
   const rootSize = !props.hasLayers ? void 0 : defaultCssValue(props.layerSize);
   return {
     icon: {
-      color: props.color,
-      fontSize: props.size
+      "&.MuiIcon-root": {
+        color: props.color,
+        fontSize: props.size
+      }
     },
     layer: {
       left: "50%",

@@ -3000,8 +3000,10 @@ var useClasses19 = makeClasses((props) => {
   const rootSize = !props.hasLayers ? void 0 : defaultCssValue(props.layerSize);
   return {
     icon: {
-      color: props.color,
-      fontSize: props.size
+      "&.MuiIcon-root": {
+        color: props.color,
+        fontSize: props.size
+      }
     },
     layer: {
       left: "50%",
@@ -3407,9 +3409,6 @@ var DataGrid = ({
     if (isExpanded === false) setExpandedRows(/* @__PURE__ */ new Set());
   }, [isExpanded]);
   useEffect9(() => {
-    setExpandedRows(/* @__PURE__ */ new Set());
-  }, [data]);
-  useEffect9(() => {
     if (!columnResize) return;
     const bodyCursor = document.body.style.cursor;
     const bodyUserSelect = document.body.style.userSelect;
@@ -3508,7 +3507,7 @@ var DataGrid = ({
         textPreset
       }
     ),
-    !displayedData.length ? /* @__PURE__ */ jsx40(View, { display: "flex", justify: emptyJustify, children: /* @__PURE__ */ jsx40(Text, { preset: textPreset, color: emptyColor, children: emptyMessage }) }) : /* @__PURE__ */ jsx40(View, { column: true, width: "100%", children: displayedData.map(({ index: sourceIndex, row }, index) => /* @__PURE__ */ jsx40(
+    !displayedData.length ? /* @__PURE__ */ jsx40(View, { display: "flex", justify: emptyJustify, children: /* @__PURE__ */ jsx40(Text, { preset: textPreset, color: emptyColor, children: emptyMessage }) }) : /* @__PURE__ */ jsx40(View, { column: true, width: "100%", children: displayedData.map(({ row }, index) => /* @__PURE__ */ jsx40(
       DataGridRow,
       {
         alternatingBgColor,
@@ -3519,7 +3518,6 @@ var DataGrid = ({
         expandableContent,
         expandedRows,
         expandColumnWidth,
-        expansionIndex: sourceIndex,
         getRowBgColor,
         index,
         isRowSelected,
@@ -3531,7 +3529,7 @@ var DataGrid = ({
         setExpandedRows,
         textPreset
       },
-      sourceIndex
+      index
     )) }),
     !hasPagination ? null : /* @__PURE__ */ jsx40(Pagination, { inline: true, count: pageCount, onChange: setPage, page: currentPage })
   ] });
@@ -3748,7 +3746,6 @@ var DataGridRow = ({
   expandableContent,
   expandedRows,
   expandColumnWidth,
-  expansionIndex,
   getRowBgColor,
   index,
   isRowSelected,
@@ -3762,7 +3759,7 @@ var DataGridRow = ({
 }) => {
   var _a;
   const { css, cx } = useClasses26(null);
-  const isExpanded = expandedRows.has(expansionIndex);
+  const isExpanded = expandedRows.has(index);
   const isSelected = (_a = isRowSelected == null ? void 0 : isRowSelected(row, index)) != null ? _a : false;
   const getBackgroundColor = () => {
     var _a2;
@@ -3770,8 +3767,8 @@ var DataGridRow = ({
   };
   const handleRowExpand = () => {
     const newExpandedRows = new Set(expandedRows);
-    if (newExpandedRows.has(expansionIndex)) newExpandedRows.delete(expansionIndex);
-    else newExpandedRows.add(expansionIndex);
+    if (newExpandedRows.has(index)) newExpandedRows.delete(index);
+    else newExpandedRows.add(index);
     setExpandedRows(newExpandedRows);
   };
   const renderCell = (column) => {
@@ -5360,7 +5357,6 @@ var Image = ({
   const handleMouseLeave = () => {
     setIsHovered(false);
     setImagePos(null);
-    setHasError(false);
     if (!autoAnimate) setThumbIndex(0);
   };
   const handleMouseMove = (event) => {
@@ -6586,4 +6582,4 @@ export {
   View,
   MuiProvider
 };
-//# sourceMappingURL=chunk-JDFMCVMA.mjs.map
+//# sourceMappingURL=chunk-2TMCQJOS.mjs.map

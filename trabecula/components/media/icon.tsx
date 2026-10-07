@@ -107,8 +107,10 @@ const useClasses = makeClasses((props: ClassesProps) => {
 
   return {
     icon: {
-      color: props.color,
-      fontSize: props.size,
+      "&.MuiIcon-root": {
+        color: props.color,
+        fontSize: props.size,
+      },
     },
     layer: {
       left: "50%",
