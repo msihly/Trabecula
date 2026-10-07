@@ -1,8 +1,7 @@
 import { Text, TextProps, View, ViewProps } from "trabecula/components";
-import { colors, CssColor } from "trabecula/utils/client";
+import { colors } from "trabecula/utils/client";
 
 export interface CenteredTextProps extends TextProps {
-  color?: CssColor;
   text: string;
   viewProps?: Partial<ViewProps>;
 }

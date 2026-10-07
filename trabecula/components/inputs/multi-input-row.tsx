@@ -1,13 +1,10 @@
-import { Button, Text, View } from "trabecula/components";
+import { Button, DropdownOption, MultiInputListProps, Text, View } from "trabecula/components";
 import { colors, CssColor, makeClasses } from "trabecula/utils/client";
 import { _CONSTANTS } from "trabecula/utils/common";
 
 export const MULTI_INPUT_ROW_HEIGHT = 35;
 
-export type MultiInputRowOption<T = string> = {
-  label: string;
-  value: T;
-};
+export type MultiInputRowOption<T = string> = DropdownOption<T>;
 
 export interface MultiInputRowProps<T> {
   bgColor?: CssColor;
@@ -15,19 +12,16 @@ export interface MultiInputRowProps<T> {
   leftNode?: React.ReactNode;
   onClick?: (value: T) => void;
   rightNode?: React.ReactNode;
-  search: {
-    onChange: (val: T[]) => void;
-    value: T[];
-  };
+  search: MultiInputListProps<T>["search"];
   style?: React.CSSProperties;
   value: T;
   valueExtractor?: (value: T) => string;
 }
 
 export const MultiInputRow = <T,>({ bgColor, ...props }: MultiInputRowProps<T>) => {
-  bgColor = bgColor || colors.foreground;
   const hasClick = !!props.onClick;
-  const { css } = useClasses({ bgColor, hasClick });
+
+  const { css } = useClasses({ bgColor: bgColor || colors.foreground, hasClick });
 
   const value = props.valueExtractor?.(props.value) ?? props.value;
 

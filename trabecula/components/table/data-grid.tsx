@@ -40,7 +40,9 @@ export const DataGrid = <T extends object = DataGridRowData>({
   isExpanded,
   isRowSelected,
   onRowClick,
+  rowAlign = "start",
   rowGap = "0.5rem",
+  rowPadding = { all: "0.3rem" },
   rowsPerPage = 15,
   selectedBgColor = colors.custom.blue,
   selectedTextColor = colors.custom.white,
@@ -236,7 +238,9 @@ export const DataGrid = <T extends object = DataGridRowData>({
               isRowSelected={isRowSelected}
               onRowClick={onRowClick}
               row={row}
+              rowAlign={rowAlign}
               rowGap={rowGap}
+              rowPadding={rowPadding}
               selectedBgColor={selectedBgColor}
               selectedTextColor={selectedTextColor}
               setExpandedRows={setExpandedRows}

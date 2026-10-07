@@ -15,10 +15,10 @@ export interface ListItemProps extends Omit<MuiListItemProps, "children"> {
   children?: ReactNode;
   color?: CssColor;
   icon?: IconName;
-  iconProps?: Partial<IconProps>;
   iconEnd?: IconName;
   iconEndMargins?: Margins;
   iconMargins?: Margins;
+  iconProps?: Partial<IconProps>;
   onClick?: (event?: MouseEvent) => void;
   text: ReactNode;
 }
@@ -30,10 +30,10 @@ export const ListItem = ({
   children,
   color,
   icon,
-  iconProps,
   iconEnd,
   iconEndMargins,
   iconMargins,
+  iconProps,
   onClick,
   text,
   ...props
@@ -49,7 +49,7 @@ export const ListItem = ({
       tooltipProps={{
         arrow: false,
         bgColor: Color(colors.custom.black).fade(0.03).hex() as CssColor,
-        classes: { tooltip: css.tooltip },
+        padding: 0,
         placement: "right-start",
         PopperProps: { className: css.tooltipPopper },
       }}
@@ -93,10 +93,6 @@ const useClasses = makeClasses((props: ClassesProps) => ({
   },
   text: {
     color: props.color,
-  },
-  tooltip: {
-    margin: 0,
-    padding: 0,
   },
   tooltipPopper: {
     marginLeft: "-0.75rem !important",

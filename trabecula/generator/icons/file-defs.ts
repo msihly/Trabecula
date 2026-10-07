@@ -3,7 +3,6 @@ import { getLigaturesFromPath } from "ligatures";
 import { Fmt } from "trabecula/utils/common";
 
 export const FILE_DEF_ICONS: FileDef = {
-  name: "icons",
   makeFile: async () => {
     const definitions = await Promise.all(
       [
@@ -29,4 +28,5 @@ export const FILE_DEF_ICONS: FileDef = {
       export const ICON_NAMES = Object.keys(ICON_LIGATURES).sort() as readonly IconName[];\n
       export const MUI_ICONS = Object.keys(MUI_ICON_LIGATURES).sort() as readonly (keyof typeof MUI_ICON_LIGATURES)[];`;
   },
+  name: "icons",
 };

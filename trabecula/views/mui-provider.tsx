@@ -1,8 +1,12 @@
-import { StrictMode, useRef } from "react";
+import { createContext, StrictMode, useContext, useRef } from "react";
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 import { createTheme, ThemeProvider } from "@mui/material";
 import { TssCacheProvider } from "tss-react";
+
+const PortalContainerContext = createContext<HTMLElement | undefined>(undefined);
+
+export const usePortalContainer = () => useContext(PortalContainerContext);
 
 export const MuiProvider = ({
   children,
@@ -34,7 +38,11 @@ export const MuiProvider = ({
     <StrictMode>
       <CacheProvider value={muiCacheRef.current}>
         <TssCacheProvider value={tssCacheRef.current}>
-          <ThemeProvider theme={themeRef.current}>{children}</ThemeProvider>
+          <ThemeProvider theme={themeRef.current}>
+            <PortalContainerContext.Provider value={portalContainer}>
+              {children}
+            </PortalContainerContext.Provider>
+          </ThemeProvider>
         </TssCacheProvider>
       </CacheProvider>
     </StrictMode>

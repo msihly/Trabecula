@@ -4,7 +4,14 @@ import {
   useRef,
   useState,
 } from "react";
-import { DataGridProps, getDataGridCellLayout, Icon, Text, View } from "trabecula/components";
+import {
+  dataGridCellClasses,
+  DataGridProps,
+  getDataGridCellLayout,
+  Icon,
+  Text,
+  View,
+} from "trabecula/components";
 import { colors, makeClasses } from "trabecula/utils/client";
 
 export interface DataGridHeaderProps<T extends object> extends Pick<
@@ -137,12 +144,7 @@ export const DataGridHeader = <T extends object>({
 };
 
 const useClasses = makeClasses({
-  cell: {
-    "& > *": {
-      maxWidth: "100%",
-      minWidth: "0 !important",
-    },
-  },
+  cell: dataGridCellClasses.cell,
   resizeHandle: {
     bottom: 0,
     right: 0,
@@ -152,13 +154,5 @@ const useClasses = makeClasses({
       background: colors.custom.blue,
     },
   },
-  noWrapCell: {
-    "& .MuiTypography-root": {
-      display: "block",
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-      whiteSpace: "nowrap",
-      width: "100%",
-    },
-  },
+  noWrapCell: dataGridCellClasses.noWrapCell,
 });

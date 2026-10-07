@@ -187,8 +187,14 @@ var sortArray = (arr, key, isDesc = true, isNumber = false) => {
   };
   return [...arr].sort(sortFn);
 };
-var splitArray = (arr, filterFn) => arr.reduce((acc, cur) => (acc[+!filterFn(cur)].push(cur), acc), [[], []]);
-var sumArray = (arr, fn) => arr.reduce((acc, cur) => acc += fn(cur), 0);
+var splitArray = (arr, filterFn) => arr.reduce(
+  (acc, cur) => {
+    acc[+!filterFn(cur)].push(cur);
+    return acc;
+  },
+  [[], []]
+);
+var sumArray = (arr, fn) => arr.reduce((acc, cur) => acc + fn(cur), 0);
 var uniqueArrayFilter = (...arrays) => {
   const all = arrays.flat();
   const duplicates = /* @__PURE__ */ new Set();
@@ -561,10 +567,14 @@ var secondsToDuration = (input) => {
 var import_es_toolkit = require("es-toolkit");
 var import_compat = require("es-toolkit/compat");
 var attempt = (fn, retries = 2, delay = 1e3) => __async(null, null, function* () {
-  return retries > 0 ? yield fn().catch((error) => __async(null, null, function* () {
+  if (retries <= 0) return fn();
+  try {
+    return yield fn();
+  } catch (error) {
     console.error(`Function failed, error: ${error}. Retrying after ${delay}ms...`);
-    return sleep(delay).then(() => attempt(fn, retries - 1, delay));
-  })) : fn();
+    yield sleep(delay);
+    return attempt(fn, retries - 1, delay);
+  }
 });
 var convertNestedKeys = (updates) => {
   const result = {};

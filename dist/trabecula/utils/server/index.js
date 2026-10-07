@@ -277,7 +277,10 @@ var createTreeNode = (dirPath, tree) => {
   if (remainingDirNames.length > 0)
     createTreeNode(import_path.default.join(...remainingDirNames), (treeNode != null ? treeNode : tree[tree.length - 1]).children);
 };
-var createTree = (paths) => paths.reduce((acc, cur) => (createTreeNode(cur, acc), acc), []);
+var createTree = (paths) => paths.reduce((acc, cur) => {
+  createTreeNode(cur, acc);
+  return acc;
+}, []);
 var deleteFile = (path3, copiedPath) => handleErrors(() => __async(null, null, function* () {
   if (!(yield checkFileExists(path3))) return false;
   if (copiedPath && !(yield checkFileExists(copiedPath)))

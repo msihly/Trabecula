@@ -140,7 +140,7 @@ export const Pagination = Comp(
                 text="Jump"
                 icon="Send"
                 onClick={handleJump}
-                disabled={!Number.isInteger(jumpPage) || jumpPage < 1 || jumpPage > count}
+                disabled={hasError}
                 color={colors.custom.blue}
               />
             </Modal.Footer>

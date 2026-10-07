@@ -36,7 +36,6 @@ export interface InputProps extends Omit<
   background?: CssColor;
   borderRadiuses?: BorderRadiuses;
   borders?: Borders;
-  className?: string;
   color?: CssColor;
   dense?: boolean;
   flex?: CSS["flex"];

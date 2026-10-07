@@ -83,9 +83,7 @@ export const useElementResize = (ref: MutableRefObject<any>, condition?: any) =>
 export const useForceUpdate = () => {
   const [, setTick] = useState(0);
 
-  const update = useCallback(() => setTick((tick) => tick + 1), []);
-
-  return update;
+  return useCallback(() => setTick((tick) => tick + 1), []);
 };
 
 export const useLazyLoad = (

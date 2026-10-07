@@ -6,7 +6,6 @@ export interface DetailProps extends ViewProps {
   emptyValueText?: string;
   label: ReactNode;
   labelProps?: Partial<TextProps>;
-  overflow?: CSS["overflow"];
   tooltip?: ReactNode;
   value: ReactNode;
   valueProps?: Partial<TextProps>;

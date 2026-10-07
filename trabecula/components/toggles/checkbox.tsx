@@ -24,9 +24,9 @@ export interface CheckboxProps {
   color?: CssColor;
   disabled?: boolean;
   flex?: CSS["flex"];
+  icon?: ReactNode;
   indeterminate?: boolean;
   indeterminateColor?: CssColor;
-  icon?: ReactNode;
   label?: ReactNode;
   labelProps?: Omit<Partial<TextProps>, "children">;
   margins?: Margins;
@@ -49,9 +49,9 @@ export const Checkbox = ({
   color = colors.custom.blue,
   disabled,
   flex = 1,
+  icon,
   indeterminate,
   indeterminateColor,
-  icon,
   label,
   labelProps,
   margins = { all: 0 },

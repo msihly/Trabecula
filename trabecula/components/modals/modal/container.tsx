@@ -36,8 +36,9 @@ export const Container = ({
 }: ContainerProps) => {
   const { css, cx } = useClasses({ height, maxHeight, maxWidth, width });
 
-  const handleClose = (_, reason: "backdropClick" | "escapeKeyDown") =>
-    (reason === "backdropClick" ? closeOnBackdrop : true) && onClose?.();
+  const handleClose = (_, reason: "backdropClick" | "escapeKeyDown") => {
+    if (reason !== "backdropClick" || closeOnBackdrop) onClose?.();
+  };
 
   return (
     <Dialog

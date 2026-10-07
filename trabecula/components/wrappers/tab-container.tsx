@@ -106,14 +106,10 @@ export const TabContainer = ({
   );
 };
 
-interface ClassesProps {
-  borderRadius: CSS["borderRadius"];
-  color: CSS["color"];
-  maxWidth: CSS["maxWidth"];
-  minHeight: CSS["minHeight"];
-  tabHeight: CSS["height"];
-  withBorder: boolean;
-}
+interface ClassesProps extends Pick<
+  TabContainerProps,
+  "borderRadius" | "color" | "maxWidth" | "minHeight" | "tabHeight" | "withBorder"
+> {}
 
 const useClasses = makeClasses((props: ClassesProps) => ({
   content: {

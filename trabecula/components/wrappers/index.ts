@@ -6,6 +6,7 @@ export * from "./conditional";
 export * from "./context-menu";
 export * from "./disabled-overlay";
 export * from "./divider";
+export * from "./drop-overlay";
 export * from "./header";
 export * from "./header-content";
 export * from "./loading-overlay";

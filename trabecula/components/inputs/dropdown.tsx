@@ -103,6 +103,23 @@ export function Dropdown<T = string>({
   withValueTest = false,
   ...props
 }: DropdownProps<T>) {
+  const resolvedLabel = label ?? header;
+  const resolvedHeader =
+    typeof resolvedLabel === "string" && required ? `${resolvedLabel} *` : resolvedLabel;
+  const committedLabel =
+    value === ""
+      ? ""
+      : (options.find((option) => option.value === value)?.label ??
+        (freeSolo && typeof value === "string" ? value : ""));
+
+  const [inputValue, setInputValue] = useState(committedLabel);
+  const [valueOption, setValueOption] = useState<DropdownOption<T> | null>(null);
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isTypingRef = useRef(false);
+
+  const { width: inputWidth } = useElementResize(containerRef);
+
   const { css, cx } = useClasses({
     dense,
     inputFontSize,
@@ -124,25 +141,9 @@ export function Dropdown<T = string>({
     menuItemSelectedBgColor,
     paperBorder,
     paperBorderRadius,
+    paperWidth: props.width || inputWidth,
     textColor,
   });
-
-  const resolvedLabel = label ?? header;
-  const resolvedHeader =
-    typeof resolvedLabel === "string" && required ? `${resolvedLabel} *` : resolvedLabel;
-  const committedLabel =
-    value === ""
-      ? ""
-      : (options.find((option) => option.value === value)?.label ??
-        (freeSolo && typeof value === "string" ? value : ""));
-
-  const [inputValue, setInputValue] = useState(committedLabel);
-  const [valueOption, setValueOption] = useState<DropdownOption<T> | null>(null);
-
-  const containerRef = useRef<HTMLDivElement>(null);
-  const isTypingRef = useRef(false);
-
-  const { width: inputWidth } = useElementResize(containerRef);
 
   useEffect(() => {
     const matched =
@@ -277,15 +278,7 @@ export function Dropdown<T = string>({
         autoHighlight={autoHighlight}
         autoSelect={autoSelect}
         className={css.autocomplete}
-        componentsProps={{
-          paper: {
-            className: css.paper,
-            sx: {
-              maxWidth: props.width || inputWidth,
-              minWidth: props.width || inputWidth,
-            },
-          },
-        }}
+        componentsProps={{ paper: { className: css.paper } }}
         disableClearable={!withClearButton}
         disabled={disabled}
         filterOptions={filterOptions}
@@ -331,7 +324,9 @@ interface ClassesProps extends Pick<
   | "paperBorder"
   | "paperBorderRadius"
   | "textColor"
-> {}
+> {
+  paperWidth?: CSS["width"];
+}
 
 const useClasses = makeClasses((props: ClassesProps) => {
   const inputPadding = props.inputPadding ?? (props.dense ? DENSE_INPUT_PADDING : undefined);
@@ -401,6 +396,8 @@ const useClasses = makeClasses((props: ClassesProps) => {
     paper: {
       border: props.paperBorder,
       borderRadius: props.paperBorderRadius,
+      maxWidth: props.paperWidth,
+      minWidth: props.paperWidth,
     },
   };
 });

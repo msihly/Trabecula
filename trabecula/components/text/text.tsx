@@ -67,9 +67,9 @@ export interface TextProps extends Omit<
   overflow?: CSS["overflow"];
   overflowWrap?: CSS["overflowWrap"];
   preset?: TextPreset;
+  textOverflow?: CSS["textOverflow"];
   tooltip?: TooltipProps["title"];
   tooltipProps?: Partial<TooltipProps>;
-  textOverflow?: CSS["textOverflow"];
   whiteSpace?: CSS["whiteSpace"];
   wordBreak?: CSS["wordBreak"];
 }
@@ -89,9 +89,9 @@ export const Text = ({
   overflow,
   overflowWrap,
   preset = "default",
+  textOverflow,
   tooltip,
   tooltipProps,
-  textOverflow,
   whiteSpace = "nowrap",
   wordBreak,
   ...props

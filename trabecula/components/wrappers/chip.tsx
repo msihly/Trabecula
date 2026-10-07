@@ -14,7 +14,6 @@ import {
 
 export interface ChipProps extends Omit<MuiChipProps, "color" | "icon"> {
   bgColor?: CssColor;
-  className?: string;
   color?: CssColor;
   fontSize?: CSS["fontSize"];
   fontWeight?: CSS["fontWeight"];

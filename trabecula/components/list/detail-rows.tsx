@@ -20,6 +20,7 @@ export const DetailRows = ({ labelWidth = "8rem", rows }: DetailRowsProps) => {
       {rows.map(({ label, value }, i) => (
         <View key={`${i}-${label}`} className={css.row}>
           {typeof label === "string" ? <Text className={css.label}>{label}</Text> : label}
+
           {typeof value === "string" ? (
             <Text noWrap tooltip={value}>
               {value}

@@ -26,14 +26,14 @@ declare const useLazyLoad: (containerRef: React.RefObject<HTMLElement>, options?
     threshold?: number | number[];
 }) => boolean;
 
-declare const copyToClipboard: (value: string, message?: string) => void;
+declare const copyToClipboard: (value: string, message?: string) => Promise<void>;
 
 type MobxKeystoneBindings = {
-    onPatches: typeof mobx_keystone.onPatches;
-    isTreeNode: typeof mobx_keystone.isTreeNode;
-    getSnapshot: typeof mobx_keystone.getSnapshot;
     _async: typeof mobx_keystone._async;
     _await: typeof mobx_keystone._await;
+    getSnapshot: typeof mobx_keystone.getSnapshot;
+    isTreeNode: typeof mobx_keystone.isTreeNode;
+    onPatches: typeof mobx_keystone.onPatches;
     prop: typeof mobx_keystone.prop;
 };
 declare const initMobx: (bindings: MobxKeystoneBindings) => MobxKeystoneBindings;

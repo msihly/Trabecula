@@ -9,7 +9,6 @@ export interface CardGridProps extends ViewProps {
   flexFlow?: CSS["flexFlow"];
   maxCards?: number;
   noResultsText?: string;
-  position?: CSS["position"];
 }
 
 export const CardGrid = Comp(

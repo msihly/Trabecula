@@ -15,7 +15,7 @@ import {
   deepMerge,
   handleErrors,
   isDeepEqual
-} from "./chunk-SSGU2HWC.mjs";
+} from "./chunk-PI7DDEAG.mjs";
 import {
   __async,
   __objRest,
@@ -168,8 +168,7 @@ var useElementResize = (ref, condition) => {
 };
 var useForceUpdate = () => {
   const [, setTick] = useState(0);
-  const update = useCallback(() => setTick((tick) => tick + 1), []);
-  return update;
+  return useCallback(() => setTick((tick) => tick + 1), []);
 };
 var useLazyLoad = (containerRef, options) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -196,12 +195,14 @@ var useLazyLoad = (containerRef, options) => {
 };
 
 // trabecula/utils/client/miscellaneous.ts
-var copyToClipboard = (value, message) => {
-  navigator.clipboard.writeText(value).then(
-    () => message && toast.info(message),
-    () => toast.error("Failed to copy to clipboard")
-  );
-};
+var copyToClipboard = (value, message) => __async(null, null, function* () {
+  try {
+    yield navigator.clipboard.writeText(value);
+    if (message) toast.info(message);
+  } catch (e) {
+    toast.error("Failed to copy to clipboard");
+  }
+});
 
 // trabecula/utils/client/mobx.ts
 var mobxKeystoneBindings = null;
@@ -1306,6 +1307,12 @@ var ChipInput = Comp(
     var _b = _a, { className, opaque = false, options = [], setValue, value = [] } = _b, props = __objRest(_b, ["className", "opaque", "options", "setValue", "value"]);
     const { css, cx } = useClasses8({ opaque });
     const [inputValue, setInputValue] = useState6("");
+    const handleChange = (_, val) => {
+      setValue == null ? void 0 : setValue(
+        val.map((v) => typeof v === "string" ? { label: v, value: v } : v)
+      );
+      setInputValue("");
+    };
     return /* @__PURE__ */ jsx13(
       Autocomplete2,
       __spreadValues({
@@ -1321,14 +1328,7 @@ var ChipInput = Comp(
           })
         ),
         renderTags: (val, getTagProps) => val.map((option, index) => /* @__PURE__ */ createElement2(Chip, __spreadProps(__spreadValues({}, getTagProps({ index })), { key: index, label: option.label }))),
-        onChange: (_, val) => {
-          setValue == null ? void 0 : setValue(
-            val.map(
-              (v) => typeof v === "string" ? { label: v, value: v } : v
-            )
-          );
-          setInputValue("");
-        },
+        onChange: handleChange,
         isOptionEqualToValue: (option, val) => option.value === val.value,
         filterOptions,
         size: "small",
@@ -1342,9 +1342,9 @@ var ChipInput = Comp(
     );
   }
 );
-var useClasses8 = makeClasses(({ opaque }) => ({
+var useClasses8 = makeClasses((props) => ({
   input: {
-    backgroundColor: opaque ? colors.mui.grey["800"] : "transparent"
+    backgroundColor: props.opaque ? colors.mui.grey["800"] : "transparent"
   }
 }));
 
@@ -1808,6 +1808,14 @@ function Dropdown(_a) {
     "withValueTest"
   ]);
   var _a2, _b2, _c, _d;
+  const resolvedLabel = label != null ? label : header;
+  const resolvedHeader = typeof resolvedLabel === "string" && required ? `${resolvedLabel} *` : resolvedLabel;
+  const committedLabel = value === "" ? "" : (_b2 = (_a2 = options.find((option) => option.value === value)) == null ? void 0 : _a2.label) != null ? _b2 : freeSolo && typeof value === "string" ? value : "";
+  const [inputValue, setInputValue] = useState8(committedLabel);
+  const [valueOption, setValueOption] = useState8(null);
+  const containerRef = useRef3(null);
+  const isTypingRef = useRef3(false);
+  const { width: inputWidth } = useElementResize(containerRef);
   const { css, cx } = useClasses11({
     dense,
     inputFontSize,
@@ -1829,16 +1837,9 @@ function Dropdown(_a) {
     menuItemSelectedBgColor,
     paperBorder,
     paperBorderRadius,
+    paperWidth: props.width || inputWidth,
     textColor
   });
-  const resolvedLabel = label != null ? label : header;
-  const resolvedHeader = typeof resolvedLabel === "string" && required ? `${resolvedLabel} *` : resolvedLabel;
-  const committedLabel = value === "" ? "" : (_b2 = (_a2 = options.find((option) => option.value === value)) == null ? void 0 : _a2.label) != null ? _b2 : freeSolo && typeof value === "string" ? value : "";
-  const [inputValue, setInputValue] = useState8(committedLabel);
-  const [valueOption, setValueOption] = useState8(null);
-  const containerRef = useRef3(null);
-  const isTypingRef = useRef3(false);
-  const { width: inputWidth } = useElementResize(containerRef);
   useEffect6(() => {
     var _a3, _b3;
     const matched = value === "" ? null : (_a3 = options.find((option) => option.value === value)) != null ? _a3 : null;
@@ -1941,15 +1942,7 @@ function Dropdown(_a) {
           autoHighlight,
           autoSelect,
           className: css.autocomplete,
-          componentsProps: {
-            paper: {
-              className: css.paper,
-              sx: {
-                maxWidth: props.width || inputWidth,
-                minWidth: props.width || inputWidth
-              }
-            }
-          },
+          componentsProps: { paper: { className: css.paper } },
           disableClearable: !withClearButton,
           disabled,
           filterOptions: filterOptions2,
@@ -2035,7 +2028,9 @@ var useClasses11 = makeClasses((props) => {
     },
     paper: {
       border: props.paperBorder,
-      borderRadius: props.paperBorderRadius
+      borderRadius: props.paperBorderRadius,
+      maxWidth: props.paperWidth,
+      minWidth: props.paperWidth
     }
   };
 });
@@ -2331,9 +2326,8 @@ var MULTI_INPUT_ROW_HEIGHT = 35;
 var MultiInputRow = (_a) => {
   var _b = _a, { bgColor } = _b, props = __objRest(_b, ["bgColor"]);
   var _a2, _b2;
-  bgColor = bgColor || colors.foreground;
   const hasClick = !!props.onClick;
-  const { css } = useClasses12({ bgColor, hasClick });
+  const { css } = useClasses12({ bgColor: bgColor || colors.foreground, hasClick });
   const value = (_b2 = (_a2 = props.valueExtractor) == null ? void 0 : _a2.call(props, props.value)) != null ? _b2 : props.value;
   const handleClick = () => {
     var _a3;
@@ -2727,8 +2721,8 @@ import { LocalizationProvider as LocalizationProvider2 } from "@mui/x-date-picke
 import { AdapterDayjs as AdapterDayjs2 } from "@mui/x-date-pickers/AdapterDayjs";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { jsx as jsx28 } from "react/jsx-runtime";
-var TimeInput = (rawProps) => {
-  const _a = rawProps, {
+var TimeInput = (_a) => {
+  var _b = _a, {
     inputProps = {},
     label,
     labelProps = {},
@@ -2737,7 +2731,7 @@ var TimeInput = (rawProps) => {
     value,
     viewProps = {},
     width
-  } = _a, timePickerProps = __objRest(_a, [
+  } = _b, timePickerProps = __objRest(_b, [
     "inputProps",
     "label",
     "labelProps",
@@ -2839,11 +2833,11 @@ var List = (_a) => {
   const { css, cx } = useClasses17({ dividerColor, noDividers });
   return /* @__PURE__ */ jsx30(MuiList, __spreadProps(__spreadValues({ className: cx(css.list, className) }, props), { children }));
 };
-var useClasses17 = makeClasses(({ dividerColor, noDividers }) => ({
+var useClasses17 = makeClasses((props) => ({
   list: {
     padding: 0,
     "& > *:not(:last-child)": {
-      borderBottom: noDividers ? void 0 : `1px solid ${dividerColor}`
+      borderBottom: props.noDividers ? void 0 : `1px solid ${props.dividerColor}`
     }
   }
 }));
@@ -2863,20 +2857,20 @@ var ListItem = (_a) => {
     children,
     color,
     icon,
-    iconProps,
     iconEnd,
     iconEndMargins,
     iconMargins,
+    iconProps,
     onClick,
     text
   } = _b, props = __objRest(_b, [
     "children",
     "color",
     "icon",
-    "iconProps",
     "iconEnd",
     "iconEndMargins",
     "iconMargins",
+    "iconProps",
     "onClick",
     "text"
   ]);
@@ -2890,7 +2884,7 @@ var ListItem = (_a) => {
       tooltipProps: {
         arrow: false,
         bgColor: Color5(colors.custom.black).fade(0.03).hex(),
-        classes: { tooltip: css.tooltip },
+        padding: 0,
         placement: "right-start",
         PopperProps: { className: css.tooltipPopper }
       },
@@ -2923,10 +2917,6 @@ var useClasses18 = makeClasses((props) => ({
   },
   text: {
     color: props.color
-  },
-  tooltip: {
-    margin: 0,
-    padding: 0
   },
   tooltipPopper: {
     marginLeft: "-0.75rem !important"
@@ -3141,7 +3131,9 @@ var Container = (_a) => {
     "width"
   ]);
   const { css, cx } = useClasses20({ height, maxHeight, maxWidth, width });
-  const handleClose = (_, reason) => (reason === "backdropClick" ? closeOnBackdrop : true) && (onClose == null ? void 0 : onClose());
+  const handleClose = (_, reason) => {
+    if (reason !== "backdropClick" || closeOnBackdrop) onClose == null ? void 0 : onClose();
+  };
   return /* @__PURE__ */ jsxs19(
     Dialog,
     __spreadProps(__spreadValues({}, props), {
@@ -3390,7 +3382,9 @@ var DataGrid = ({
   isExpanded,
   isRowSelected,
   onRowClick,
+  rowAlign = "start",
   rowGap = "0.5rem",
+  rowPadding = { all: "0.3rem" },
   rowsPerPage = 15,
   selectedBgColor = colors.custom.blue,
   selectedTextColor = colors.custom.white,
@@ -3523,7 +3517,9 @@ var DataGrid = ({
         isRowSelected,
         onRowClick,
         row,
+        rowAlign,
         rowGap,
+        rowPadding,
         selectedBgColor,
         selectedTextColor,
         setExpandedRows,
@@ -3537,18 +3533,36 @@ var DataGrid = ({
 
 // trabecula/components/table/data-grid.utils.ts
 var valueCollator = new Intl.Collator(void 0, { numeric: true, sensitivity: "base" });
+var dataGridCellClasses = {
+  cell: {
+    "& > *": {
+      maxWidth: "100%",
+      minWidth: "0 !important"
+    }
+  },
+  noWrapCell: {
+    "& .MuiTypography-root": {
+      display: "block",
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+      whiteSpace: "nowrap",
+      width: "100%"
+    }
+  }
+};
 var getDataGridCellLayout = (width, minWidth, maxWidth) => {
   if (!width || width === "1fr") return { flex: 1, maxWidth, minWidth };
   else if (typeof width === "string" && width.endsWith("fr")) {
     const flex = Number(width.replace("fr", ""));
     return { flex: Number.isFinite(flex) && flex > 0 ? flex : 1, maxWidth, minWidth };
+  } else {
+    return {
+      flex: `0 0 ${typeof width === "number" ? `${width}px` : width}`,
+      maxWidth: maxWidth != null ? maxWidth : width,
+      minWidth: minWidth != null ? minWidth : width,
+      width
+    };
   }
-  return {
-    flex: `0 0 ${typeof width === "number" ? `${width}px` : width}`,
-    maxWidth: maxWidth != null ? maxWidth : width,
-    minWidth: minWidth != null ? minWidth : width,
-    width
-  };
 };
 var clampDataGridColumnWidth = (width, minWidth, maxWidth) => {
   var _a;
@@ -3587,8 +3601,10 @@ var getTime = (value) => {
 var getDataGridPixelValue = (value) => {
   if (typeof value === "number") return value;
   else if (typeof value !== "string" || !value.endsWith("px")) return void 0;
-  const parsed = Number(value.replace("px", ""));
-  return Number.isFinite(parsed) ? parsed : void 0;
+  else {
+    const parsed = Number(value.replace("px", ""));
+    return Number.isFinite(parsed) ? parsed : void 0;
+  }
 };
 
 // trabecula/components/table/data-grid-header.tsx
@@ -3707,12 +3723,7 @@ var DataGridHeader = ({
   );
 };
 var useClasses25 = makeClasses({
-  cell: {
-    "& > *": {
-      maxWidth: "100%",
-      minWidth: "0 !important"
-    }
-  },
+  cell: dataGridCellClasses.cell,
   resizeHandle: {
     bottom: 0,
     right: 0,
@@ -3722,15 +3733,7 @@ var useClasses25 = makeClasses({
       background: colors.custom.blue
     }
   },
-  noWrapCell: {
-    "& .MuiTypography-root": {
-      display: "block",
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-      whiteSpace: "nowrap",
-      width: "100%"
-    }
-  }
+  noWrapCell: dataGridCellClasses.noWrapCell
 });
 
 // trabecula/components/table/data-grid-row.tsx
@@ -3751,7 +3754,9 @@ var DataGridRow = ({
   isRowSelected,
   onRowClick,
   row,
+  rowAlign,
   rowGap,
+  rowPadding,
   selectedBgColor,
   selectedTextColor,
   setExpandedRows,
@@ -3765,41 +3770,22 @@ var DataGridRow = ({
     var _a2;
     return (_a2 = getRowBgColor == null ? void 0 : getRowBgColor(row, index)) != null ? _a2 : isSelected ? selectedBgColor : alternatingColors && index % 2 === 1 ? alternatingBgColor : "transparent";
   };
-  const handleRowExpand = () => {
+  const handleRowExpand = (event) => {
     const newExpandedRows = new Set(expandedRows);
+    event.stopPropagation();
     if (newExpandedRows.has(index)) newExpandedRows.delete(index);
     else newExpandedRows.add(index);
     setExpandedRows(newExpandedRows);
-  };
-  const renderCell = (column) => {
-    var _a2;
-    const textPresetForColumn = (_a2 = column.textPreset) != null ? _a2 : defaultTextPreset;
-    const value = column.render ? column.render({ index, isExpanded, isSelected, row, value: row[column.key] }) : getDataGridValueText(getDataGridColumnValue(row, column, "search")) || "--";
-    if (typeof value !== "string") return value;
-    return /* @__PURE__ */ jsx42(
-      Text,
-      {
-        preset: textPresetForColumn,
-        textAlign: column.align || "left",
-        color: isSelected ? selectedTextColor : void 0,
-        overflow: "hidden",
-        whiteSpace: column.wrapText === false ? "nowrap" : void 0,
-        textOverflow: column.wrapText === false ? "ellipsis" : void 0,
-        overflowWrap: column.wrapText !== false ? "break-word" : void 0,
-        wordBreak: column.wrapText !== false ? "break-word" : void 0,
-        children: value
-      }
-    );
   };
   return /* @__PURE__ */ jsxs24(React.Fragment, { children: [
     /* @__PURE__ */ jsxs24(
       View,
       {
         row: true,
-        align: "start",
+        align: rowAlign,
         bgColor: getBackgroundColor(),
         cursor: onRowClick ? "pointer" : "default",
-        padding: { all: "0.3rem" },
+        padding: rowPadding,
         borderRadiuses: { all: isExpanded ? "0.3rem 0.3rem 0 0" : "0.3rem" },
         spacing: rowGap,
         minWidth: 0,
@@ -3808,7 +3794,9 @@ var DataGridRow = ({
         className,
         children: [
           columns.map((column, columnIndex) => {
+            var _a2;
             const title = column.searchable === false ? void 0 : getDataGridValueText(getDataGridColumnValue(row, column, "search")).trim() || void 0;
+            const value = column.render ? column.render({ index, isExpanded, isSelected, row, value: row[column.key] }) : getDataGridValueText(getDataGridColumnValue(row, column, "search")) || "--";
             return /* @__PURE__ */ jsx42(
               View,
               __spreadProps(__spreadValues({
@@ -3818,7 +3806,20 @@ var DataGridRow = ({
                 overflow: "hidden",
                 title
               }, getDataGridCellLayout(column.width, column.minWidth, column.maxWidth)), {
-                children: renderCell(column)
+                children: typeof value !== "string" ? value : /* @__PURE__ */ jsx42(
+                  Text,
+                  {
+                    preset: (_a2 = column.textPreset) != null ? _a2 : defaultTextPreset,
+                    textAlign: column.align || "left",
+                    color: isSelected ? selectedTextColor : void 0,
+                    overflow: "hidden",
+                    whiteSpace: column.wrapText === false ? "nowrap" : void 0,
+                    textOverflow: column.wrapText === false ? "ellipsis" : void 0,
+                    overflowWrap: column.wrapText !== false ? "break-word" : void 0,
+                    wordBreak: column.wrapText !== false ? "break-word" : void 0,
+                    children: value
+                  }
+                )
               }),
               `${column.key}-${columnIndex}`
             );
@@ -3837,10 +3838,7 @@ var DataGridRow = ({
                   type: "link",
                   text: /* @__PURE__ */ jsx42(Text, { preset: textPreset, color: isSelected ? selectedTextColor : void 0, children: isExpanded ? "Close" : "Open" }),
                   iconRight: isExpanded ? "ArrowDropUp" : "ArrowDropDown",
-                  onClick: (e) => {
-                    e.stopPropagation();
-                    handleRowExpand();
-                  },
+                  onClick: handleRowExpand,
                   textColor: colors.custom.lightBlue,
                   underline: "hover"
                 }
@@ -3862,17 +3860,12 @@ var DataGridRow = ({
   ] });
 };
 var useClasses26 = makeClasses({
-  cell: {
-    "& > *": {
-      maxWidth: "100%",
-      minWidth: "0 !important"
-    }
-  },
+  cell: dataGridCellClasses.cell,
   expansion: {
     margin: 0,
     padding: 0
   },
-  noWrapCell: {
+  noWrapCell: __spreadValues({
     "& .MuiButton-root": {
       maxWidth: "100%",
       minWidth: "0 !important",
@@ -3881,15 +3874,8 @@ var useClasses26 = makeClasses({
     "& .MuiButton-root > *": {
       maxWidth: "100%",
       minWidth: "0 !important"
-    },
-    "& .MuiTypography-root": {
-      display: "block",
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-      whiteSpace: "nowrap",
-      width: "100%"
     }
-  }
+  }, dataGridCellClasses.noWrapCell)
 });
 
 // trabecula/components/table/pagination.tsx
@@ -4009,7 +3995,7 @@ var Pagination = Comp(
                   text: "Jump",
                   icon: "Send",
                   onClick: handleJump,
-                  disabled: !Number.isInteger(jumpPage) || jumpPage < 1 || jumpPage > count,
+                  disabled: hasError,
                   color: colors.custom.blue
                 }
               )
@@ -4271,10 +4257,10 @@ var Link = (_a) => {
     })
   );
 };
-var useClasses29 = makeClasses(({ bold, color }) => ({
+var useClasses29 = makeClasses((props) => ({
   link: {
-    color,
-    fontWeight: bold ? 500 : 400
+    color: props.color,
+    fontWeight: props.bold ? 500 : 400
   }
 }));
 
@@ -4333,9 +4319,9 @@ var Text = (_a) => {
     overflow,
     overflowWrap,
     preset = "default",
+    textOverflow,
     tooltip,
     tooltipProps,
-    textOverflow,
     whiteSpace = "nowrap",
     wordBreak
   } = _b, props = __objRest(_b, [
@@ -4353,9 +4339,9 @@ var Text = (_a) => {
     "overflow",
     "overflowWrap",
     "preset",
+    "textOverflow",
     "tooltip",
     "tooltipProps",
-    "textOverflow",
     "whiteSpace",
     "wordBreak"
   ]);
@@ -4505,9 +4491,10 @@ import {
 } from "@mui/material";
 import { jsx as jsx51, jsxs as jsxs29 } from "react/jsx-runtime";
 var Accordion = (rawProps) => {
+  var _b, _c;
   const _a = rawProps, {
-    buttonProps = {},
     borderColor,
+    buttonProps = {},
     children,
     className,
     color = "transparent",
@@ -4517,8 +4504,8 @@ var Accordion = (rawProps) => {
     fullWidth = false,
     header,
     headerBgColor,
-    headerBorderMode = "visibleBorder",
     headerBorderColor,
+    headerBorderMode = "visibleBorder",
     headerButton,
     headerPadding,
     isExpanded,
@@ -4532,8 +4519,8 @@ var Accordion = (rawProps) => {
     toggleButtonProps = {},
     width
   } = _a, props = __objRest(_a, [
-    "buttonProps",
     "borderColor",
+    "buttonProps",
     "children",
     "className",
     "color",
@@ -4543,8 +4530,8 @@ var Accordion = (rawProps) => {
     "fullWidth",
     "header",
     "headerBgColor",
-    "headerBorderMode",
     "headerBorderColor",
+    "headerBorderMode",
     "headerButton",
     "headerPadding",
     "isExpanded",
@@ -4561,15 +4548,16 @@ var Accordion = (rawProps) => {
   const [internalExpanded, setInternalExpanded] = useState18(expanded != null ? expanded : false);
   const effectiveExpanded = isExpanded != null ? isExpanded : internalExpanded;
   const contentExpanded = showExpandToggle ? effectiveExpanded : true;
+  const hasHeaderWrapper = title !== void 0 || headerBgColor !== void 0 || headerBorderColor !== void 0 || headerPadding !== void 0;
   const { css, cx } = useClasses32({
     borderColor,
-    contentPadding,
     contentExpanded,
+    contentPadding,
     dense,
     fullWidth,
     headerBgColor,
-    headerBorderMode,
     headerBorderColor,
+    headerBorderMode,
     headerPadding,
     isLoading,
     showBorder,
@@ -4581,48 +4569,41 @@ var Accordion = (rawProps) => {
     setInternalExpanded(!effectiveExpanded);
     setExpanded == null ? void 0 : setExpanded(!effectiveExpanded);
   };
-  const hasHeaderWrapper = title !== void 0 || headerBgColor !== void 0 || headerBorderColor !== void 0 || headerPadding !== void 0;
-  const renderHeader = () => {
-    var _a2, _b;
-    if (title !== void 0) {
-      return /* @__PURE__ */ jsxs29(View, { row: true, align: "center", justify: "space-between", width: "100%", children: [
-        typeof title === "string" ? /* @__PURE__ */ jsx51(Text, __spreadProps(__spreadValues({}, titleProps), { children: title })) : title,
-        /* @__PURE__ */ jsxs29(View, { row: true, align: "center", spacing: "0.6rem", children: [
-          headerButton,
-          showExpandToggle ? /* @__PURE__ */ jsx51(
-            Button,
-            __spreadValues({
-              type: "link",
-              text: contentExpanded ? "Minimize" : "Expand",
-              iconRight: contentExpanded ? "ArrowDropUp" : "ArrowDropDown",
-              iconSize: "1.3rem",
-              onClick: handleToggle
-            }, toggleButtonProps)
-          ) : null
-        ] })
-      ] });
-    }
-    return /* @__PURE__ */ jsx51(
-      Button,
-      __spreadValues({
-        text: header,
-        endNode: showExpandToggle ? /* @__PURE__ */ jsx51(
-          Icon,
-          {
-            name: "ExpandMore",
-            color: (_b = (_a2 = buttonProps.iconProps) == null ? void 0 : _a2.color) != null ? _b : buttonProps.textColor,
-            rotation: contentExpanded ? 180 : 0,
-            size: buttonProps.iconSize
-          }
-        ) : void 0,
-        onClick: handleToggle,
-        color,
-        width: "100%",
-        justify: "space-between",
-        className: css.button
-      }, buttonProps)
-    );
-  };
+  const headerContent = title !== void 0 ? /* @__PURE__ */ jsxs29(View, { row: true, align: "center", justify: "space-between", width: "100%", children: [
+    typeof title === "string" ? /* @__PURE__ */ jsx51(Text, __spreadProps(__spreadValues({}, titleProps), { children: title })) : title,
+    /* @__PURE__ */ jsxs29(View, { row: true, align: "center", spacing: "0.6rem", children: [
+      headerButton,
+      showExpandToggle ? /* @__PURE__ */ jsx51(
+        Button,
+        __spreadValues({
+          type: "link",
+          text: contentExpanded ? "Minimize" : "Expand",
+          iconRight: contentExpanded ? "ArrowDropUp" : "ArrowDropDown",
+          iconSize: "1.3rem",
+          onClick: handleToggle
+        }, toggleButtonProps)
+      ) : null
+    ] })
+  ] }) : /* @__PURE__ */ jsx51(
+    Button,
+    __spreadValues({
+      text: header,
+      endNode: showExpandToggle ? /* @__PURE__ */ jsx51(
+        Icon,
+        {
+          name: "ExpandMore",
+          color: (_c = (_b = buttonProps.iconProps) == null ? void 0 : _b.color) != null ? _c : buttonProps.textColor,
+          rotation: contentExpanded ? 180 : 0,
+          size: buttonProps.iconSize
+        }
+      ) : void 0,
+      onClick: handleToggle,
+      color,
+      width: "100%",
+      justify: "space-between",
+      className: css.button
+    }, buttonProps)
+  );
   return /* @__PURE__ */ jsxs29(
     MuiAccordion,
     __spreadProps(__spreadValues({}, props), {
@@ -4631,7 +4612,7 @@ var Accordion = (rawProps) => {
       disableGutters: true,
       className: cx(css.accordion, className),
       children: [
-        hasHeaderWrapper ? /* @__PURE__ */ jsx51(View, { className: css.header, children: renderHeader() }) : renderHeader(),
+        hasHeaderWrapper ? /* @__PURE__ */ jsx51(View, { className: css.header, children: headerContent }) : headerContent,
         /* @__PURE__ */ jsxs29(View, { column: true, className: css.content, children: [
           /* @__PURE__ */ jsx51(LoadingOverlay, { isLoading }),
           children
@@ -4776,9 +4757,9 @@ var Checkbox = ({
   color = colors.custom.blue,
   disabled,
   flex = 1,
+  icon,
   indeterminate,
   indeterminateColor,
-  icon,
   label,
   labelProps,
   margins = { all: 0 },
@@ -4957,8 +4938,8 @@ var Tooltip = (_a) => {
     color,
     flexShrink = 0,
     fontSize = "0.95em",
-    minWidth,
     maxWidth = "25rem",
+    minWidth,
     padding = "0.4rem 0.8rem",
     placement = "bottom-start",
     title,
@@ -4971,16 +4952,16 @@ var Tooltip = (_a) => {
     "color",
     "flexShrink",
     "fontSize",
-    "minWidth",
     "maxWidth",
+    "minWidth",
     "padding",
     "placement",
     "title",
     "viewProps"
   ]);
   const { css } = useClasses35({
-    borderColor,
     bgColor,
+    borderColor,
     color,
     flexShrink,
     fontSize,
@@ -5186,18 +5167,18 @@ import { jsx as jsx58 } from "react/jsx-runtime";
 var Chip3 = (_a) => {
   var _b = _a, {
     bgColor = colors.background,
-    hasFooter,
     flush = false,
+    hasFooter,
     opacity = 0.6,
     position
   } = _b, props = __objRest(_b, [
     "bgColor",
-    "hasFooter",
     "flush",
+    "hasFooter",
     "opacity",
     "position"
   ]);
-  const { css } = useClasses37({ hasFooter, flush, opacity, position });
+  const { css } = useClasses37({ flush, hasFooter, opacity, position });
   return /* @__PURE__ */ jsx58(Chip2, __spreadProps(__spreadValues({}, props), { bgColor, className: css.chip }));
 };
 var useClasses37 = makeClasses((props) => ({
@@ -5403,14 +5384,15 @@ var Image = ({
 };
 var useClasses40 = makeClasses((props) => {
   var _a;
+  const radii = __spreadValues(__spreadValues({}, ["all", "top"].includes(props.rounded) && {
+    borderTopLeftRadius: "inherit",
+    borderTopRightRadius: "inherit"
+  }), ["all", "bottom"].includes(props.rounded) && {
+    borderBottomLeftRadius: "inherit",
+    borderBottomRightRadius: "inherit"
+  });
   return {
-    image: __spreadProps(__spreadValues(__spreadValues({}, ["all", "top"].includes(props.rounded) && {
-      borderTopLeftRadius: "inherit",
-      borderTopRightRadius: "inherit"
-    }), ["all", "bottom"].includes(props.rounded) && {
-      borderBottomLeftRadius: "inherit",
-      borderBottomRightRadius: "inherit"
-    }), {
+    image: __spreadProps(__spreadValues({}, radii), {
       height: (_a = props.height) != null ? _a : "inherit",
       width: "100%",
       userSelect: "none",
@@ -5418,19 +5400,13 @@ var useClasses40 = makeClasses((props) => {
       objectFit: props.fit,
       objectPosition: props.imagePos
     }),
-    imageContainer: __spreadProps(__spreadValues(__spreadValues({
+    imageContainer: __spreadProps(__spreadValues({
       position: "relative",
       display: "flex",
       flexDirection: "column",
       borderRadius: "inherit",
       height: "100%"
-    }, ["all", "top"].includes(props.rounded) && {
-      borderTopLeftRadius: "inherit",
-      borderTopRightRadius: "inherit"
-    }), ["all", "bottom"].includes(props.rounded) && {
-      borderBottomLeftRadius: "inherit",
-      borderBottomRightRadius: "inherit"
-    }), {
+    }, radii), {
       backgroundColor: "inherit",
       overflow: "hidden"
     })
@@ -5614,9 +5590,9 @@ var useClasses42 = makeClasses((props) => ({
 // trabecula/components/wrappers/conditional.tsx
 import { Fragment as Fragment5, jsx as jsx66 } from "react/jsx-runtime";
 var ConditionalWrap = ({
+  children,
   condition,
-  wrap,
-  children
+  wrap
 }) => condition ? wrap(children) : /* @__PURE__ */ jsx66(Fragment5, { children });
 
 // trabecula/components/wrappers/context-menu.tsx
@@ -5785,8 +5761,30 @@ var useClasses45 = makeClasses((props) => ({
   }, makeMargins(props.margins))
 }));
 
+// trabecula/components/wrappers/drop-overlay.tsx
+import Color13 from "color";
+import { jsx as jsx70 } from "react/jsx-runtime";
+var DropOverlay = ({ onDragLeave, onDrop }) => {
+  const { css } = useClasses46(null);
+  return /* @__PURE__ */ jsx70(View, { onDragLeave, onDrop, className: css.overlay });
+};
+var useClasses46 = makeClasses({
+  overlay: {
+    backgroundColor: Color13(colors.custom.blue).fade(0.5).string(),
+    border: `15px dashed ${colors.custom.blue}`,
+    bottom: 0,
+    left: 0,
+    opacity: 0.3,
+    position: "fixed",
+    right: 0,
+    top: 0,
+    zIndex: 5e3
+    // necessary for MUI z-index values
+  }
+});
+
 // trabecula/components/wrappers/header.tsx
-import { jsx as jsx70, jsxs as jsxs34 } from "react/jsx-runtime";
+import { jsx as jsx71, jsxs as jsxs34 } from "react/jsx-runtime";
 var DEFAULT_HEADER_PROPS = {
   bgColor: colors.custom.black,
   borderRadiuses: { top: 6 },
@@ -5889,12 +5887,12 @@ var HeaderWrapper = Comp((rawProps, ref) => {
       overflow,
       width,
       children: [
-        /* @__PURE__ */ jsx70(View, __spreadProps(__spreadValues({}, mergedHeaderProps), { "aria-label": "header", children: typeof header === "string" ? /* @__PURE__ */ jsx70(Text, __spreadProps(__spreadValues({ flex: 1, fontSize: mergedHeaderProps.fontSize, textAlign: "center" }, textProps), { children: header })) : header })),
+        /* @__PURE__ */ jsx71(View, __spreadProps(__spreadValues({}, mergedHeaderProps), { "aria-label": "header", children: typeof header === "string" ? /* @__PURE__ */ jsx71(Text, __spreadProps(__spreadValues({ flex: 1, fontSize: mergedHeaderProps.fontSize, textAlign: "center" }, textProps), { children: header })) : header })),
         content
       ]
     })
   );
-  return /* @__PURE__ */ jsx70(ConditionalWrap, { condition: !!header, wrap: wrapHeader, children: /* @__PURE__ */ jsx70(
+  return /* @__PURE__ */ jsx71(ConditionalWrap, { condition: !!header, wrap: wrapHeader, children: /* @__PURE__ */ jsx71(
     View,
     __spreadProps(__spreadValues(__spreadProps(__spreadValues({}, layoutProps), {
       "aria-label": "header-wrapper-content"
@@ -5915,15 +5913,15 @@ var HeaderWrapper = Comp((rawProps, ref) => {
 });
 
 // trabecula/components/wrappers/header-content.tsx
-import { jsx as jsx71, jsxs as jsxs35 } from "react/jsx-runtime";
-var HeaderContent = ({ children, leftNode, rightNode }) => /* @__PURE__ */ jsx71(
+import { jsx as jsx72, jsxs as jsxs35 } from "react/jsx-runtime";
+var HeaderContent = ({ children, leftNode, rightNode }) => /* @__PURE__ */ jsx72(
   ConditionalWrap,
   {
     condition: leftNode !== void 0 || rightNode !== void 0,
     wrap: (wrappedChildren) => /* @__PURE__ */ jsxs35(View, { row: true, flex: 1, minWidth: 0, align: "center", children: [
-      /* @__PURE__ */ jsx71(View, { row: true, flex: "1 1 0", minWidth: 0, align: "center", justify: "flex-start", children: leftNode }),
+      /* @__PURE__ */ jsx72(View, { row: true, flex: "1 1 0", minWidth: 0, align: "center", justify: "flex-start", children: leftNode }),
       wrappedChildren,
-      /* @__PURE__ */ jsx71(View, { row: true, flex: "1 1 0", minWidth: 0, align: "center", justify: "flex-end", children: rightNode })
+      /* @__PURE__ */ jsx72(View, { row: true, flex: "1 1 0", minWidth: 0, align: "center", justify: "flex-end", children: rightNode })
     ] }),
     children
   }
@@ -5931,9 +5929,9 @@ var HeaderContent = ({ children, leftNode, rightNode }) => /* @__PURE__ */ jsx71
 
 // trabecula/components/wrappers/loading-overlay.tsx
 import { CircularProgress as CircularProgress2 } from "@mui/material";
-import { Fragment as Fragment7, jsx as jsx72, jsxs as jsxs36 } from "react/jsx-runtime";
+import { Fragment as Fragment7, jsx as jsx73, jsxs as jsxs36 } from "react/jsx-runtime";
 var LoadingOverlay = ({ children, isLoading, sub }) => {
-  const { css } = useClasses46({ isLoading });
+  const { css } = useClasses47({ isLoading });
   return /* @__PURE__ */ jsxs36(Fragment7, { children: [
     children,
     /* @__PURE__ */ jsxs36(
@@ -5948,14 +5946,14 @@ var LoadingOverlay = ({ children, isLoading, sub }) => {
         opacity: isLoading ? 1 : 0,
         className: css.loadingOverlay,
         children: [
-          /* @__PURE__ */ jsx72(CircularProgress2, { color: "inherit" }),
-          typeof sub === "string" ? /* @__PURE__ */ jsx72(Text, { preset: "title", fontSize: "0.9em", children: sub }) : sub
+          /* @__PURE__ */ jsx73(CircularProgress2, { color: "inherit" }),
+          typeof sub === "string" ? /* @__PURE__ */ jsx73(Text, { preset: "title", fontSize: "0.9em", children: sub }) : sub
         ]
       }
     )
   ] });
 };
-var useClasses46 = makeClasses((props) => ({
+var useClasses47 = makeClasses((props) => ({
   loadingOverlay: {
     position: "absolute",
     top: 0,
@@ -5969,7 +5967,7 @@ var useClasses46 = makeClasses((props) => ({
 
 // trabecula/components/wrappers/side-scroller.tsx
 import { useEffect as useEffect12, useRef as useRef6, useState as useState22 } from "react";
-import { jsx as jsx73, jsxs as jsxs37 } from "react/jsx-runtime";
+import { jsx as jsx74, jsxs as jsxs37 } from "react/jsx-runtime";
 var SideScroller = ({ children, className, innerClassName }) => {
   const ref = useRef6(null);
   const { width } = useElementResize(ref);
@@ -5977,7 +5975,7 @@ var SideScroller = ({ children, className, innerClassName }) => {
     isLeftButtonVisible: false,
     isRightButtonVisible: false
   });
-  const { css, cx } = useClasses47(buttonVisibility);
+  const { css, cx } = useClasses48(buttonVisibility);
   const handleScroll = (direction) => {
     if (!ref.current) return;
     const scrollAmount = (direction === "left" ? -1 : 1) * width / 2;
@@ -6005,7 +6003,7 @@ var SideScroller = ({ children, className, innerClassName }) => {
     updateButtonVisibility();
   }, [children, width]);
   return /* @__PURE__ */ jsxs37(View, { className: cx(css.root, className), children: [
-    /* @__PURE__ */ jsx73(
+    /* @__PURE__ */ jsx74(
       IconButton,
       {
         name: "ChevronLeft",
@@ -6014,8 +6012,8 @@ var SideScroller = ({ children, className, innerClassName }) => {
         size: "large"
       }
     ),
-    /* @__PURE__ */ jsx73(View, { ref, className: cx(css.items, innerClassName), children }),
-    /* @__PURE__ */ jsx73(
+    /* @__PURE__ */ jsx74(View, { ref, className: cx(css.items, innerClassName), children }),
+    /* @__PURE__ */ jsx74(
       IconButton,
       {
         name: "ChevronRight",
@@ -6026,7 +6024,7 @@ var SideScroller = ({ children, className, innerClassName }) => {
     )
   ] });
 };
-var useClasses47 = makeClasses((props) => ({
+var useClasses48 = makeClasses((props) => ({
   items: {
     display: "flex",
     flexFlow: "row nowrap",
@@ -6075,8 +6073,8 @@ var useClasses47 = makeClasses((props) => ({
 // trabecula/components/wrappers/tab-container.tsx
 import { useState as useState23 } from "react";
 import { Tab, Tabs } from "@mui/material";
-import Color13 from "color";
-import { jsx as jsx74, jsxs as jsxs38 } from "react/jsx-runtime";
+import Color14 from "color";
+import { jsx as jsx75, jsxs as jsxs38 } from "react/jsx-runtime";
 var TabContainer = ({
   activeTab,
   borderRadius = "0.5rem",
@@ -6091,7 +6089,7 @@ var TabContainer = ({
   viewProps = {},
   withBorder = false
 }) => {
-  const { css, cx } = useClasses48({
+  const { css, cx } = useClasses49({
     borderRadius,
     color,
     maxWidth,
@@ -6107,7 +6105,7 @@ var TabContainer = ({
   };
   return /* @__PURE__ */ jsxs38(View, __spreadProps(__spreadValues({ column: true, height: "100%", minHeight: 0 }, viewProps), { children: [
     /* @__PURE__ */ jsxs38(View, { row: true, height: tabHeight, className: css.header, children: [
-      /* @__PURE__ */ jsx74(
+      /* @__PURE__ */ jsx75(
         Tabs,
         {
           "aria-label": "tabs",
@@ -6115,7 +6113,7 @@ var TabContainer = ({
           onChange: handleChange,
           value: currentTab,
           variant: "scrollable",
-          children: tabs.map((tab, index) => /* @__PURE__ */ jsx74(
+          children: tabs.map((tab, index) => /* @__PURE__ */ jsx75(
             Tab,
             {
               className: css.tab,
@@ -6127,11 +6125,11 @@ var TabContainer = ({
           ))
         }
       ),
-      headerRightNode && /* @__PURE__ */ jsx74(View, { flex: "none", height: "100%", children: headerRightNode })
+      headerRightNode && /* @__PURE__ */ jsx75(View, { flex: "none", height: "100%", children: headerRightNode })
     ] }),
-    /* @__PURE__ */ jsx74(View, { className: cx(css.content, contentClassName), "aria-label": "tab-content", children: tabs.map((tab, index) => {
+    /* @__PURE__ */ jsx75(View, { className: cx(css.content, contentClassName), "aria-label": "tab-content", children: tabs.map((tab, index) => {
       const isActive = currentTab === index.toString();
-      return tab.keepMounted || isActive ? /* @__PURE__ */ jsx74(
+      return tab.keepMounted || isActive ? /* @__PURE__ */ jsx75(
         View,
         {
           "aria-label": tab.label,
@@ -6144,7 +6142,7 @@ var TabContainer = ({
     }) })
   ] }));
 };
-var useClasses48 = makeClasses((props) => {
+var useClasses49 = makeClasses((props) => {
   var _a;
   return {
     content: {
@@ -6171,11 +6169,11 @@ var useClasses48 = makeClasses((props) => {
         color: colors.custom.white
       },
       "&:hover": {
-        backgroundColor: Color13(props.color).lighten(0.3).string(),
+        backgroundColor: Color14(props.color).lighten(0.3).string(),
         transition: "all 200ms ease-in-out"
       },
       "&:not(:last-child)": {
-        borderRight: `2px solid ${Color13(props.color).lighten(0.4).string()}`
+        borderRight: `2px solid ${Color14(props.color).lighten(0.4).string()}`
       },
       backgroundColor: props.color,
       color: colors.custom.grey,
@@ -6204,13 +6202,13 @@ var useClasses48 = makeClasses((props) => {
 });
 
 // trabecula/components/wrappers/uniform-list.tsx
-import { jsx as jsx75 } from "react/jsx-runtime";
+import { jsx as jsx76 } from "react/jsx-runtime";
 var UniformList = (_a) => {
   var _b = _a, { children, uniformWidth } = _b, props = __objRest(_b, ["children", "uniformWidth"]);
-  const { css, cx } = useClasses49({ uniformWidth });
-  return /* @__PURE__ */ jsx75(View, __spreadProps(__spreadValues({}, props), { className: cx(css.uniform, props == null ? void 0 : props.className), children }));
+  const { css, cx } = useClasses50({ uniformWidth });
+  return /* @__PURE__ */ jsx76(View, __spreadProps(__spreadValues({}, props), { className: cx(css.uniform, props == null ? void 0 : props.className), children }));
 };
-var useClasses49 = makeClasses((props) => ({
+var useClasses50 = makeClasses((props) => ({
   uniform: {
     "& > *": {
       flexBasis: "100%",
@@ -6281,7 +6279,7 @@ var View = Comp(
       "wrap"
     ]);
     if (row) column = false;
-    const { css, cx } = useClasses50({
+    const { css, cx } = useClasses51({
       align,
       bgColor,
       borderRadiuses,
@@ -6313,7 +6311,7 @@ var View = Comp(
     );
   }
 );
-var useClasses50 = makeClasses((props) => {
+var useClasses51 = makeClasses((props) => {
   var _a;
   return {
     view: __spreadValues(__spreadProps(__spreadValues(__spreadValues(__spreadValues(__spreadValues({
@@ -6344,12 +6342,14 @@ var useClasses50 = makeClasses((props) => {
 });
 
 // trabecula/views/mui-provider.tsx
-import { StrictMode, useRef as useRef7 } from "react";
+import { createContext as createContext2, StrictMode, useContext as useContext2, useRef as useRef7 } from "react";
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 import { createTheme, ThemeProvider } from "@mui/material";
 import { TssCacheProvider } from "tss-react";
-import { jsx as jsx76 } from "react/jsx-runtime";
+import { jsx as jsx77 } from "react/jsx-runtime";
+var PortalContainerContext = createContext2(void 0);
+var usePortalContainer = () => useContext2(PortalContainerContext);
 var MuiProvider = ({
   children,
   portalContainer,
@@ -6371,11 +6371,11 @@ var MuiProvider = ({
   const tssCacheRef = useRef7(
     createCache({ container: styleContainer, key: "tss", stylisPlugins: [] })
   );
-  return /* @__PURE__ */ jsx76(StrictMode, { children: /* @__PURE__ */ jsx76(CacheProvider, { value: muiCacheRef.current, children: /* @__PURE__ */ jsx76(TssCacheProvider, { value: tssCacheRef.current, children: /* @__PURE__ */ jsx76(ThemeProvider, { theme: themeRef.current, children }) }) }) });
+  return /* @__PURE__ */ jsx77(StrictMode, { children: /* @__PURE__ */ jsx77(CacheProvider, { value: muiCacheRef.current, children: /* @__PURE__ */ jsx77(TssCacheProvider, { value: tssCacheRef.current, children: /* @__PURE__ */ jsx77(ThemeProvider, { theme: themeRef.current, children: /* @__PURE__ */ jsx77(PortalContainerContext.Provider, { value: portalContainer, children }) }) }) }) });
 };
 
 // trabecula/utils/client/toast.tsx
-import { jsx as jsx77 } from "react/jsx-runtime";
+import { jsx as jsx78 } from "react/jsx-runtime";
 var toast = {
   error: _toast.error,
   info: _toast.info,
@@ -6397,8 +6397,8 @@ var Toaster = class {
   }
 };
 var ToastContainer = (props) => {
-  const { css } = useClasses51(null);
-  return /* @__PURE__ */ jsx77(
+  const { css } = useClasses52(null);
+  return /* @__PURE__ */ jsx78(
     ToastContainerBase,
     __spreadValues({
       autoClose: 2e3,
@@ -6406,7 +6406,7 @@ var ToastContainer = (props) => {
       hideProgressBar: true,
       icon: ({ type }) => {
         var _a, _b;
-        return /* @__PURE__ */ jsx77(Icon, { color: colors.custom.white, name: (_b = (_a = STATUSES[type]) == null ? void 0 : _a.icon) != null ? _b : "Error" });
+        return /* @__PURE__ */ jsx78(Icon, { color: colors.custom.white, name: (_b = (_a = STATUSES[type]) == null ? void 0 : _a.icon) != null ? _b : "Error" });
       },
       limit: 3,
       pauseOnFocusLoss: false,
@@ -6437,7 +6437,7 @@ var STATUSES = {
     icon: "NewReleases"
   }
 };
-var useClasses51 = makeClasses({
+var useClasses52 = makeClasses({
   toast: {
     "& .Toastify__toast": {
       border: "none",
@@ -6540,6 +6540,7 @@ export {
   ProgressBar,
   ProgressCircle,
   DataGrid,
+  dataGridCellClasses,
   getDataGridCellLayout,
   clampDataGridColumnWidth,
   compareDataGridValues,
@@ -6573,6 +6574,7 @@ export {
   ContextMenu,
   DisabledOverlay,
   Divider,
+  DropOverlay,
   HeaderWrapper,
   HeaderContent,
   LoadingOverlay,
@@ -6580,6 +6582,7 @@ export {
   TabContainer,
   UniformList,
   View,
+  usePortalContainer,
   MuiProvider
 };
-//# sourceMappingURL=chunk-2TMCQJOS.mjs.map
+//# sourceMappingURL=chunk-SEURNGWG.mjs.map

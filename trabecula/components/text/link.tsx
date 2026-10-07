@@ -36,9 +36,11 @@ export const Link = ({
   );
 };
 
-const useClasses = makeClasses(({ bold, color }) => ({
+interface ClassesProps extends Pick<LinkProps, "bold" | "color"> {}
+
+const useClasses = makeClasses((props: ClassesProps) => ({
   link: {
-    color: color,
-    fontWeight: bold ? 500 : 400,
+    color: props.color,
+    fontWeight: props.bold ? 500 : 400,
   },
 }));

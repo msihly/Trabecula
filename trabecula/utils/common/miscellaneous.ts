@@ -27,14 +27,19 @@ export type NestedKeys<T> = {
     : never;
 }[keyof T];
 
-export const attempt = async <T>(fn: () => Promise<T>, retries = 2, delay = 1000): Promise<T> =>
-  retries > 0
-    ? await fn().catch(async (error) => {
-        console.error(`Function failed, error: ${error}. Retrying after ${delay}ms...`);
+export const attempt = async <T>(fn: () => Promise<T>, retries = 2, delay = 1000): Promise<T> => {
+  if (retries <= 0) return fn();
 
-        return sleep(delay).then(() => attempt(fn, retries - 1, delay));
-      })
-    : fn();
+  try {
+    return await fn();
+  } catch (error) {
+    console.error(`Function failed, error: ${error}. Retrying after ${delay}ms...`);
+
+    await sleep(delay);
+
+    return attempt(fn, retries - 1, delay);
+  }
+};
 
 export const convertNestedKeys = (updates: Record<string, any>): Record<string, any> => {
   const result: Record<string, any> = {};

@@ -12,7 +12,6 @@ import { MultiInputList } from "./multi-input-list";
 export interface MultiInputProps<T = string> {
   hasDelete?: boolean;
   hasDeleteAll?: boolean;
-  hasEditor?: boolean;
   hasHelper?: boolean;
   hasList?: boolean;
   header?: HeaderWrapperProps["header"];

@@ -21,7 +21,11 @@ const createTreeNode = (dirPath: string, tree: TreeNode[]) => {
 };
 
 export const createTree = (paths: string[]): TreeNode[] =>
-  paths.reduce((acc, cur) => (createTreeNode(cur, acc), acc), []);
+  paths.reduce((acc, cur) => {
+    createTreeNode(cur, acc);
+
+    return acc;
+  }, []);
 
 export const deleteFile = (path: string, copiedPath?: string) =>
   handleErrors(async () => {

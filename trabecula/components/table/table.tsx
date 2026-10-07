@@ -142,7 +142,11 @@ const TableCellTrunc = ({ className, value, wrap = false }: TableCellTruncProps)
   );
 };
 
-const useClasses = makeClasses((props?: { emptyRows: number }) => ({
+interface ClassesProps {
+  emptyRows: number;
+}
+
+const useClasses = makeClasses((props: ClassesProps) => ({
   emptyRow: { height: MUI_TABLE_ROW_HEIGHT * (props?.emptyRows ?? 0) },
   pagination: {
     borderBottom: "none",

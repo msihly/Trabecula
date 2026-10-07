@@ -1,11 +1,8 @@
 import { RefAttributes } from "react";
 import { Autocomplete, AutocompleteProps as MuiAutocompleteProps } from "@mui/material";
-import { Comp, Input, InputProps } from "trabecula/components";
+import { Comp, DropdownOption, Input, InputProps } from "trabecula/components";
 
-export type AutoCompleteOption = {
-  label: string;
-  value: any;
-};
+export type AutoCompleteOption = DropdownOption<any>;
 
 export const createAutoCompleteOptions = (values: any[]): AutoCompleteOption[] =>
   Array.isArray(values) ? values.map((v) => ({ label: String(v), value: v })) : [];

@@ -2,7 +2,6 @@ import { Tooltip as TooltipBase, View } from "trabecula/components";
 
 export interface TooltipProps {
   children: JSX.Element;
-  disabled?: boolean;
   tooltip: JSX.Element | JSX.Element[];
 }
 

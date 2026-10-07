@@ -27,15 +27,15 @@ type FilterStore = {
   isDeleteModalOpen: boolean;
   isLoading: boolean;
   isSaveModalOpen: boolean;
-  loadSavedSearches: () => Promise<any>;
   loadFiltered: (options?: { noCache?: boolean; page?: number }) => Promise<any>;
+  loadSavedSearches: () => Promise<any>;
   reset: () => any;
   saveSavedSearch: (label: string) => Promise<any>;
   savedSearches: Array<{ id: string; label: string }>;
   selectedSavedSearchId: string;
-  setPageCount: (count: number) => any;
   setIsDeleteModalOpen: (value: boolean) => any;
   setIsSaveModalOpen: (value: boolean) => any;
+  setPageCount: (count: number) => any;
   setSortValue: (val: { isDesc: boolean; key: string }) => any;
   sortValue: { isDesc: boolean; key: string };
 };
@@ -151,7 +151,6 @@ const SavedSearchMenu = Comp(({ store }: SavedSearchMenuProps) => {
   const [label, setLabel] = useState("");
 
   const activeSearch = store.savedSearches.find((s) => s.id === store.selectedSavedSearchId);
-
   const options = store.savedSearches.map((savedSearch) => ({
     label: savedSearch.label,
     value: savedSearch.id,

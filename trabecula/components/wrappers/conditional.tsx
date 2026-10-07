@@ -5,7 +5,7 @@ interface ConditionalWrapProps {
 }
 
 export const ConditionalWrap = ({
+  children,
   condition,
   wrap,
-  children,
 }: ConditionalWrapProps): JSX.Element => (condition ? wrap(children) : <>{children}</>);

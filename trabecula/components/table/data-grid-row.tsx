@@ -2,7 +2,7 @@ import React from "react";
 import { Collapse } from "@mui/material";
 import {
   Button,
-  DataGridColumn,
+  dataGridCellClasses,
   DataGridProps,
   getDataGridCellLayout,
   getDataGridColumnValue,
@@ -24,7 +24,9 @@ export interface DataGridRowProps<T extends object> extends Pick<
   | "getRowBgColor"
   | "isRowSelected"
   | "onRowClick"
+  | "rowAlign"
   | "rowGap"
+  | "rowPadding"
   | "selectedBgColor"
   | "selectedTextColor"
   | "textPreset"
@@ -49,7 +51,9 @@ export const DataGridRow = <T extends object>({
   isRowSelected,
   onRowClick,
   row,
+  rowAlign,
   rowGap,
+  rowPadding,
   selectedBgColor,
   selectedTextColor,
   setExpandedRows,
@@ -68,8 +72,10 @@ export const DataGridRow = <T extends object>({
         ? alternatingBgColor
         : "transparent");
 
-  const handleRowExpand = () => {
+  const handleRowExpand = (event: React.MouseEvent) => {
     const newExpandedRows = new Set(expandedRows);
+
+    event.stopPropagation();
 
     if (newExpandedRows.has(index)) newExpandedRows.delete(index);
     else newExpandedRows.add(index);
@@ -77,38 +83,14 @@ export const DataGridRow = <T extends object>({
     setExpandedRows(newExpandedRows);
   };
 
-  const renderCell = (column: DataGridColumn<T>) => {
-    const textPresetForColumn = column.textPreset ?? defaultTextPreset;
-    const value = column.render
-      ? column.render({ index, isExpanded, isSelected, row, value: row[column.key] })
-      : getDataGridValueText(getDataGridColumnValue(row, column, "search")) || "--";
-
-    if (typeof value !== "string") return value;
-
-    return (
-      <Text
-        preset={textPresetForColumn}
-        textAlign={column.align || "left"}
-        color={isSelected ? selectedTextColor : undefined}
-        overflow="hidden"
-        whiteSpace={column.wrapText === false ? "nowrap" : undefined}
-        textOverflow={column.wrapText === false ? "ellipsis" : undefined}
-        overflowWrap={column.wrapText !== false ? "break-word" : undefined}
-        wordBreak={column.wrapText !== false ? "break-word" : undefined}
-      >
-        {value}
-      </Text>
-    );
-  };
-
   return (
     <React.Fragment>
       <View
         row
-        align="start"
+        align={rowAlign}
         bgColor={getBackgroundColor()}
         cursor={onRowClick ? "pointer" : "default"}
-        padding={{ all: "0.3rem" }}
+        padding={rowPadding}
         borderRadiuses={{ all: isExpanded ? "0.3rem 0.3rem 0 0" : "0.3rem" }}
         spacing={rowGap}
         minWidth={0}
@@ -122,6 +104,9 @@ export const DataGridRow = <T extends object>({
               ? undefined
               : getDataGridValueText(getDataGridColumnValue(row, column, "search")).trim() ||
                 undefined;
+          const value = column.render
+            ? column.render({ index, isExpanded, isSelected, row, value: row[column.key] })
+            : getDataGridValueText(getDataGridColumnValue(row, column, "search")) || "--";
 
           return (
             <View
@@ -133,7 +118,22 @@ export const DataGridRow = <T extends object>({
               title={title}
               {...getDataGridCellLayout(column.width, column.minWidth, column.maxWidth)}
             >
-              {renderCell(column)}
+              {typeof value !== "string" ? (
+                value
+              ) : (
+                <Text
+                  preset={column.textPreset ?? defaultTextPreset}
+                  textAlign={column.align || "left"}
+                  color={isSelected ? selectedTextColor : undefined}
+                  overflow="hidden"
+                  whiteSpace={column.wrapText === false ? "nowrap" : undefined}
+                  textOverflow={column.wrapText === false ? "ellipsis" : undefined}
+                  overflowWrap={column.wrapText !== false ? "break-word" : undefined}
+                  wordBreak={column.wrapText !== false ? "break-word" : undefined}
+                >
+                  {value}
+                </Text>
+              )}
             </View>
           );
         })}
@@ -154,10 +154,7 @@ export const DataGridRow = <T extends object>({
                 </Text>
               }
               iconRight={isExpanded ? "ArrowDropUp" : "ArrowDropDown"}
-              onClick={(e) => {
-                e.stopPropagation();
-                handleRowExpand();
-              }}
+              onClick={handleRowExpand}
               textColor={colors.custom.lightBlue}
               underline="hover"
             />
@@ -181,12 +178,7 @@ export const DataGridRow = <T extends object>({
 };
 
 const useClasses = makeClasses({
-  cell: {
-    "& > *": {
-      maxWidth: "100%",
-      minWidth: "0 !important",
-    },
-  },
+  cell: dataGridCellClasses.cell,
   expansion: {
     margin: 0,
     padding: 0,
@@ -201,12 +193,6 @@ const useClasses = makeClasses({
       maxWidth: "100%",
       minWidth: "0 !important",
     },
-    "& .MuiTypography-root": {
-      display: "block",
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-      whiteSpace: "nowrap",
-      width: "100%",
-    },
+    ...dataGridCellClasses.noWrapCell,
   },
 });

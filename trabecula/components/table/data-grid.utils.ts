@@ -3,6 +3,24 @@ import { CSS } from "trabecula/utils/client";
 
 const valueCollator = new Intl.Collator(undefined, { numeric: true, sensitivity: "base" });
 
+export const dataGridCellClasses = {
+  cell: {
+    "& > *": {
+      maxWidth: "100%",
+      minWidth: "0 !important",
+    },
+  },
+  noWrapCell: {
+    "& .MuiTypography-root": {
+      display: "block",
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+      whiteSpace: "nowrap",
+      width: "100%",
+    },
+  },
+} as const;
+
 export interface DataGridCellLayoutProps {
   flex?: CSS["flex"];
   maxWidth?: CSS["maxWidth"];
@@ -20,14 +38,14 @@ export const getDataGridCellLayout = (
     const flex = Number(width.replace("fr", ""));
 
     return { flex: Number.isFinite(flex) && flex > 0 ? flex : 1, maxWidth, minWidth };
+  } else {
+    return {
+      flex: `0 0 ${typeof width === "number" ? `${width}px` : width}`,
+      maxWidth: maxWidth ?? width,
+      minWidth: minWidth ?? width,
+      width,
+    };
   }
-
-  return {
-    flex: `0 0 ${typeof width === "number" ? `${width}px` : width}`,
-    maxWidth: maxWidth ?? width,
-    minWidth: minWidth ?? width,
-    width,
-  };
 };
 
 export const clampDataGridColumnWidth = (
@@ -83,8 +101,9 @@ const getTime = (value: DataGridValue) => {
 const getDataGridPixelValue = (value: CSS["maxWidth"] | CSS["minWidth"]) => {
   if (typeof value === "number") return value;
   else if (typeof value !== "string" || !value.endsWith("px")) return undefined;
+  else {
+    const parsed = Number(value.replace("px", ""));
 
-  const parsed = Number(value.replace("px", ""));
-
-  return Number.isFinite(parsed) ? parsed : undefined;
+    return Number.isFinite(parsed) ? parsed : undefined;
+  }
 };

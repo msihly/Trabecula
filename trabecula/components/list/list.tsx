@@ -23,11 +23,13 @@ export const List = ({
   );
 };
 
-const useClasses = makeClasses(({ dividerColor, noDividers }) => ({
+interface ClassesProps extends Pick<ListProps, "dividerColor" | "noDividers"> {}
+
+const useClasses = makeClasses((props: ClassesProps) => ({
   list: {
     padding: 0,
     "& > *:not(:last-child)": {
-      borderBottom: noDividers ? undefined : `1px solid ${dividerColor}`,
+      borderBottom: props.noDividers ? undefined : `1px solid ${props.dividerColor}`,
     },
   },
 }));

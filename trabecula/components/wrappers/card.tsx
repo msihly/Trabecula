@@ -1,13 +1,10 @@
-import { ReactNode } from "react";
-import { Comp, HeaderWrapper, View, ViewProps } from "trabecula/components";
+import { Comp, HeaderWrapper, HeaderWrapperProps, View, ViewProps } from "trabecula/components";
 import { colors, CSS, makeClasses } from "trabecula/utils/client";
 import { deepMerge } from "trabecula/utils/common";
 
-export interface CardProps extends ViewProps {
+export interface CardProps extends ViewProps, Pick<HeaderWrapperProps, "header" | "headerProps"> {
   boxShadow?: CSS["boxShadow"];
   elevated?: boolean;
-  header?: ReactNode;
-  headerProps?: Partial<ViewProps>;
 }
 
 export const Card = Comp(

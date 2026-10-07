@@ -3,14 +3,11 @@ import { ComponentProps, useState } from "react";
 import { Autocomplete, Chip, createFilterOptions } from "@mui/material";
 import { Comp } from "trabecula/components/comp";
 import { colors, makeClasses } from "trabecula/utils/client";
-import { Input } from ".";
+import { DropdownOption, Input } from ".";
 
 const filterOptions = createFilterOptions({ limit: 100, matchFrom: "start" });
 
-export type ChipOption = {
-  label: string;
-  value: any;
-};
+export type ChipOption = DropdownOption<any>;
 
 export type ChipInputProps = Omit<
   ComponentProps<typeof Autocomplete>,
@@ -27,6 +24,13 @@ export const ChipInput = Comp(
     const { css, cx } = useClasses({ opaque });
 
     const [inputValue, setInputValue] = useState("");
+
+    const handleChange = (_, val: ChipOption[] | string[]) => {
+      setValue?.(
+        val.map((v: ChipOption | string) => (typeof v === "string" ? { label: v, value: v } : v)),
+      );
+      setInputValue("");
+    };
 
     return (
       <Autocomplete
@@ -46,14 +50,7 @@ export const ChipInput = Comp(
             <Chip {...getTagProps({ index })} key={index} label={option.label} />
           ))
         }
-        onChange={(_, val: ChipOption[] | string[]) => {
-          setValue?.(
-            val.map((v: ChipOption | string) =>
-              typeof v === "string" ? { label: v, value: v } : v,
-            ),
-          );
-          setInputValue("");
-        }}
+        onChange={handleChange}
         isOptionEqualToValue={(option: ChipOption, val: ChipOption) => option.value === val.value}
         filterOptions={filterOptions}
         size="small"
@@ -69,8 +66,10 @@ export const ChipInput = Comp(
   },
 );
 
-const useClasses = makeClasses(({ opaque }) => ({
+interface ClassesProps extends Pick<ChipInputProps, "opaque"> {}
+
+const useClasses = makeClasses((props: ClassesProps) => ({
   input: {
-    backgroundColor: opaque ? colors.mui.grey["800"] : "transparent",
+    backgroundColor: props.opaque ? colors.mui.grey["800"] : "transparent",
   },
 }));

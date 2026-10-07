@@ -5,8 +5,8 @@ import { View, ViewProps } from "trabecula/components";
 import { colors, CSS, CssColor, makeClasses } from "trabecula/utils/client";
 
 export interface TooltipProps extends Omit<MuiTooltipProps, "children" | "color"> {
-  borderColor?: CssColor;
   bgColor?: CssColor;
+  borderColor?: CssColor;
   children: JSX.Element;
   color?: CssColor;
   flexShrink?: CSS["flexShrink"];
@@ -25,8 +25,8 @@ export const Tooltip = ({
   color,
   flexShrink = 0,
   fontSize = "0.95em",
-  minWidth,
   maxWidth = "25rem",
+  minWidth,
   padding = "0.4rem 0.8rem",
   placement = "bottom-start",
   title,
@@ -34,8 +34,8 @@ export const Tooltip = ({
   ...props
 }: TooltipProps) => {
   const { css } = useClasses({
-    borderColor,
     bgColor,
+    borderColor,
     color,
     flexShrink,
     fontSize,
@@ -71,9 +71,9 @@ interface ClassesProps extends Pick<
   | "color"
   | "flexShrink"
   | "fontSize"
-  | "padding"
   | "maxWidth"
   | "minWidth"
+  | "padding"
 > {}
 
 const useClasses = makeClasses((props: ClassesProps) => ({

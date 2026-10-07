@@ -1,7 +1,7 @@
 declare global {
   interface FileDef {
-    name: string;
     makeFile: () => Promise<string>;
+    name: string;
   }
 }
 

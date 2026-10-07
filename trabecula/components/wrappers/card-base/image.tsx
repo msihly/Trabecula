@@ -121,8 +121,8 @@ interface ClassesProps extends Pick<ImageProps, "fit" | "height" | "rounded"> {
   imagePos: CSS["objectPosition"];
 }
 
-const useClasses = makeClasses((props: ClassesProps) => ({
-  image: {
+const useClasses = makeClasses((props: ClassesProps) => {
+  const radii = {
     ...(["all", "top"].includes(props.rounded) && {
       borderTopLeftRadius: "inherit",
       borderTopRightRadius: "inherit",
@@ -131,28 +131,27 @@ const useClasses = makeClasses((props: ClassesProps) => ({
       borderBottomLeftRadius: "inherit",
       borderBottomRightRadius: "inherit",
     }),
-    height: props.height ?? "inherit",
-    width: "100%",
-    userSelect: "none",
-    transition: "all 100ms ease",
-    objectFit: props.fit,
-    objectPosition: props.imagePos,
-  },
-  imageContainer: {
-    position: "relative",
-    display: "flex",
-    flexDirection: "column",
-    borderRadius: "inherit",
-    height: "100%",
-    ...(["all", "top"].includes(props.rounded) && {
-      borderTopLeftRadius: "inherit",
-      borderTopRightRadius: "inherit",
-    }),
-    ...(["all", "bottom"].includes(props.rounded) && {
-      borderBottomLeftRadius: "inherit",
-      borderBottomRightRadius: "inherit",
-    }),
-    backgroundColor: "inherit",
-    overflow: "hidden",
-  },
-}));
+  };
+
+  return {
+    image: {
+      ...radii,
+      height: props.height ?? "inherit",
+      width: "100%",
+      userSelect: "none",
+      transition: "all 100ms ease",
+      objectFit: props.fit,
+      objectPosition: props.imagePos,
+    },
+    imageContainer: {
+      position: "relative",
+      display: "flex",
+      flexDirection: "column",
+      borderRadius: "inherit",
+      height: "100%",
+      ...radii,
+      backgroundColor: "inherit",
+      overflow: "hidden",
+    },
+  };
+});

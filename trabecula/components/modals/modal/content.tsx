@@ -2,15 +2,11 @@ import { ReactNode } from "react";
 // eslint-disable-next-line @typescript-eslint/no-restricted-imports
 import { DialogContent } from "@mui/material";
 import { View, ViewProps } from "trabecula/components";
-import { CSS, makeClasses, Padding } from "trabecula/utils/client";
+import { makeClasses } from "trabecula/utils/client";
 
 export interface ContentProps extends ViewProps {
   children: ReactNode | ReactNode[];
-  className?: string;
   dividers?: boolean;
-  overflow?: CSS["overflow"];
-  padding?: Padding;
-  position?: CSS["position"];
 }
 
 export const Content = ({

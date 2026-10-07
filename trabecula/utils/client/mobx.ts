@@ -1,9 +1,9 @@
 type MobxKeystoneBindings = {
-  onPatches: typeof import("mobx-keystone").onPatches;
-  isTreeNode: typeof import("mobx-keystone").isTreeNode;
-  getSnapshot: typeof import("mobx-keystone").getSnapshot;
   _async: typeof import("mobx-keystone")._async;
   _await: typeof import("mobx-keystone")._await;
+  getSnapshot: typeof import("mobx-keystone").getSnapshot;
+  isTreeNode: typeof import("mobx-keystone").isTreeNode;
+  onPatches: typeof import("mobx-keystone").onPatches;
   prop: typeof import("mobx-keystone").prop;
 };
 

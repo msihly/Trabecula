@@ -18,15 +18,13 @@ export const DisabledOverlay = ({
   return (
     <>
       {children}
+
       {isDisabled && <View className={css.disabledOverlay} />}
     </>
   );
 };
 
-interface ClassesProps {
-  isDisabled?: boolean;
-  zIndex?: number;
-}
+interface ClassesProps extends Pick<DisabledOverlayProps, "isDisabled" | "zIndex"> {}
 
 const useClasses = makeClasses((props: ClassesProps) => ({
   disabledOverlay: {

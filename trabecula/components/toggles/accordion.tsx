@@ -20,18 +20,18 @@ export interface AccordionProps extends Omit<
   MuiAccordionProps,
   "children" | "expanded" | "onChange" | "title"
 > {
-  children: ReactNode | ReactNode[];
+  borderColor?: CssColor;
   buttonProps?: Partial<ButtonProps>;
+  children: ReactNode | ReactNode[];
   color?: CssColor;
   contentPadding?: CSS["padding"];
-  borderColor?: CssColor;
   dense?: boolean;
   expanded?: boolean;
   fullWidth?: boolean;
   header?: ReactNode;
   headerBgColor?: CssColor;
-  headerBorderMode?: "always" | "expanded" | "visibleBorder";
   headerBorderColor?: CssColor;
+  headerBorderMode?: "always" | "expanded" | "visibleBorder";
   headerButton?: ReactNode;
   headerPadding?: CSS["padding"];
   isExpanded?: boolean;
@@ -48,8 +48,8 @@ export interface AccordionProps extends Omit<
 
 export const Accordion = (rawProps: AccordionProps) => {
   const {
-    buttonProps = {},
     borderColor,
+    buttonProps = {},
     children,
     className,
     color = "transparent",
@@ -59,8 +59,8 @@ export const Accordion = (rawProps: AccordionProps) => {
     fullWidth = false,
     header,
     headerBgColor,
-    headerBorderMode = "visibleBorder",
     headerBorderColor,
+    headerBorderMode = "visibleBorder",
     headerButton,
     headerPadding,
     isExpanded,
@@ -80,16 +80,21 @@ export const Accordion = (rawProps: AccordionProps) => {
 
   const effectiveExpanded = isExpanded ?? internalExpanded;
   const contentExpanded = showExpandToggle ? effectiveExpanded : true;
+  const hasHeaderWrapper =
+    title !== undefined ||
+    headerBgColor !== undefined ||
+    headerBorderColor !== undefined ||
+    headerPadding !== undefined;
 
   const { css, cx } = useClasses({
     borderColor,
-    contentPadding,
     contentExpanded,
+    contentPadding,
     dense,
     fullWidth,
     headerBgColor,
-    headerBorderMode,
     headerBorderColor,
+    headerBorderMode,
     headerPadding,
     isLoading,
     showBorder,
@@ -103,37 +108,27 @@ export const Accordion = (rawProps: AccordionProps) => {
     setExpanded?.(!effectiveExpanded);
   };
 
-  const hasHeaderWrapper =
-    title !== undefined ||
-    headerBgColor !== undefined ||
-    headerBorderColor !== undefined ||
-    headerPadding !== undefined;
+  const headerContent =
+    title !== undefined ? (
+      <View row align="center" justify="space-between" width="100%">
+        {typeof title === "string" ? <Text {...titleProps}>{title}</Text> : title}
 
-  const renderHeader = () => {
-    if (title !== undefined) {
-      return (
-        <View row align="center" justify="space-between" width="100%">
-          {typeof title === "string" ? <Text {...titleProps}>{title}</Text> : title}
+        <View row align="center" spacing="0.6rem">
+          {headerButton}
 
-          <View row align="center" spacing="0.6rem">
-            {headerButton}
-
-            {showExpandToggle ? (
-              <Button
-                type="link"
-                text={contentExpanded ? "Minimize" : "Expand"}
-                iconRight={contentExpanded ? "ArrowDropUp" : "ArrowDropDown"}
-                iconSize="1.3rem"
-                onClick={handleToggle}
-                {...toggleButtonProps}
-              />
-            ) : null}
-          </View>
+          {showExpandToggle ? (
+            <Button
+              type="link"
+              text={contentExpanded ? "Minimize" : "Expand"}
+              iconRight={contentExpanded ? "ArrowDropUp" : "ArrowDropDown"}
+              iconSize="1.3rem"
+              onClick={handleToggle}
+              {...toggleButtonProps}
+            />
+          ) : null}
         </View>
-      );
-    }
-
-    return (
+      </View>
+    ) : (
       <Button
         text={header}
         endNode={
@@ -154,7 +149,6 @@ export const Accordion = (rawProps: AccordionProps) => {
         {...buttonProps}
       />
     );
-  };
 
   return (
     <MuiAccordion
@@ -164,7 +158,7 @@ export const Accordion = (rawProps: AccordionProps) => {
       disableGutters
       className={cx(css.accordion, className)}
     >
-      {hasHeaderWrapper ? <View className={css.header}>{renderHeader()}</View> : renderHeader()}
+      {hasHeaderWrapper ? <View className={css.header}>{headerContent}</View> : headerContent}
 
       <View column className={css.content}>
         <LoadingOverlay isLoading={isLoading} />
@@ -180,13 +174,13 @@ export const Accordion = (rawProps: AccordionProps) => {
 /* -------------------------------------------------------------------------- */
 interface ClassesProps extends Pick<
   AccordionProps,
-  | "contentPadding"
   | "borderColor"
+  | "contentPadding"
   | "dense"
   | "fullWidth"
-  | "headerBorderMode"
   | "headerBgColor"
   | "headerBorderColor"
+  | "headerBorderMode"
   | "headerPadding"
   | "isLoading"
   | "showBorder"

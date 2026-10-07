@@ -109,10 +109,17 @@ export const sortArray = <T>(arr: T[], key: string, isDesc = true, isNumber = fa
 
 /** @return [truthy values, falsy values] */
 export const splitArray = <T>(arr: T[], filterFn: (element: T) => boolean): T[][] =>
-  arr.reduce((acc, cur) => (acc[+!filterFn(cur)].push(cur), acc), [[], []]);
+  arr.reduce(
+    (acc, cur) => {
+      acc[+!filterFn(cur)].push(cur);
+
+      return acc;
+    },
+    [[], []],
+  );
 
 export const sumArray = <T>(arr: T[], fn: (num: T) => number) =>
-  arr.reduce((acc, cur) => (acc += fn(cur)), 0);
+  arr.reduce((acc, cur) => acc + fn(cur), 0);
 
 export const uniqueArrayFilter = <T>(...arrays: T[][]): T[] => {
   const all = arrays.flat();

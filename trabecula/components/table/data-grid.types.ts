@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { TextProps } from "trabecula/components";
-import { CSS, CssColor } from "trabecula/utils/client";
+import { CSS, CssColor, Padding } from "trabecula/utils/client";
 
 export type DataGridRowData = Record<string, unknown>;
 export type DataGridColumnKey<T extends object> = Extract<keyof T, string>;
@@ -62,14 +62,16 @@ export interface DataGridProps<T extends object = DataGridRowData> {
   getRowBgColor?: (row: T, index: number) => CssColor | undefined;
   hasPagination?: boolean;
   hasResizableColumns?: boolean;
-  headerBorder?: string;
   hasSearch?: boolean;
   hasSorting?: boolean;
+  headerBorder?: string;
   initialSort?: DataGridSort<T>;
   isExpanded?: boolean;
   isRowSelected?: (row: T, index: number) => boolean;
   onRowClick?: (row: T, index: number) => void;
+  rowAlign?: CSS["alignItems"];
   rowGap?: string | number;
+  rowPadding?: Padding;
   rowsPerPage?: number;
   selectedBgColor?: CssColor;
   selectedTextColor?: CssColor;

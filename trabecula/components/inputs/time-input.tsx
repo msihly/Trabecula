@@ -21,19 +21,17 @@ export interface TimeInputProps extends Omit<
   width?: CSS["width"];
 }
 
-export const TimeInput = (rawProps: TimeInputProps) => {
-  const {
-    inputProps = {},
-    label,
-    labelProps = {},
-    setValue,
-    slotProps = {},
-    value,
-    viewProps = {},
-    width,
-    ...timePickerProps
-  } = rawProps;
-
+export const TimeInput = ({
+  inputProps = {},
+  label,
+  labelProps = {},
+  setValue,
+  slotProps = {},
+  value,
+  viewProps = {},
+  width,
+  ...timePickerProps
+}: TimeInputProps) => {
   const { css } = useClasses(null);
 
   const [timeValue, setTimeValue] = useState<dayjs.Dayjs | null>(

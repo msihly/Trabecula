@@ -2,19 +2,15 @@ import { MouseEvent, ReactNode } from "react";
 import { Paper } from "@mui/material";
 import Color from "color";
 import { View, ViewProps } from "trabecula/components";
-import { colors, CSS, CssColor, makeClasses } from "trabecula/utils/client";
+import { colors, CssColor, makeClasses } from "trabecula/utils/client";
 
 export interface ContainerProps extends ViewProps {
   children: ReactNode | ReactNode[];
-  className?: string;
   disabled?: boolean;
-  display?: CSS["display"];
-  height?: CSS["height"];
   onClick?: (event: MouseEvent) => void;
   onDoubleClick?: () => void;
   selected?: boolean;
   selectedColor?: CssColor;
-  width?: CSS["width"];
 }
 
 export const Container = ({
