@@ -867,7 +867,7 @@ interface CheckboxProps {
     margins?: Margins;
     noHover?: boolean;
     padding?: Padding;
-    setChecked: (checked: boolean, ternary?: boolean) => void;
+    setChecked: (checked: boolean, ternary?: boolean, event?: MouseEvent<HTMLButtonElement>) => void;
     stateIcons?: Partial<Record<CheckboxState, ReactNode>>;
     ternary?: boolean;
     ternaryColor?: CssColor;

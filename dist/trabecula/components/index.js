@@ -9752,12 +9752,12 @@ var Checkbox = ({
     whiteSpace,
     width
   });
-  const toggleChecked = () => {
+  const toggleChecked = (event) => {
     if (disabled) return;
-    if (ternary === void 0) setChecked(!checked);
-    else if (ternary) setChecked(true, false);
-    else if (checked) setChecked(false, false);
-    else setChecked(false, true);
+    if (ternary === void 0) setChecked(!checked, void 0, event);
+    else if (ternary) setChecked(true, false, event);
+    else if (checked) setChecked(false, false, event);
+    else setChecked(false, true, event);
   };
   const labelNode = typeof label === "string" && labelProps ? /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(Text, __spreadProps(__spreadValues({}, labelProps), { children: label })) : label;
   return /* @__PURE__ */ (0, import_jsx_runtime54.jsx)(

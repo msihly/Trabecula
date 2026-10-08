@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { MouseEvent, ReactNode } from "react";
 // eslint-disable-next-line @typescript-eslint/no-restricted-imports
 import { Checkbox as MuiCheckbox, FormControlLabel } from "@mui/material";
 import Color from "color";
@@ -32,7 +32,7 @@ export interface CheckboxProps {
   margins?: Margins;
   noHover?: boolean;
   padding?: Padding;
-  setChecked: (checked: boolean, ternary?: boolean) => void;
+  setChecked: (checked: boolean, ternary?: boolean, event?: MouseEvent<HTMLButtonElement>) => void;
   stateIcons?: Partial<Record<CheckboxState, ReactNode>>;
   ternary?: boolean;
   ternaryColor?: CssColor;
@@ -77,13 +77,13 @@ export const Checkbox = ({
     width,
   });
 
-  const toggleChecked = () => {
+  const toggleChecked = (event: MouseEvent<HTMLButtonElement>) => {
     if (disabled) return;
 
-    if (ternary === undefined) setChecked(!checked);
-    else if (ternary) setChecked(true, false);
-    else if (checked) setChecked(false, false);
-    else setChecked(false, true);
+    if (ternary === undefined) setChecked(!checked, undefined, event);
+    else if (ternary) setChecked(true, false, event);
+    else if (checked) setChecked(false, false, event);
+    else setChecked(false, true, event);
   };
 
   const labelNode =
