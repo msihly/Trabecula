@@ -1,7 +1,8 @@
 import {
   dayjs,
   handleErrors,
-  round
+  round,
+  sleep
 } from "../../chunk-PI7DDEAG.mjs";
 import {
   __async
@@ -52,6 +53,32 @@ var makeFolder = (path3) => __async(null, null, function* () {
   return yield fs.mkdir(path3, { recursive: true });
 });
 var md5File = _md5File;
+var PENDING_REMOVAL_DELAY = 100;
+var PENDING_REMOVAL_RETRIES = 20;
+var removeEmptyFolder = (dir, removedFolders) => __async(null, null, function* () {
+  for (let attempt = 0; ; attempt++) {
+    try {
+      yield fs.rmdir(dir);
+      return true;
+    } catch (error) {
+      if (error.code === "ENOENT") return true;
+      if (!["EBUSY", "EEXIST", "ENOTEMPTY", "EPERM"].includes(error.code)) throw error;
+      let entries;
+      try {
+        entries = yield fs.readdir(dir);
+      } catch (readError) {
+        if (readError.code === "ENOENT") return true;
+        throw readError;
+      }
+      const isPendingRemoval = entries.every((name) => removedFolders.has(path.join(dir, name)));
+      if (!isPendingRemoval || attempt === PENDING_REMOVAL_RETRIES) {
+        if (["EBUSY", "EPERM"].includes(error.code)) throw error;
+        return false;
+      }
+      yield sleep(PENDING_REMOVAL_DELAY);
+    }
+  }
+});
 var removeEmptyFolders = (..._0) => __async(null, [..._0], function* (dirPath = ".", options = {}) {
   var _a;
   const excludedPaths = ((_a = options.excludedPaths) != null ? _a : []).map((excluded) => path.resolve(excluded));
@@ -64,12 +91,9 @@ var removeEmptyFolders = (..._0) => __async(null, [..._0], function* (dirPath = 
     )
   ).sort((a, b) => b.split(path.sep).length - a.split(path.sep).length);
   if (options.hardDelete) {
+    const removedFolders = /* @__PURE__ */ new Set();
     for (const dir of dirPathsDeepToShallow) {
-      try {
-        yield fs.rmdir(dir);
-      } catch (error) {
-        if (!["EEXIST", "ENOENT", "ENOTEMPTY"].includes(error.code)) throw error;
-      }
+      if (yield removeEmptyFolder(dir, removedFolders)) removedFolders.add(dir);
     }
   } else {
     const emptyFolders = /* @__PURE__ */ new Set();

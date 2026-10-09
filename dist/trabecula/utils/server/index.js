@@ -264,6 +264,8 @@ var handleErrors = (fn) => __async(null, null, function* () {
     return { error: errorStr, success: false };
   }
 });
+var rng = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+var sleep = (min, max) => new Promise((resolve) => setTimeout(resolve, max > 0 ? rng(min, max) : min));
 
 // trabecula/utils/server/files.ts
 var checkFileExists = (path3) => __async(null, null, function* () {
@@ -305,6 +307,32 @@ var makeFolder = (path3) => __async(null, null, function* () {
   return yield import_fs.promises.mkdir(path3, { recursive: true });
 });
 var md5File = import_md5_file.default;
+var PENDING_REMOVAL_DELAY = 100;
+var PENDING_REMOVAL_RETRIES = 20;
+var removeEmptyFolder = (dir, removedFolders) => __async(null, null, function* () {
+  for (let attempt = 0; ; attempt++) {
+    try {
+      yield import_fs.promises.rmdir(dir);
+      return true;
+    } catch (error) {
+      if (error.code === "ENOENT") return true;
+      if (!["EBUSY", "EEXIST", "ENOTEMPTY", "EPERM"].includes(error.code)) throw error;
+      let entries;
+      try {
+        entries = yield import_fs.promises.readdir(dir);
+      } catch (readError) {
+        if (readError.code === "ENOENT") return true;
+        throw readError;
+      }
+      const isPendingRemoval = entries.every((name) => removedFolders.has(import_path.default.join(dir, name)));
+      if (!isPendingRemoval || attempt === PENDING_REMOVAL_RETRIES) {
+        if (["EBUSY", "EPERM"].includes(error.code)) throw error;
+        return false;
+      }
+      yield sleep(PENDING_REMOVAL_DELAY);
+    }
+  }
+});
 var removeEmptyFolders = (..._0) => __async(null, [..._0], function* (dirPath = ".", options = {}) {
   var _a;
   const excludedPaths = ((_a = options.excludedPaths) != null ? _a : []).map((excluded) => import_path.default.resolve(excluded));
@@ -317,12 +345,9 @@ var removeEmptyFolders = (..._0) => __async(null, [..._0], function* (dirPath = 
     )
   ).sort((a, b) => b.split(import_path.default.sep).length - a.split(import_path.default.sep).length);
   if (options.hardDelete) {
+    const removedFolders = /* @__PURE__ */ new Set();
     for (const dir of dirPathsDeepToShallow) {
-      try {
-        yield import_fs.promises.rmdir(dir);
-      } catch (error) {
-        if (!["EEXIST", "ENOENT", "ENOTEMPTY"].includes(error.code)) throw error;
-      }
+      if (yield removeEmptyFolder(dir, removedFolders)) removedFolders.add(dir);
     }
   } else {
     const emptyFolders = /* @__PURE__ */ new Set();

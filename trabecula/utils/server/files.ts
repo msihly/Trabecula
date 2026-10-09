@@ -3,7 +3,7 @@ import path from "path";
 import { fdir } from "fdir";
 import _md5File from "md5-file";
 import trash from "trash";
-import { handleErrors } from "trabecula/utils/common";
+import { handleErrors, sleep } from "trabecula/utils/common";
 
 export const checkFileExists = async (path: string) => !!(await fs.stat(path).catch(() => false));
 
@@ -69,6 +69,40 @@ export const makeFolder = async (path: string) => await fs.mkdir(path, { recursi
 
 export const md5File = _md5File;
 
+const PENDING_REMOVAL_DELAY = 100;
+const PENDING_REMOVAL_RETRIES = 20;
+
+/** Retries while the only remaining entries are removed subfolders that Windows still holds as pending deletes. */
+const removeEmptyFolder = async (dir: string, removedFolders: Set<string>) => {
+  for (let attempt = 0; ; attempt++) {
+    try {
+      await fs.rmdir(dir);
+
+      return true;
+    } catch (error) {
+      if (error.code === "ENOENT") return true;
+      if (!["EBUSY", "EEXIST", "ENOTEMPTY", "EPERM"].includes(error.code)) throw error;
+
+      let entries: string[];
+
+      try {
+        entries = await fs.readdir(dir);
+      } catch (readError) {
+        if (readError.code === "ENOENT") return true;
+        throw readError;
+      }
+
+      const isPendingRemoval = entries.every((name) => removedFolders.has(path.join(dir, name)));
+      if (!isPendingRemoval || attempt === PENDING_REMOVAL_RETRIES) {
+        if (["EBUSY", "EPERM"].includes(error.code)) throw error;
+        return false;
+      }
+
+      await sleep(PENDING_REMOVAL_DELAY);
+    }
+  }
+};
+
 export const removeEmptyFolders = async (
   dirPath: string = ".",
   options: { excludedPaths?: string[]; hardDelete?: boolean } = {},
@@ -88,12 +122,10 @@ export const removeEmptyFolders = async (
     .sort((a, b) => b.split(path.sep).length - a.split(path.sep).length);
 
   if (options.hardDelete) {
+    const removedFolders = new Set<string>();
+
     for (const dir of dirPathsDeepToShallow) {
-      try {
-        await fs.rmdir(dir);
-      } catch (error) {
-        if (!["EEXIST", "ENOENT", "ENOTEMPTY"].includes(error.code)) throw error;
-      }
+      if (await removeEmptyFolder(dir, removedFolders)) removedFolders.add(dir);
     }
   } else {
     const emptyFolders = new Set<string>();
