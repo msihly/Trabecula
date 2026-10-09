@@ -550,6 +550,8 @@ interface ContainerProps$1 extends Omit<DialogProps, "maxWidth" | "open" | "onCl
     closeOnBackdrop?: boolean;
     height?: CSS["height"];
     isLoading?: boolean;
+    /** Single CSS length applied to every side and subtracted from the default max height and width. */
+    margin?: string;
     maxHeight?: CSS["maxHeight"];
     maxWidth?: CSS["maxWidth"];
     onClose?: () => void;
@@ -558,7 +560,7 @@ interface ContainerProps$1 extends Omit<DialogProps, "maxWidth" | "open" | "onCl
 }
 
 declare const Modal: {
-    Container: ({ children, className, closeOnBackdrop, draggable, height, isLoading, maxHeight, maxWidth, onClose, scroll, visible, width, ...props }: ContainerProps$1) => react_jsx_runtime.JSX.Element;
+    Container: ({ children, className, closeOnBackdrop, draggable, height, isLoading, margin, maxHeight, maxWidth, onClose, scroll, visible, width, ...props }: ContainerProps$1) => react_jsx_runtime.JSX.Element;
     Content: ({ children, className, dividers, overflow, padding, position, ...viewProps }: ContentProps) => react_jsx_runtime.JSX.Element;
     Footer: ({ children, uniformWidth, ...props }: FooterProps$1) => react_jsx_runtime.JSX.Element;
     Header: ({ children, className, justify, leftNode, rightNode, }: HeaderProps) => react_jsx_runtime.JSX.Element;

@@ -3110,8 +3110,9 @@ var Container = (_a) => {
     draggable = false,
     height,
     isLoading,
+    margin = "20px",
     maxHeight,
-    maxWidth = "none",
+    maxWidth,
     onClose,
     scroll = "paper",
     visible = true,
@@ -3123,6 +3124,7 @@ var Container = (_a) => {
     "draggable",
     "height",
     "isLoading",
+    "margin",
     "maxHeight",
     "maxWidth",
     "onClose",
@@ -3130,7 +3132,7 @@ var Container = (_a) => {
     "visible",
     "width"
   ]);
-  const { css, cx } = useClasses20({ height, maxHeight, maxWidth, width });
+  const { css, cx } = useClasses20({ height, margin, maxHeight, maxWidth, width });
   const handleClose = (_, reason) => {
     if (reason !== "backdropClick" || closeOnBackdrop) onClose == null ? void 0 : onClose();
   };
@@ -3154,19 +3156,23 @@ var DraggablePaper = (props) => {
   const ref = useRef4(null);
   return /* @__PURE__ */ jsx34(Draggable, { nodeRef: ref, cancel: '[class*="MuiDialogContent-root"]', children: /* @__PURE__ */ jsx34(Paper, __spreadProps(__spreadValues({}, props), { ref, className: cx(props.className, css.draggable) })) });
 };
-var useClasses20 = makeClasses((props) => ({
-  modal: {
-    "& .MuiDialog-paper": {
-      position: "relative",
-      maxHeight: props.maxHeight,
-      maxWidth: props.maxWidth,
-      height: props.height,
-      width: props.width,
-      background: colors.background,
-      overflow: "hidden"
+var useClasses20 = makeClasses((props) => {
+  var _a, _b;
+  return {
+    modal: {
+      "& .MuiDialog-paper": {
+        position: "relative",
+        margin: props.margin,
+        maxHeight: (_a = props.maxHeight) != null ? _a : `calc(100% - 2 * ${props.margin})`,
+        maxWidth: (_b = props.maxWidth) != null ? _b : `calc(100% - 2 * ${props.margin})`,
+        height: props.height,
+        width: props.width,
+        background: colors.background,
+        overflow: "hidden"
+      }
     }
-  }
-}));
+  };
+});
 var useDraggableClasses = makeClasses({
   draggable: {
     cursor: "grab",
@@ -6585,4 +6591,4 @@ export {
   usePortalContainer,
   MuiProvider
 };
-//# sourceMappingURL=chunk-SLULFRWJ.mjs.map
+//# sourceMappingURL=chunk-6SWDZ2PD.mjs.map

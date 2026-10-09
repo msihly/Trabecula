@@ -12,6 +12,8 @@ export interface ContainerProps extends Omit<
   closeOnBackdrop?: boolean;
   height?: CSS["height"];
   isLoading?: boolean;
+  /** Single CSS length applied to every side and subtracted from the default max height and width. */
+  margin?: string;
   maxHeight?: CSS["maxHeight"];
   maxWidth?: CSS["maxWidth"];
   onClose?: () => void;
@@ -26,15 +28,16 @@ export const Container = ({
   draggable = false,
   height,
   isLoading,
+  margin = "20px",
   maxHeight,
-  maxWidth = "none",
+  maxWidth,
   onClose,
   scroll = "paper",
   visible = true,
   width,
   ...props
 }: ContainerProps) => {
-  const { css, cx } = useClasses({ height, maxHeight, maxWidth, width });
+  const { css, cx } = useClasses({ height, margin, maxHeight, maxWidth, width });
 
   const handleClose = (_, reason: "backdropClick" | "escapeKeyDown") => {
     if (reason !== "backdropClick" || closeOnBackdrop) onClose?.();
@@ -70,15 +73,16 @@ const DraggablePaper = (props: PaperProps) => {
 
 interface ClassesProps extends Pick<
   ContainerProps,
-  "height" | "maxHeight" | "maxWidth" | "width"
+  "height" | "margin" | "maxHeight" | "maxWidth" | "width"
 > {}
 
 const useClasses = makeClasses((props: ClassesProps) => ({
   modal: {
     "& .MuiDialog-paper": {
       position: "relative",
-      maxHeight: props.maxHeight,
-      maxWidth: props.maxWidth,
+      margin: props.margin,
+      maxHeight: props.maxHeight ?? `calc(100% - 2 * ${props.margin})`,
+      maxWidth: props.maxWidth ?? `calc(100% - 2 * ${props.margin})`,
       height: props.height,
       width: props.width,
       background: colors.background,
