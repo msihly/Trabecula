@@ -669,6 +669,10 @@ var colors = {
   palette: PALETTE,
   swatches: PALETTE_SWATCHES
 };
+var getContrastText = (background) => {
+  const color = (0, import_color2.default)(background);
+  return color.contrast((0, import_color2.default)(customColors.white)) >= color.contrast((0, import_color2.default)(customColors.black)) ? customColors.white : customColors.black;
+};
 
 // trabecula/utils/client/hooks.ts
 var import_react2 = require("react");
@@ -7625,6 +7629,7 @@ var useClasses14 = makeClasses((props) => ({
     height: MULTI_INPUT_ROW_HEIGHT,
     width: "100%",
     backgroundColor: props.bgColor,
+    color: getContrastText(props.bgColor),
     cursor: props.hasClick ? "pointer" : void 0
   }
 }));

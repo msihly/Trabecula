@@ -2439,6 +2439,7 @@ var useClasses13 = makeClasses((props) => ({
     height: MULTI_INPUT_ROW_HEIGHT,
     width: "100%",
     backgroundColor: props.bgColor,
+    color: getContrastText(props.bgColor),
     cursor: props.hasClick ? "pointer" : void 0
   }
 }));
@@ -6641,4 +6642,4 @@ export {
   usePortalContainer,
   MuiProvider
 };
-//# sourceMappingURL=chunk-HZ3JFARC.mjs.map
+//# sourceMappingURL=chunk-GN4O53GN.mjs.map

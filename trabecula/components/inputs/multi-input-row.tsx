@@ -1,5 +1,5 @@
 import { Button, DropdownOption, MultiInputListProps, Text, View } from "trabecula/components";
-import { colors, CssColor, makeClasses } from "trabecula/utils/client";
+import { colors, CssColor, getContrastText, makeClasses } from "trabecula/utils/client";
 import { _CONSTANTS } from "trabecula/utils/common";
 
 export const MULTI_INPUT_ROW_HEIGHT = 35;
@@ -89,6 +89,7 @@ const useClasses = makeClasses((props: ClassesProps) => ({
     height: MULTI_INPUT_ROW_HEIGHT,
     width: "100%",
     backgroundColor: props.bgColor,
+    color: getContrastText(props.bgColor),
     cursor: props.hasClick ? "pointer" : undefined,
   },
 }));
