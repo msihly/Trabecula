@@ -4,6 +4,7 @@ import { Theme, useTheme } from "@mui/material/styles";
 import Color from "color";
 // eslint-disable-next-line @typescript-eslint/no-restricted-imports
 import { createMakeAndWithStyles, CSSObject, Cx } from "tss-react";
+import { PALETTE, PALETTE_SWATCHES } from "trabecula/utils/common";
 
 export type CSS = CSSObject;
 
@@ -275,27 +276,21 @@ const customColors = {
   yellow: "#e3c648",
 } as const;
 
-const tagCategories = [
-  customColors.red,
-  customColors.orange,
-  customColors.yellow,
-  customColors.green,
-  customColors.blue,
-  customColors.blueGrey,
-  customColors.purple,
-].map((c) => [
-  Color(c).lighten(0.4).hex() as CssColor,
-  Color(c).lighten(0.2).hex() as CssColor,
-  Color(c).hex() as CssColor,
-  Color(c).darken(0.2).hex() as CssColor,
-  Color(c).darken(0.4).hex() as CssColor,
-]);
-
 export const colors = {
   background: "#1E1E1E",
   custom: customColors,
   foreground: "#2C2C2C",
   foregroundCard: "#343434",
   mui: muiColors,
-  tagCategories,
+  palette: PALETTE,
+  swatches: PALETTE_SWATCHES,
 } as const;
+
+/** Picks the light or dark text color with more contrast against an opaque background. */
+export const getContrastText = (background: CssColor) => {
+  const color = Color(background);
+
+  return color.contrast(Color(customColors.white)) >= color.contrast(Color(customColors.black))
+    ? customColors.white
+    : customColors.black;
+};

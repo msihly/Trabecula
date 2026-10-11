@@ -123,6 +123,7 @@ __export(client_exports, {
   colors: () => colors,
   copyToClipboard: () => copyToClipboard,
   derefMobx: () => derefMobx,
+  getContrastText: () => getContrastText,
   getMobx: () => getMobx,
   initMobx: () => initMobx,
   makeBorderRadiuses: () => makeBorderRadiuses,
@@ -148,91 +149,8 @@ module.exports = __toCommonJS(client_exports);
 // trabecula/utils/client/css.ts
 var import_material = require("@mui/material");
 var import_styles = require("@mui/material/styles");
-var import_color = __toESM(require("color"));
+var import_color2 = __toESM(require("color"));
 var import_tss_react = require("tss-react");
-var makeBorders = (props) => ({
-  border: props == null ? void 0 : props.all,
-  borderTop: props == null ? void 0 : props.top,
-  borderBottom: props == null ? void 0 : props.bottom,
-  borderRight: props == null ? void 0 : props.right,
-  borderLeft: props == null ? void 0 : props.left
-});
-var makeBorderRadiuses = (radiuses) => {
-  var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l;
-  return {
-    borderTopLeftRadius: (_c = (_b = (_a = radiuses == null ? void 0 : radiuses.topLeft) != null ? _a : radiuses == null ? void 0 : radiuses.top) != null ? _b : radiuses == null ? void 0 : radiuses.left) != null ? _c : radiuses == null ? void 0 : radiuses.all,
-    borderTopRightRadius: (_f = (_e = (_d = radiuses == null ? void 0 : radiuses.topRight) != null ? _d : radiuses == null ? void 0 : radiuses.top) != null ? _e : radiuses == null ? void 0 : radiuses.right) != null ? _f : radiuses == null ? void 0 : radiuses.all,
-    borderBottomLeftRadius: (_i = (_h = (_g = radiuses == null ? void 0 : radiuses.bottomLeft) != null ? _g : radiuses == null ? void 0 : radiuses.bottom) != null ? _h : radiuses == null ? void 0 : radiuses.left) != null ? _i : radiuses == null ? void 0 : radiuses.all,
-    borderBottomRightRadius: (_l = (_k = (_j = radiuses == null ? void 0 : radiuses.bottomRight) != null ? _j : radiuses == null ? void 0 : radiuses.bottom) != null ? _k : radiuses == null ? void 0 : radiuses.right) != null ? _l : radiuses == null ? void 0 : radiuses.all
-  };
-};
-var makeMargins = (props) => ({
-  margin: props == null ? void 0 : props.all,
-  marginTop: props == null ? void 0 : props.top,
-  marginBottom: props == null ? void 0 : props.bottom,
-  marginRight: props == null ? void 0 : props.right,
-  marginLeft: props == null ? void 0 : props.left
-});
-var makePadding = (props) => ({
-  padding: props == null ? void 0 : props.all,
-  paddingTop: props == null ? void 0 : props.top,
-  paddingBottom: props == null ? void 0 : props.bottom,
-  paddingRight: props == null ? void 0 : props.right,
-  paddingLeft: props == null ? void 0 : props.left
-});
-var { makeStyles } = (0, import_tss_react.createMakeAndWithStyles)({ useTheme: import_styles.useTheme });
-var makeClasses = (fnOrObj) => {
-  return (params) => {
-    const { classes: css, cx } = makeStyles()(
-      (props, theme) => typeof fnOrObj === "function" ? fnOrObj(theme, props) : fnOrObj
-    )(params);
-    return { css, cx };
-  };
-};
-var customColors = {
-  black: "#131313",
-  blue: "#2866c5",
-  blueGrey: "#546e7a",
-  brown: "#6d4c41",
-  darkGrey: "#2b2b2b",
-  green: "#2e7d32",
-  grey: "#4b4b4b",
-  lightBlue: "#578cdd",
-  lightGrey: "#bdbdbd",
-  orange: "#ad6a27",
-  purple: "#683980",
-  red: "#982525",
-  white: "#f5f5f5",
-  yellow: "#e3c648"
-};
-var tagCategories = [
-  customColors.red,
-  customColors.orange,
-  customColors.yellow,
-  customColors.green,
-  customColors.blue,
-  customColors.blueGrey,
-  customColors.purple
-].map((c) => [
-  (0, import_color.default)(c).lighten(0.4).hex(),
-  (0, import_color.default)(c).lighten(0.2).hex(),
-  (0, import_color.default)(c).hex(),
-  (0, import_color.default)(c).darken(0.2).hex(),
-  (0, import_color.default)(c).darken(0.4).hex()
-]);
-var colors = {
-  background: "#1E1E1E",
-  custom: customColors,
-  foreground: "#2C2C2C",
-  foregroundCard: "#343434",
-  mui: import_material.colors,
-  tagCategories
-};
-
-// trabecula/utils/client/hooks.ts
-var import_react = require("react");
-var import_mobx = require("mobx");
-var import_mobx_keystone = require("mobx-keystone");
 
 // trabecula/utils/common/arrays.ts
 var chunkArray = (arr, size) => [...Array(Math.ceil(arr.length / size))].map((_, i) => arr.slice(i * size, i * size + size));
@@ -463,7 +381,284 @@ var handleErrors = (fn) => __async(null, null, function* () {
 });
 var isDeepEqual = import_es_toolkit.isEqual;
 
+// trabecula/utils/common/palette.ts
+var import_color = __toESM(require("color"));
+var PALETTE = {
+  red: {
+    300: "#fca5a5",
+    400: "#f87171",
+    500: "#ef4444",
+    600: "#dc2626",
+    700: "#b91c1c",
+    800: "#991b1b",
+    900: "#7f1d1d"
+  },
+  orange: {
+    300: "#fdba74",
+    400: "#fb923c",
+    500: "#f97316",
+    600: "#ea580c",
+    700: "#c2410c",
+    800: "#9a3412",
+    900: "#7c2d12"
+  },
+  amber: {
+    300: "#fcd34d",
+    400: "#fbbf24",
+    500: "#f59e0b",
+    600: "#d97706",
+    700: "#b45309",
+    800: "#92400e",
+    900: "#78350f"
+  },
+  yellow: {
+    300: "#fde047",
+    400: "#facc15",
+    500: "#eab308",
+    600: "#ca8a04",
+    700: "#a16207",
+    800: "#854d0e",
+    900: "#713f12"
+  },
+  lime: {
+    300: "#bef264",
+    400: "#a3e635",
+    500: "#84cc16",
+    600: "#65a30d",
+    700: "#4d7c0f",
+    800: "#3f6212",
+    900: "#365314"
+  },
+  green: {
+    300: "#86efac",
+    400: "#4ade80",
+    500: "#22c55e",
+    600: "#16a34a",
+    700: "#15803d",
+    800: "#166534",
+    900: "#14532d"
+  },
+  emerald: {
+    300: "#6ee7b7",
+    400: "#34d399",
+    500: "#10b981",
+    600: "#059669",
+    700: "#047857",
+    800: "#065f46",
+    900: "#064e3b"
+  },
+  teal: {
+    300: "#5eead4",
+    400: "#2dd4bf",
+    500: "#14b8a6",
+    600: "#0d9488",
+    700: "#0f766e",
+    800: "#115e59",
+    900: "#134e4a"
+  },
+  cyan: {
+    300: "#67e8f9",
+    400: "#22d3ee",
+    500: "#06b6d4",
+    600: "#0891b2",
+    700: "#0e7490",
+    800: "#155e75",
+    900: "#164e63"
+  },
+  sky: {
+    300: "#7dd3fc",
+    400: "#38bdf8",
+    500: "#0ea5e9",
+    600: "#0284c7",
+    700: "#0369a1",
+    800: "#075985",
+    900: "#0c4a6e"
+  },
+  blue: {
+    300: "#93c5fd",
+    400: "#60a5fa",
+    500: "#3b82f6",
+    600: "#2563eb",
+    700: "#1d4ed8",
+    800: "#1e40af",
+    900: "#1e3a8a"
+  },
+  indigo: {
+    300: "#a5b4fc",
+    400: "#818cf8",
+    500: "#6366f1",
+    600: "#4f46e5",
+    700: "#4338ca",
+    800: "#3730a3",
+    900: "#312e81"
+  },
+  violet: {
+    300: "#c4b5fd",
+    400: "#a78bfa",
+    500: "#8b5cf6",
+    600: "#7c3aed",
+    700: "#6d28d9",
+    800: "#5b21b6",
+    900: "#4c1d95"
+  },
+  purple: {
+    300: "#d8b4fe",
+    400: "#c084fc",
+    500: "#a855f7",
+    600: "#9333ea",
+    700: "#7e22ce",
+    800: "#6b21a8",
+    900: "#581c87"
+  },
+  fuchsia: {
+    300: "#f0abfc",
+    400: "#e879f9",
+    500: "#d946ef",
+    600: "#c026d3",
+    700: "#a21caf",
+    800: "#86198f",
+    900: "#701a75"
+  },
+  pink: {
+    300: "#f9a8d4",
+    400: "#f472b6",
+    500: "#ec4899",
+    600: "#db2777",
+    700: "#be185d",
+    800: "#9d174d",
+    900: "#831843"
+  },
+  rose: {
+    300: "#fda4af",
+    400: "#fb7185",
+    500: "#f43f5e",
+    600: "#e11d48",
+    700: "#be123c",
+    800: "#9f1239",
+    900: "#881337"
+  },
+  slate: {
+    300: "#cbd5e1",
+    400: "#94a3b8",
+    500: "#64748b",
+    600: "#475569",
+    700: "#334155",
+    800: "#1e293b",
+    900: "#0f172a"
+  },
+  stone: {
+    300: "#d6d3d1",
+    400: "#a8a29e",
+    500: "#78716c",
+    600: "#57534e",
+    700: "#44403c",
+    800: "#292524",
+    900: "#1c1917"
+  },
+  neutral: {
+    300: "#d4d4d4",
+    400: "#a3a3a3",
+    500: "#737373",
+    600: "#525252",
+    700: "#404040",
+    800: "#262626",
+    900: "#171717"
+  }
+};
+var PALETTE_BASE = { white: "#ffffff", black: "#000000" };
+var PALETTE_SWATCHES = [
+  ...Object.values(PALETTE).map((shades) => Object.values(shades)),
+  Object.values(PALETTE_BASE)
+];
+var PALETTE_NAMES = new Map([
+  ...Object.entries(PALETTE).flatMap(
+    ([hue, shades]) => Object.entries(shades).map(([shade, hex]) => [hex, `${hue} ${shade}`])
+  ),
+  ...Object.entries(PALETTE_BASE).map(([name, hex]) => [hex, name])
+]);
+var PALETTE_LABS = [...PALETTE_NAMES.keys()].map((hex) => ({
+  hex,
+  lab: (0, import_color.default)(hex).lab().array()
+}));
+var getPaletteColorName = (color) => {
+  var _a;
+  return (_a = PALETTE_NAMES.get(color == null ? void 0 : color.toLowerCase())) != null ? _a : null;
+};
+
+// trabecula/utils/client/css.ts
+var makeBorders = (props) => ({
+  border: props == null ? void 0 : props.all,
+  borderTop: props == null ? void 0 : props.top,
+  borderBottom: props == null ? void 0 : props.bottom,
+  borderRight: props == null ? void 0 : props.right,
+  borderLeft: props == null ? void 0 : props.left
+});
+var makeBorderRadiuses = (radiuses) => {
+  var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l;
+  return {
+    borderTopLeftRadius: (_c = (_b = (_a = radiuses == null ? void 0 : radiuses.topLeft) != null ? _a : radiuses == null ? void 0 : radiuses.top) != null ? _b : radiuses == null ? void 0 : radiuses.left) != null ? _c : radiuses == null ? void 0 : radiuses.all,
+    borderTopRightRadius: (_f = (_e = (_d = radiuses == null ? void 0 : radiuses.topRight) != null ? _d : radiuses == null ? void 0 : radiuses.top) != null ? _e : radiuses == null ? void 0 : radiuses.right) != null ? _f : radiuses == null ? void 0 : radiuses.all,
+    borderBottomLeftRadius: (_i = (_h = (_g = radiuses == null ? void 0 : radiuses.bottomLeft) != null ? _g : radiuses == null ? void 0 : radiuses.bottom) != null ? _h : radiuses == null ? void 0 : radiuses.left) != null ? _i : radiuses == null ? void 0 : radiuses.all,
+    borderBottomRightRadius: (_l = (_k = (_j = radiuses == null ? void 0 : radiuses.bottomRight) != null ? _j : radiuses == null ? void 0 : radiuses.bottom) != null ? _k : radiuses == null ? void 0 : radiuses.right) != null ? _l : radiuses == null ? void 0 : radiuses.all
+  };
+};
+var makeMargins = (props) => ({
+  margin: props == null ? void 0 : props.all,
+  marginTop: props == null ? void 0 : props.top,
+  marginBottom: props == null ? void 0 : props.bottom,
+  marginRight: props == null ? void 0 : props.right,
+  marginLeft: props == null ? void 0 : props.left
+});
+var makePadding = (props) => ({
+  padding: props == null ? void 0 : props.all,
+  paddingTop: props == null ? void 0 : props.top,
+  paddingBottom: props == null ? void 0 : props.bottom,
+  paddingRight: props == null ? void 0 : props.right,
+  paddingLeft: props == null ? void 0 : props.left
+});
+var { makeStyles } = (0, import_tss_react.createMakeAndWithStyles)({ useTheme: import_styles.useTheme });
+var makeClasses = (fnOrObj) => {
+  return (params) => {
+    const { classes: css, cx } = makeStyles()(
+      (props, theme) => typeof fnOrObj === "function" ? fnOrObj(theme, props) : fnOrObj
+    )(params);
+    return { css, cx };
+  };
+};
+var customColors = {
+  black: "#131313",
+  blue: "#2866c5",
+  blueGrey: "#546e7a",
+  brown: "#6d4c41",
+  darkGrey: "#2b2b2b",
+  green: "#2e7d32",
+  grey: "#4b4b4b",
+  lightBlue: "#578cdd",
+  lightGrey: "#bdbdbd",
+  orange: "#ad6a27",
+  purple: "#683980",
+  red: "#982525",
+  white: "#f5f5f5",
+  yellow: "#e3c648"
+};
+var colors = {
+  background: "#1E1E1E",
+  custom: customColors,
+  foreground: "#2C2C2C",
+  foregroundCard: "#343434",
+  mui: import_material.colors,
+  palette: PALETTE,
+  swatches: PALETTE_SWATCHES
+};
+var getContrastText = (background) => {
+  const color = (0, import_color2.default)(background);
+  return color.contrast((0, import_color2.default)(customColors.white)) >= color.contrast((0, import_color2.default)(customColors.black)) ? customColors.white : customColors.black;
+};
+
 // trabecula/utils/client/hooks.ts
+var import_react = require("react");
+var import_mobx = require("mobx");
+var import_mobx_keystone = require("mobx-keystone");
 var getComparisonValue = (value) => (0, import_mobx_keystone.isTreeNode)(value) ? (0, import_mobx_keystone.getSnapshot)(value) : (0, import_mobx.isObservable)(value) ? (0, import_mobx.toJS)(value) : value;
 var useDeepEffect = (cb, deps) => {
   const dependencies = useDeepMemo(deps.map(getComparisonValue));
@@ -922,7 +1117,7 @@ var useClasses = makeClasses({
 
 // trabecula/components/buttons/button.tsx
 var import_material3 = require("@mui/material");
-var import_color2 = __toESM(require("color"));
+var import_color3 = __toESM(require("color"));
 var import_jsx_runtime3 = require("react/jsx-runtime");
 var Button = (_a) => {
   var _b = _a, {
@@ -1076,7 +1271,7 @@ var Button = (_a) => {
 var useClasses2 = makeClasses((props) => {
   var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o;
   const bgColor = props.outlined ? props.outlineFill : props.isLinkDisplay ? "transparent" : props.color;
-  const bgColorOnHover = props.isLinkDisplay ? "transparent" : props.outlined ? (_a = props.outlineFillOnHover) != null ? _a : (0, import_color2.default)(props.outlineFill).lighten(0.1).string() : (_b = props.colorOnHover) != null ? _b : (0, import_color2.default)(props.color).lighten(0.1).string();
+  const bgColorOnHover = props.isLinkDisplay ? "transparent" : props.outlined ? (_a = props.outlineFillOnHover) != null ? _a : (0, import_color3.default)(props.outlineFill).lighten(0.1).string() : (_b = props.colorOnHover) != null ? _b : (0, import_color3.default)(props.color).lighten(0.1).string();
   const borderColor = props.outlined ? props.color : "transparent";
   const borderColorOnHover = (_c = props.borderColorOnHover) != null ? _c : props.outlined && props.colorOnHover ? props.colorOnHover : void 0;
   const linkPadding = props.isLinkDisplay && !((_d = props.padding) == null ? void 0 : _d.all) ? 0 : void 0;
@@ -1181,6 +1376,7 @@ var ColorPicker = Comp(
       noIcon = false,
       setValue,
       swatches = [],
+      usedColors = [],
       value,
       viewProps = {},
       width = "fit-content"
@@ -1191,11 +1387,28 @@ var ColorPicker = Comp(
       "noIcon",
       "setValue",
       "swatches",
+      "usedColors",
       "value",
       "viewProps",
       "width"
     ]);
+    var _a2;
     const handleNoColor = () => setValue(null);
+    const renderSwatch = (c) => {
+      var _a3;
+      return /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
+        IconButton,
+        {
+          name: "Circle",
+          iconProps: { color: c, size: "1.4em" },
+          size: "small",
+          sx: { border: `3px solid ${value === c ? c : "transparent"}` },
+          title: (_a3 = getPaletteColorName(c)) != null ? _a3 : c,
+          onClick: () => setValue(c)
+        },
+        c
+      );
+    };
     const renderButton = (onOpen) => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
       Button,
       __spreadProps(__spreadValues({}, buttonProps), {
@@ -1222,16 +1435,11 @@ var ColorPicker = Comp(
           textColor: value === null ? colors.custom.white : colors.custom.lightGrey
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(View, { column: true, children: swatches.map((swatch, i) => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(View, { row: true, children: swatch.map((c) => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
-        IconButton,
-        {
-          name: "Circle",
-          iconProps: { color: c, size: "1.4em" },
-          sx: { border: `3px solid ${value === c ? c : "transparent"}` },
-          onClick: () => setValue(c)
-        },
-        c
-      )) }, i)) })
+      usedColors.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(View, { column: true, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Text, { color: colors.custom.lightGrey, children: "In Use" }),
+        chunkArray([...new Set(usedColors)], ((_a2 = swatches[0]) == null ? void 0 : _a2.length) || 7).map((row, i) => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(View, { row: true, children: row.map(renderSwatch) }, i))
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(View, { column: true, children: swatches.map((swatch, i) => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(View, { row: true, children: swatch.map(renderSwatch) }, i)) })
     ] })) }));
   }
 );
@@ -6724,11 +6932,11 @@ var DateRange = Comp(
 // trabecula/components/inputs/dropdown.tsx
 var import_react11 = require("react");
 var import_material10 = require("@mui/material");
-var import_color4 = __toESM(require("color"));
+var import_color5 = __toESM(require("color"));
 
 // trabecula/components/inputs/input.tsx
 var import_material9 = require("@mui/material");
-var import_color3 = __toESM(require("color"));
+var import_color4 = __toESM(require("color"));
 var import_jsx_runtime17 = require("react/jsx-runtime");
 var DENSE_INPUT_PADDING = "0.1rem 0.5rem";
 var DEFAULT_INPUT_HEADER_PROPS = {
@@ -6953,7 +7161,7 @@ var useClasses11 = makeClasses((props) => {
           deepMerge(props.hasLabel ? { top: 0 } : {}, (_d = props.borderRadiuses) != null ? _d : {})
         )),
         "&:hover fieldset": {
-          borderColor: props.color ? (0, import_color3.default)(props.color).lighten(0.3).toString() : void 0
+          borderColor: props.color ? (0, import_color4.default)(props.color).lighten(0.3).toString() : void 0
         },
         "&.Mui-focused fieldset": {
           borderColor: props.color
@@ -7279,7 +7487,7 @@ var useClasses12 = makeClasses((props) => {
         backgroundColor: props.menuItemSelectedBgColor
       },
       "&:hover": {
-        backgroundColor: props.itemBgColor ? (0, import_color4.default)(props.itemBgColor).lighten(0.05).hex() : void 0
+        backgroundColor: props.itemBgColor ? (0, import_color5.default)(props.itemBgColor).lighten(0.05).hex() : void 0
       },
       "&:not(:last-of-type)": {
         borderBottom: props.menuItemBorder
@@ -8028,7 +8236,7 @@ var useClasses18 = makeClasses((props) => ({
 
 // trabecula/components/list/list-item.tsx
 var import_material13 = require("@mui/material");
-var import_color5 = __toESM(require("color"));
+var import_color6 = __toESM(require("color"));
 var import_jsx_runtime32 = require("react/jsx-runtime");
 var useClasses19 = makeClasses((props) => ({
   icon: {
@@ -8405,7 +8613,7 @@ var Modal = {
 
 // trabecula/components/progress/bar.tsx
 var import_material19 = require("@mui/material");
-var import_color6 = __toESM(require("color"));
+var import_color7 = __toESM(require("color"));
 var import_jsx_runtime39 = require("react/jsx-runtime");
 var ProgressBar = Comp((props) => {
   var _a, _b, _c, _d, _e;
@@ -8435,7 +8643,7 @@ var ProgressBar = Comp((props) => {
 var useClasses24 = makeClasses({
   progressBar: {
     flex: 1,
-    backgroundColor: (0, import_color6.default)(colors.custom.blue).fade(0.5).string(),
+    backgroundColor: (0, import_color7.default)(colors.custom.blue).fade(0.5).string(),
     "& .MuiLinearProgress-bar": {
       backgroundColor: colors.custom.blue
     }
@@ -8444,13 +8652,13 @@ var useClasses24 = makeClasses({
 
 // trabecula/components/progress/circle.tsx
 var import_material20 = require("@mui/material");
-var import_color7 = __toESM(require("color"));
+var import_color8 = __toESM(require("color"));
 var import_jsx_runtime40 = require("react/jsx-runtime");
 var ProgressCircle = Comp((props) => {
   var _a;
   const color = props.color || colors.custom.white;
   const { css } = useClasses25({
-    bgColor: props.variant === "indeterminate" ? void 0 : props.bgColor || (0, import_color7.default)(color).fade(0.5).string(),
+    bgColor: props.variant === "indeterminate" ? void 0 : props.bgColor || (0, import_color8.default)(color).fade(0.5).string(),
     color
   });
   return /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)(View, { column: true, position: "relative", justify: "center", align: "center", children: [
@@ -9050,7 +9258,7 @@ var AccordionGroupContext = (0, import_react27.createContext)(null);
 
 // trabecula/components/toggles/checkbox.tsx
 var import_material27 = require("@mui/material");
-var import_color8 = __toESM(require("color"));
+var import_color9 = __toESM(require("color"));
 var import_jsx_runtime54 = require("react/jsx-runtime");
 var useClasses34 = makeClasses((props) => ({
   checkbox: __spreadProps(__spreadValues({}, makePadding(props.padding)), {
@@ -9067,7 +9275,7 @@ var useClasses34 = makeClasses((props) => ({
     whiteSpace: props.whiteSpace,
     transition: "all 200ms ease-in-out",
     userSelect: "none",
-    "&:hover": props.noHover ? {} : { backgroundColor: (0, import_color8.default)(props.color).fade(0.8).string() },
+    "&:hover": props.noHover ? {} : { backgroundColor: (0, import_color9.default)(props.color).fade(0.8).string() },
     "& .MuiFormControlLabel-label": {
       paddingRight: "0.4rem",
       fontFamily: "Roboto"
@@ -9077,7 +9285,7 @@ var useClasses34 = makeClasses((props) => ({
 
 // trabecula/components/toggles/radio.tsx
 var import_material28 = require("@mui/material");
-var import_color9 = __toESM(require("color"));
+var import_color10 = __toESM(require("color"));
 var import_jsx_runtime55 = require("react/jsx-runtime");
 var useClasses35 = makeClasses((props) => ({
   label: __spreadProps(__spreadValues({
@@ -9093,8 +9301,8 @@ var useClasses35 = makeClasses((props) => ({
     transition: "all 200ms ease-in-out",
     userSelect: "none",
     "&:hover": props.noHover ? {} : {
-      border: `1px solid ${(0, import_color9.default)(props.color).fade(0.8).string()}`,
-      backgroundColor: (0, import_color9.default)(props.color).fade(0.9).string()
+      border: `1px solid ${(0, import_color10.default)(props.color).fade(0.8).string()}`,
+      backgroundColor: (0, import_color10.default)(props.color).fade(0.9).string()
     }
   }),
   radio: __spreadProps(__spreadValues({}, makePadding(props.padding)), {
@@ -9105,7 +9313,7 @@ var useClasses35 = makeClasses((props) => ({
 
 // trabecula/components/tooltip/tooltip.tsx
 var import_material29 = require("@mui/material");
-var import_color10 = __toESM(require("color"));
+var import_color11 = __toESM(require("color"));
 var import_jsx_runtime56 = require("react/jsx-runtime");
 var Tooltip = (_a) => {
   var _b = _a, {
@@ -9182,7 +9390,7 @@ var useClasses36 = makeClasses((props) => ({
     maxWidth: props.maxWidth,
     minWidth: props.minWidth,
     padding: props.padding,
-    backgroundColor: (0, import_color10.default)(props.bgColor).fade(0.03).string(),
+    backgroundColor: (0, import_color11.default)(props.bgColor).fade(0.03).string(),
     color: props.color,
     fontSize: props.fontSize,
     whiteSpace: "pre-wrap",
@@ -9357,7 +9565,7 @@ var useClasses38 = makeClasses((props) => ({
 
 // trabecula/components/wrappers/card-base/container.tsx
 var import_material30 = require("@mui/material");
-var import_color11 = __toESM(require("color"));
+var import_color12 = __toESM(require("color"));
 var import_jsx_runtime60 = require("react/jsx-runtime");
 var useClasses39 = makeClasses((props, theme) => {
   var _a;
@@ -9374,7 +9582,7 @@ var useClasses39 = makeClasses((props, theme) => {
       [theme.breakpoints.down("md")]: props.height ? void 0 : { height: "14rem" },
       [theme.breakpoints.down("sm")]: props.height ? void 0 : { height: "12rem" }
     }, props.width ? { width: props.width } : {}), {
-      background: !props.disabled && props.selected ? `linear-gradient(to bottom right, ${(0, import_color11.default)(props.selectedColor).lighten(0.4).string()}, ${props.selectedColor} 60%)` : "transparent",
+      background: !props.disabled && props.selected ? `linear-gradient(to bottom right, ${(0, import_color12.default)(props.selectedColor).lighten(0.4).string()}, ${props.selectedColor} 60%)` : "transparent",
       overflow: "hidden",
       cursor: "pointer",
       userSelect: "none"
@@ -9611,11 +9819,11 @@ var ConditionalWrap = ({
 // trabecula/components/wrappers/context-menu.tsx
 var import_react29 = require("react");
 var import_material32 = require("@mui/material");
-var import_color12 = __toESM(require("color"));
+var import_color13 = __toESM(require("color"));
 var import_jsx_runtime68 = require("react/jsx-runtime");
 var useClasses44 = makeClasses({
   contextMenu: {
-    background: (0, import_color12.default)(colors.custom.black).fade(0.03).string()
+    background: (0, import_color13.default)(colors.custom.black).fade(0.03).string()
   },
   contextMenuInner: {
     padding: 0
@@ -9693,11 +9901,11 @@ var useClasses46 = makeClasses((props) => ({
 }));
 
 // trabecula/components/wrappers/drop-overlay.tsx
-var import_color13 = __toESM(require("color"));
+var import_color14 = __toESM(require("color"));
 var import_jsx_runtime71 = require("react/jsx-runtime");
 var useClasses47 = makeClasses({
   overlay: {
-    backgroundColor: (0, import_color13.default)(colors.custom.blue).fade(0.5).string(),
+    backgroundColor: (0, import_color14.default)(colors.custom.blue).fade(0.5).string(),
     border: `15px dashed ${colors.custom.blue}`,
     bottom: 0,
     left: 0,
@@ -9944,7 +10152,7 @@ var useClasses49 = makeClasses((props) => ({
 // trabecula/components/wrappers/tab-container.tsx
 var import_react31 = require("react");
 var import_material35 = require("@mui/material");
-var import_color14 = __toESM(require("color"));
+var import_color15 = __toESM(require("color"));
 var import_jsx_runtime76 = require("react/jsx-runtime");
 var useClasses50 = makeClasses((props) => {
   var _a;
@@ -9973,11 +10181,11 @@ var useClasses50 = makeClasses((props) => {
         color: colors.custom.white
       },
       "&:hover": {
-        backgroundColor: (0, import_color14.default)(props.color).lighten(0.3).string(),
+        backgroundColor: (0, import_color15.default)(props.color).lighten(0.3).string(),
         transition: "all 200ms ease-in-out"
       },
       "&:not(:last-child)": {
-        borderRight: `2px solid ${(0, import_color14.default)(props.color).lighten(0.4).string()}`
+        borderRight: `2px solid ${(0, import_color15.default)(props.color).lighten(0.4).string()}`
       },
       backgroundColor: props.color,
       color: colors.custom.grey,
@@ -10257,6 +10465,7 @@ var useClasses53 = makeClasses({
   colors,
   copyToClipboard,
   derefMobx,
+  getContrastText,
   getMobx,
   initMobx,
   makeBorderRadiuses,

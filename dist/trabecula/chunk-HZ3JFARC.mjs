@@ -7,15 +7,18 @@ import {
   DENSE_FORM_ROW_HEIGHT,
   FORM_ROW_HEIGHT,
   LOGICAL_OPS,
+  PALETTE,
+  PALETTE_SWATCHES,
   _CONSTANTS,
   chunkArray,
   dayjs,
   debounce,
   deepClone,
   deepMerge,
+  getPaletteColorName,
   handleErrors,
   isDeepEqual
-} from "./chunk-PI7DDEAG.mjs";
+} from "./chunk-3SCRDNWM.mjs";
 import {
   __async,
   __objRest,
@@ -85,28 +88,18 @@ var customColors = {
   white: "#f5f5f5",
   yellow: "#e3c648"
 };
-var tagCategories = [
-  customColors.red,
-  customColors.orange,
-  customColors.yellow,
-  customColors.green,
-  customColors.blue,
-  customColors.blueGrey,
-  customColors.purple
-].map((c) => [
-  Color(c).lighten(0.4).hex(),
-  Color(c).lighten(0.2).hex(),
-  Color(c).hex(),
-  Color(c).darken(0.2).hex(),
-  Color(c).darken(0.4).hex()
-]);
 var colors = {
   background: "#1E1E1E",
   custom: customColors,
   foreground: "#2C2C2C",
   foregroundCard: "#343434",
   mui: muiColors,
-  tagCategories
+  palette: PALETTE,
+  swatches: PALETTE_SWATCHES
+};
+var getContrastText = (background) => {
+  const color = Color(background);
+  return color.contrast(Color(customColors.white)) >= color.contrast(Color(customColors.black)) ? customColors.white : customColors.black;
 };
 
 // trabecula/utils/client/hooks.ts
@@ -841,6 +834,7 @@ var ColorPicker = Comp(
       noIcon = false,
       setValue,
       swatches = [],
+      usedColors = [],
       value,
       viewProps = {},
       width = "fit-content"
@@ -851,11 +845,28 @@ var ColorPicker = Comp(
       "noIcon",
       "setValue",
       "swatches",
+      "usedColors",
       "value",
       "viewProps",
       "width"
     ]);
+    var _a2;
     const handleNoColor = () => setValue(null);
+    const renderSwatch = (c) => {
+      var _a3;
+      return /* @__PURE__ */ jsx5(
+        IconButton,
+        {
+          name: "Circle",
+          iconProps: { color: c, size: "1.4em" },
+          size: "small",
+          sx: { border: `3px solid ${value === c ? c : "transparent"}` },
+          title: (_a3 = getPaletteColorName(c)) != null ? _a3 : c,
+          onClick: () => setValue(c)
+        },
+        c
+      );
+    };
     const renderButton = (onOpen) => /* @__PURE__ */ jsx5(
       Button,
       __spreadProps(__spreadValues({}, buttonProps), {
@@ -882,16 +893,11 @@ var ColorPicker = Comp(
           textColor: value === null ? colors.custom.white : colors.custom.lightGrey
         }
       ),
-      /* @__PURE__ */ jsx5(View, { column: true, children: swatches.map((swatch, i) => /* @__PURE__ */ jsx5(View, { row: true, children: swatch.map((c) => /* @__PURE__ */ jsx5(
-        IconButton,
-        {
-          name: "Circle",
-          iconProps: { color: c, size: "1.4em" },
-          sx: { border: `3px solid ${value === c ? c : "transparent"}` },
-          onClick: () => setValue(c)
-        },
-        c
-      )) }, i)) })
+      usedColors.length > 0 && /* @__PURE__ */ jsxs4(View, { column: true, children: [
+        /* @__PURE__ */ jsx5(Text, { color: colors.custom.lightGrey, children: "In Use" }),
+        chunkArray([...new Set(usedColors)], ((_a2 = swatches[0]) == null ? void 0 : _a2.length) || 7).map((row, i) => /* @__PURE__ */ jsx5(View, { row: true, children: row.map(renderSwatch) }, i))
+      ] }),
+      /* @__PURE__ */ jsx5(View, { column: true, children: swatches.map((swatch, i) => /* @__PURE__ */ jsx5(View, { row: true, children: swatch.map(renderSwatch) }, i)) })
     ] })) }));
   }
 );
@@ -6526,6 +6532,7 @@ export {
   makePadding,
   makeClasses,
   colors,
+  getContrastText,
   useDeepEffect,
   useDeepMemo,
   useElementResize,
@@ -6634,4 +6641,4 @@ export {
   usePortalContainer,
   MuiProvider
 };
-//# sourceMappingURL=chunk-ATMYSWPR.mjs.map
+//# sourceMappingURL=chunk-HZ3JFARC.mjs.map

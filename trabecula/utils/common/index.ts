@@ -5,5 +5,6 @@ export * from "./files";
 export * from "./formatting";
 export * from "./math";
 export * from "./miscellaneous";
+export * from "./palette";
 export * from "./queue";
 export * from "./selection";

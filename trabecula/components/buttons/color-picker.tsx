@@ -11,6 +11,7 @@ import {
   ViewProps,
 } from "trabecula/components";
 import { colors, CSS, CssColor } from "trabecula/utils/client";
+import { chunkArray, getPaletteColorName } from "trabecula/utils/common";
 
 export interface ColorPickerProps extends Omit<ButtonProps, "onChange" | "value"> {
   color?: CssColor;
@@ -19,6 +20,8 @@ export interface ColorPickerProps extends Omit<ButtonProps, "onChange" | "value"
   noIcon?: boolean;
   setValue: (val: CssColor | null) => void;
   swatches: CssColor[][];
+  /** Colors already in use, offered above the swatches for reuse. */
+  usedColors?: CssColor[];
   value: CssColor | null;
   viewProps?: ViewProps;
   width?: CSS["width"];
@@ -32,12 +35,25 @@ export const ColorPicker = Comp(
     noIcon = false,
     setValue,
     swatches = [],
+    usedColors = [],
     value,
     viewProps = {},
     width = "fit-content",
     ...buttonProps
   }: ColorPickerProps) => {
     const handleNoColor = () => setValue(null);
+
+    const renderSwatch = (c: CssColor) => (
+      <IconButton
+        key={c}
+        name="Circle"
+        iconProps={{ color: c, size: "1.4em" }}
+        size="small"
+        sx={{ border: `3px solid ${value === c ? c : "transparent"}` }}
+        title={getPaletteColorName(c) ?? c}
+        onClick={() => setValue(c)}
+      />
+    );
 
     const renderButton = (onOpen: (event: React.MouseEvent<HTMLButtonElement>) => void) => (
       <Button
@@ -70,18 +86,22 @@ export const ColorPicker = Comp(
             textColor={value === null ? colors.custom.white : colors.custom.lightGrey}
           />
 
+          {usedColors.length > 0 && (
+            <View column>
+              <Text color={colors.custom.lightGrey}>{"In Use"}</Text>
+
+              {chunkArray([...new Set(usedColors)], swatches[0]?.length || 7).map((row, i) => (
+                <View key={i} row>
+                  {row.map(renderSwatch)}
+                </View>
+              ))}
+            </View>
+          )}
+
           <View column>
             {swatches.map((swatch, i) => (
               <View key={i} row>
-                {swatch.map((c) => (
-                  <IconButton
-                    key={c}
-                    name="Circle"
-                    iconProps={{ color: c, size: "1.4em" }}
-                    sx={{ border: `3px solid ${value === c ? c : "transparent"}` }}
-                    onClick={() => setValue(c)}
-                  />
-                ))}
+                {swatch.map(renderSwatch)}
               </View>
             ))}
           </View>

@@ -3,6 +3,9 @@ import {
   FORM_ROW_HEIGHT,
   Fmt,
   LOGICAL_OPS,
+  PALETTE,
+  PALETTE_BASE,
+  PALETTE_SWATCHES,
   PromiseQueue,
   _CONSTANTS,
   applySelectionChanges,
@@ -24,6 +27,8 @@ import {
   durationToSeconds,
   fractionStringToNumber,
   getArrayDiff,
+  getClosestPaletteColor,
+  getPaletteColorName,
   getSelectionRange,
   handleErrors,
   isArchive,
@@ -49,13 +54,16 @@ import {
   uniqueArrayFilter,
   uniqueArrayMerge,
   uuid
-} from "../../chunk-PI7DDEAG.mjs";
+} from "../../chunk-3SCRDNWM.mjs";
 import "../../chunk-DM4QYMVJ.mjs";
 export {
   DENSE_FORM_ROW_HEIGHT,
   FORM_ROW_HEIGHT,
   Fmt,
   LOGICAL_OPS,
+  PALETTE,
+  PALETTE_BASE,
+  PALETTE_SWATCHES,
   PromiseQueue,
   _CONSTANTS,
   applySelectionChanges,
@@ -77,6 +85,8 @@ export {
   durationToSeconds,
   fractionStringToNumber,
   getArrayDiff,
+  getClosestPaletteColor,
+  getPaletteColorName,
   getSelectionRange,
   handleErrors,
   isArchive,
