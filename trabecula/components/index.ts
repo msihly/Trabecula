@@ -3,6 +3,7 @@ export { Comp };
 
 export * from "./activity";
 export * from "./buttons";
+export * from "./charts";
 export * from "./inputs";
 export * from "./list";
 export * from "./media";

@@ -3,6 +3,7 @@ import {
   AccordionGroup,
   ActivityModal,
   ActivityOperationCard,
+  AreaChart,
   AutoComplete,
   Button,
   ButtonWithInset,
@@ -85,7 +86,7 @@ import {
   useAccordionGroup,
   useAccordionGroupSection,
   usePortalContainer
-} from "../chunk-6SWDZ2PD.mjs";
+} from "../chunk-ATMYSWPR.mjs";
 import "../chunk-M7SRQWZA.mjs";
 import "../chunk-PI7DDEAG.mjs";
 import "../chunk-DM4QYMVJ.mjs";
@@ -94,6 +95,7 @@ export {
   AccordionGroup,
   ActivityModal,
   ActivityOperationCard,
+  AreaChart,
   AutoComplete,
   Button,
   ButtonWithInset,
