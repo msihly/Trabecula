@@ -240,6 +240,7 @@ declare const DateRange: react.ForwardRefExoticComponent<DateRangeProps & react.
 
 type DropdownOption<T = string> = {
     label: string;
+    pill?: ReactNode;
     value: T;
 };
 interface DropdownProps<T = string> extends Omit<InputProps, "header" | "label" | "setValue" | "value"> {
@@ -272,13 +273,14 @@ interface DropdownProps<T = string> extends Omit<InputProps, "header" | "label" 
     options: DropdownOption<T>[];
     paperBorder?: CSS["border"];
     paperBorderRadius?: CSS["borderRadius"];
+    pillPosition?: "left" | "right";
     setValue: (value: T | undefined) => void;
     textColor?: CssColor;
     value: T;
     withClearButton?: boolean;
     withValueTest?: boolean;
 }
-declare function Dropdown<T = string>({ autoHighlight, autoSelect, borderColor, caretColor, caretSize, dense, disabled, freeSolo, header, headerProps, inputFontSize, inputFontWeight, inputHeight, inputLineHeight, inputOutlineWidth, inputPadding, inputProps, inputRootAlignItems, inputRootHeight, inputRootMinHeight, inputRootPadding, InputProps, itemBgColor, label, labelProps, labelTextProps, listboxBorder, listboxBorderRadius, menuItemBorder, menuItemMinHeight, menuItemPadding, menuItemSelectedBgColor, optionTextProps, options, paperBorder, paperBorderRadius, required, setValue, textColor, value, withClearButton, withValueTest, ...props }: DropdownProps<T>): react_jsx_runtime.JSX.Element;
+declare function Dropdown<T = string>({ autoHighlight, autoSelect, borderColor, caretColor, caretSize, dense, disabled, freeSolo, header, headerProps, inputFontSize, inputFontWeight, inputHeight, inputLineHeight, inputOutlineWidth, inputPadding, inputProps, inputRootAlignItems, inputRootHeight, inputRootMinHeight, inputRootPadding, InputProps, itemBgColor, label, labelProps, labelTextProps, listboxBorder, listboxBorderRadius, menuItemBorder, menuItemMinHeight, menuItemPadding, menuItemSelectedBgColor, optionTextProps, options, paperBorder, paperBorderRadius, pillPosition, required, setValue, textColor, value, withClearButton, withValueTest, ...props }: DropdownProps<T>): react_jsx_runtime.JSX.Element;
 
 interface FilterHeaderProps {
     label: string;
@@ -1102,6 +1104,13 @@ interface LoadingOverlayProps {
 }
 declare const LoadingOverlay: ({ children, isLoading, sub }: LoadingOverlayProps) => react_jsx_runtime.JSX.Element;
 
+interface PillProps extends ViewProps {
+    fontFamily?: CSS["fontFamily"];
+    fontSize?: CSS["fontSize"];
+    fontWeight?: CSS["fontWeight"];
+}
+declare const Pill: react.ForwardRefExoticComponent<PillProps & react.RefAttributes<HTMLDivElement>>;
+
 interface SideScrollerProps {
     children: JSX.Element[];
     className?: string;
@@ -1124,12 +1133,13 @@ interface TabContainerProps {
     maxWidth?: CSS["maxWidth"];
     minHeight?: CSS["minHeight"];
     onTabChange?: (tabIndex: string) => void;
+    pillPosition?: "left" | "right";
     tabHeight?: CSS["height"];
     tabs: TabItem[];
     viewProps?: Partial<ViewProps>;
     withBorder?: boolean;
 }
-declare const TabContainer: ({ activeTab, borderRadius, color, contentClassName, headerRightNode, maxWidth, minHeight, onTabChange, tabHeight, tabs, viewProps, withBorder, }: TabContainerProps) => react_jsx_runtime.JSX.Element;
+declare const TabContainer: ({ activeTab, borderRadius, color, contentClassName, headerRightNode, maxWidth, minHeight, onTabChange, pillPosition, tabHeight, tabs, viewProps, withBorder, }: TabContainerProps) => react_jsx_runtime.JSX.Element;
 
 interface UniformListProps extends ViewProps {
     children: ReactNode | ReactNode[];
@@ -1197,4 +1207,4 @@ declare const MuiProvider: ({ children, portalContainer, styleContainer, }: {
     styleContainer?: Node;
 }) => react_jsx_runtime.JSX.Element;
 
-export { Accordion, AccordionGroup, type AccordionProps, ActivityModal, type ActivityModalProps, ActivityOperationCard, type ActivityOperationCardProps, AreaChart, type AreaChartProps, type AreaChartSeries, AutoComplete, type AutoCompleteOption, type AutoCompleteProps, Button, type ButtonProps, ButtonWithInset, type ButtonWithInsetProps, Card, CardBase, CardGrid, type CardGridProps, type CardProps, CenteredText, type CenteredTextProps, Checkbox, type CheckboxProps, Chip, ChipInput, type ChipInputProps, type ChipOption, type ChipProps, ColorPicker, type ColorPickerProps, Comp, ConditionalWrap, ConfirmModal, type ConfirmModalProps, type ContainerProps$1 as ContainerProps, type ContentProps, ContextMenu, type ContextMenuProps, DEFAULT_INPUT_HEADER_PROPS, DENSE_INPUT_PADDING, DataGrid, type DataGridCellLayoutProps, type DataGridColumn, type DataGridColumnConfig, type DataGridColumnKey, DataGridHeader, type DataGridHeaderProps, type DataGridProps, type DataGridRender, type DataGridRenderContext, DataGridRow, type DataGridRowData, type DataGridRowProps, type DataGridSort, type DataGridSortDirection, type DataGridValue, DateDetail, type DateDetailProps, DateInput, type DateInputProps, DateRange, type DateRangeProps, Detail, type DetailProps, DetailRows, DisabledOverlay, type DisabledOverlayProps, Divider, type DividerProps, DropOverlay, type DropOverlayProps, Dropdown, type DropdownOption, type DropdownProps, FilterHeader, type FilterHeaderProps, FilterMenu, type FilterMenuProps, type FooterProps$1 as FooterProps, HeaderContent, type HeaderContentProps, type HeaderProps, HeaderWrapper, type HeaderWrapperProps, Icon, IconButton, type IconButtonProps, type IconLayer, type IconName, IconPicker, type IconPickerProps, type IconProps, Input, type InputProps, Link, List, ListItem, type ListItemProps, type ListProps, LoadingOverlay, type LoadingOverlayProps, LogOpsInput, type LogOpsInputProps, MULTI_INPUT_ROW_HEIGHT, MenuButton, type MenuButtonProps, Modal, MuiProvider, MultiActionButton, type MultiActionButtonProps, MultiInput, MultiInputList, type MultiInputListProps, type MultiInputProps, MultiInputRow, type MultiInputRowOption, type MultiInputRowProps, NumInput, type NumInputProps, NumRange, type NumRangeProps, Pagination, type PaginationProps, ProgressBar, type ProgressBarProps, ProgressCircle, type ProgressCircleProps, Radio, type RadioProps, RangeWrapper, type RangeWrapperProps, SideScroller, Slider, type SliderMark, type SliderProps, SortMenu, type SortMenuProps, SortRow, type SortRowProps, PRESETS as TEXT_PRESETS, TabContainer, type TabContainerProps, Table, type TableColumn, type TableProps, Text, type TextPreset, type TextProps, type TextTruncation, TimeInput, type TimeInputProps, Tooltip, type TooltipProps$1 as TooltipProps, TooltipWrapper, type TooltipWrapperProps, TruncatedText, type TruncatedTextProps, type TruncatedTextRemainderProps, UniformList, type UniformListProps, View, type ViewProps, clampDataGridColumnWidth, compareDataGridValues, createAutoCompleteOptions, dataGridCellClasses, getDataGridCellLayout, getDataGridColumnValue, getDataGridValueText, getTextTruncation, useAccordionGroup, useAccordionGroupSection, usePortalContainer };
+export { Accordion, AccordionGroup, type AccordionProps, ActivityModal, type ActivityModalProps, ActivityOperationCard, type ActivityOperationCardProps, AreaChart, type AreaChartProps, type AreaChartSeries, AutoComplete, type AutoCompleteOption, type AutoCompleteProps, Button, type ButtonProps, ButtonWithInset, type ButtonWithInsetProps, Card, CardBase, CardGrid, type CardGridProps, type CardProps, CenteredText, type CenteredTextProps, Checkbox, type CheckboxProps, Chip, ChipInput, type ChipInputProps, type ChipOption, type ChipProps, ColorPicker, type ColorPickerProps, Comp, ConditionalWrap, ConfirmModal, type ConfirmModalProps, type ContainerProps$1 as ContainerProps, type ContentProps, ContextMenu, type ContextMenuProps, DEFAULT_INPUT_HEADER_PROPS, DENSE_INPUT_PADDING, DataGrid, type DataGridCellLayoutProps, type DataGridColumn, type DataGridColumnConfig, type DataGridColumnKey, DataGridHeader, type DataGridHeaderProps, type DataGridProps, type DataGridRender, type DataGridRenderContext, DataGridRow, type DataGridRowData, type DataGridRowProps, type DataGridSort, type DataGridSortDirection, type DataGridValue, DateDetail, type DateDetailProps, DateInput, type DateInputProps, DateRange, type DateRangeProps, Detail, type DetailProps, DetailRows, DisabledOverlay, type DisabledOverlayProps, Divider, type DividerProps, DropOverlay, type DropOverlayProps, Dropdown, type DropdownOption, type DropdownProps, FilterHeader, type FilterHeaderProps, FilterMenu, type FilterMenuProps, type FooterProps$1 as FooterProps, HeaderContent, type HeaderContentProps, type HeaderProps, HeaderWrapper, type HeaderWrapperProps, Icon, IconButton, type IconButtonProps, type IconLayer, type IconName, IconPicker, type IconPickerProps, type IconProps, Input, type InputProps, Link, List, ListItem, type ListItemProps, type ListProps, LoadingOverlay, type LoadingOverlayProps, LogOpsInput, type LogOpsInputProps, MULTI_INPUT_ROW_HEIGHT, MenuButton, type MenuButtonProps, Modal, MuiProvider, MultiActionButton, type MultiActionButtonProps, MultiInput, MultiInputList, type MultiInputListProps, type MultiInputProps, MultiInputRow, type MultiInputRowOption, type MultiInputRowProps, NumInput, type NumInputProps, NumRange, type NumRangeProps, Pagination, type PaginationProps, Pill, type PillProps, ProgressBar, type ProgressBarProps, ProgressCircle, type ProgressCircleProps, Radio, type RadioProps, RangeWrapper, type RangeWrapperProps, SideScroller, Slider, type SliderMark, type SliderProps, SortMenu, type SortMenuProps, SortRow, type SortRowProps, PRESETS as TEXT_PRESETS, TabContainer, type TabContainerProps, Table, type TableColumn, type TableProps, Text, type TextPreset, type TextProps, type TextTruncation, TimeInput, type TimeInputProps, Tooltip, type TooltipProps$1 as TooltipProps, TooltipWrapper, type TooltipWrapperProps, TruncatedText, type TruncatedTextProps, type TruncatedTextRemainderProps, UniformList, type UniformListProps, View, type ViewProps, clampDataGridColumnWidth, compareDataGridValues, createAutoCompleteOptions, dataGridCellClasses, getDataGridCellLayout, getDataGridColumnValue, getDataGridValueText, getTextTruncation, useAccordionGroup, useAccordionGroupSection, usePortalContainer };

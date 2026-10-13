@@ -136,6 +136,7 @@ __export(components_exports, {
   NumInput: () => NumInput,
   NumRange: () => NumRange,
   Pagination: () => Pagination,
+  Pill: () => Pill,
   ProgressBar: () => ProgressBar,
   ProgressCircle: () => ProgressCircle,
   Radio: () => Radio2,
@@ -985,6 +986,7 @@ var Button = (_a) => {
   const defaultPadding = isLinkDisplay ? "0" : dense ? "0 0.5rem" : !text ? "0.3rem" : "0.3rem 0.7rem";
   const defaultHeight = !isLinkDisplay && dense ? DENSE_FORM_ROW_HEIGHT : void 0;
   const resolvedTextColor = textColor != null ? textColor : outlined ? color : isLinkDisplay ? colors.custom.lightBlue : colors.custom.white;
+  const resolvedPadding = __spreadValues({ all: defaultPadding }, padding);
   const resolvedTextColorOnHover = textColorOnHover != null ? textColorOnHover : colorOnHover && outlined ? colorOnHover : resolvedTextColor;
   const { css, cx } = useClasses3({
     borderColorOnHover,
@@ -993,7 +995,6 @@ var Button = (_a) => {
     boxShadow,
     color,
     colorOnHover,
-    hasPill,
     height: height != null ? height : defaultHeight,
     isLinkDisplay,
     justify,
@@ -1002,9 +1003,7 @@ var Button = (_a) => {
     outlined,
     outlineFill,
     outlineFillOnHover,
-    padding: __spreadValues({ all: defaultPadding }, padding),
-    pillPosition,
-    pillWidth,
+    padding: hasPill ? { all: 0 } : resolvedPadding,
     textColor: resolvedTextColor,
     textColorOnHover: resolvedTextColorOnHover,
     textTransform,
@@ -1012,6 +1011,17 @@ var Button = (_a) => {
     whiteSpace,
     width
   });
+  const pillNode = hasPill && /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+    Pill,
+    {
+      className: css.pill,
+      fontFamily,
+      fontSize,
+      fontWeight,
+      width: pillWidth,
+      children: pill
+    }
+  );
   return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(TooltipWrapper, { tooltip, tooltipProps, children: /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(
     import_material3.Button,
     __spreadProps(__spreadValues(__spreadProps(__spreadValues({}, props), {
@@ -1022,6 +1032,7 @@ var Button = (_a) => {
       className: cx(css.root, className),
       children: [
         /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(LoadingOverlay, { isLoading: loading }),
+        pillPosition === "left" && pillNode,
         /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(
           View,
           {
@@ -1030,7 +1041,7 @@ var Button = (_a) => {
             spacing: "0.3rem",
             height: "100%",
             width: "100%",
-            className: css.content,
+            padding: hasPill ? resolvedPadding : void 0,
             children: [
               startNode,
               icon && /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Icon, __spreadValues({ name: icon, size: iconSize }, iconProps)),
@@ -1051,7 +1062,7 @@ var Button = (_a) => {
             ]
           }
         ),
-        hasPill && /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View, { className: css.pill, children: typeof pill === "object" ? pill : /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Text, { fontFamily, fontSize, fontWeight, children: pill }) })
+        pillPosition === "right" && pillNode
       ]
     })
   ) });
@@ -1063,37 +1074,26 @@ var useClasses3 = makeClasses((props) => {
   const borderColor = props.outlined ? props.color : "transparent";
   const borderColorOnHover = (_c = props.borderColorOnHover) != null ? _c : props.outlined && props.colorOnHover ? props.colorOnHover : void 0;
   const linkPadding = props.isLinkDisplay && !((_d = props.padding) == null ? void 0 : _d.all) ? 0 : void 0;
-  const padding = {
-    padding: (_e = props.padding) == null ? void 0 : _e.all,
-    paddingTop: (_g = (_f = props.padding) == null ? void 0 : _f.top) != null ? _g : linkPadding,
-    paddingBottom: (_i = (_h = props.padding) == null ? void 0 : _h.bottom) != null ? _i : linkPadding,
-    paddingRight: (_k = (_j = props.padding) == null ? void 0 : _j.right) != null ? _k : linkPadding,
-    paddingLeft: (_m = (_l = props.padding) == null ? void 0 : _l.left) != null ? _m : linkPadding
-  };
   const textColor = props.textColor;
   const textColorOnHover = props.textColorOnHover;
   const textDecoration = props.underline === "always" ? "underline" : "none";
   const textDecorationOnHover = props.underline === "none" ? "none" : "underline";
   return {
-    content: props.hasPill ? padding : {},
     pill: {
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      alignSelf: "stretch",
-      flexShrink: 0,
-      order: props.pillPosition === "left" ? -1 : 1,
-      padding: "0 0.4rem",
-      width: props.pillWidth,
-      backgroundColor: "rgba(0, 0, 0, 0.25)"
+      alignSelf: "stretch"
     },
-    root: __spreadProps(__spreadValues(__spreadValues(__spreadValues(__spreadValues({
+    root: __spreadProps(__spreadValues(__spreadValues(__spreadValues({
       position: "relative",
       display: "flex",
       flexDirection: "row",
       justifyContent: props.justify,
       alignItems: "center"
-    }, makeBorderRadiuses(props.borderRadiuses)), makeBorders(__spreadValues({ all: `1px solid ${borderColor}` }, props.borders))), makeMargins(props.margins)), props.hasPill ? { padding: 0 } : padding), {
+    }, makeBorderRadiuses(props.borderRadiuses)), makeBorders(__spreadValues({ all: `1px solid ${borderColor}` }, props.borders))), makeMargins(props.margins)), {
+      padding: (_e = props.padding) == null ? void 0 : _e.all,
+      paddingTop: (_g = (_f = props.padding) == null ? void 0 : _f.top) != null ? _g : linkPadding,
+      paddingBottom: (_i = (_h = props.padding) == null ? void 0 : _h.bottom) != null ? _i : linkPadding,
+      paddingRight: (_k = (_j = props.padding) == null ? void 0 : _j.right) != null ? _k : linkPadding,
+      paddingLeft: (_m = (_l = props.padding) == null ? void 0 : _l.left) != null ? _m : linkPadding,
       maxWidth: props.maxWidth,
       minWidth: "fit-content",
       height: props.height,
@@ -7031,6 +7031,7 @@ function Dropdown(_a) {
     options,
     paperBorder,
     paperBorderRadius,
+    pillPosition = "right",
     required,
     setValue,
     textColor,
@@ -7074,6 +7075,7 @@ function Dropdown(_a) {
     "options",
     "paperBorder",
     "paperBorderRadius",
+    "pillPosition",
     "required",
     "setValue",
     "textColor",
@@ -7192,15 +7194,22 @@ function Dropdown(_a) {
       value: params.inputProps.value
     })
   );
-  const renderOption = (itemProps, option) => /* @__PURE__ */ (0, import_react12.createElement)(
-    import_material10.MenuItem,
-    __spreadProps(__spreadValues({}, itemProps), {
-      key: String(option.value),
-      className: cx(itemProps.className, css.menuItem),
-      title: option.label
-    }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(Text, __spreadProps(__spreadValues({}, optionTextProps), { children: option.label }))
-  );
+  const renderOption = (itemProps, option) => {
+    const pill = option.pill !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(Pill, { borderRadiuses: { all: "0.6rem" }, fontSize: "0.85em", padding: { all: "0.1rem 0.4rem" }, children: option.pill });
+    return /* @__PURE__ */ (0, import_react12.createElement)(
+      import_material10.MenuItem,
+      __spreadProps(__spreadValues({}, itemProps), {
+        key: String(option.value),
+        className: cx(itemProps.className, css.menuItem),
+        title: option.label
+      }),
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(View, { row: true, flex: 1, align: "center", minWidth: 0, spacing: "0.5rem", children: [
+        pillPosition === "left" && pill,
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(Text, __spreadProps(__spreadValues({ flex: 1, minWidth: 0 }, optionTextProps), { children: option.label })),
+        pillPosition === "right" && pill
+      ] })
+    );
+  };
   return /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
     HeaderWrapper,
     {
@@ -11226,9 +11235,31 @@ var useClasses49 = makeClasses((props) => ({
   }
 }));
 
+// trabecula/components/wrappers/pill.tsx
+var import_jsx_runtime76 = require("react/jsx-runtime");
+var Pill = Comp(
+  (_a, ref) => {
+    var _b = _a, { children, fontFamily, fontSize, fontWeight } = _b, viewProps = __objRest(_b, ["children", "fontFamily", "fontSize", "fontWeight"]);
+    return /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
+      View,
+      __spreadProps(__spreadValues({
+        row: true,
+        align: "center",
+        justify: "center",
+        bgColor: "rgba(0, 0, 0, 0.25)",
+        flex: "none",
+        padding: { all: "0 0.4rem" }
+      }, viewProps), {
+        ref,
+        children: typeof children === "object" ? children : /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(Text, { fontFamily, fontSize, fontWeight, children })
+      })
+    );
+  }
+);
+
 // trabecula/components/wrappers/side-scroller.tsx
 var import_react30 = require("react");
-var import_jsx_runtime76 = require("react/jsx-runtime");
+var import_jsx_runtime77 = require("react/jsx-runtime");
 var SideScroller = ({ children, className, innerClassName }) => {
   const ref = (0, import_react30.useRef)(null);
   const { width } = useElementResize(ref);
@@ -11263,8 +11294,8 @@ var SideScroller = ({ children, className, innerClassName }) => {
   (0, import_react30.useEffect)(() => {
     updateButtonVisibility();
   }, [children, width]);
-  return /* @__PURE__ */ (0, import_jsx_runtime76.jsxs)(View, { className: cx(css.root, className), children: [
-    /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime77.jsxs)(View, { className: cx(css.root, className), children: [
+    /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
       IconButton,
       {
         name: "ChevronLeft",
@@ -11273,8 +11304,8 @@ var SideScroller = ({ children, className, innerClassName }) => {
         size: "large"
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(View, { ref, className: cx(css.items, innerClassName), children }),
-    /* @__PURE__ */ (0, import_jsx_runtime76.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(View, { ref, className: cx(css.items, innerClassName), children }),
+    /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
       IconButton,
       {
         name: "ChevronRight",
@@ -11335,7 +11366,7 @@ var useClasses50 = makeClasses((props) => ({
 var import_react31 = require("react");
 var import_material35 = require("@mui/material");
 var import_color15 = __toESM(require("color"));
-var import_jsx_runtime77 = require("react/jsx-runtime");
+var import_jsx_runtime78 = require("react/jsx-runtime");
 var TabContainer = ({
   activeTab,
   borderRadius = "0.5rem",
@@ -11345,6 +11376,7 @@ var TabContainer = ({
   maxWidth,
   minHeight,
   onTabChange,
+  pillPosition = "right",
   tabHeight = "1.5rem",
   tabs,
   viewProps = {},
@@ -11360,13 +11392,14 @@ var TabContainer = ({
   });
   const [selectedTab, setSelectedTab] = (0, import_react31.useState)("0");
   const currentTab = activeTab != null ? activeTab : selectedTab;
+  const pillBgColor = (0, import_color15.default)(color).isDark() ? "rgba(255, 255, 255, 0.12)" : "rgba(0, 0, 0, 0.25)";
   const handleChange = (_event, tabIndex) => {
     if (activeTab === void 0) setSelectedTab(tabIndex);
     onTabChange == null ? void 0 : onTabChange(tabIndex);
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime77.jsxs)(View, __spreadProps(__spreadValues({ column: true, height: "100%", minHeight: 0 }, viewProps), { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime77.jsxs)(View, { row: true, height: tabHeight, className: css.header, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime78.jsxs)(View, __spreadProps(__spreadValues({ column: true, height: "100%", minHeight: 0 }, viewProps), { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime78.jsxs)(View, { row: true, height: tabHeight, className: css.header, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
         import_material35.Tabs,
         {
           "aria-label": "tabs",
@@ -11374,26 +11407,39 @@ var TabContainer = ({
           onChange: handleChange,
           value: currentTab,
           variant: "scrollable",
-          children: tabs.map((tab, index) => /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
-            import_material35.Tab,
-            {
-              className: css.tab,
-              label: tab.pill === void 0 ? tab.label : /* @__PURE__ */ (0, import_jsx_runtime77.jsxs)(View, { row: true, align: "center", spacing: "0.4rem", children: [
-                tab.label,
-                /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(View, { className: css.tabPill, children: tab.pill })
-              ] }),
-              value: index.toString(),
-              wrapped: true
-            },
-            index
-          ))
+          children: tabs.map((tab, index) => {
+            const pill = tab.pill !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
+              Pill,
+              {
+                bgColor: pillBgColor,
+                borderRadiuses: { all: "0.6rem" },
+                fontSize: "0.85em",
+                padding: { all: "0.1rem 0.4rem" },
+                children: tab.pill
+              }
+            );
+            return /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
+              import_material35.Tab,
+              {
+                className: css.tab,
+                label: pill ? /* @__PURE__ */ (0, import_jsx_runtime78.jsxs)(View, { row: true, align: "center", spacing: "0.4rem", children: [
+                  pillPosition === "left" && pill,
+                  /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(Text, { children: tab.label }),
+                  pillPosition === "right" && pill
+                ] }) : tab.label,
+                value: index.toString(),
+                wrapped: true
+              },
+              index
+            );
+          })
         }
       ),
-      headerRightNode && /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(View, { flex: "none", height: "100%", children: headerRightNode })
+      headerRightNode && /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(View, { flex: "none", height: "100%", children: headerRightNode })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(View, { className: cx(css.content, contentClassName), "aria-label": "tab-content", children: tabs.map((tab, index) => {
+    /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(View, { className: cx(css.content, contentClassName), "aria-label": "tab-content", children: tabs.map((tab, index) => {
       const isActive = currentTab === index.toString();
-      return tab.keepMounted || isActive ? /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
+      return tab.keepMounted || isActive ? /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
         View,
         {
           "aria-label": tab.label,
@@ -11449,13 +11495,6 @@ var useClasses51 = makeClasses((props) => {
       transition: "all 200ms ease-in-out",
       whiteSpace: "break-spaces"
     },
-    tabPill: {
-      padding: "0 0.4rem",
-      borderRadius: "0.6rem",
-      backgroundColor: (0, import_color15.default)(props.color).isDark() ? "rgba(255, 255, 255, 0.12)" : "rgba(0, 0, 0, 0.25)",
-      fontSize: "0.85em",
-      lineHeight: 1.5
-    },
     tabList: {
       "& .MuiTabs-indicator": { display: "none" },
       backgroundColor: props.color,
@@ -11473,11 +11512,11 @@ var useClasses51 = makeClasses((props) => {
 });
 
 // trabecula/components/wrappers/uniform-list.tsx
-var import_jsx_runtime78 = require("react/jsx-runtime");
+var import_jsx_runtime79 = require("react/jsx-runtime");
 var UniformList = (_a) => {
   var _b = _a, { children, uniformWidth } = _b, props = __objRest(_b, ["children", "uniformWidth"]);
   const { css, cx } = useClasses52({ uniformWidth });
-  return /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(View, __spreadProps(__spreadValues({}, props), { className: cx(css.uniform, props == null ? void 0 : props.className), children }));
+  return /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(View, __spreadProps(__spreadValues({}, props), { className: cx(css.uniform, props == null ? void 0 : props.className), children }));
 };
 var useClasses52 = makeClasses((props) => ({
   uniform: {
@@ -11616,7 +11655,7 @@ var import_cache = __toESM(require("@emotion/cache"));
 var import_react34 = require("@emotion/react");
 var import_material36 = require("@mui/material");
 var import_tss_react2 = require("tss-react");
-var import_jsx_runtime79 = require("react/jsx-runtime");
+var import_jsx_runtime80 = require("react/jsx-runtime");
 var PortalContainerContext = (0, import_react33.createContext)(void 0);
 var usePortalContainer = () => (0, import_react33.useContext)(PortalContainerContext);
 var MuiProvider = ({
@@ -11640,7 +11679,7 @@ var MuiProvider = ({
   const tssCacheRef = (0, import_react33.useRef)(
     (0, import_cache.default)({ container: styleContainer, key: "tss", stylisPlugins: [] })
   );
-  return /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(import_react33.StrictMode, { children: /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(import_react34.CacheProvider, { value: muiCacheRef.current, children: /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(import_tss_react2.TssCacheProvider, { value: tssCacheRef.current, children: /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(import_material36.ThemeProvider, { theme: themeRef.current, children: /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(PortalContainerContext.Provider, { value: portalContainer, children }) }) }) }) });
+  return /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(import_react33.StrictMode, { children: /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(import_react34.CacheProvider, { value: muiCacheRef.current, children: /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(import_tss_react2.TssCacheProvider, { value: tssCacheRef.current, children: /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(import_material36.ThemeProvider, { theme: themeRef.current, children: /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(PortalContainerContext.Provider, { value: portalContainer, children }) }) }) }) });
 };
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
@@ -11702,6 +11741,7 @@ var MuiProvider = ({
   NumInput,
   NumRange,
   Pagination,
+  Pill,
   ProgressBar,
   ProgressCircle,
   Radio,

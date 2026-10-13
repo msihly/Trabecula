@@ -58,6 +58,7 @@ import {
   NumRange,
   PRESETS,
   Pagination,
+  Pill,
   ProgressBar,
   ProgressCircle,
   Radio,
@@ -86,7 +87,7 @@ import {
   useAccordionGroup,
   useAccordionGroupSection,
   usePortalContainer
-} from "../chunk-YXSQL7QL.mjs";
+} from "../chunk-DWUXSTHM.mjs";
 import "../chunk-M7SRQWZA.mjs";
 import "../chunk-3SCRDNWM.mjs";
 import "../chunk-DM4QYMVJ.mjs";
@@ -149,6 +150,7 @@ export {
   NumInput,
   NumRange,
   Pagination,
+  Pill,
   ProgressBar,
   ProgressCircle,
   Radio,

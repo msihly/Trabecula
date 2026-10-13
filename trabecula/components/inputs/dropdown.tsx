@@ -8,13 +8,23 @@ import {
   MenuItem,
 } from "@mui/material";
 import Color from "color";
-import { HeaderWrapper, Icon, Input, InputProps, Text, TextProps } from "trabecula/components";
+import {
+  HeaderWrapper,
+  Icon,
+  Input,
+  InputProps,
+  Pill,
+  Text,
+  TextProps,
+  View,
+} from "trabecula/components";
 import { CSS, CssColor, makeClasses, useElementResize } from "trabecula/utils/client";
 import { deepMerge } from "trabecula/utils/common";
 import { DEFAULT_INPUT_HEADER_PROPS, DENSE_INPUT_PADDING } from "./input";
 
 export type DropdownOption<T = string> = {
   label: string;
+  pill?: ReactNode;
   value: T;
 };
 
@@ -51,6 +61,7 @@ export interface DropdownProps<T = string> extends Omit<
   options: DropdownOption<T>[];
   paperBorder?: CSS["border"];
   paperBorderRadius?: CSS["borderRadius"];
+  pillPosition?: "left" | "right";
   setValue: (value: T | undefined) => void;
   textColor?: CssColor;
   value: T;
@@ -95,6 +106,7 @@ export function Dropdown<T = string>({
   options,
   paperBorder,
   paperBorderRadius,
+  pillPosition = "right",
   required,
   setValue,
   textColor,
@@ -254,16 +266,32 @@ export function Dropdown<T = string>({
     />
   );
 
-  const renderOption = (itemProps: HTMLAttributes<HTMLLIElement>, option: DropdownOption<T>) => (
-    <MenuItem
-      {...itemProps}
-      key={String(option.value)}
-      className={cx(itemProps.className, css.menuItem)}
-      title={option.label}
-    >
-      <Text {...optionTextProps}>{option.label}</Text>
-    </MenuItem>
-  );
+  const renderOption = (itemProps: HTMLAttributes<HTMLLIElement>, option: DropdownOption<T>) => {
+    const pill = option.pill !== undefined && (
+      <Pill borderRadiuses={{ all: "0.6rem" }} fontSize="0.85em" padding={{ all: "0.1rem 0.4rem" }}>
+        {option.pill}
+      </Pill>
+    );
+
+    return (
+      <MenuItem
+        {...itemProps}
+        key={String(option.value)}
+        className={cx(itemProps.className, css.menuItem)}
+        title={option.label}
+      >
+        <View row flex={1} align="center" minWidth={0} spacing="0.5rem">
+          {pillPosition === "left" && pill}
+
+          <Text flex={1} minWidth={0} {...optionTextProps}>
+            {option.label}
+          </Text>
+
+          {pillPosition === "right" && pill}
+        </View>
+      </MenuItem>
+    );
+  };
 
   return (
     <HeaderWrapper

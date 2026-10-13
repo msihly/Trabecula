@@ -1,7 +1,7 @@
 import { ReactNode, SyntheticEvent, useState } from "react";
 import { Tab, Tabs } from "@mui/material";
 import Color from "color";
-import { View, ViewProps } from "trabecula/components";
+import { Pill, Text, View, ViewProps } from "trabecula/components";
 import { colors, CSS, makeClasses } from "trabecula/utils/client";
 
 interface TabItem {
@@ -20,6 +20,7 @@ export interface TabContainerProps {
   maxWidth?: CSS["maxWidth"];
   minHeight?: CSS["minHeight"];
   onTabChange?: (tabIndex: string) => void;
+  pillPosition?: "left" | "right";
   tabHeight?: CSS["height"];
   tabs: TabItem[];
   viewProps?: Partial<ViewProps>;
@@ -35,6 +36,7 @@ export const TabContainer = ({
   maxWidth,
   minHeight,
   onTabChange,
+  pillPosition = "right",
   tabHeight = "1.5rem",
   tabs,
   viewProps = {},
@@ -52,6 +54,7 @@ export const TabContainer = ({
   const [selectedTab, setSelectedTab] = useState("0");
 
   const currentTab = activeTab ?? selectedTab;
+  const pillBgColor = Color(color).isDark() ? "rgba(255, 255, 255, 0.12)" : "rgba(0, 0, 0, 0.25)";
 
   const handleChange = (_event: SyntheticEvent, tabIndex: string) => {
     if (activeTab === undefined) setSelectedTab(tabIndex);
@@ -69,25 +72,40 @@ export const TabContainer = ({
           value={currentTab}
           variant="scrollable"
         >
-          {tabs.map((tab, index) => (
-            <Tab
-              key={index}
-              className={css.tab}
-              label={
-                tab.pill === undefined ? (
-                  tab.label
-                ) : (
-                  <View row align="center" spacing="0.4rem">
-                    {tab.label}
+          {tabs.map((tab, index) => {
+            const pill = tab.pill !== undefined && (
+              <Pill
+                bgColor={pillBgColor}
+                borderRadiuses={{ all: "0.6rem" }}
+                fontSize="0.85em"
+                padding={{ all: "0.1rem 0.4rem" }}
+              >
+                {tab.pill}
+              </Pill>
+            );
 
-                    <View className={css.tabPill}>{tab.pill}</View>
-                  </View>
-                )
-              }
-              value={index.toString()}
-              wrapped
-            />
-          ))}
+            return (
+              <Tab
+                key={index}
+                className={css.tab}
+                label={
+                  pill ? (
+                    <View row align="center" spacing="0.4rem">
+                      {pillPosition === "left" && pill}
+
+                      <Text>{tab.label}</Text>
+
+                      {pillPosition === "right" && pill}
+                    </View>
+                  ) : (
+                    tab.label
+                  )
+                }
+                value={index.toString()}
+                wrapped
+              />
+            );
+          })}
         </Tabs>
 
         {headerRightNode && (
@@ -162,15 +180,6 @@ const useClasses = makeClasses((props: ClassesProps) => ({
     textTransform: "none",
     transition: "all 200ms ease-in-out",
     whiteSpace: "break-spaces",
-  },
-  tabPill: {
-    padding: "0 0.4rem",
-    borderRadius: "0.6rem",
-    backgroundColor: Color(props.color).isDark()
-      ? "rgba(255, 255, 255, 0.12)"
-      : "rgba(0, 0, 0, 0.25)",
-    fontSize: "0.85em",
-    lineHeight: 1.5,
   },
   tabList: {
     "& .MuiTabs-indicator": { display: "none" },

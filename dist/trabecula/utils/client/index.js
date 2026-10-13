@@ -1219,6 +1219,7 @@ var Button = (_a) => {
   const defaultPadding = isLinkDisplay ? "0" : dense ? "0 0.5rem" : !text ? "0.3rem" : "0.3rem 0.7rem";
   const defaultHeight = !isLinkDisplay && dense ? DENSE_FORM_ROW_HEIGHT : void 0;
   const resolvedTextColor = textColor != null ? textColor : outlined ? color : isLinkDisplay ? colors.custom.lightBlue : colors.custom.white;
+  const resolvedPadding = __spreadValues({ all: defaultPadding }, padding);
   const resolvedTextColorOnHover = textColorOnHover != null ? textColorOnHover : colorOnHover && outlined ? colorOnHover : resolvedTextColor;
   const { css, cx } = useClasses2({
     borderColorOnHover,
@@ -1227,7 +1228,6 @@ var Button = (_a) => {
     boxShadow,
     color,
     colorOnHover,
-    hasPill,
     height: height != null ? height : defaultHeight,
     isLinkDisplay,
     justify,
@@ -1236,9 +1236,7 @@ var Button = (_a) => {
     outlined,
     outlineFill,
     outlineFillOnHover,
-    padding: __spreadValues({ all: defaultPadding }, padding),
-    pillPosition,
-    pillWidth,
+    padding: hasPill ? { all: 0 } : resolvedPadding,
     textColor: resolvedTextColor,
     textColorOnHover: resolvedTextColorOnHover,
     textTransform,
@@ -1246,6 +1244,17 @@ var Button = (_a) => {
     whiteSpace,
     width
   });
+  const pillNode = hasPill && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(
+    Pill,
+    {
+      className: css.pill,
+      fontFamily,
+      fontSize,
+      fontWeight,
+      width: pillWidth,
+      children: pill
+    }
+  );
   return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(TooltipWrapper, { tooltip, tooltipProps, children: /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(
     import_material3.Button,
     __spreadProps(__spreadValues(__spreadProps(__spreadValues({}, props), {
@@ -1256,6 +1265,7 @@ var Button = (_a) => {
       className: cx(css.root, className),
       children: [
         /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(LoadingOverlay, { isLoading: loading }),
+        pillPosition === "left" && pillNode,
         /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(
           View,
           {
@@ -1264,7 +1274,7 @@ var Button = (_a) => {
             spacing: "0.3rem",
             height: "100%",
             width: "100%",
-            className: css.content,
+            padding: hasPill ? resolvedPadding : void 0,
             children: [
               startNode,
               icon && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(Icon, __spreadValues({ name: icon, size: iconSize }, iconProps)),
@@ -1285,7 +1295,7 @@ var Button = (_a) => {
             ]
           }
         ),
-        hasPill && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(View, { className: css.pill, children: typeof pill === "object" ? pill : /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(Text, { fontFamily, fontSize, fontWeight, children: pill }) })
+        pillPosition === "right" && pillNode
       ]
     })
   ) });
@@ -1297,37 +1307,26 @@ var useClasses2 = makeClasses((props) => {
   const borderColor = props.outlined ? props.color : "transparent";
   const borderColorOnHover = (_c = props.borderColorOnHover) != null ? _c : props.outlined && props.colorOnHover ? props.colorOnHover : void 0;
   const linkPadding = props.isLinkDisplay && !((_d = props.padding) == null ? void 0 : _d.all) ? 0 : void 0;
-  const padding = {
-    padding: (_e = props.padding) == null ? void 0 : _e.all,
-    paddingTop: (_g = (_f = props.padding) == null ? void 0 : _f.top) != null ? _g : linkPadding,
-    paddingBottom: (_i = (_h = props.padding) == null ? void 0 : _h.bottom) != null ? _i : linkPadding,
-    paddingRight: (_k = (_j = props.padding) == null ? void 0 : _j.right) != null ? _k : linkPadding,
-    paddingLeft: (_m = (_l = props.padding) == null ? void 0 : _l.left) != null ? _m : linkPadding
-  };
   const textColor = props.textColor;
   const textColorOnHover = props.textColorOnHover;
   const textDecoration = props.underline === "always" ? "underline" : "none";
   const textDecorationOnHover = props.underline === "none" ? "none" : "underline";
   return {
-    content: props.hasPill ? padding : {},
     pill: {
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      alignSelf: "stretch",
-      flexShrink: 0,
-      order: props.pillPosition === "left" ? -1 : 1,
-      padding: "0 0.4rem",
-      width: props.pillWidth,
-      backgroundColor: "rgba(0, 0, 0, 0.25)"
+      alignSelf: "stretch"
     },
-    root: __spreadProps(__spreadValues(__spreadValues(__spreadValues(__spreadValues({
+    root: __spreadProps(__spreadValues(__spreadValues(__spreadValues({
       position: "relative",
       display: "flex",
       flexDirection: "row",
       justifyContent: props.justify,
       alignItems: "center"
-    }, makeBorderRadiuses(props.borderRadiuses)), makeBorders(__spreadValues({ all: `1px solid ${borderColor}` }, props.borders))), makeMargins(props.margins)), props.hasPill ? { padding: 0 } : padding), {
+    }, makeBorderRadiuses(props.borderRadiuses)), makeBorders(__spreadValues({ all: `1px solid ${borderColor}` }, props.borders))), makeMargins(props.margins)), {
+      padding: (_e = props.padding) == null ? void 0 : _e.all,
+      paddingTop: (_g = (_f = props.padding) == null ? void 0 : _f.top) != null ? _g : linkPadding,
+      paddingBottom: (_i = (_h = props.padding) == null ? void 0 : _h.bottom) != null ? _i : linkPadding,
+      paddingRight: (_k = (_j = props.padding) == null ? void 0 : _j.right) != null ? _k : linkPadding,
+      paddingLeft: (_m = (_l = props.padding) == null ? void 0 : _l.left) != null ? _m : linkPadding,
       maxWidth: props.maxWidth,
       minWidth: "fit-content",
       height: props.height,
@@ -7260,6 +7259,7 @@ function Dropdown(_a) {
     options,
     paperBorder,
     paperBorderRadius,
+    pillPosition = "right",
     required,
     setValue,
     textColor,
@@ -7303,6 +7303,7 @@ function Dropdown(_a) {
     "options",
     "paperBorder",
     "paperBorderRadius",
+    "pillPosition",
     "required",
     "setValue",
     "textColor",
@@ -7421,15 +7422,22 @@ function Dropdown(_a) {
       value: params.inputProps.value
     })
   );
-  const renderOption = (itemProps, option) => /* @__PURE__ */ (0, import_react12.createElement)(
-    import_material10.MenuItem,
-    __spreadProps(__spreadValues({}, itemProps), {
-      key: String(option.value),
-      className: cx(itemProps.className, css.menuItem),
-      title: option.label
-    }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Text, __spreadProps(__spreadValues({}, optionTextProps), { children: option.label }))
-  );
+  const renderOption = (itemProps, option) => {
+    const pill = option.pill !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Pill, { borderRadiuses: { all: "0.6rem" }, fontSize: "0.85em", padding: { all: "0.1rem 0.4rem" }, children: option.pill });
+    return /* @__PURE__ */ (0, import_react12.createElement)(
+      import_material10.MenuItem,
+      __spreadProps(__spreadValues({}, itemProps), {
+        key: String(option.value),
+        className: cx(itemProps.className, css.menuItem),
+        title: option.label
+      }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(View, { row: true, flex: 1, align: "center", minWidth: 0, spacing: "0.5rem", children: [
+        pillPosition === "left" && pill,
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Text, __spreadProps(__spreadValues({ flex: 1, minWidth: 0 }, optionTextProps), { children: option.label })),
+        pillPosition === "right" && pill
+      ] })
+    );
+  };
   return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
     HeaderWrapper,
     {
@@ -10138,9 +10146,31 @@ var useClasses48 = makeClasses((props) => ({
   }
 }));
 
+// trabecula/components/wrappers/pill.tsx
+var import_jsx_runtime75 = require("react/jsx-runtime");
+var Pill = Comp(
+  (_a, ref) => {
+    var _b = _a, { children, fontFamily, fontSize, fontWeight } = _b, viewProps = __objRest(_b, ["children", "fontFamily", "fontSize", "fontWeight"]);
+    return /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(
+      View,
+      __spreadProps(__spreadValues({
+        row: true,
+        align: "center",
+        justify: "center",
+        bgColor: "rgba(0, 0, 0, 0.25)",
+        flex: "none",
+        padding: { all: "0 0.4rem" }
+      }, viewProps), {
+        ref,
+        children: typeof children === "object" ? children : /* @__PURE__ */ (0, import_jsx_runtime75.jsx)(Text, { fontFamily, fontSize, fontWeight, children })
+      })
+    );
+  }
+);
+
 // trabecula/components/wrappers/side-scroller.tsx
 var import_react30 = require("react");
-var import_jsx_runtime75 = require("react/jsx-runtime");
+var import_jsx_runtime76 = require("react/jsx-runtime");
 var useClasses49 = makeClasses((props) => ({
   items: {
     display: "flex",
@@ -10191,7 +10221,7 @@ var useClasses49 = makeClasses((props) => ({
 var import_react31 = require("react");
 var import_material35 = require("@mui/material");
 var import_color15 = __toESM(require("color"));
-var import_jsx_runtime76 = require("react/jsx-runtime");
+var import_jsx_runtime77 = require("react/jsx-runtime");
 var useClasses50 = makeClasses((props) => {
   var _a;
   return {
@@ -10235,13 +10265,6 @@ var useClasses50 = makeClasses((props) => {
       transition: "all 200ms ease-in-out",
       whiteSpace: "break-spaces"
     },
-    tabPill: {
-      padding: "0 0.4rem",
-      borderRadius: "0.6rem",
-      backgroundColor: (0, import_color15.default)(props.color).isDark() ? "rgba(255, 255, 255, 0.12)" : "rgba(0, 0, 0, 0.25)",
-      fontSize: "0.85em",
-      lineHeight: 1.5
-    },
     tabList: {
       "& .MuiTabs-indicator": { display: "none" },
       backgroundColor: props.color,
@@ -10259,11 +10282,11 @@ var useClasses50 = makeClasses((props) => {
 });
 
 // trabecula/components/wrappers/uniform-list.tsx
-var import_jsx_runtime77 = require("react/jsx-runtime");
+var import_jsx_runtime78 = require("react/jsx-runtime");
 var UniformList = (_a) => {
   var _b = _a, { children, uniformWidth } = _b, props = __objRest(_b, ["children", "uniformWidth"]);
   const { css, cx } = useClasses51({ uniformWidth });
-  return /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(View, __spreadProps(__spreadValues({}, props), { className: cx(css.uniform, props == null ? void 0 : props.className), children }));
+  return /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(View, __spreadProps(__spreadValues({}, props), { className: cx(css.uniform, props == null ? void 0 : props.className), children }));
 };
 var useClasses51 = makeClasses((props) => ({
   uniform: {
@@ -10402,11 +10425,11 @@ var import_cache = __toESM(require("@emotion/cache"));
 var import_react34 = require("@emotion/react");
 var import_material36 = require("@mui/material");
 var import_tss_react2 = require("tss-react");
-var import_jsx_runtime78 = require("react/jsx-runtime");
+var import_jsx_runtime79 = require("react/jsx-runtime");
 var PortalContainerContext = (0, import_react33.createContext)(void 0);
 
 // trabecula/utils/client/toast.tsx
-var import_jsx_runtime79 = require("react/jsx-runtime");
+var import_jsx_runtime80 = require("react/jsx-runtime");
 var toast = {
   error: import_react_toastify.toast.error,
   info: import_react_toastify.toast.info,
@@ -10429,7 +10452,7 @@ var Toaster = class {
 };
 var ToastContainer = (props) => {
   const { css } = useClasses53(null);
-  return /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
     import_react_toastify.ToastContainer,
     __spreadValues({
       autoClose: 2e3,
@@ -10437,7 +10460,7 @@ var ToastContainer = (props) => {
       hideProgressBar: true,
       icon: ({ type }) => {
         var _a, _b;
-        return /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(Icon, { color: colors.custom.white, name: (_b = (_a = STATUSES[type]) == null ? void 0 : _a.icon) != null ? _b : "Error" });
+        return /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(Icon, { color: colors.custom.white, name: (_b = (_a = STATUSES[type]) == null ? void 0 : _a.icon) != null ? _b : "Error" });
       },
       limit: 3,
       pauseOnFocusLoss: false,
