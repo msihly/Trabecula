@@ -914,6 +914,9 @@ var Button = (_a) => {
     outlineFill = "transparent",
     outlineFillOnHover,
     padding,
+    pill,
+    pillPosition = "right",
+    pillWidth,
     size = "small",
     startNode,
     text,
@@ -957,6 +960,9 @@ var Button = (_a) => {
     "outlineFill",
     "outlineFillOnHover",
     "padding",
+    "pill",
+    "pillPosition",
+    "pillWidth",
     "size",
     "startNode",
     "text",
@@ -973,6 +979,7 @@ var Button = (_a) => {
     "whiteSpace",
     "width"
   ]);
+  const hasPill = pill !== void 0;
   const isAnchor = !!href;
   const isLinkDisplay = type === "link";
   const defaultPadding = isLinkDisplay ? "0" : dense ? "0 0.5rem" : !text ? "0.3rem" : "0.3rem 0.7rem";
@@ -986,6 +993,7 @@ var Button = (_a) => {
     boxShadow,
     color,
     colorOnHover,
+    hasPill,
     height: height != null ? height : defaultHeight,
     isLinkDisplay,
     justify,
@@ -995,6 +1003,8 @@ var Button = (_a) => {
     outlineFill,
     outlineFillOnHover,
     padding: __spreadValues({ all: defaultPadding }, padding),
+    pillPosition,
+    pillWidth,
     textColor: resolvedTextColor,
     textColorOnHover: resolvedTextColorOnHover,
     textTransform,
@@ -1012,24 +1022,36 @@ var Button = (_a) => {
       className: cx(css.root, className),
       children: [
         /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(LoadingOverlay, { isLoading: loading }),
-        /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(View, { row: true, justify, spacing: "0.3rem", height: "100%", width: "100%", children: [
-          startNode,
-          icon && /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Icon, __spreadValues({ name: icon, size: iconSize }, iconProps)),
-          typeof text === "string" ? /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
-            Text,
-            __spreadProps(__spreadValues({
-              fontFamily,
-              fontSize,
-              fontWeight,
-              textTransform
-            }, textProps), {
-              className: cx(css.text, className, textClassName, textProps.className),
-              children: text
-            })
-          ) : text,
-          iconRight && /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Icon, __spreadValues({ name: iconRight, size: iconSize }, iconProps)),
-          endNode
-        ] })
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(
+          View,
+          {
+            row: true,
+            justify,
+            spacing: "0.3rem",
+            height: "100%",
+            width: "100%",
+            className: css.content,
+            children: [
+              startNode,
+              icon && /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Icon, __spreadValues({ name: icon, size: iconSize }, iconProps)),
+              typeof text === "string" ? /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+                Text,
+                __spreadProps(__spreadValues({
+                  fontFamily,
+                  fontSize,
+                  fontWeight,
+                  textTransform
+                }, textProps), {
+                  className: cx(css.text, className, textClassName, textProps.className),
+                  children: text
+                })
+              ) : text,
+              iconRight && /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Icon, __spreadValues({ name: iconRight, size: iconSize }, iconProps)),
+              endNode
+            ]
+          }
+        ),
+        hasPill && /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View, { className: css.pill, children: typeof pill === "object" ? pill : /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Text, { fontFamily, fontSize, fontWeight, children: pill }) })
       ]
     })
   ) });
@@ -1041,23 +1063,37 @@ var useClasses3 = makeClasses((props) => {
   const borderColor = props.outlined ? props.color : "transparent";
   const borderColorOnHover = (_c = props.borderColorOnHover) != null ? _c : props.outlined && props.colorOnHover ? props.colorOnHover : void 0;
   const linkPadding = props.isLinkDisplay && !((_d = props.padding) == null ? void 0 : _d.all) ? 0 : void 0;
+  const padding = {
+    padding: (_e = props.padding) == null ? void 0 : _e.all,
+    paddingTop: (_g = (_f = props.padding) == null ? void 0 : _f.top) != null ? _g : linkPadding,
+    paddingBottom: (_i = (_h = props.padding) == null ? void 0 : _h.bottom) != null ? _i : linkPadding,
+    paddingRight: (_k = (_j = props.padding) == null ? void 0 : _j.right) != null ? _k : linkPadding,
+    paddingLeft: (_m = (_l = props.padding) == null ? void 0 : _l.left) != null ? _m : linkPadding
+  };
   const textColor = props.textColor;
   const textColorOnHover = props.textColorOnHover;
   const textDecoration = props.underline === "always" ? "underline" : "none";
   const textDecorationOnHover = props.underline === "none" ? "none" : "underline";
   return {
-    root: __spreadProps(__spreadValues(__spreadValues(__spreadValues({
+    content: props.hasPill ? padding : {},
+    pill: {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      alignSelf: "stretch",
+      flexShrink: 0,
+      order: props.pillPosition === "left" ? -1 : 1,
+      padding: "0 0.4rem",
+      width: props.pillWidth,
+      backgroundColor: "rgba(0, 0, 0, 0.25)"
+    },
+    root: __spreadProps(__spreadValues(__spreadValues(__spreadValues(__spreadValues({
       position: "relative",
       display: "flex",
       flexDirection: "row",
       justifyContent: props.justify,
       alignItems: "center"
-    }, makeBorderRadiuses(props.borderRadiuses)), makeBorders(__spreadValues({ all: `1px solid ${borderColor}` }, props.borders))), makeMargins(props.margins)), {
-      padding: (_e = props.padding) == null ? void 0 : _e.all,
-      paddingTop: (_g = (_f = props.padding) == null ? void 0 : _f.top) != null ? _g : linkPadding,
-      paddingBottom: (_i = (_h = props.padding) == null ? void 0 : _h.bottom) != null ? _i : linkPadding,
-      paddingRight: (_k = (_j = props.padding) == null ? void 0 : _j.right) != null ? _k : linkPadding,
-      paddingLeft: (_m = (_l = props.padding) == null ? void 0 : _l.left) != null ? _m : linkPadding,
+    }, makeBorderRadiuses(props.borderRadiuses)), makeBorders(__spreadValues({ all: `1px solid ${borderColor}` }, props.borders))), makeMargins(props.margins)), props.hasPill ? { padding: 0 } : padding), {
       maxWidth: props.maxWidth,
       minWidth: "fit-content",
       height: props.height,
@@ -7543,7 +7579,8 @@ var LogOpsInput = Comp(
           width: "100%",
           textAlign: "center",
           hasHelper: false,
-          borderRadiuses: { top: 0, left: 0 }
+          borderRadiuses: { top: 0, left: 0 },
+          borders: { left: 0 }
         }, numInputProps)
       )
     ] }));
@@ -11341,7 +11378,10 @@ var TabContainer = ({
             import_material35.Tab,
             {
               className: css.tab,
-              label: tab.label,
+              label: tab.pill === void 0 ? tab.label : /* @__PURE__ */ (0, import_jsx_runtime77.jsxs)(View, { row: true, align: "center", spacing: "0.4rem", children: [
+                tab.label,
+                /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(View, { className: css.tabPill, children: tab.pill })
+              ] }),
               value: index.toString(),
               wrapped: true
             },
@@ -11408,6 +11448,13 @@ var useClasses51 = makeClasses((props) => {
       textTransform: "none",
       transition: "all 200ms ease-in-out",
       whiteSpace: "break-spaces"
+    },
+    tabPill: {
+      padding: "0 0.4rem",
+      borderRadius: "0.6rem",
+      backgroundColor: (0, import_color15.default)(props.color).isDark() ? "rgba(255, 255, 255, 0.12)" : "rgba(0, 0, 0, 0.25)",
+      fontSize: "0.85em",
+      lineHeight: 1.5
     },
     tabList: {
       "& .MuiTabs-indicator": { display: "none" },

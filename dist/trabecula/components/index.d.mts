@@ -72,6 +72,9 @@ interface ButtonProps extends Omit<ButtonProps$1, "children" | "color" | "compon
     outlineFill?: CssColor;
     outlineFillOnHover?: CssColor;
     padding?: Padding;
+    pill?: ReactNode;
+    pillPosition?: "left" | "right";
+    pillWidth?: CSS["width"];
     startNode?: ReactNode;
     text?: ReactNode;
     textClassName?: string;
@@ -87,7 +90,7 @@ interface ButtonProps extends Omit<ButtonProps$1, "children" | "color" | "compon
     whiteSpace?: CSS["whiteSpace"];
     width?: CSS["width"];
 }
-declare const Button: ({ borderColorOnHover, borderRadiuses, borders, boxShadow, className, color, colorOnHover, dense, endNode, fontFamily, fontSize, fontWeight, height, href, icon, iconProps, iconRight, iconSize, justify, loading, margins, maxWidth, onClick, outlined, outlineFill, outlineFillOnHover, padding, size, startNode, text, textClassName, textColor, textColorOnHover, textProps, textTransform, tooltip, tooltipProps, type, underline, variant, whiteSpace, width, ...props }: ButtonProps) => react_jsx_runtime.JSX.Element;
+declare const Button: ({ borderColorOnHover, borderRadiuses, borders, boxShadow, className, color, colorOnHover, dense, endNode, fontFamily, fontSize, fontWeight, height, href, icon, iconProps, iconRight, iconSize, justify, loading, margins, maxWidth, onClick, outlined, outlineFill, outlineFillOnHover, padding, pill, pillPosition, pillWidth, size, startNode, text, textClassName, textColor, textColorOnHover, textProps, textTransform, tooltip, tooltipProps, type, underline, variant, whiteSpace, width, ...props }: ButtonProps) => react_jsx_runtime.JSX.Element;
 
 interface ButtonWithInsetProps extends ButtonProps {
     insetText: string;
@@ -1110,6 +1113,7 @@ interface TabItem {
     content: ReactNode;
     keepMounted?: boolean;
     label: string;
+    pill?: ReactNode;
 }
 interface TabContainerProps {
     activeTab?: string;

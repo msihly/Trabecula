@@ -64,6 +64,7 @@ export const LogOpsInput = Comp(
           textAlign="center"
           hasHelper={false}
           borderRadiuses={{ top: 0, left: 0 }}
+          borders={{ left: 0 }}
           {...numInputProps}
         />
       </HeaderWrapper>

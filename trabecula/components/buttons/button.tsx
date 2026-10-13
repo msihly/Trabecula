@@ -60,6 +60,9 @@ export interface ButtonProps extends Omit<
   outlineFill?: CssColor;
   outlineFillOnHover?: CssColor;
   padding?: Padding;
+  pill?: ReactNode;
+  pillPosition?: "left" | "right";
+  pillWidth?: CSS["width"];
   startNode?: ReactNode;
   text?: ReactNode;
   textClassName?: string;
@@ -104,6 +107,9 @@ export const Button = ({
   outlineFill = "transparent",
   outlineFillOnHover,
   padding,
+  pill,
+  pillPosition = "right",
+  pillWidth,
   size = "small",
   startNode,
   text,
@@ -121,6 +127,7 @@ export const Button = ({
   width,
   ...props
 }: ButtonProps) => {
+  const hasPill = pill !== undefined;
   const isAnchor = !!href;
   const isLinkDisplay = type === "link";
   const defaultPadding = isLinkDisplay
@@ -143,6 +150,7 @@ export const Button = ({
     boxShadow,
     color,
     colorOnHover,
+    hasPill,
     height: height ?? defaultHeight,
     isLinkDisplay,
     justify,
@@ -152,6 +160,8 @@ export const Button = ({
     outlineFill,
     outlineFillOnHover,
     padding: { all: defaultPadding, ...padding },
+    pillPosition,
+    pillWidth,
     textColor: resolvedTextColor,
     textColorOnHover: resolvedTextColorOnHover,
     textTransform,
@@ -172,7 +182,14 @@ export const Button = ({
       >
         <LoadingOverlay isLoading={loading} />
 
-        <View row justify={justify} spacing="0.3rem" height="100%" width="100%">
+        <View
+          row
+          justify={justify}
+          spacing="0.3rem"
+          height="100%"
+          width="100%"
+          className={css.content}
+        >
           {startNode}
 
           {icon && <Icon name={icon} size={iconSize} {...iconProps} />}
@@ -196,6 +213,18 @@ export const Button = ({
 
           {endNode}
         </View>
+
+        {hasPill && (
+          <View className={css.pill}>
+            {typeof pill === "object" ? (
+              pill
+            ) : (
+              <Text fontFamily={fontFamily} fontSize={fontSize} fontWeight={fontWeight}>
+                {pill}
+              </Text>
+            )}
+          </View>
+        )}
       </MuiButton>
     </TooltipWrapper>
   );
@@ -217,6 +246,8 @@ interface ClassesProps extends Pick<
   | "outlineFill"
   | "outlineFillOnHover"
   | "padding"
+  | "pillPosition"
+  | "pillWidth"
   | "textColor"
   | "textColorOnHover"
   | "textTransform"
@@ -224,6 +255,7 @@ interface ClassesProps extends Pick<
   | "whiteSpace"
   | "width"
 > {
+  hasPill: boolean;
   isLinkDisplay: boolean;
 }
 
@@ -243,12 +275,31 @@ const useClasses = makeClasses((props: ClassesProps) => {
     props.borderColorOnHover ??
     (props.outlined && props.colorOnHover ? props.colorOnHover : undefined);
   const linkPadding = props.isLinkDisplay && !props.padding?.all ? 0 : undefined;
+  const padding = {
+    padding: props.padding?.all,
+    paddingTop: props.padding?.top ?? linkPadding,
+    paddingBottom: props.padding?.bottom ?? linkPadding,
+    paddingRight: props.padding?.right ?? linkPadding,
+    paddingLeft: props.padding?.left ?? linkPadding,
+  };
   const textColor = props.textColor;
   const textColorOnHover = props.textColorOnHover;
   const textDecoration = props.underline === "always" ? "underline" : "none";
   const textDecorationOnHover = props.underline === "none" ? "none" : "underline";
 
   return {
+    content: props.hasPill ? padding : {},
+    pill: {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      alignSelf: "stretch",
+      flexShrink: 0,
+      order: props.pillPosition === "left" ? -1 : 1,
+      padding: "0 0.4rem",
+      width: props.pillWidth,
+      backgroundColor: "rgba(0, 0, 0, 0.25)",
+    },
     root: {
       position: "relative",
       display: "flex",
@@ -258,11 +309,7 @@ const useClasses = makeClasses((props: ClassesProps) => {
       ...makeBorderRadiuses(props.borderRadiuses),
       ...makeBorders({ all: `1px solid ${borderColor}`, ...props.borders }),
       ...makeMargins(props.margins),
-      padding: props.padding?.all,
-      paddingTop: props.padding?.top ?? linkPadding,
-      paddingBottom: props.padding?.bottom ?? linkPadding,
-      paddingRight: props.padding?.right ?? linkPadding,
-      paddingLeft: props.padding?.left ?? linkPadding,
+      ...(props.hasPill ? { padding: 0 } : padding),
       maxWidth: props.maxWidth,
       minWidth: "fit-content",
       height: props.height,

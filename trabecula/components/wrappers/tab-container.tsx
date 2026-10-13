@@ -8,6 +8,7 @@ interface TabItem {
   content: ReactNode;
   keepMounted?: boolean;
   label: string;
+  pill?: ReactNode;
 }
 
 export interface TabContainerProps {
@@ -72,7 +73,17 @@ export const TabContainer = ({
             <Tab
               key={index}
               className={css.tab}
-              label={tab.label}
+              label={
+                tab.pill === undefined ? (
+                  tab.label
+                ) : (
+                  <View row align="center" spacing="0.4rem">
+                    {tab.label}
+
+                    <View className={css.tabPill}>{tab.pill}</View>
+                  </View>
+                )
+              }
               value={index.toString()}
               wrapped
             />
@@ -151,6 +162,15 @@ const useClasses = makeClasses((props: ClassesProps) => ({
     textTransform: "none",
     transition: "all 200ms ease-in-out",
     whiteSpace: "break-spaces",
+  },
+  tabPill: {
+    padding: "0 0.4rem",
+    borderRadius: "0.6rem",
+    backgroundColor: Color(props.color).isDark()
+      ? "rgba(255, 255, 255, 0.12)"
+      : "rgba(0, 0, 0, 0.25)",
+    fontSize: "0.85em",
+    lineHeight: 1.5,
   },
   tabList: {
     "& .MuiTabs-indicator": { display: "none" },
