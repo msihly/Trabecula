@@ -37,7 +37,7 @@ export const Pagination = Comp(
     viewProps = {},
     ...props
   }: PaginationProps) => {
-    const { css, cx } = useClasses(null);
+    const { css, cx } = useClasses({ inline });
 
     const [isJumpModalOpen, setIsJumpModalOpen] = useState(false);
     const [jumpPage, setJumpPage] = useState<number>(null);
@@ -151,7 +151,9 @@ export const Pagination = Comp(
   },
 );
 
-const useClasses = makeClasses({
+interface ClassesProps extends Pick<PaginationProps, "inline"> {}
+
+const useClasses = makeClasses((props: ClassesProps) => ({
   pagination: {
     borderRadius: 0,
     borderTop: "0.2rem solid #1b58a7",
@@ -169,6 +171,7 @@ const useClasses = makeClasses({
     left: 0,
     right: 0,
     width: "100%",
-    zIndex: 100,
+    // Only floating pagination stacks over content; inline pagination stays under loading overlays.
+    zIndex: props.inline ? undefined : 100,
   },
-});
+}));

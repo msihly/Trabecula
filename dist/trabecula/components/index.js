@@ -9193,7 +9193,7 @@ var Pagination = Comp(
       "onFullLoad",
       "viewProps"
     ]);
-    const { css, cx } = useClasses29(null);
+    const { css, cx } = useClasses29({ inline });
     const [isJumpModalOpen, setIsJumpModalOpen] = (0, import_react24.useState)(false);
     const [jumpPage, setJumpPage] = (0, import_react24.useState)(null);
     const hasError = !Number.isInteger(jumpPage) || jumpPage < 1 || jumpPage > count;
@@ -9295,7 +9295,7 @@ var Pagination = Comp(
     );
   }
 );
-var useClasses29 = makeClasses({
+var useClasses29 = makeClasses((props) => ({
   pagination: {
     borderRadius: 0,
     borderTop: "0.2rem solid #1b58a7",
@@ -9313,9 +9313,10 @@ var useClasses29 = makeClasses({
     left: 0,
     right: 0,
     width: "100%",
-    zIndex: 100
+    // Only floating pagination stacks over content; inline pagination stays under loading overlays.
+    zIndex: props.inline ? void 0 : 100
   }
-});
+}));
 
 // trabecula/components/table/table.tsx
 var import_react25 = require("react");

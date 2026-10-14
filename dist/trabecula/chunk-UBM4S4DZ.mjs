@@ -4012,7 +4012,7 @@ var Pagination = Comp(
       "onFullLoad",
       "viewProps"
     ]);
-    const { css, cx } = useClasses28(null);
+    const { css, cx } = useClasses28({ inline });
     const [isJumpModalOpen, setIsJumpModalOpen] = useState16(false);
     const [jumpPage, setJumpPage] = useState16(null);
     const hasError = !Number.isInteger(jumpPage) || jumpPage < 1 || jumpPage > count;
@@ -4114,7 +4114,7 @@ var Pagination = Comp(
     );
   }
 );
-var useClasses28 = makeClasses({
+var useClasses28 = makeClasses((props) => ({
   pagination: {
     borderRadius: 0,
     borderTop: "0.2rem solid #1b58a7",
@@ -4132,9 +4132,10 @@ var useClasses28 = makeClasses({
     left: 0,
     right: 0,
     width: "100%",
-    zIndex: 100
+    // Only floating pagination stacks over content; inline pagination stays under loading overlays.
+    zIndex: props.inline ? void 0 : 100
   }
-});
+}));
 
 // trabecula/components/table/table.tsx
 import { useMemo as useMemo3, useState as useState17 } from "react";
@@ -6736,4 +6737,4 @@ export {
   usePortalContainer,
   MuiProvider
 };
-//# sourceMappingURL=chunk-PM42YK4Z.mjs.map
+//# sourceMappingURL=chunk-UBM4S4DZ.mjs.map
