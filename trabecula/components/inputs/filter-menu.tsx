@@ -45,6 +45,8 @@ export interface FilterMenuProps extends Omit<ButtonProps, "onChange" | "value">
   color?: CssColor;
   menuProps?: Partial<MenuButtonProps>;
   resetFn?: () => void;
+  /** Replaces loading the store's results, for menus whose filter applies elsewhere. */
+  searchFn?: () => void;
   sortOptions: SortMenuProps["rows"];
   store: FilterStore;
   viewProps?: ViewProps;
@@ -57,6 +59,7 @@ export const FilterMenu = Comp(
     color = colors.custom.black,
     menuProps = {},
     resetFn,
+    searchFn,
     sortOptions,
     store,
     viewProps = {},
@@ -75,8 +78,11 @@ export const FilterMenu = Comp(
     };
 
     const handleSearch = () => {
-      store.setPageCount(1);
-      store.loadFiltered({ noCache: true, page: 1 });
+      if (searchFn) searchFn();
+      else {
+        store.setPageCount(1);
+        store.loadFiltered({ noCache: true, page: 1 });
+      }
     };
 
     const renderButton = (onOpen: (event: React.MouseEvent<HTMLButtonElement>) => void) => (
@@ -130,7 +136,7 @@ export const FilterMenu = Comp(
               <>
                 <Divider orientation="vertical" />
 
-                <SavedSearchMenu store={store} />
+                <SavedSearchMenu store={store} searchFn={searchFn} />
               </>
             )}
           </View>
@@ -143,10 +149,11 @@ export const FilterMenu = Comp(
 );
 
 interface SavedSearchMenuProps {
+  searchFn?: () => void;
   store: FilterStore;
 }
 
-const SavedSearchMenu = Comp(({ store }: SavedSearchMenuProps) => {
+const SavedSearchMenu = Comp(({ searchFn, store }: SavedSearchMenuProps) => {
   const [inputValue, setInputValue] = useState("");
   const [label, setLabel] = useState("");
 
@@ -177,14 +184,17 @@ const SavedSearchMenu = Comp(({ store }: SavedSearchMenuProps) => {
 
   const handleSave = () => store.saveSavedSearch(label);
 
-  const handleSelect: AutoCompleteProps["onInputChange"] = (_, value, reason) => {
+  const handleSelect: AutoCompleteProps["onInputChange"] = async (_, value, reason) => {
     if (value === "" && reason === "reset") return;
 
     setInputValue(value);
 
     const selectedSearch = options.find((option) => option.label === value);
 
-    if (selectedSearch) store.applySavedSearch(selectedSearch.value);
+    if (selectedSearch) {
+      await store.applySavedSearch(selectedSearch.value);
+      searchFn?.();
+    }
   };
 
   return (

@@ -325,6 +325,8 @@ interface FilterMenuProps extends Omit<ButtonProps, "onChange" | "value"> {
     color?: CssColor;
     menuProps?: Partial<MenuButtonProps>;
     resetFn?: () => void;
+    /** Replaces loading the store's results, for menus whose filter applies elsewhere. */
+    searchFn?: () => void;
     sortOptions: SortMenuProps["rows"];
     store: FilterStore;
     viewProps?: ViewProps;

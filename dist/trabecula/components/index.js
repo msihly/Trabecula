@@ -7351,6 +7351,7 @@ var FilterMenu = Comp(
       color = colors.custom.black,
       menuProps = {},
       resetFn,
+      searchFn,
       sortOptions,
       store,
       viewProps = {},
@@ -7360,6 +7361,7 @@ var FilterMenu = Comp(
       "color",
       "menuProps",
       "resetFn",
+      "searchFn",
       "sortOptions",
       "store",
       "viewProps",
@@ -7371,8 +7373,11 @@ var FilterMenu = Comp(
       handleSearch();
     };
     const handleSearch = () => {
-      store.setPageCount(1);
-      store.loadFiltered({ noCache: true, page: 1 });
+      if (searchFn) searchFn();
+      else {
+        store.setPageCount(1);
+        store.loadFiltered({ noCache: true, page: 1 });
+      }
     };
     const renderButton = (onOpen) => /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
       Button,
@@ -7423,14 +7428,14 @@ var FilterMenu = Comp(
         ),
         hasSavedSearchApi && /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(import_jsx_runtime21.Fragment, { children: [
           /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Divider, { orientation: "vertical" }),
-          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(SavedSearchMenu, { store })
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(SavedSearchMenu, { store, searchFn })
         ] })
       ] }),
       children
     ] })) }));
   }
 );
-var SavedSearchMenu = Comp(({ store }) => {
+var SavedSearchMenu = Comp(({ searchFn, store }) => {
   var _a;
   const [inputValue, setInputValue] = (0, import_react13.useState)("");
   const [label, setLabel] = (0, import_react13.useState)("");
@@ -7456,12 +7461,15 @@ var SavedSearchMenu = Comp(({ store }) => {
     store.setIsSaveModalOpen(true);
   };
   const handleSave = () => store.saveSavedSearch(label);
-  const handleSelect = (_, value, reason) => {
+  const handleSelect = (_, value, reason) => __async(null, null, function* () {
     if (value === "" && reason === "reset") return;
     setInputValue(value);
     const selectedSearch = options.find((option) => option.label === value);
-    if (selectedSearch) store.applySavedSearch(selectedSearch.value);
-  };
+    if (selectedSearch) {
+      yield store.applySavedSearch(selectedSearch.value);
+      searchFn == null ? void 0 : searchFn();
+    }
+  });
   return /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(import_jsx_runtime21.Fragment, { children: [
     /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
       AutoComplete,
