@@ -451,17 +451,14 @@ var PALETTE = {
     900: "#171717"
   }
 };
-var PALETTE_BASE = { white: "#ffffff", black: "#000000" };
-var PALETTE_SWATCHES = [
-  ...Object.values(PALETTE).map((shades) => Object.values(shades)),
-  Object.values(PALETTE_BASE)
-];
-var PALETTE_NAMES = new Map([
-  ...Object.entries(PALETTE).flatMap(
+var PALETTE_SWATCHES = Object.values(PALETTE).map(
+  (shades) => Object.values(shades)
+);
+var PALETTE_NAMES = new Map(
+  Object.entries(PALETTE).flatMap(
     ([hue, shades]) => Object.entries(shades).map(([shade, hex]) => [hex, `${hue} ${shade}`])
-  ),
-  ...Object.entries(PALETTE_BASE).map(([name, hex]) => [hex, name])
-]);
+  )
+);
 var PALETTE_LABS = [...PALETTE_NAMES.keys()].map((hex) => ({
   hex,
   lab: (0, import_color.default)(hex).lab().array()

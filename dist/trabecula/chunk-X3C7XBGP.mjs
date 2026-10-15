@@ -18,7 +18,7 @@ import {
   getPaletteColorName,
   handleErrors,
   isDeepEqual
-} from "./chunk-3SCRDNWM.mjs";
+} from "./chunk-N2NGTY5T.mjs";
 import {
   __async,
   __objRest,
@@ -917,23 +917,42 @@ var ColorPicker = Comp(
         ] })
       })
     );
-    return /* @__PURE__ */ jsx5(MenuButton, __spreadProps(__spreadValues({ button: renderButton, keepMounted: false }, menuProps), { children: /* @__PURE__ */ jsxs4(View, __spreadProps(__spreadValues({ column: true, padding: { all: "0.5rem" }, spacing: "0.5rem", overflow: "auto" }, viewProps), { children: [
-      /* @__PURE__ */ jsx5(
-        Button,
-        {
-          text: "No Color",
-          icon: "Close",
-          onClick: handleNoColor,
-          color: value === null ? colors.custom.black : colors.background,
-          textColor: value === null ? colors.custom.white : colors.custom.lightGrey
-        }
-      ),
-      usedColors.length > 0 && /* @__PURE__ */ jsxs4(View, { column: true, children: [
-        /* @__PURE__ */ jsx5(Text, { color: colors.custom.lightGrey, children: "In Use" }),
-        chunkArray([...new Set(usedColors)], ((_a2 = swatches[0]) == null ? void 0 : _a2.length) || 7).map((row, i) => /* @__PURE__ */ jsx5(View, { row: true, children: row.map(renderSwatch) }, i))
-      ] }),
-      /* @__PURE__ */ jsx5(View, { column: true, children: swatches.map((swatch, i) => /* @__PURE__ */ jsx5(View, { row: true, children: swatch.map(renderSwatch) }, i)) })
-    ] })) }));
+    return /* @__PURE__ */ jsx5(MenuButton, __spreadProps(__spreadValues({ button: renderButton, keepMounted: false }, menuProps), { children: /* @__PURE__ */ jsxs4(
+      View,
+      __spreadProps(__spreadValues({
+        column: true,
+        maxHeight: "30rem",
+        padding: { all: "0.5rem" },
+        spacing: "0.5rem",
+        overflow: "hidden"
+      }, viewProps), {
+        children: [
+          /* @__PURE__ */ jsx5(
+            Button,
+            {
+              text: "No Color",
+              icon: "Close",
+              onClick: handleNoColor,
+              color: value === null ? colors.custom.black : colors.background,
+              textColor: value === null ? colors.custom.white : colors.custom.lightGrey
+            }
+          ),
+          usedColors.length > 0 && /* @__PURE__ */ jsx5(HeaderWrapper, { header: "In Use", column: true, flex: "none", bgColor: colors.foreground, children: chunkArray([...new Set(usedColors)], ((_a2 = swatches[0]) == null ? void 0 : _a2.length) || 7).map((row, i) => /* @__PURE__ */ jsx5(View, { row: true, children: row.map(renderSwatch) }, i)) }),
+          /* @__PURE__ */ jsx5(
+            HeaderWrapper,
+            {
+              header: "Palette",
+              column: true,
+              flex: "0 1 auto",
+              minHeight: 0,
+              overflow: "auto",
+              bgColor: colors.foreground,
+              children: swatches.map((swatch, i) => /* @__PURE__ */ jsx5(View, { row: true, children: swatch.map(renderSwatch) }, i))
+            }
+          )
+        ]
+      })
+    ) }));
   }
 );
 
@@ -6737,4 +6756,4 @@ export {
   usePortalContainer,
   MuiProvider
 };
-//# sourceMappingURL=chunk-5RQX2VEA.mjs.map
+//# sourceMappingURL=chunk-X3C7XBGP.mjs.map

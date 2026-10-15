@@ -184,43 +184,102 @@ export const PALETTE = {
   },
 } as const;
 
-/** Light to dark, matching the shade order of each hue. */
-export const PALETTE_BASE = { white: "#ffffff", black: "#000000" } as const;
-
-export type PaletteColor =
-  | (typeof PALETTE)[PaletteHue][PaletteShade]
-  | (typeof PALETTE_BASE)[keyof typeof PALETTE_BASE];
+export type PaletteColor = (typeof PALETTE)[PaletteHue][PaletteShade];
 
 export type PaletteHue = keyof typeof PALETTE;
 
 export type PaletteShade = keyof (typeof PALETTE)[PaletteHue];
 
-/** One row per hue, then black and white. */
-export const PALETTE_SWATCHES: PaletteColor[][] = [
-  ...Object.values(PALETTE).map((shades) => Object.values(shades)),
-  Object.values(PALETTE_BASE),
-];
+/** One row per hue. */
+export const PALETTE_SWATCHES: PaletteColor[][] = Object.values(PALETTE).map((shades) =>
+  Object.values(shades),
+);
 
-const PALETTE_NAMES = new Map<string, string>([
-  ...Object.entries(PALETTE).flatMap(([hue, shades]) =>
+const PALETTE_NAMES = new Map<string, string>(
+  Object.entries(PALETTE).flatMap(([hue, shades]) =>
     Object.entries(shades).map(([shade, hex]): [string, string] => [hex, `${hue} ${shade}`]),
   ),
-  ...Object.entries(PALETTE_BASE).map(([name, hex]): [string, string] => [hex, name]),
-]);
+);
 
 const PALETTE_LABS = [...PALETTE_NAMES.keys()].map((hex) => ({
   hex: hex as PaletteColor,
   lab: Color(hex).lab().array(),
 }));
 
-/** Finds the nearest palette color by perceptual (CIE76 Lab) distance. */
+const toRadians = (degrees: number) => (degrees * Math.PI) / 180;
+
+const toDegrees = (radians: number) => ((((radians * 180) / Math.PI) % 360) + 360) % 360;
+
+/**
+ * CIEDE2000 color difference. Plain Lab distance bends hues in the blue-violet range, so purples
+ * measure closer to indigo and blue than to other purples; this corrects hue, chroma, and
+ * lightness so the nearest color is the one that looks most alike.
+ */
+const getColorDifference = ([l1, a1, b1]: number[], [l2, a2, b2]: number[]) => {
+  const meanChroma = (Math.hypot(a1, b1) + Math.hypot(a2, b2)) / 2;
+  const g = 0.5 * (1 - Math.sqrt(meanChroma ** 7 / (meanChroma ** 7 + 25 ** 7)));
+
+  const a1Prime = a1 * (1 + g);
+  const a2Prime = a2 * (1 + g);
+  const c1 = Math.hypot(a1Prime, b1);
+  const c2 = Math.hypot(a2Prime, b2);
+  const h1 = c1 === 0 ? 0 : toDegrees(Math.atan2(b1, a1Prime));
+  const h2 = c2 === 0 ? 0 : toDegrees(Math.atan2(b2, a2Prime));
+
+  const hueGap = h2 - h1;
+  const deltaHue =
+    c1 * c2 === 0
+      ? 0
+      : Math.abs(hueGap) <= 180
+        ? hueGap
+        : hueGap > 180
+          ? hueGap - 360
+          : hueGap + 360;
+  const deltaL = l2 - l1;
+  const deltaC = c2 - c1;
+  const deltaH = 2 * Math.sqrt(c1 * c2) * Math.sin(toRadians(deltaHue / 2));
+
+  const meanL = (l1 + l2) / 2;
+  const meanC = (c1 + c2) / 2;
+  const meanH =
+    c1 * c2 === 0
+      ? h1 + h2
+      : Math.abs(h1 - h2) <= 180
+        ? (h1 + h2) / 2
+        : h1 + h2 < 360
+          ? (h1 + h2 + 360) / 2
+          : (h1 + h2 - 360) / 2;
+
+  const t =
+    1 -
+    0.17 * Math.cos(toRadians(meanH - 30)) +
+    0.24 * Math.cos(toRadians(2 * meanH)) +
+    0.32 * Math.cos(toRadians(3 * meanH + 6)) -
+    0.2 * Math.cos(toRadians(4 * meanH - 63));
+  const rotation = 30 * Math.exp(-(((meanH - 275) / 25) ** 2));
+  const rotationC = 2 * Math.sqrt(meanC ** 7 / (meanC ** 7 + 25 ** 7));
+
+  const scaleL = 1 + (0.015 * (meanL - 50) ** 2) / Math.sqrt(20 + (meanL - 50) ** 2);
+  const scaleC = 1 + 0.045 * meanC;
+  const scaleH = 1 + 0.015 * meanC * t;
+  const rotationT = -Math.sin(toRadians(2 * rotation)) * rotationC;
+
+  return Math.sqrt(
+    (deltaL / scaleL) ** 2 +
+      (deltaC / scaleC) ** 2 +
+      (deltaH / scaleH) ** 2 +
+      rotationT * (deltaC / scaleC) * (deltaH / scaleH),
+  );
+};
+
+/** Finds the palette color that looks most like a color, by CIEDE2000 difference. */
 export const getClosestPaletteColor = (color: string) => {
-  const [l, a, b] = Color(color).lab().array();
+  const target = Color(color).lab().array();
   let closest: PaletteColor = null;
   let closestDistance = Infinity;
 
   for (const { hex, lab } of PALETTE_LABS) {
-    const distance = (lab[0] - l) ** 2 + (lab[1] - a) ** 2 + (lab[2] - b) ** 2;
+    const distance = getColorDifference(target, lab);
 
     if (distance < closestDistance) {
       closest = hex;

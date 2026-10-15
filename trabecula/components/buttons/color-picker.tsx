@@ -2,6 +2,7 @@ import {
   Button,
   ButtonProps,
   Comp,
+  HeaderWrapper,
   Icon,
   IconButton,
   MenuButton,
@@ -77,7 +78,14 @@ export const ColorPicker = Comp(
 
     return (
       <MenuButton button={renderButton} keepMounted={false} {...menuProps}>
-        <View column padding={{ all: "0.5rem" }} spacing="0.5rem" overflow="auto" {...viewProps}>
+        <View
+          column
+          maxHeight="30rem"
+          padding={{ all: "0.5rem" }}
+          spacing="0.5rem"
+          overflow="hidden"
+          {...viewProps}
+        >
           <Button
             text="No Color"
             icon="Close"
@@ -87,24 +95,30 @@ export const ColorPicker = Comp(
           />
 
           {usedColors.length > 0 && (
-            <View column>
-              <Text color={colors.custom.lightGrey}>{"In Use"}</Text>
-
+            <HeaderWrapper header="In Use" column flex="none" bgColor={colors.foreground}>
               {chunkArray([...new Set(usedColors)], swatches[0]?.length || 7).map((row, i) => (
                 <View key={i} row>
                   {row.map(renderSwatch)}
                 </View>
               ))}
-            </View>
+            </HeaderWrapper>
           )}
 
-          <View column>
+          {/* The palette scrolls within the picker's height, keeping the controls above in view. */}
+          <HeaderWrapper
+            header="Palette"
+            column
+            flex="0 1 auto"
+            minHeight={0}
+            overflow="auto"
+            bgColor={colors.foreground}
+          >
             {swatches.map((swatch, i) => (
               <View key={i} row>
                 {swatch.map(renderSwatch)}
               </View>
             ))}
-          </View>
+          </HeaderWrapper>
         </View>
       </MenuButton>
     );

@@ -70,7 +70,6 @@ __export(common_exports, {
   Fmt: () => Fmt,
   LOGICAL_OPS: () => LOGICAL_OPS,
   PALETTE: () => PALETTE,
-  PALETTE_BASE: () => PALETTE_BASE,
   PALETTE_SWATCHES: () => PALETTE_SWATCHES,
   PromiseQueue: () => PromiseQueue,
   _CONSTANTS: () => _CONSTANTS,
@@ -818,27 +817,54 @@ var PALETTE = {
     900: "#171717"
   }
 };
-var PALETTE_BASE = { white: "#ffffff", black: "#000000" };
-var PALETTE_SWATCHES = [
-  ...Object.values(PALETTE).map((shades) => Object.values(shades)),
-  Object.values(PALETTE_BASE)
-];
-var PALETTE_NAMES = new Map([
-  ...Object.entries(PALETTE).flatMap(
+var PALETTE_SWATCHES = Object.values(PALETTE).map(
+  (shades) => Object.values(shades)
+);
+var PALETTE_NAMES = new Map(
+  Object.entries(PALETTE).flatMap(
     ([hue, shades]) => Object.entries(shades).map(([shade, hex]) => [hex, `${hue} ${shade}`])
-  ),
-  ...Object.entries(PALETTE_BASE).map(([name, hex]) => [hex, name])
-]);
+  )
+);
 var PALETTE_LABS = [...PALETTE_NAMES.keys()].map((hex) => ({
   hex,
   lab: (0, import_color.default)(hex).lab().array()
 }));
+var toRadians = (degrees) => degrees * Math.PI / 180;
+var toDegrees = (radians) => (radians * 180 / Math.PI % 360 + 360) % 360;
+var getColorDifference = ([l1, a1, b1], [l2, a2, b2]) => {
+  const meanChroma = (Math.hypot(a1, b1) + Math.hypot(a2, b2)) / 2;
+  const g = 0.5 * (1 - Math.sqrt(__pow(meanChroma, 7) / (__pow(meanChroma, 7) + __pow(25, 7))));
+  const a1Prime = a1 * (1 + g);
+  const a2Prime = a2 * (1 + g);
+  const c1 = Math.hypot(a1Prime, b1);
+  const c2 = Math.hypot(a2Prime, b2);
+  const h1 = c1 === 0 ? 0 : toDegrees(Math.atan2(b1, a1Prime));
+  const h2 = c2 === 0 ? 0 : toDegrees(Math.atan2(b2, a2Prime));
+  const hueGap = h2 - h1;
+  const deltaHue = c1 * c2 === 0 ? 0 : Math.abs(hueGap) <= 180 ? hueGap : hueGap > 180 ? hueGap - 360 : hueGap + 360;
+  const deltaL = l2 - l1;
+  const deltaC = c2 - c1;
+  const deltaH = 2 * Math.sqrt(c1 * c2) * Math.sin(toRadians(deltaHue / 2));
+  const meanL = (l1 + l2) / 2;
+  const meanC = (c1 + c2) / 2;
+  const meanH = c1 * c2 === 0 ? h1 + h2 : Math.abs(h1 - h2) <= 180 ? (h1 + h2) / 2 : h1 + h2 < 360 ? (h1 + h2 + 360) / 2 : (h1 + h2 - 360) / 2;
+  const t = 1 - 0.17 * Math.cos(toRadians(meanH - 30)) + 0.24 * Math.cos(toRadians(2 * meanH)) + 0.32 * Math.cos(toRadians(3 * meanH + 6)) - 0.2 * Math.cos(toRadians(4 * meanH - 63));
+  const rotation = 30 * Math.exp(-__pow((meanH - 275) / 25, 2));
+  const rotationC = 2 * Math.sqrt(__pow(meanC, 7) / (__pow(meanC, 7) + __pow(25, 7)));
+  const scaleL = 1 + 0.015 * __pow(meanL - 50, 2) / Math.sqrt(20 + __pow(meanL - 50, 2));
+  const scaleC = 1 + 0.045 * meanC;
+  const scaleH = 1 + 0.015 * meanC * t;
+  const rotationT = -Math.sin(toRadians(2 * rotation)) * rotationC;
+  return Math.sqrt(
+    __pow(deltaL / scaleL, 2) + __pow(deltaC / scaleC, 2) + __pow(deltaH / scaleH, 2) + rotationT * (deltaC / scaleC) * (deltaH / scaleH)
+  );
+};
 var getClosestPaletteColor = (color) => {
-  const [l, a, b] = (0, import_color.default)(color).lab().array();
+  const target = (0, import_color.default)(color).lab().array();
   let closest = null;
   let closestDistance = Infinity;
   for (const { hex, lab } of PALETTE_LABS) {
-    const distance = __pow(lab[0] - l, 2) + __pow(lab[1] - a, 2) + __pow(lab[2] - b, 2);
+    const distance = getColorDifference(target, lab);
     if (distance < closestDistance) {
       closest = hex;
       closestDistance = distance;
@@ -965,7 +991,6 @@ var getSelectionRange = ({
   Fmt,
   LOGICAL_OPS,
   PALETTE,
-  PALETTE_BASE,
   PALETTE_SWATCHES,
   PromiseQueue,
   _CONSTANTS,

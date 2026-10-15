@@ -1,4 +1,4 @@
-import { P as PaletteColor } from './palette-DLYtb2nR.js';
+import { P as PaletteColor } from './palette-B_EzcvCf.js';
 import * as csstype from 'csstype';
 import { colors as colors$1 } from '@mui/material';
 import { Theme } from '@mui/material/styles';

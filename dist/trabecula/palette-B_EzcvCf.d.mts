@@ -181,18 +181,13 @@ declare const PALETTE: {
         readonly 900: "#171717";
     };
 };
-/** Light to dark, matching the shade order of each hue. */
-declare const PALETTE_BASE: {
-    readonly white: "#ffffff";
-    readonly black: "#000000";
-};
-type PaletteColor = (typeof PALETTE)[PaletteHue][PaletteShade] | (typeof PALETTE_BASE)[keyof typeof PALETTE_BASE];
+type PaletteColor = (typeof PALETTE)[PaletteHue][PaletteShade];
 type PaletteHue = keyof typeof PALETTE;
 type PaletteShade = keyof (typeof PALETTE)[PaletteHue];
-/** One row per hue, then black and white. */
+/** One row per hue. */
 declare const PALETTE_SWATCHES: PaletteColor[][];
-/** Finds the nearest palette color by perceptual (CIE76 Lab) distance. */
+/** Finds the palette color that looks most like a color, by CIEDE2000 difference. */
 declare const getClosestPaletteColor: (color: string) => PaletteColor;
 declare const getPaletteColorName: (color: string) => string;
 
-export { type PaletteColor as P, PALETTE as a, PALETTE_BASE as b, PALETTE_SWATCHES as c, type PaletteHue as d, type PaletteShade as e, getPaletteColorName as f, getClosestPaletteColor as g };
+export { type PaletteColor as P, PALETTE as a, PALETTE_SWATCHES as b, type PaletteHue as c, type PaletteShade as d, getPaletteColorName as e, getClosestPaletteColor as g };

@@ -4,7 +4,6 @@ import {
   Fmt,
   LOGICAL_OPS,
   PALETTE,
-  PALETTE_BASE,
   PALETTE_SWATCHES,
   PromiseQueue,
   _CONSTANTS,
@@ -54,7 +53,7 @@ import {
   uniqueArrayFilter,
   uniqueArrayMerge,
   uuid
-} from "../../chunk-3SCRDNWM.mjs";
+} from "../../chunk-N2NGTY5T.mjs";
 import "../../chunk-DM4QYMVJ.mjs";
 export {
   DENSE_FORM_ROW_HEIGHT,
@@ -62,7 +61,6 @@ export {
   Fmt,
   LOGICAL_OPS,
   PALETTE,
-  PALETTE_BASE,
   PALETTE_SWATCHES,
   PromiseQueue,
   _CONSTANTS,

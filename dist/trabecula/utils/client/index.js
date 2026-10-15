@@ -565,17 +565,14 @@ var PALETTE = {
     900: "#171717"
   }
 };
-var PALETTE_BASE = { white: "#ffffff", black: "#000000" };
-var PALETTE_SWATCHES = [
-  ...Object.values(PALETTE).map((shades) => Object.values(shades)),
-  Object.values(PALETTE_BASE)
-];
-var PALETTE_NAMES = new Map([
-  ...Object.entries(PALETTE).flatMap(
+var PALETTE_SWATCHES = Object.values(PALETTE).map(
+  (shades) => Object.values(shades)
+);
+var PALETTE_NAMES = new Map(
+  Object.entries(PALETTE).flatMap(
     ([hue, shades]) => Object.entries(shades).map(([shade, hex]) => [hex, `${hue} ${shade}`])
-  ),
-  ...Object.entries(PALETTE_BASE).map(([name, hex]) => [hex, name])
-]);
+  )
+);
 var PALETTE_LABS = [...PALETTE_NAMES.keys()].map((hex) => ({
   hex,
   lab: (0, import_color.default)(hex).lab().array()
@@ -1459,23 +1456,42 @@ var ColorPicker = Comp(
         ] })
       })
     );
-    return /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(MenuButton, __spreadProps(__spreadValues({ button: renderButton, keepMounted: false }, menuProps), { children: /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(View, __spreadProps(__spreadValues({ column: true, padding: { all: "0.5rem" }, spacing: "0.5rem", overflow: "auto" }, viewProps), { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
-        Button,
-        {
-          text: "No Color",
-          icon: "Close",
-          onClick: handleNoColor,
-          color: value === null ? colors.custom.black : colors.background,
-          textColor: value === null ? colors.custom.white : colors.custom.lightGrey
-        }
-      ),
-      usedColors.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(View, { column: true, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Text, { color: colors.custom.lightGrey, children: "In Use" }),
-        chunkArray([...new Set(usedColors)], ((_a2 = swatches[0]) == null ? void 0 : _a2.length) || 7).map((row, i) => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(View, { row: true, children: row.map(renderSwatch) }, i))
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(View, { column: true, children: swatches.map((swatch, i) => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(View, { row: true, children: swatch.map(renderSwatch) }, i)) })
-    ] })) }));
+    return /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(MenuButton, __spreadProps(__spreadValues({ button: renderButton, keepMounted: false }, menuProps), { children: /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(
+      View,
+      __spreadProps(__spreadValues({
+        column: true,
+        maxHeight: "30rem",
+        padding: { all: "0.5rem" },
+        spacing: "0.5rem",
+        overflow: "hidden"
+      }, viewProps), {
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
+            Button,
+            {
+              text: "No Color",
+              icon: "Close",
+              onClick: handleNoColor,
+              color: value === null ? colors.custom.black : colors.background,
+              textColor: value === null ? colors.custom.white : colors.custom.lightGrey
+            }
+          ),
+          usedColors.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(HeaderWrapper, { header: "In Use", column: true, flex: "none", bgColor: colors.foreground, children: chunkArray([...new Set(usedColors)], ((_a2 = swatches[0]) == null ? void 0 : _a2.length) || 7).map((row, i) => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(View, { row: true, children: row.map(renderSwatch) }, i)) }),
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
+            HeaderWrapper,
+            {
+              header: "Palette",
+              column: true,
+              flex: "0 1 auto",
+              minHeight: 0,
+              overflow: "auto",
+              bgColor: colors.foreground,
+              children: swatches.map((swatch, i) => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(View, { row: true, children: swatch.map(renderSwatch) }, i))
+            }
+          )
+        ]
+      })
+    ) }));
   }
 );
 
