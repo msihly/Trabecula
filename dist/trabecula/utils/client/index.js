@@ -9538,19 +9538,16 @@ var Card = Comp(
       "width",
       "wrap"
     ]);
-    const layoutProps = {
-      align,
+    const boxProps = {
       borders,
       cursor,
       flex,
-      justify,
       maxHeight,
       maxWidth,
       minHeight,
       minWidth,
       opacity,
-      position,
-      wrap
+      position
     };
     borderRadiuses = deepMerge({ bottom: "0.5rem", top: !!header ? 0 : "0.5rem" }, borderRadiuses);
     headerProps = deepMerge({ width: "100%" }, headerProps != null ? headerProps : {});
@@ -9558,7 +9555,7 @@ var Card = Comp(
     const { css, cx } = useClasses37({ boxShadow, elevated });
     return /* @__PURE__ */ (0, import_jsx_runtime58.jsx)(
       HeaderWrapper,
-      __spreadProps(__spreadValues(__spreadValues({}, layoutProps), viewProps), {
+      __spreadProps(__spreadValues(__spreadValues({}, boxProps), viewProps), {
         borderRadiuses,
         className,
         display,
@@ -9571,7 +9568,10 @@ var Card = Comp(
         width,
         children: /* @__PURE__ */ (0, import_jsx_runtime58.jsx)(
           View,
-          __spreadProps(__spreadValues({}, layoutProps), {
+          __spreadProps(__spreadValues({}, boxProps), {
+            align,
+            justify,
+            wrap,
             className: cx(css.root, className),
             position: position != null ? position : "relative",
             column: column && !row,

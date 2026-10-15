@@ -44,19 +44,17 @@ export const Card = Comp(
     }: CardProps,
     ref,
   ) => {
-    const layoutProps = {
-      align,
+    // The header wrapper takes the card's size and place. Only the card's body lays out its children, so alignment never stops the body from filling the wrapper.
+    const boxProps = {
       borders,
       cursor,
       flex,
-      justify,
       maxHeight,
       maxWidth,
       minHeight,
       minWidth,
       opacity,
       position,
-      wrap,
     };
 
     borderRadiuses = deepMerge({ bottom: "0.5rem", top: !!header ? 0 : "0.5rem" }, borderRadiuses);
@@ -67,7 +65,7 @@ export const Card = Comp(
 
     return (
       <HeaderWrapper
-        {...layoutProps}
+        {...boxProps}
         {...viewProps}
         borderRadiuses={borderRadiuses}
         className={className}
@@ -81,7 +79,10 @@ export const Card = Comp(
         width={width}
       >
         <View
-          {...layoutProps}
+          {...boxProps}
+          align={align}
+          justify={justify}
+          wrap={wrap}
           className={cx(css.root, className)}
           position={position ?? "relative"}
           column={column && !row}
