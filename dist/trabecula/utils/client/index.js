@@ -9056,6 +9056,12 @@ var useClasses30 = makeClasses((props) => ({
 // trabecula/components/text/text.tsx
 var import_material25 = require("@mui/material");
 var import_jsx_runtime50 = require("react/jsx-runtime");
+var SUB_TEXT = {
+  fontWeight: 400,
+  fontSize: "0.7em",
+  whiteSpace: "nowrap",
+  textOverflow: "ellipsis"
+};
 var PRESETS = {
   default: {
     fontSize: "1em",
@@ -9075,13 +9081,12 @@ var PRESETS = {
     textShadow: `0 0 10px ${colors.custom.blue}`,
     overflow: "visible"
   },
-  "sub-text": {
-    color: colors.custom.grey,
-    fontWeight: 400,
-    fontSize: "0.7em",
-    whiteSpace: "nowrap",
-    textOverflow: "ellipsis"
-  },
+  "sub-text": __spreadProps(__spreadValues({}, SUB_TEXT), {
+    color: colors.custom.lightGrey
+  }),
+  "sub-text-muted": __spreadProps(__spreadValues({}, SUB_TEXT), {
+    color: colors.custom.grey
+  }),
   title: {
     color: colors.custom.white,
     fontSize: "1.1em",

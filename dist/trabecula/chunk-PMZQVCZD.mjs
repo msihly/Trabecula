@@ -4395,6 +4395,12 @@ var useClasses30 = makeClasses((props) => ({
 // trabecula/components/text/text.tsx
 import { Typography } from "@mui/material";
 import { jsx as jsx50 } from "react/jsx-runtime";
+var SUB_TEXT = {
+  fontWeight: 400,
+  fontSize: "0.7em",
+  whiteSpace: "nowrap",
+  textOverflow: "ellipsis"
+};
 var PRESETS = {
   default: {
     fontSize: "1em",
@@ -4414,13 +4420,12 @@ var PRESETS = {
     textShadow: `0 0 10px ${colors.custom.blue}`,
     overflow: "visible"
   },
-  "sub-text": {
-    color: colors.custom.grey,
-    fontWeight: 400,
-    fontSize: "0.7em",
-    whiteSpace: "nowrap",
-    textOverflow: "ellipsis"
-  },
+  "sub-text": __spreadProps(__spreadValues({}, SUB_TEXT), {
+    color: colors.custom.lightGrey
+  }),
+  "sub-text-muted": __spreadProps(__spreadValues({}, SUB_TEXT), {
+    color: colors.custom.grey
+  }),
   title: {
     color: colors.custom.white,
     fontSize: "1.1em",
@@ -6756,4 +6761,4 @@ export {
   usePortalContainer,
   MuiProvider
 };
-//# sourceMappingURL=chunk-X3C7XBGP.mjs.map
+//# sourceMappingURL=chunk-PMZQVCZD.mjs.map

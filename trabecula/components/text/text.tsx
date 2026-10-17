@@ -4,7 +4,20 @@ import { Typography, TypographyProps } from "@mui/material";
 import { TooltipProps, TooltipWrapper } from "trabecula/components";
 import { colors, CSS, CssColor, makeClasses } from "trabecula/utils/client";
 
-export type TextPreset = "default" | "detail-label" | "label-glow" | "sub-text" | "title";
+export type TextPreset =
+  | "default"
+  | "detail-label"
+  | "label-glow"
+  | "sub-text"
+  | "sub-text-muted"
+  | "title";
+
+const SUB_TEXT: CSS = {
+  fontWeight: 400,
+  fontSize: "0.7em",
+  whiteSpace: "nowrap",
+  textOverflow: "ellipsis",
+};
 
 const PRESETS: Record<TextPreset, CSS> = {
   default: {
@@ -26,11 +39,12 @@ const PRESETS: Record<TextPreset, CSS> = {
     overflow: "visible",
   },
   "sub-text": {
+    ...SUB_TEXT,
+    color: colors.custom.lightGrey,
+  },
+  "sub-text-muted": {
+    ...SUB_TEXT,
     color: colors.custom.grey,
-    fontWeight: 400,
-    fontSize: "0.7em",
-    whiteSpace: "nowrap",
-    textOverflow: "ellipsis",
   },
   title: {
     color: colors.custom.white,

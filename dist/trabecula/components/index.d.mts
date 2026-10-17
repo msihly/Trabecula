@@ -784,7 +784,7 @@ interface LinkProps extends Omit<LinkProps$1, "color"> {
 }
 declare const Link: ({ bold, children, className, color, fontSize, fontWeight, rel, target, underline, ...props }: LinkProps) => react_jsx_runtime.JSX.Element;
 
-type TextPreset = "default" | "detail-label" | "label-glow" | "sub-text" | "title";
+type TextPreset = "default" | "detail-label" | "label-glow" | "sub-text" | "sub-text-muted" | "title";
 declare const PRESETS: Record<TextPreset, CSS>;
 interface TextProps extends Omit<TypographyProps, "color" | "component" | "fontSize" | "fontWeight" | "lineHeight" | "opacity" | "overflow" | "textDecoration" | "title" | "variant"> {
     bold?: boolean;
