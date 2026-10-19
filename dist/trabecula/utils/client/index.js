@@ -10198,9 +10198,13 @@ var Pill = Comp(
   }
 );
 
-// trabecula/components/wrappers/side-scroller.tsx
+// trabecula/components/wrappers/server-status-sync.tsx
 var import_react30 = require("react");
 var import_jsx_runtime76 = require("react/jsx-runtime");
+
+// trabecula/components/wrappers/side-scroller.tsx
+var import_react31 = require("react");
+var import_jsx_runtime77 = require("react/jsx-runtime");
 var useClasses49 = makeClasses((props) => ({
   items: {
     display: "flex",
@@ -10248,10 +10252,10 @@ var useClasses49 = makeClasses((props) => ({
 }));
 
 // trabecula/components/wrappers/tab-container.tsx
-var import_react31 = require("react");
+var import_react32 = require("react");
 var import_material35 = require("@mui/material");
 var import_color15 = __toESM(require("color"));
-var import_jsx_runtime77 = require("react/jsx-runtime");
+var import_jsx_runtime78 = require("react/jsx-runtime");
 var useClasses50 = makeClasses((props) => {
   var _a;
   return {
@@ -10312,11 +10316,11 @@ var useClasses50 = makeClasses((props) => {
 });
 
 // trabecula/components/wrappers/uniform-list.tsx
-var import_jsx_runtime78 = require("react/jsx-runtime");
+var import_jsx_runtime79 = require("react/jsx-runtime");
 var UniformList = (_a) => {
   var _b = _a, { children, uniformWidth } = _b, props = __objRest(_b, ["children", "uniformWidth"]);
   const { css, cx } = useClasses51({ uniformWidth });
-  return /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(View, __spreadProps(__spreadValues({}, props), { className: cx(css.uniform, props == null ? void 0 : props.className), children }));
+  return /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(View, __spreadProps(__spreadValues({}, props), { className: cx(css.uniform, props == null ? void 0 : props.className), children }));
 };
 var useClasses51 = makeClasses((props) => ({
   uniform: {
@@ -10328,7 +10332,7 @@ var useClasses51 = makeClasses((props) => ({
 }));
 
 // trabecula/components/wrappers/view.tsx
-var import_react32 = require("react");
+var import_react33 = require("react");
 var View = Comp(
   (_a, ref) => {
     var _b = _a, {
@@ -10412,7 +10416,7 @@ var View = Comp(
       width,
       wrap
     });
-    return (0, import_react32.createElement)(
+    return (0, import_react33.createElement)(
       component,
       __spreadProps(__spreadValues({}, props), { className: cx(className, css.view), ref }),
       children
@@ -10450,16 +10454,16 @@ var useClasses52 = makeClasses((props) => {
 });
 
 // trabecula/views/mui-provider.tsx
-var import_react33 = require("react");
+var import_react34 = require("react");
 var import_cache = __toESM(require("@emotion/cache"));
-var import_react34 = require("@emotion/react");
+var import_react35 = require("@emotion/react");
 var import_material36 = require("@mui/material");
 var import_tss_react2 = require("tss-react");
-var import_jsx_runtime79 = require("react/jsx-runtime");
-var PortalContainerContext = (0, import_react33.createContext)(void 0);
+var import_jsx_runtime80 = require("react/jsx-runtime");
+var PortalContainerContext = (0, import_react34.createContext)(void 0);
 
 // trabecula/utils/client/toast.tsx
-var import_jsx_runtime80 = require("react/jsx-runtime");
+var import_jsx_runtime81 = require("react/jsx-runtime");
 var toast = {
   error: import_react_toastify.toast.error,
   info: import_react_toastify.toast.info,
@@ -10482,7 +10486,7 @@ var Toaster = class {
 };
 var ToastContainer = (props) => {
   const { css } = useClasses53(null);
-  return /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(
     import_react_toastify.ToastContainer,
     __spreadValues({
       autoClose: 2e3,
@@ -10490,7 +10494,7 @@ var ToastContainer = (props) => {
       hideProgressBar: true,
       icon: ({ type }) => {
         var _a, _b;
-        return /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(Icon, { color: colors.custom.white, name: (_b = (_a = STATUSES[type]) == null ? void 0 : _a.icon) != null ? _b : "Error" });
+        return /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(Icon, { color: colors.custom.white, name: (_b = (_a = STATUSES[type]) == null ? void 0 : _a.icon) != null ? _b : "Error" });
       },
       limit: 3,
       pauseOnFocusLoss: false,

@@ -874,6 +874,12 @@ var getSelectionRange = ({
   return result;
 };
 
+// trabecula/utils/common/server-status.ts
+var SERVER_STATUS_IPC = {
+  changed: "server-status-changed",
+  get: "getServerStatuses"
+};
+
 export {
   arrayIntersect,
   bisectArrayChanges,
@@ -928,6 +934,7 @@ export {
   getPaletteColorName,
   PromiseQueue,
   applySelectionChanges,
-  getSelectionRange
+  getSelectionRange,
+  SERVER_STATUS_IPC
 };
-//# sourceMappingURL=chunk-N2NGTY5T.mjs.map
+//# sourceMappingURL=chunk-6TR333HE.mjs.map

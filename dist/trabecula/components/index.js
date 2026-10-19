@@ -54,6 +54,7 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   mod
 ));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
 var __async = (__this, __arguments, generator) => {
   return new Promise((resolve, reject) => {
     var fulfilled = (value) => {
@@ -141,6 +142,7 @@ __export(components_exports, {
   ProgressCircle: () => ProgressCircle,
   Radio: () => Radio2,
   RangeWrapper: () => RangeWrapper,
+  ServerStatusSync: () => ServerStatusSync,
   SideScroller: () => SideScroller,
   Slider: () => Slider,
   SortMenu: () => SortMenu,
@@ -602,6 +604,12 @@ var getPaletteColorName = (color) => {
   return (_a = PALETTE_NAMES.get(color == null ? void 0 : color.toLowerCase())) != null ? _a : null;
 };
 
+// trabecula/utils/common/server-status.ts
+var SERVER_STATUS_IPC = {
+  changed: "server-status-changed",
+  get: "getServerStatuses"
+};
+
 // trabecula/utils/client/css.ts
 var makeBorders = (props) => ({
   border: props == null ? void 0 : props.all,
@@ -724,6 +732,20 @@ var toast = {
   info: import_react_toastify.toast.info,
   success: import_react_toastify.toast.success,
   warn: import_react_toastify.toast.warn
+};
+var Toaster = class {
+  constructor() {
+    __publicField(this, "toastRef", null);
+    __publicField(this, "toastTimeoutRef", null);
+  }
+  toast(text, options) {
+    const autoClose = (options == null ? void 0 : options.autoClose) === false ? false : (options == null ? void 0 : options.autoClose) || 1e3;
+    clearTimeout(this.toastTimeoutRef);
+    if (autoClose) this.toastTimeoutRef = setTimeout(() => this.toastRef = null, autoClose);
+    if (this.toastRef)
+      import_react_toastify.toast.update(this.toastRef, { autoClose, render: text, type: (options == null ? void 0 : options.type) || "info" });
+    else this.toastRef = (0, import_react_toastify.toast)(() => text, { autoClose, type: (options == null ? void 0 : options.type) || "info" });
+  }
 };
 var STATUSES = {
   default: {
@@ -11287,13 +11309,135 @@ var Pill = Comp(
   }
 );
 
-// trabecula/components/wrappers/side-scroller.tsx
+// trabecula/components/wrappers/server-status-sync.tsx
 var import_react30 = require("react");
 var import_jsx_runtime77 = require("react/jsx-runtime");
+var ServerStatusSync = ({
+  appName,
+  children,
+  header,
+  ipcRenderer,
+  onStatusMessage,
+  restartInstruction
+}) => {
+  const [hasStarted, setHasStarted] = (0, import_react30.useState)(false);
+  const [startupMessage, setStartupMessage] = (0, import_react30.useState)(`Starting ${appName} services...`);
+  const pollInterval = (0, import_react30.useRef)(null);
+  const previousStatusMessage = (0, import_react30.useRef)(null);
+  const serverToaster = (0, import_react30.useRef)(new Toaster()).current;
+  const wasApplyingConfig = (0, import_react30.useRef)(false);
+  const wasDisconnected = (0, import_react30.useRef)(false);
+  (0, import_react30.useEffect)(() => {
+    let disposed = false;
+    let ready = false;
+    const notifyServerStatus = (message, type, autoClose) => {
+      if (message !== previousStatusMessage.current) onStatusMessage == null ? void 0 : onStatusMessage(message, type);
+      previousStatusMessage.current = message;
+      serverToaster.toast(message, { autoClose, type });
+    };
+    const handleServerStatuses = (statuses) => {
+      if (disposed) return;
+      const failed = statuses.filter(({ state }) => state === "failed");
+      const unavailable = statuses.filter(({ state }) => state !== "ready");
+      if (!ready) {
+        if (!statuses.length || unavailable.length) {
+          setStartupMessage(
+            [
+              failed.length ? `${failed.map(({ label }) => label).join(" / ")} failed to start. ${restartInstruction}` : `Starting ${unavailable.map(({ label }) => label).join(" / ") || `${appName} services`}...`,
+              ...unavailable.filter(({ message }) => message).map(({ label, message }) => `${label}: ${message}`)
+            ].join("\n\n")
+          );
+          startPolling();
+          return;
+        }
+        ready = true;
+        setHasStarted(true);
+      }
+      if (failed.length) {
+        stopPolling();
+        wasDisconnected.current = true;
+        notifyServerStatus(
+          `${failed.map(({ label }) => label).join(" / ")} failed to restart. Restart ${appName}.`,
+          "error",
+          false
+        );
+      } else if (unavailable.length) {
+        startPolling();
+        wasDisconnected.current = true;
+        wasApplyingConfig.current = unavailable.every(({ isConfigRestart }) => isConfigRestart);
+        notifyServerStatus(
+          wasApplyingConfig.current ? "Applying server configuration..." : `${unavailable.map(({ label }) => label).join(" / ")} process unavailable. Attempting to reconnect...`,
+          wasApplyingConfig.current ? "info" : "error",
+          false
+        );
+      } else {
+        stopPolling();
+        if (!wasDisconnected.current) return;
+        wasDisconnected.current = false;
+        notifyServerStatus(
+          wasApplyingConfig.current ? "Server configuration applied." : "Server processes reconnected.",
+          "success"
+        );
+        wasApplyingConfig.current = false;
+      }
+    };
+    const handleServerStatusChanged = (_, statuses) => handleServerStatuses(statuses);
+    const pollServerStatuses = () => __async(null, null, function* () {
+      try {
+        handleServerStatuses(
+          yield ipcRenderer.invoke(SERVER_STATUS_IPC.get)
+        );
+      } catch (e) {
+        if (disposed) return;
+        if (!ready) {
+          setStartupMessage(`Unable to read service status. ${restartInstruction}`);
+          startPolling();
+          return;
+        }
+        wasDisconnected.current = true;
+        startPolling();
+        notifyServerStatus(
+          `Unable to check server processes. Restart ${appName} if this persists.`,
+          "error",
+          false
+        );
+      }
+    });
+    const startPolling = () => {
+      if (!pollInterval.current) pollInterval.current = setInterval(pollServerStatuses, 2e3);
+    };
+    const stopPolling = () => {
+      if (!pollInterval.current) return;
+      clearInterval(pollInterval.current);
+      pollInterval.current = null;
+    };
+    ipcRenderer.on(SERVER_STATUS_IPC.changed, handleServerStatusChanged);
+    pollServerStatuses();
+    return () => {
+      disposed = true;
+      stopPolling();
+      ipcRenderer.off(SERVER_STATUS_IPC.changed, handleServerStatusChanged);
+    };
+  }, []);
+  return hasStarted ? /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(import_jsx_runtime77.Fragment, { children }) : /* @__PURE__ */ (0, import_jsx_runtime77.jsxs)(View, { column: true, height: "100vh", children: [
+    header,
+    /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(View, { flex: 1, position: "relative", children: /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
+      LoadingOverlay,
+      {
+        isLoading: true,
+        sub: /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(Text, { preset: "title", fontSize: "0.9em", padding: "1rem", whiteSpace: "pre-wrap", children: startupMessage })
+      }
+    ) })
+  ] });
+};
+
+// trabecula/components/wrappers/side-scroller.tsx
+var import_react31 = require("react");
+var import_jsx_runtime78 = require("react/jsx-runtime");
 var SideScroller = ({ children, className, innerClassName }) => {
-  const ref = (0, import_react30.useRef)(null);
+  const ref = (0, import_react31.useRef)(null);
   const { width } = useElementResize(ref);
-  const [buttonVisibility, setButtonVisibility] = (0, import_react30.useState)({
+  const [buttonVisibility, setButtonVisibility] = (0, import_react31.useState)({
     isLeftButtonVisible: false,
     isRightButtonVisible: false
   });
@@ -11312,7 +11456,7 @@ var SideScroller = ({ children, className, innerClassName }) => {
       (prev) => prev.isLeftButtonVisible === isLeftButtonVisible && prev.isRightButtonVisible === isRightButtonVisible ? prev : { isLeftButtonVisible, isRightButtonVisible }
     );
   };
-  (0, import_react30.useEffect)(() => {
+  (0, import_react31.useEffect)(() => {
     const node = ref.current;
     const scrollListener = debounce(updateButtonVisibility, 50);
     node.addEventListener("scroll", scrollListener);
@@ -11321,11 +11465,11 @@ var SideScroller = ({ children, className, innerClassName }) => {
       scrollListener.cancel();
     };
   }, []);
-  (0, import_react30.useEffect)(() => {
+  (0, import_react31.useEffect)(() => {
     updateButtonVisibility();
   }, [children, width]);
-  return /* @__PURE__ */ (0, import_jsx_runtime77.jsxs)(View, { className: cx(css.root, className), children: [
-    /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime78.jsxs)(View, { className: cx(css.root, className), children: [
+    /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
       IconButton,
       {
         name: "ChevronLeft",
@@ -11334,8 +11478,8 @@ var SideScroller = ({ children, className, innerClassName }) => {
         size: "large"
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(View, { ref, className: cx(css.items, innerClassName), children }),
-    /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(View, { ref, className: cx(css.items, innerClassName), children }),
+    /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
       IconButton,
       {
         name: "ChevronRight",
@@ -11393,10 +11537,10 @@ var useClasses50 = makeClasses((props) => ({
 }));
 
 // trabecula/components/wrappers/tab-container.tsx
-var import_react31 = require("react");
+var import_react32 = require("react");
 var import_material35 = require("@mui/material");
 var import_color15 = __toESM(require("color"));
-var import_jsx_runtime78 = require("react/jsx-runtime");
+var import_jsx_runtime79 = require("react/jsx-runtime");
 var TabContainer = ({
   activeTab,
   borderRadius = "0.5rem",
@@ -11420,16 +11564,16 @@ var TabContainer = ({
     tabHeight,
     withBorder
   });
-  const [selectedTab, setSelectedTab] = (0, import_react31.useState)("0");
+  const [selectedTab, setSelectedTab] = (0, import_react32.useState)("0");
   const currentTab = activeTab != null ? activeTab : selectedTab;
   const pillBgColor = (0, import_color15.default)(color).isDark() ? "rgba(255, 255, 255, 0.12)" : "rgba(0, 0, 0, 0.25)";
   const handleChange = (_event, tabIndex) => {
     if (activeTab === void 0) setSelectedTab(tabIndex);
     onTabChange == null ? void 0 : onTabChange(tabIndex);
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime78.jsxs)(View, __spreadProps(__spreadValues({ column: true, height: "100%", minHeight: 0 }, viewProps), { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime78.jsxs)(View, { row: true, height: tabHeight, className: css.header, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime79.jsxs)(View, __spreadProps(__spreadValues({ column: true, height: "100%", minHeight: 0 }, viewProps), { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime79.jsxs)(View, { row: true, height: tabHeight, className: css.header, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
         import_material35.Tabs,
         {
           "aria-label": "tabs",
@@ -11438,7 +11582,7 @@ var TabContainer = ({
           value: currentTab,
           variant: "scrollable",
           children: tabs.map((tab, index) => {
-            const pill = tab.pill !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
+            const pill = tab.pill !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
               Pill,
               {
                 bgColor: pillBgColor,
@@ -11448,13 +11592,13 @@ var TabContainer = ({
                 children: tab.pill
               }
             );
-            return /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
+            return /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
               import_material35.Tab,
               {
                 className: css.tab,
-                label: pill ? /* @__PURE__ */ (0, import_jsx_runtime78.jsxs)(View, { row: true, align: "center", spacing: "0.4rem", children: [
+                label: pill ? /* @__PURE__ */ (0, import_jsx_runtime79.jsxs)(View, { row: true, align: "center", spacing: "0.4rem", children: [
                   pillPosition === "left" && pill,
-                  /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(Text, { children: tab.label }),
+                  /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(Text, { children: tab.label }),
                   pillPosition === "right" && pill
                 ] }) : tab.label,
                 value: index.toString(),
@@ -11465,11 +11609,11 @@ var TabContainer = ({
           })
         }
       ),
-      headerRightNode && /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(View, { flex: "none", height: "100%", children: headerRightNode })
+      headerRightNode && /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(View, { flex: "none", height: "100%", children: headerRightNode })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(View, { className: cx(css.content, contentClassName), "aria-label": "tab-content", children: tabs.map((tab, index) => {
+    /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(View, { className: cx(css.content, contentClassName), "aria-label": "tab-content", children: tabs.map((tab, index) => {
       const isActive = currentTab === index.toString();
-      return tab.keepMounted || isActive ? /* @__PURE__ */ (0, import_jsx_runtime78.jsx)(
+      return tab.keepMounted || isActive ? /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(
         View,
         {
           "aria-label": tab.label,
@@ -11542,11 +11686,11 @@ var useClasses51 = makeClasses((props) => {
 });
 
 // trabecula/components/wrappers/uniform-list.tsx
-var import_jsx_runtime79 = require("react/jsx-runtime");
+var import_jsx_runtime80 = require("react/jsx-runtime");
 var UniformList = (_a) => {
   var _b = _a, { children, uniformWidth } = _b, props = __objRest(_b, ["children", "uniformWidth"]);
   const { css, cx } = useClasses52({ uniformWidth });
-  return /* @__PURE__ */ (0, import_jsx_runtime79.jsx)(View, __spreadProps(__spreadValues({}, props), { className: cx(css.uniform, props == null ? void 0 : props.className), children }));
+  return /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(View, __spreadProps(__spreadValues({}, props), { className: cx(css.uniform, props == null ? void 0 : props.className), children }));
 };
 var useClasses52 = makeClasses((props) => ({
   uniform: {
@@ -11558,7 +11702,7 @@ var useClasses52 = makeClasses((props) => ({
 }));
 
 // trabecula/components/wrappers/view.tsx
-var import_react32 = require("react");
+var import_react33 = require("react");
 var View = Comp(
   (_a, ref) => {
     var _b = _a, {
@@ -11642,7 +11786,7 @@ var View = Comp(
       width,
       wrap
     });
-    return (0, import_react32.createElement)(
+    return (0, import_react33.createElement)(
       component,
       __spreadProps(__spreadValues({}, props), { className: cx(className, css.view), ref }),
       children
@@ -11680,20 +11824,20 @@ var useClasses53 = makeClasses((props) => {
 });
 
 // trabecula/views/mui-provider.tsx
-var import_react33 = require("react");
+var import_react34 = require("react");
 var import_cache = __toESM(require("@emotion/cache"));
-var import_react34 = require("@emotion/react");
+var import_react35 = require("@emotion/react");
 var import_material36 = require("@mui/material");
 var import_tss_react2 = require("tss-react");
-var import_jsx_runtime80 = require("react/jsx-runtime");
-var PortalContainerContext = (0, import_react33.createContext)(void 0);
-var usePortalContainer = () => (0, import_react33.useContext)(PortalContainerContext);
+var import_jsx_runtime81 = require("react/jsx-runtime");
+var PortalContainerContext = (0, import_react34.createContext)(void 0);
+var usePortalContainer = () => (0, import_react34.useContext)(PortalContainerContext);
 var MuiProvider = ({
   children,
   portalContainer,
   styleContainer
 }) => {
-  const themeRef = (0, import_react33.useRef)(
+  const themeRef = (0, import_react34.useRef)(
     (0, import_material36.createTheme)({
       components: {
         MuiModal: { defaultProps: { container: portalContainer } },
@@ -11703,13 +11847,13 @@ var MuiProvider = ({
       palette: { mode: "dark" }
     })
   );
-  const muiCacheRef = (0, import_react33.useRef)(
+  const muiCacheRef = (0, import_react34.useRef)(
     (0, import_cache.default)({ container: styleContainer, key: "mui", prepend: true, stylisPlugins: [] })
   );
-  const tssCacheRef = (0, import_react33.useRef)(
+  const tssCacheRef = (0, import_react34.useRef)(
     (0, import_cache.default)({ container: styleContainer, key: "tss", stylisPlugins: [] })
   );
-  return /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(import_react33.StrictMode, { children: /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(import_react34.CacheProvider, { value: muiCacheRef.current, children: /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(import_tss_react2.TssCacheProvider, { value: tssCacheRef.current, children: /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(import_material36.ThemeProvider, { theme: themeRef.current, children: /* @__PURE__ */ (0, import_jsx_runtime80.jsx)(PortalContainerContext.Provider, { value: portalContainer, children }) }) }) }) });
+  return /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(import_react34.StrictMode, { children: /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(import_react35.CacheProvider, { value: muiCacheRef.current, children: /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(import_tss_react2.TssCacheProvider, { value: tssCacheRef.current, children: /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(import_material36.ThemeProvider, { theme: themeRef.current, children: /* @__PURE__ */ (0, import_jsx_runtime81.jsx)(PortalContainerContext.Provider, { value: portalContainer, children }) }) }) }) });
 };
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
@@ -11776,6 +11920,7 @@ var MuiProvider = ({
   ProgressCircle,
   Radio,
   RangeWrapper,
+  ServerStatusSync,
   SideScroller,
   Slider,
   SortMenu,

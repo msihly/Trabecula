@@ -6,6 +6,7 @@ import {
   PALETTE,
   PALETTE_SWATCHES,
   PromiseQueue,
+  SERVER_STATUS_IPC,
   _CONSTANTS,
   applySelectionChanges,
   arrayIntersect,
@@ -53,7 +54,7 @@ import {
   uniqueArrayFilter,
   uniqueArrayMerge,
   uuid
-} from "../../chunk-N2NGTY5T.mjs";
+} from "../../chunk-6TR333HE.mjs";
 import "../../chunk-DM4QYMVJ.mjs";
 export {
   DENSE_FORM_ROW_HEIGHT,
@@ -63,6 +64,7 @@ export {
   PALETTE,
   PALETTE_SWATCHES,
   PromiseQueue,
+  SERVER_STATUS_IPC,
   _CONSTANTS,
   applySelectionChanges,
   arrayIntersect,

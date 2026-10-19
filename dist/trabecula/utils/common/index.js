@@ -72,6 +72,7 @@ __export(common_exports, {
   PALETTE: () => PALETTE,
   PALETTE_SWATCHES: () => PALETTE_SWATCHES,
   PromiseQueue: () => PromiseQueue,
+  SERVER_STATUS_IPC: () => SERVER_STATUS_IPC,
   _CONSTANTS: () => _CONSTANTS,
   applySelectionChanges: () => applySelectionChanges,
   arrayIntersect: () => arrayIntersect,
@@ -984,6 +985,12 @@ var getSelectionRange = ({
   }
   return result;
 };
+
+// trabecula/utils/common/server-status.ts
+var SERVER_STATUS_IPC = {
+  changed: "server-status-changed",
+  get: "getServerStatuses"
+};
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   DENSE_FORM_ROW_HEIGHT,
@@ -993,6 +1000,7 @@ var getSelectionRange = ({
   PALETTE,
   PALETTE_SWATCHES,
   PromiseQueue,
+  SERVER_STATUS_IPC,
   _CONSTANTS,
   applySelectionChanges,
   arrayIntersect,

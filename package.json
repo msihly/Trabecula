@@ -73,6 +73,11 @@
     "setup": "patch-package && husky",
     "ts-check": "tspc --noEmit"
   },
+  "config": {
+    "mongodbMemoryServer": {
+      "disablePostinstall": "1"
+    }
+  },
   "dependencies": {
     "@emotion/cache": "11.14.0",
     "@emotion/react": "11.14.0",
@@ -120,9 +125,12 @@
     "eslint-plugin-tss-unused-classes": "^1.0.2",
     "husky": "^9.1.7",
     "ligatures": "^0.0.3",
+    "mongodb-memory-server": "^8.9.3",
+    "mongoose": "^6.2.8",
     "picocolors": "^1.1.1",
     "prettier": "^3.3.1",
     "rimraf": "^5.0.7",
+    "socket.io": "^4.6.2",
     "ts-patch": "^3.3.0",
     "tsconfig-paths": "^4.2.0",
     "tsup": "^8.5.1",
@@ -132,5 +140,21 @@
     "vite": "4.5.1",
     "vite-plugin-svgr": "^3.2.0",
     "vite-tsconfig-paths": "4.2.0"
+  },
+  "peerDependencies": {
+    "mongodb-memory-server": "^8.9.3",
+    "mongoose": "^6.2.8",
+    "socket.io": "^4.6.2"
+  },
+  "peerDependenciesMeta": {
+    "mongodb-memory-server": {
+      "optional": true
+    },
+    "mongoose": {
+      "optional": true
+    },
+    "socket.io": {
+      "optional": true
+    }
   }
 }
