@@ -61,6 +61,11 @@ export default defineConfig({
       { recursive: true },
     );
 
+    await cp(
+      "node_modules/react-toastify/dist/ReactToastify.css.map",
+      `${CSS_DEST}/ReactToastify.css.map`,
+    );
+
     await cp(CSS_SRC, CSS_DEST, { recursive: true });
 
     const cssDtsStub = "declare const styles: string;\nexport default styles;\n";
