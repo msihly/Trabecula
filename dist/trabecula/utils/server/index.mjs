@@ -1,18 +1,19 @@
 import {
   checkFileExists,
   createTree,
+  default as default2,
   deleteFile,
   dirToFilePaths,
   dirToFolderPaths,
   extendFileName,
   fileLog,
+  isWithinFolder,
   makeFolder,
   makePerfLog,
-  md5File,
   removeEmptyFolders,
   setLogsPath
-} from "../../chunk-QLP6GQY4.mjs";
-import "../../chunk-6TR333HE.mjs";
+} from "../../chunk-XCGFMXNA.mjs";
+import "../../chunk-TW4B7B5M.mjs";
 import "../../chunk-DM4QYMVJ.mjs";
 export {
   checkFileExists,
@@ -22,9 +23,10 @@ export {
   dirToFolderPaths,
   extendFileName,
   fileLog,
+  isWithinFolder,
   makeFolder,
   makePerfLog,
-  md5File,
+  default2 as md5File,
   removeEmptyFolders,
   setLogsPath
 };

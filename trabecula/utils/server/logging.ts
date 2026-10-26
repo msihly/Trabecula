@@ -68,15 +68,18 @@ export const makePerfLog = (logTag: string, toFile = false) => {
   const perfLog = (logStr: string) => {
     const str = `${logTag} ${round(performance.now() - perfStart, 0)} ms - ${logStr}`;
 
-    toFile ? fileLog(str) : console.debug(str);
+    if (toFile) fileLog(str);
+    else console.debug(str);
+
     perfStart = performance.now();
   };
 
   const perfLogTotal = (logStr: string) => {
     const str = `${logTag} Total: ${round(performance.now() - funcPerfStart, 0)} ms - ${logStr}`;
 
-    toFile ? fileLog(str) : console.debug(str);
+    if (toFile) fileLog(str);
+    else console.debug(str);
   };
 
-  return { perfLog, perfLogTotal, perfStart };
+  return { perfLog, perfLogTotal };
 };

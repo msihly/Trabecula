@@ -36,9 +36,7 @@ export const IconButton = ({
   iconProps = {},
   margins,
   name,
-  onClick,
   padding = {},
-  size,
   tooltip,
   tooltipProps,
   ...props
@@ -47,13 +45,7 @@ export const IconButton = ({
 
   return (
     <TooltipWrapper tooltip={tooltip} tooltipProps={tooltipProps}>
-      <MuiIconButton
-        {...props}
-        disabled={disabled}
-        onClick={onClick}
-        size={size}
-        className={cx(css.root, className)}
-      >
+      <MuiIconButton {...props} disabled={disabled} className={cx(css.root, className)}>
         {name && <Icon {...iconProps} color={color ?? iconProps.color} name={name} />}
 
         {children}

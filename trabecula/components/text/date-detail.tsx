@@ -1,5 +1,5 @@
+import { Detail, DetailProps } from "trabecula/components";
 import { dayjs } from "trabecula/utils/common";
-import { Detail, DetailProps } from ".";
 
 export interface DateDetailProps extends DetailProps {
   value: string;

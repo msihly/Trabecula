@@ -184,7 +184,14 @@ export const registerProcessLifecycle = ({
     }
   });
 
-  process.on("disconnect", () => shutdownProcess().catch(() => {}));
+  process.on("disconnect", () => {
+    for (const request of mainRequests.values())
+      request.reject(new Error("The main process disconnected."));
+
+    mainRequests.clear();
+
+    shutdownProcess().catch(() => {});
+  });
 
   // A stray rejection is logged instead of ending the process along with its active work.
   process.on("unhandledRejection", (error: Error) =>

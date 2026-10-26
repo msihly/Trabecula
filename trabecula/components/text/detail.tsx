@@ -26,6 +26,8 @@ export const Detail = ({
   withTooltip,
   ...props
 }: DetailProps) => {
+  const isEmpty = value === undefined || value === null || value === "";
+
   return (
     <View column={!row} row={row} spacing={row ? "0.5rem" : null} {...props}>
       {["number", "string"].includes(typeof label) ? (
@@ -36,14 +38,14 @@ export const Detail = ({
         label
       )}
 
-      {!value || ["number", "string"].includes(typeof value) ? (
+      {isEmpty || ["number", "string"].includes(typeof value) ? (
         <Text
           tooltip={tooltip ?? (withTooltip ? value : undefined)}
           whiteSpace={whiteSpace}
           overflow={overflow}
           {...valueProps}
         >
-          {value || emptyValueText}
+          {isEmpty ? emptyValueText : value}
         </Text>
       ) : (
         value

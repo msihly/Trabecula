@@ -56,9 +56,10 @@ __export(server_exports, {
   dirToFolderPaths: () => dirToFolderPaths,
   extendFileName: () => extendFileName,
   fileLog: () => fileLog,
+  isWithinFolder: () => isWithinFolder,
   makeFolder: () => makeFolder,
   makePerfLog: () => makePerfLog,
-  md5File: () => md5File,
+  md5File: () => import_md5_file.default,
   removeEmptyFolders: () => removeEmptyFolders,
   setLogsPath: () => setLogsPath
 });
@@ -68,7 +69,6 @@ module.exports = __toCommonJS(server_exports);
 var import_fs = require("fs");
 var import_path = __toESM(require("path"));
 var import_fdir = require("fdir");
-var import_md5_file = __toESM(require("md5-file"));
 var import_trash = __toESM(require("trash"));
 
 // trabecula/utils/common/constants.ts
@@ -105,7 +105,6 @@ var AUDIO_CODECS_COMMON = [
 ];
 var AUDIO_CODECS_UNCOMMON = [
   "aac_latm",
-  "alac",
   "ape",
   "aptx_hd",
   "aptx",
@@ -216,7 +215,6 @@ var VIDEO_EXTS_UNCOMMON = [
   "3gpp",
   "amv",
   "asf",
-  "avi",
   "divx",
   "m2t",
   "m2ts",
@@ -465,6 +463,7 @@ var PALETTE_LABS = [...PALETTE_NAMES.keys()].map((hex) => ({
 }));
 
 // trabecula/utils/server/files.ts
+var import_md5_file = __toESM(require("md5-file"));
 var checkFileExists = (path3) => __async(null, null, function* () {
   return !!(yield import_fs.promises.stat(path3).catch(() => false));
 });
@@ -490,7 +489,8 @@ var deleteFile = (path3, copiedPath) => handleErrors(() => __async(null, null, f
   return true;
 }));
 var dirToFilePaths = (dirPath, filterFn) => __async(null, null, function* () {
-  return yield filterFn ? new import_fdir.fdir().withFullPaths().filter(filterFn).crawl(dirPath).withPromise() : new import_fdir.fdir().withFullPaths().crawl(dirPath).withPromise();
+  const crawler = new import_fdir.fdir().withFullPaths();
+  return yield (filterFn ? crawler.filter(filterFn) : crawler).crawl(dirPath).withPromise();
 });
 var dirToFolderPaths = (dirPath) => __async(null, null, function* () {
   return (yield new import_fdir.fdir().onlyDirs().withFullPaths().crawl(dirPath).withPromise()).map((dir) => dir.split(import_path.default.sep).slice(0, -1).join(import_path.default.sep)).filter((dir) => import_path.default.normalize(dir) !== import_path.default.normalize(dirPath));
@@ -503,7 +503,6 @@ var isWithinFolder = (parent, child) => {
 var makeFolder = (path3) => __async(null, null, function* () {
   return yield import_fs.promises.mkdir(path3, { recursive: true });
 });
-var md5File = import_md5_file.default;
 var PENDING_REMOVAL_DELAY = 100;
 var PENDING_REMOVAL_RETRIES = 20;
 var removeEmptyFolder = (dir, removedFolders) => __async(null, null, function* () {
@@ -618,14 +617,16 @@ var makePerfLog = (logTag, toFile = false) => {
   let perfStart = performance.now();
   const perfLog = (logStr) => {
     const str = `${logTag} ${round(performance.now() - perfStart, 0)} ms - ${logStr}`;
-    toFile ? fileLog(str) : console.debug(str);
+    if (toFile) fileLog(str);
+    else console.debug(str);
     perfStart = performance.now();
   };
   const perfLogTotal = (logStr) => {
     const str = `${logTag} Total: ${round(performance.now() - funcPerfStart, 0)} ms - ${logStr}`;
-    toFile ? fileLog(str) : console.debug(str);
+    if (toFile) fileLog(str);
+    else console.debug(str);
   };
-  return { perfLog, perfLogTotal, perfStart };
+  return { perfLog, perfLogTotal };
 };
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
@@ -636,6 +637,7 @@ var makePerfLog = (logTag, toFile = false) => {
   dirToFolderPaths,
   extendFileName,
   fileLog,
+  isWithinFolder,
   makeFolder,
   makePerfLog,
   md5File,

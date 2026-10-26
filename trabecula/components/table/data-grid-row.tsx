@@ -33,6 +33,7 @@ export interface DataGridRowProps<T extends object> extends Pick<
 > {
   expandedRows: Set<number>;
   index: number;
+  pageIndex: number;
   row: T;
   setExpandedRows: React.Dispatch<Set<number>>;
 }
@@ -50,6 +51,7 @@ export const DataGridRow = <T extends object>({
   index,
   isRowSelected,
   onRowClick,
+  pageIndex,
   row,
   rowAlign,
   rowGap,
@@ -68,7 +70,7 @@ export const DataGridRow = <T extends object>({
     getRowBgColor?.(row, index) ??
     (isSelected
       ? selectedBgColor
-      : alternatingColors && index % 2 === 1
+      : alternatingColors && pageIndex % 2 === 1
         ? alternatingBgColor
         : "transparent");
 
@@ -163,7 +165,7 @@ export const DataGridRow = <T extends object>({
       </View>
 
       {expandableContent ? (
-        <Collapse in={isExpanded} className={css.expansion} timeout={300} easing={"smooth"}>
+        <Collapse in={isExpanded} className={css.expansion} timeout={300}>
           <View
             padding={{ all: 0 }}
             bgColor={getBackgroundColor()}

@@ -267,7 +267,6 @@ var releaseProcessTreeForRelaunch = () => {
 
 // trabecula/utils/server/files.ts
 var import_fdir = require("fdir");
-var import_md5_file = __toESM(require("md5-file"));
 var import_trash = __toESM(require("trash"));
 
 // trabecula/utils/common/constants.ts
@@ -304,7 +303,6 @@ var AUDIO_CODECS_COMMON = [
 ];
 var AUDIO_CODECS_UNCOMMON = [
   "aac_latm",
-  "alac",
   "ape",
   "aptx_hd",
   "aptx",
@@ -415,7 +413,6 @@ var VIDEO_EXTS_UNCOMMON = [
   "3gpp",
   "amv",
   "asf",
-  "avi",
   "divx",
   "m2t",
   "m2ts",
@@ -645,6 +642,9 @@ var PALETTE_LABS = [...PALETTE_NAMES.keys()].map((hex) => ({
   lab: (0, import_color.default)(hex).lab().array()
 }));
 
+// trabecula/utils/server/files.ts
+var import_md5_file = __toESM(require("md5-file"));
+
 // trabecula/utils/server/logging.ts
 var import_fs = __toESM(require("fs"));
 var import_promises = __toESM(require("fs/promises"));
@@ -795,8 +795,13 @@ var registerProcessLifecycle = ({
       });
     }
   }));
-  process.on("disconnect", () => shutdownProcess().catch(() => {
-  }));
+  process.on("disconnect", () => {
+    for (const request of mainRequests.values())
+      request.reject(new Error("The main process disconnected."));
+    mainRequests.clear();
+    shutdownProcess().catch(() => {
+    });
+  });
   process.on(
     "unhandledRejection",
     (error) => {

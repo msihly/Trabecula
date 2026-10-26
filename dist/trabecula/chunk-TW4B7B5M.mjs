@@ -130,7 +130,6 @@ var AUDIO_CODECS_COMMON = [
 ];
 var AUDIO_CODECS_UNCOMMON = [
   "aac_latm",
-  "alac",
   "ape",
   "aptx_hd",
   "aptx",
@@ -241,7 +240,6 @@ var VIDEO_EXTS_UNCOMMON = [
   "3gpp",
   "amv",
   "asf",
-  "avi",
   "divx",
   "m2t",
   "m2ts",
@@ -258,8 +256,8 @@ var VIDEO_EXTS_UNCOMMON = [
   "wmp"
 ];
 var VIDEO_EXTS = [...VIDEO_EXTS_COMMON, ...VIDEO_EXTS_UNCOMMON];
-var WEB_VIDEO_CODECS = ["h264", "hevc", "vp8", "vp9", "theora", "av1"];
-var WEB_VIDEO_EXTS = ["mp4", "webm", "ogv", "wav"];
+var WEB_VIDEO_CODECS = ["av1", "h264", "hevc", "theora", "vp8", "vp9"];
+var WEB_VIDEO_EXTS = ["mp4", "ogv", "wav", "webm"];
 var DENSE_FORM_ROW_HEIGHT = "1.8rem";
 var FORM_ROW_HEIGHT = "2.25rem";
 var _CONSTANTS = {
@@ -320,7 +318,7 @@ var dateWithTzToIso = (dateStr) => {
 // trabecula/utils/common/files.ts
 var isArchive = (filePath) => /\.(7z|rar|zip)$/.test(filePath);
 var isArchivePart = (filePath) => /\.(part)?(?!0*1\b)\d+\.(7z|rar|zip)$/.test(filePath);
-var isArchiveFirstPart = (filePath) => /\.(part)?(0*1\b)\.(7z|rar|zip)/.test(filePath);
+var isArchiveFirstPart = (filePath) => /\.(part)?(0*1\b)\.(7z|rar|zip)$/.test(filePath);
 
 // trabecula/utils/common/formatting.ts
 var abbrevNum = (num) => Intl.NumberFormat("en", { notation: "compact" }).format(num);
@@ -344,7 +342,11 @@ var decodeHtmlEntities = (s) => s.replace(htmlEntityRegex, (m) => {
   }
   return decoded;
 });
-var duration2 = (val, isMs = false) => !isNaN(val) ? dayjs.duration(val, isMs ? "ms" : "s").format("HH:mm:ss") : null;
+var duration2 = (val, isMs = false) => {
+  if (isNaN(val)) return null;
+  const dur = dayjs.duration(val, isMs ? "ms" : "s");
+  return `${leadZeros(Math.floor(dur.asHours()), 2)}:${dur.format("mm:ss")}`;
+};
 var frameToSec = (frame, frameRate) => round(frame / frameRate, 3);
 var htmlEntityRegex = /&(#\d+|#[xX][0-9a-fA-F]+|[a-zA-Z]+);/g;
 var jstr = (val) => JSON.stringify(val, null, 2);
@@ -438,10 +440,11 @@ var round = (num, decimals = 2) => {
   return Math.round((num + Number.EPSILON) * n) / n;
 };
 var secondsToDuration = (input) => {
-  const hours = Math.floor(input / 3600);
-  const minutes = Math.floor(input % 3600 / 60);
-  const seconds = Math.floor(input % 60);
-  const milliseconds = Math.round(input % 1 * 1e3);
+  const totalMs = Math.round(input * 1e3);
+  const hours = Math.floor(totalMs / 36e5);
+  const minutes = Math.floor(totalMs % 36e5 / 6e4);
+  const seconds = Math.floor(totalMs % 6e4 / 1e3);
+  const milliseconds = totalMs % 1e3;
   return [
     hours > 0 ? `${hours}h` : "",
     minutes > 0 ? `${minutes}m` : "",
@@ -937,4 +940,4 @@ export {
   getSelectionRange,
   SERVER_STATUS_IPC
 };
-//# sourceMappingURL=chunk-6TR333HE.mjs.map
+//# sourceMappingURL=chunk-TW4B7B5M.mjs.map

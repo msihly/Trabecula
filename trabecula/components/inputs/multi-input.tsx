@@ -49,7 +49,8 @@ export const MultiInput = Comp(
       if (e.key === "Enter" && !isMax) {
         e.preventDefault();
 
-        if (!value.includes(inputValue)) onChange([...value, inputValue]);
+        const trimmedValue = inputValue.trim();
+        if (trimmedValue && !value.includes(trimmedValue)) onChange([...value, trimmedValue]);
 
         setInputValue("");
       }

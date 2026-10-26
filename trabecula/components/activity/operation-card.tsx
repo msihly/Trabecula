@@ -81,7 +81,7 @@ export const ActivityOperationCard = Comp(
               overflowWrap="anywhere"
               whiteSpace="pre-wrap"
             >
-              {error ?? message}
+              {error || message}
             </Text>
           </View>
         )}

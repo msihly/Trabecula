@@ -10,15 +10,16 @@ export interface ChipProps extends ChipBaseProps {
 
 export const Chip = ({
   bgColor = colors.background,
+  className,
   flush = false,
   hasFooter,
   opacity = 0.6,
   position,
   ...props
 }: ChipProps) => {
-  const { css } = useClasses({ flush, hasFooter, opacity, position });
+  const { css, cx } = useClasses({ flush, hasFooter, opacity, position });
 
-  return <ChipBase {...props} bgColor={bgColor} className={css.chip} />;
+  return <ChipBase {...props} bgColor={bgColor} className={cx(css.chip, className)} />;
 };
 
 interface ClassesProps extends Pick<ChipProps, "flush" | "hasFooter" | "opacity" | "position"> {}

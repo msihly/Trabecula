@@ -54,7 +54,7 @@ export const ContextMenu = ({ children, disabled, id, menuItems, ...props }: Con
         onClose={handleClose}
         anchorReference="anchorPosition"
         anchorPosition={
-          mouseX !== null && mouseY !== null ? { top: mouseY, left: mouseX } : undefined
+          mouseX !== null && mouseY !== null ? { left: mouseX, top: mouseY } : undefined
         }
         PopoverClasses={{ paper: css.contextMenu }}
         MenuListProps={{ className: css.contextMenuInner }}
@@ -91,7 +91,6 @@ const Item = ({
 
   return (
     <ListItem
-      key={item.label}
       text={item.label}
       icon={item.icon}
       iconProps={{ color, ...(item.iconProps ?? {}) }}

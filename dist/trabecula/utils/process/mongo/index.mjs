@@ -1,13 +1,13 @@
 import {
   isServerStopping,
   registerProcessLifecycle
-} from "../../../chunk-VNS3THIS.mjs";
+} from "../../../chunk-RJWGMCVE.mjs";
 import {
   fileLog
-} from "../../../chunk-QLP6GQY4.mjs";
+} from "../../../chunk-XCGFMXNA.mjs";
 import {
   sleep
-} from "../../../chunk-6TR333HE.mjs";
+} from "../../../chunk-TW4B7B5M.mjs";
 import {
   __async
 } from "../../../chunk-DM4QYMVJ.mjs";
@@ -16,6 +16,11 @@ import {
 import fs from "fs/promises";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import Mongoose from "mongoose";
+var createAdminClient = (mongoServer) => new Mongoose.mongo.MongoClient(mongoServer.getUri("admin"), {
+  directConnection: true,
+  family: 4,
+  serverSelectionTimeoutMS: 3e4
+});
 var registerMongoProcess = (getOptions) => {
   let mongoServer;
   let mongoStart;
@@ -42,11 +47,7 @@ var registerMongoProcess = (getOptions) => {
       mongoStart = mongoServer.start(true);
       yield mongoStart;
       if (isServerStopping()) return;
-      const client = new Mongoose.mongo.MongoClient(mongoServer.getUri("admin"), {
-        directConnection: true,
-        family: 4,
-        serverSelectionTimeoutMS: 3e4
-      });
+      const client = createAdminClient(mongoServer);
       try {
         yield client.connect();
         const admin = client.db("admin");
@@ -89,11 +90,7 @@ var registerMongoProcess = (getOptions) => {
       });
       const native = (_a = mongoServer == null ? void 0 : mongoServer.instanceInfo) == null ? void 0 : _a.instance.mongodProcess;
       if (!native || native.exitCode !== null || native.signalCode !== null) return;
-      const client = new Mongoose.mongo.MongoClient(mongoServer.getUri("admin"), {
-        directConnection: true,
-        family: 4,
-        serverSelectionTimeoutMS: 3e4
-      });
+      const client = createAdminClient(mongoServer);
       let resolveExit;
       const exited = new Promise((resolve) => {
         resolveExit = resolve;

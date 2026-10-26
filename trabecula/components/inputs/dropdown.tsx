@@ -8,16 +8,8 @@ import {
   MenuItem,
 } from "@mui/material";
 import Color from "color";
-import {
-  HeaderWrapper,
-  Icon,
-  Input,
-  InputProps,
-  Pill,
-  Text,
-  TextProps,
-  View,
-} from "trabecula/components";
+import { HeaderWrapper, Icon, Input, InputProps, Text, TextProps } from "trabecula/components";
+import { PillLabel } from "trabecula/components/wrappers/pill-label";
 import { CSS, CssColor, makeClasses, useElementResize } from "trabecula/utils/client";
 import { deepMerge } from "trabecula/utils/common";
 import { DEFAULT_INPUT_HEADER_PROPS, DENSE_INPUT_PADDING } from "./input";
@@ -27,6 +19,14 @@ export type DropdownOption<T = string> = {
   pill?: ReactNode;
   value: T;
 };
+
+function findValueOption<T>(options: DropdownOption<T>[], value: T) {
+  return value === "" ? null : (options.find((option) => option.value === value) ?? null);
+}
+
+function getValueLabel<T>(option: DropdownOption<T> | null, value: T, freeSolo: boolean) {
+  return option?.label ?? (freeSolo && typeof value === "string" ? value : "");
+}
 
 export interface DropdownProps<T = string> extends Omit<
   InputProps,
@@ -118,13 +118,10 @@ export function Dropdown<T = string>({
   const resolvedLabel = label ?? header;
   const resolvedHeader =
     typeof resolvedLabel === "string" && required ? `${resolvedLabel} *` : resolvedLabel;
-  const committedLabel =
-    value === ""
-      ? ""
-      : (options.find((option) => option.value === value)?.label ??
-        (freeSolo && typeof value === "string" ? value : ""));
 
-  const [inputValue, setInputValue] = useState(committedLabel);
+  const [inputValue, setInputValue] = useState(() =>
+    getValueLabel(findValueOption(options, value), value, freeSolo),
+  );
   const [valueOption, setValueOption] = useState<DropdownOption<T> | null>(null);
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -158,13 +155,11 @@ export function Dropdown<T = string>({
   });
 
   useEffect(() => {
-    const matched =
-      value === "" ? null : (options.find((option) => option.value === value) ?? null);
+    const matched = findValueOption(options, value);
 
     setValueOption(matched);
 
-    if (!isTypingRef.current)
-      setInputValue(matched?.label ?? (freeSolo && typeof value === "string" ? value : ""));
+    if (!isTypingRef.current) setInputValue(getValueLabel(matched, value, freeSolo));
   }, [freeSolo, options, value]);
 
   const filterOptions = (
@@ -239,6 +234,8 @@ export function Dropdown<T = string>({
     setInputValue(inputValue);
   };
 
+  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => event.stopPropagation();
+
   const handleClose = (_: unknown, reason: string) => {
     if (reason !== "blur" && reason !== "escape") return;
 
@@ -262,36 +259,31 @@ export function Dropdown<T = string>({
         onKeyDown: handleInputKeyDown,
       }}
       required={required}
+      stopKeyPropagation={false}
       value={params.inputProps.value as string}
     />
   );
 
-  const renderOption = (itemProps: HTMLAttributes<HTMLLIElement>, option: DropdownOption<T>) => {
-    const pill = option.pill !== undefined && (
-      <Pill borderRadiuses={{ all: "0.6rem" }} fontSize="0.85em" padding={{ all: "0.1rem 0.4rem" }}>
-        {option.pill}
-      </Pill>
-    );
-
-    return (
-      <MenuItem
-        {...itemProps}
-        key={String(option.value)}
-        className={cx(itemProps.className, css.menuItem)}
-        title={option.label}
+  const renderOption = (itemProps: HTMLAttributes<HTMLLIElement>, option: DropdownOption<T>) => (
+    <MenuItem
+      {...itemProps}
+      key={String(option.value)}
+      className={cx(itemProps.className, css.menuItem)}
+      title={option.label}
+    >
+      <PillLabel
+        flex={1}
+        minWidth={0}
+        pill={option.pill}
+        pillPosition={pillPosition}
+        spacing="0.5rem"
       >
-        <View row flex={1} align="center" minWidth={0} spacing="0.5rem">
-          {pillPosition === "left" && pill}
-
-          <Text flex={1} minWidth={0} {...optionTextProps}>
-            {option.label}
-          </Text>
-
-          {pillPosition === "right" && pill}
-        </View>
-      </MenuItem>
-    );
-  };
+        <Text flex={1} minWidth={0} {...optionTextProps}>
+          {option.label}
+        </Text>
+      </PillLabel>
+    </MenuItem>
+  );
 
   return (
     <HeaderWrapper
@@ -317,6 +309,7 @@ export function Dropdown<T = string>({
         onChange={handleChange}
         onClose={handleClose}
         onInputChange={handleInputChange}
+        onKeyDown={handleKeyDown}
         options={options}
         popupIcon={<Icon name="ArrowDropDown" color={caretColor} size={caretSize} />}
         renderInput={renderInput}

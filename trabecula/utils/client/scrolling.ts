@@ -60,7 +60,6 @@ export const useDragScroll = ({
     const walk = (event.clientX - initialMouseX.current) * 3;
     const newScrollLeft = scrollStart.current - walk;
     const isScrollValid = validateScrollLeft(newScrollLeft);
-
     if (!isScrollValid) return;
 
     listRef.current.scrollTo(newScrollLeft);
@@ -100,7 +99,6 @@ export const useDragScroll = ({
   const momentumLoop = () => {
     const newScrollLeft = scrollLeft.current + velocity.current;
     const isScrollValid = validateScrollLeft(newScrollLeft);
-
     if (!isScrollValid || !listRef.current) return;
 
     listRef.current.scrollTo(newScrollLeft);

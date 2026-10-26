@@ -1,9 +1,8 @@
-import { ComponentProps, useState } from "react";
+import { ComponentProps, KeyboardEvent, useState } from "react";
 // eslint-disable-next-line @typescript-eslint/no-restricted-imports
 import { Autocomplete, Chip, createFilterOptions } from "@mui/material";
-import { Comp } from "trabecula/components/comp";
+import { Comp, DropdownOption, Input } from "trabecula/components";
 import { colors, makeClasses } from "trabecula/utils/client";
-import { DropdownOption, Input } from ".";
 
 const filterOptions = createFilterOptions({ limit: 100, matchFrom: "start" });
 
@@ -20,7 +19,15 @@ export type ChipInputProps = Omit<
 };
 
 export const ChipInput = Comp(
-  ({ className, opaque = false, options = [], setValue, value = [], ...props }: ChipInputProps) => {
+  ({
+    className,
+    onKeyDown,
+    opaque = false,
+    options = [],
+    setValue,
+    value = [],
+    ...props
+  }: ChipInputProps) => {
     const { css, cx } = useClasses({ opaque });
 
     const [inputValue, setInputValue] = useState("");
@@ -30,6 +37,11 @@ export const ChipInput = Comp(
         val.map((v: ChipOption | string) => (typeof v === "string" ? { label: v, value: v } : v)),
       );
       setInputValue("");
+    };
+
+    const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+      event.stopPropagation();
+      onKeyDown?.(event);
     };
 
     return (
@@ -43,6 +55,7 @@ export const ChipInput = Comp(
             value={inputValue}
             setValue={setInputValue}
             className={cx(css.input, className)}
+            stopKeyPropagation={false}
           />
         )}
         renderTags={(val: ChipOption[], getTagProps) =>
@@ -51,6 +64,7 @@ export const ChipInput = Comp(
           ))
         }
         onChange={handleChange}
+        onKeyDown={handleKeyDown}
         isOptionEqualToValue={(option: ChipOption, val: ChipOption) => option.value === val.value}
         filterOptions={filterOptions}
         size="small"

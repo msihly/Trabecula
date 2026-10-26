@@ -1,9 +1,10 @@
 import { Dirent, promises as fs } from "fs";
 import path from "path";
 import { fdir } from "fdir";
-import _md5File from "md5-file";
 import trash from "trash";
 import { handleErrors, sleep } from "trabecula/utils/common";
+
+export { default as md5File } from "md5-file";
 
 export const checkFileExists = async (path: string) => !!(await fs.stat(path).catch(() => false));
 
@@ -45,9 +46,8 @@ export const dirToFilePaths = async (
   dirPath: string,
   filterFn?: (filePath: string) => boolean,
 ): Promise<string[]> => {
-  return await (filterFn
-    ? new fdir().withFullPaths().filter(filterFn).crawl(dirPath).withPromise()
-    : new fdir().withFullPaths().crawl(dirPath).withPromise());
+  const crawler = new fdir().withFullPaths();
+  return await (filterFn ? crawler.filter(filterFn) : crawler).crawl(dirPath).withPromise();
 };
 
 export const dirToFolderPaths = async (dirPath: string): Promise<string[]> => {
@@ -59,15 +59,13 @@ export const dirToFolderPaths = async (dirPath: string): Promise<string[]> => {
 export const extendFileName = (fileName: string, ext: string) =>
   `${path.relative(".", fileName).replace(/\.\w+$/, "")}.${ext}`;
 
-const isWithinFolder = (parent: string, child: string) => {
+export const isWithinFolder = (parent: string, child: string) => {
   const relative = path.relative(parent, child);
 
   return !path.isAbsolute(relative) && relative !== ".." && !relative.startsWith(`..${path.sep}`);
 };
 
 export const makeFolder = async (path: string) => await fs.mkdir(path, { recursive: true });
-
-export const md5File = _md5File;
 
 const PENDING_REMOVAL_DELAY = 100;
 const PENDING_REMOVAL_RETRIES = 20;

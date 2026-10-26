@@ -52,12 +52,7 @@ export const Tooltip = ({
       title={title}
       classes={{ arrow: css.arrow, popper: css.popper, tooltip: css.tooltip }}
     >
-      <View
-        {...viewProps}
-        onMouseEnter={props.onMouseEnter}
-        onMouseLeave={props.onMouseLeave}
-        className={css.container}
-      >
+      <View {...viewProps} className={css.container}>
         {children}
       </View>
     </MuiTooltip>

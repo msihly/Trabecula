@@ -185,7 +185,6 @@ export const Input = Comp((rawProps: InputProps, ref?: MutableRefObject<HTMLDivE
       <TextField
         {...props}
         ref={ref}
-        id={props.id ?? inputName}
         name={inputName}
         onChange={handleChange}
         onClick={onClick}
@@ -234,31 +233,29 @@ export const Input = Comp((rawProps: InputProps, ref?: MutableRefObject<HTMLDivE
   );
 });
 
-interface ClassesProps extends NonNullable<
-  Pick<
-    InputProps,
-    | "adornmentColor"
-    | "background"
-    | "borderRadiuses"
-    | "borders"
-    | "color"
-    | "dense"
-    | "flex"
-    | "fontFamily"
-    | "fontSize"
-    | "fontWeight"
-    | "hasHelper"
-    | "height"
-    | "helperText"
-    | "helperTextProps"
-    | "margins"
-    | "minWidth"
-    | "noFade"
-    | "padding"
-    | "textAlign"
-    | "textColor"
-    | "width"
-  >
+interface ClassesProps extends Pick<
+  InputProps,
+  | "adornmentColor"
+  | "background"
+  | "borderRadiuses"
+  | "borders"
+  | "color"
+  | "dense"
+  | "flex"
+  | "fontFamily"
+  | "fontSize"
+  | "fontWeight"
+  | "hasHelper"
+  | "height"
+  | "helperText"
+  | "helperTextProps"
+  | "margins"
+  | "minWidth"
+  | "noFade"
+  | "padding"
+  | "textAlign"
+  | "textColor"
+  | "width"
 > {
   hasLabel: boolean;
   hasOnClick: boolean;

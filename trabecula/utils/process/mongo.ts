@@ -17,6 +17,13 @@ export interface MongoProcessOptions {
   replicaSet: string;
 }
 
+const createAdminClient = (mongoServer: MongoMemoryServer) =>
+  new Mongoose.mongo.MongoClient(mongoServer.getUri("admin"), {
+    directConnection: true,
+    family: 4,
+    serverSelectionTimeoutMS: 30000,
+  });
+
 /** Runs a persistent single-member replica set and hands its URI to later stages once writable. */
 export const registerMongoProcess = (getOptions: () => Promise<MongoProcessOptions>) => {
   let mongoServer: MongoMemoryServer;
@@ -52,11 +59,7 @@ export const registerMongoProcess = (getOptions: () => Promise<MongoProcessOptio
 
       if (isServerStopping()) return;
 
-      const client = new Mongoose.mongo.MongoClient(mongoServer.getUri("admin"), {
-        directConnection: true,
-        family: 4,
-        serverSelectionTimeoutMS: 30000,
-      });
+      const client = createAdminClient(mongoServer);
 
       try {
         await client.connect();
@@ -114,11 +117,7 @@ export const registerMongoProcess = (getOptions: () => Promise<MongoProcessOptio
       if (!native || native.exitCode !== null || native.signalCode !== null) return;
 
       // Windows kill() is forced termination. A direct connection also works before election.
-      const client = new Mongoose.mongo.MongoClient(mongoServer.getUri("admin"), {
-        directConnection: true,
-        family: 4,
-        serverSelectionTimeoutMS: 30000,
-      });
+      const client = createAdminClient(mongoServer);
 
       let resolveExit: () => void;
 

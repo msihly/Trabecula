@@ -1,14 +1,12 @@
 import { Button, Text, View } from "trabecula/components";
 import { ButtonProps, MenuButton, SortRow, SortRowProps } from "trabecula/components/buttons";
-import { colors, CSS, CssColor, makeClasses } from "trabecula/utils/client";
+import { colors, makeClasses } from "trabecula/utils/client";
 
 export interface SortMenuProps extends Omit<ButtonProps, "onChange" | "value"> {
-  color?: CssColor;
   hasHeader?: boolean;
   rows: Omit<SortRowProps, "setValue" | "value">[];
   setValue: (value: { isDesc: boolean; key: string }) => void;
   value: { isDesc: boolean; key: string };
-  width?: CSS["width"];
 }
 
 export const SortMenu = ({

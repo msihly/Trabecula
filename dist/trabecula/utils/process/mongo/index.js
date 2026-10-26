@@ -107,7 +107,6 @@ var AUDIO_CODECS_COMMON = [
 ];
 var AUDIO_CODECS_UNCOMMON = [
   "aac_latm",
-  "alac",
   "ape",
   "aptx_hd",
   "aptx",
@@ -218,7 +217,6 @@ var VIDEO_EXTS_UNCOMMON = [
   "3gpp",
   "amv",
   "asf",
-  "avi",
   "divx",
   "m2t",
   "m2ts",
@@ -628,8 +626,8 @@ var ownProcessTree = () => {
 
 // trabecula/utils/server/files.ts
 var import_fdir = require("fdir");
-var import_md5_file = __toESM(require("md5-file"));
 var import_trash = __toESM(require("trash"));
+var import_md5_file = __toESM(require("md5-file"));
 
 // trabecula/utils/server/logging.ts
 var import_fs = __toESM(require("fs"));
@@ -751,8 +749,13 @@ var registerProcessLifecycle = ({
       });
     }
   }));
-  process.on("disconnect", () => shutdownProcess().catch(() => {
-  }));
+  process.on("disconnect", () => {
+    for (const request of mainRequests.values())
+      request.reject(new Error("The main process disconnected."));
+    mainRequests.clear();
+    shutdownProcess().catch(() => {
+    });
+  });
   process.on(
     "unhandledRejection",
     (error) => {
@@ -772,6 +775,11 @@ var registerProcessLifecycle = ({
 var START_TIMEOUT_MS = 6 * 60 * 1e3;
 
 // trabecula/utils/process/mongo.ts
+var createAdminClient = (mongoServer) => new import_mongoose.default.mongo.MongoClient(mongoServer.getUri("admin"), {
+  directConnection: true,
+  family: 4,
+  serverSelectionTimeoutMS: 3e4
+});
 var registerMongoProcess = (getOptions) => {
   let mongoServer;
   let mongoStart;
@@ -798,11 +806,7 @@ var registerMongoProcess = (getOptions) => {
       mongoStart = mongoServer.start(true);
       yield mongoStart;
       if (isServerStopping()) return;
-      const client = new import_mongoose.default.mongo.MongoClient(mongoServer.getUri("admin"), {
-        directConnection: true,
-        family: 4,
-        serverSelectionTimeoutMS: 3e4
-      });
+      const client = createAdminClient(mongoServer);
       try {
         yield client.connect();
         const admin = client.db("admin");
@@ -845,11 +849,7 @@ var registerMongoProcess = (getOptions) => {
       });
       const native = (_a = mongoServer == null ? void 0 : mongoServer.instanceInfo) == null ? void 0 : _a.instance.mongodProcess;
       if (!native || native.exitCode !== null || native.signalCode !== null) return;
-      const client = new import_mongoose.default.mongo.MongoClient(mongoServer.getUri("admin"), {
-        directConnection: true,
-        family: 4,
-        serverSelectionTimeoutMS: 3e4
-      });
+      const client = createAdminClient(mongoServer);
       let resolveExit;
       const exited = new Promise((resolve) => {
         resolveExit = resolve;

@@ -103,7 +103,6 @@ export const Button = ({
   loading = false,
   margins,
   maxWidth,
-  onClick,
   outlined = false,
   outlineFill = "transparent",
   outlineFillOnHover,
@@ -188,7 +187,6 @@ export const Button = ({
         size={size}
         variant={variant}
         {...(isAnchor ? { component: "a", href } : {})}
-        onClick={onClick}
         className={cx(css.root, className)}
       >
         <LoadingOverlay isLoading={loading} />
@@ -275,8 +273,6 @@ const useClasses = makeClasses((props: ClassesProps) => {
     props.borderColorOnHover ??
     (props.outlined && props.colorOnHover ? props.colorOnHover : undefined);
   const linkPadding = props.isLinkDisplay && !props.padding?.all ? 0 : undefined;
-  const textColor = props.textColor;
-  const textColorOnHover = props.textColorOnHover;
   const textDecoration = props.underline === "always" ? "underline" : "none";
   const textDecorationOnHover = props.underline === "none" ? "none" : "underline";
 
@@ -304,26 +300,26 @@ const useClasses = makeClasses((props: ClassesProps) => {
       width: props.width,
       backgroundColor: bgColor,
       boxShadow: props.boxShadow ?? "none",
-      color: textColor,
+      color: props.textColor,
       textDecoration,
       textTransform: props.textTransform,
       overflow: "hidden",
       "&:active": {
-        color: textColor,
+        color: props.textColor,
         textDecoration,
       },
       "&:link": {
-        color: textColor,
+        color: props.textColor,
       },
       "&:hover, &:link:hover, &:visited:hover": {
         backgroundColor: bgColorOnHover,
         borderColor: borderColorOnHover,
-        color: textColorOnHover,
+        color: props.textColorOnHover,
         boxShadow: props.boxShadow ?? (props.isLinkDisplay ? "none" : undefined),
         textDecoration: `${textDecorationOnHover} !important`,
       },
       "&:visited": {
-        color: textColor,
+        color: props.textColor,
         textDecoration,
       },
     },

@@ -7,7 +7,7 @@
 
 @font-face {
   font-family: "Avenir";
-  font-weight: 400, 500;
+  font-weight: 400 500;
   font-style: normal;
   src: url("./fonts/avenir-medium.woff2") format("woff2");
 }
@@ -21,7 +21,7 @@
 
 @font-face {
   font-family: "Roboto";
-  font-weight: 400, 500;
+  font-weight: 400 500;
   font-style: normal;
   src: url("./fonts/roboto-regular.woff2") format("woff2");
 }

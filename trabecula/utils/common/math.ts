@@ -57,10 +57,11 @@ export const round = (num: number, decimals = 2) => {
 };
 
 export const secondsToDuration = (input: number) => {
-  const hours = Math.floor(input / 3600);
-  const minutes = Math.floor((input % 3600) / 60);
-  const seconds = Math.floor(input % 60);
-  const milliseconds = Math.round((input % 1) * 1000);
+  const totalMs = Math.round(input * 1000);
+  const hours = Math.floor(totalMs / 3600000);
+  const minutes = Math.floor((totalMs % 3600000) / 60000);
+  const seconds = Math.floor((totalMs % 60000) / 1000);
+  const milliseconds = totalMs % 1000;
 
   return (
     [

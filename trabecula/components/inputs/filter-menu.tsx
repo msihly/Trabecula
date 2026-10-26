@@ -18,7 +18,7 @@ import {
   View,
   ViewProps,
 } from "trabecula/components";
-import { colors, CSS, CssColor } from "trabecula/utils/client";
+import { colors } from "trabecula/utils/client";
 
 type FilterStore = {
   applySavedSearch: (id: string) => any;
@@ -42,7 +42,6 @@ type FilterStore = {
 
 export interface FilterMenuProps extends Omit<ButtonProps, "onChange" | "value"> {
   children: ReactNode | ReactNode[];
-  color?: CssColor;
   menuProps?: Partial<MenuButtonProps>;
   resetFn?: () => void;
   /** Replaces loading the store's results, for menus whose filter applies elsewhere. */
@@ -50,7 +49,6 @@ export interface FilterMenuProps extends Omit<ButtonProps, "onChange" | "value">
   sortOptions: SortMenuProps["rows"];
   store: FilterStore;
   viewProps?: ViewProps;
-  width?: CSS["width"];
 }
 
 export const FilterMenu = Comp(
@@ -73,7 +71,9 @@ export const FilterMenu = Comp(
       !!store.saveSavedSearch;
 
     const handleReset = () => {
-      resetFn ? resetFn() : store.reset();
+      if (resetFn) resetFn();
+      else store.reset();
+
       handleSearch();
     };
 
@@ -184,17 +184,17 @@ const SavedSearchMenu = Comp(({ searchFn, store }: SavedSearchMenuProps) => {
 
   const handleSave = () => store.saveSavedSearch(label);
 
-  const handleSelect: AutoCompleteProps["onInputChange"] = async (_, value, reason) => {
+  const handleInputChange: AutoCompleteProps["onInputChange"] = (_, value, reason) => {
     if (value === "" && reason === "reset") return;
 
     setInputValue(value);
+  };
 
-    const selectedSearch = options.find((option) => option.label === value);
+  const handleSelect: AutoCompleteProps["onChange"] = async (_, option) => {
+    if (!option) return;
 
-    if (selectedSearch) {
-      await store.applySavedSearch(selectedSearch.value);
-      searchFn?.();
-    }
+    await store.applySavedSearch(option.value);
+    searchFn?.();
   };
 
   return (
@@ -203,7 +203,8 @@ const SavedSearchMenu = Comp(({ searchFn, store }: SavedSearchMenuProps) => {
         options={options}
         inputValue={inputValue}
         isOptionEqualToValue={(option, value) => option.value === value.value}
-        onInputChange={handleSelect}
+        onChange={handleSelect}
+        onInputChange={handleInputChange}
         inputProps={{
           height: "1em",
           placeholder: "Saved Searches",

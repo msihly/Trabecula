@@ -27,7 +27,7 @@ export const CardGrid = Comp(
     }: CardGridProps,
     ref,
   ) => {
-    const { css, cx } = useClasses({ hasCards: cards.length > 0, flexFlow, maxCards, position });
+    const { css, cx } = useClasses({ flexFlow, hasCards: cards.length > 0, maxCards, position });
 
     return (
       <View {...props} className={cx(css.root, className)}>

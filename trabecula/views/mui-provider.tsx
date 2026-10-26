@@ -1,4 +1,4 @@
-import { createContext, StrictMode, useContext, useRef } from "react";
+import { createContext, StrictMode, useContext, useState } from "react";
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 import { createTheme, ThemeProvider } from "@mui/material";
@@ -17,7 +17,7 @@ export const MuiProvider = ({
   portalContainer?: HTMLElement;
   styleContainer?: Node;
 }) => {
-  const themeRef = useRef(
+  const [theme] = useState(() =>
     createTheme({
       components: {
         MuiModal: { defaultProps: { container: portalContainer } },
@@ -27,18 +27,18 @@ export const MuiProvider = ({
       palette: { mode: "dark" },
     }),
   );
-  const muiCacheRef = useRef(
+  const [muiCache] = useState(() =>
     createCache({ container: styleContainer, key: "mui", prepend: true, stylisPlugins: [] }),
   );
-  const tssCacheRef = useRef(
+  const [tssCache] = useState(() =>
     createCache({ container: styleContainer, key: "tss", stylisPlugins: [] }),
   );
 
   return (
     <StrictMode>
-      <CacheProvider value={muiCacheRef.current}>
-        <TssCacheProvider value={tssCacheRef.current}>
-          <ThemeProvider theme={themeRef.current}>
+      <CacheProvider value={muiCache}>
+        <TssCacheProvider value={tssCache}>
+          <ThemeProvider theme={theme}>
             <PortalContainerContext.Provider value={portalContainer}>
               {children}
             </PortalContainerContext.Provider>

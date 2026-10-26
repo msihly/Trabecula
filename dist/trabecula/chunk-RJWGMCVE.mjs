@@ -1,7 +1,7 @@
 import {
   fileLog,
   setLogsPath
-} from "./chunk-QLP6GQY4.mjs";
+} from "./chunk-XCGFMXNA.mjs";
 import {
   __async,
   __pow,
@@ -295,8 +295,13 @@ var registerProcessLifecycle = ({
       });
     }
   }));
-  process.on("disconnect", () => shutdownProcess().catch(() => {
-  }));
+  process.on("disconnect", () => {
+    for (const request of mainRequests.values())
+      request.reject(new Error("The main process disconnected."));
+    mainRequests.clear();
+    shutdownProcess().catch(() => {
+    });
+  });
   process.on(
     "unhandledRejection",
     (error) => {
@@ -688,4 +693,4 @@ export {
   registerProcessLifecycle,
   ServerManager
 };
-//# sourceMappingURL=chunk-VNS3THIS.mjs.map
+//# sourceMappingURL=chunk-RJWGMCVE.mjs.map

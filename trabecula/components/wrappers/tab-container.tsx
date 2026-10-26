@@ -1,7 +1,8 @@
 import { ReactNode, SyntheticEvent, useState } from "react";
 import { Tab, Tabs } from "@mui/material";
 import Color from "color";
-import { Pill, Text, View, ViewProps } from "trabecula/components";
+import { Text, View, ViewProps } from "trabecula/components";
+import { PillLabel } from "trabecula/components/wrappers/pill-label";
 import { colors, CSS, makeClasses } from "trabecula/utils/client";
 
 interface TabItem {
@@ -72,40 +73,28 @@ export const TabContainer = ({
           value={currentTab}
           variant="scrollable"
         >
-          {tabs.map((tab, index) => {
-            const pill = tab.pill !== undefined && (
-              <Pill
-                bgColor={pillBgColor}
-                borderRadiuses={{ all: "0.6rem" }}
-                fontSize="0.85em"
-                padding={{ all: "0.1rem 0.4rem" }}
-              >
-                {tab.pill}
-              </Pill>
-            );
-
-            return (
-              <Tab
-                key={index}
-                className={css.tab}
-                label={
-                  pill ? (
-                    <View row align="center" spacing="0.4rem">
-                      {pillPosition === "left" && pill}
-
-                      <Text>{tab.label}</Text>
-
-                      {pillPosition === "right" && pill}
-                    </View>
-                  ) : (
-                    tab.label
-                  )
-                }
-                value={index.toString()}
-                wrapped
-              />
-            );
-          })}
+          {tabs.map((tab, index) => (
+            <Tab
+              key={index}
+              className={css.tab}
+              label={
+                tab.pill !== undefined ? (
+                  <PillLabel
+                    pill={tab.pill}
+                    pillPosition={pillPosition}
+                    pillProps={{ bgColor: pillBgColor }}
+                    spacing="0.4rem"
+                  >
+                    <Text>{tab.label}</Text>
+                  </PillLabel>
+                ) : (
+                  tab.label
+                )
+              }
+              value={index.toString()}
+              wrapped
+            />
+          ))}
         </Tabs>
 
         {headerRightNode && (

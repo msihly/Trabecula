@@ -39,11 +39,15 @@ export const NumInput = Comp(
       } else {
         setValue?.(+val);
 
-        if (maxValue != null && +val > maxValue)
-          hasHelper ? setError(`Max: ${maxValue}`) : toast.error(`Max: ${maxValue}`);
-        else if (minValue != null && +val < minValue)
-          hasHelper ? setError(`Min: ${minValue}`) : toast.error(`Min: ${minValue}`);
-        else setError(null);
+        if (maxValue != null && +val > maxValue) {
+          if (hasHelper) setError(`Max: ${maxValue}`);
+          else toast.error(`Max: ${maxValue}`);
+        } else if (minValue != null && +val < minValue) {
+          if (hasHelper) setError(`Min: ${minValue}`);
+          else toast.error(`Min: ${minValue}`);
+        } else {
+          setError(null);
+        }
       }
     };
 

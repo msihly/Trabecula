@@ -32,7 +32,6 @@ const AUDIO_CODECS_COMMON = [
 
 const AUDIO_CODECS_UNCOMMON = [
   "aac_latm",
-  "alac",
   "ape",
   "aptx_hd",
   "aptx",
@@ -155,7 +154,6 @@ const VIDEO_EXTS_UNCOMMON = [
   "3gpp",
   "amv",
   "asf",
-  "avi",
   "divx",
   "m2t",
   "m2ts",
@@ -175,10 +173,10 @@ const VIDEO_EXTS_UNCOMMON = [
 const VIDEO_EXTS = [...VIDEO_EXTS_COMMON, ...VIDEO_EXTS_UNCOMMON];
 export type VideoExt = (typeof VIDEO_EXTS)[number];
 
-const WEB_VIDEO_CODECS = ["h264", "hevc", "vp8", "vp9", "theora", "av1"] as const;
+const WEB_VIDEO_CODECS = ["av1", "h264", "hevc", "theora", "vp8", "vp9"] as const;
 export type WebVideoCodec = (typeof WEB_VIDEO_CODECS)[number];
 
-const WEB_VIDEO_EXTS = ["mp4", "webm", "ogv", "wav"] as const;
+const WEB_VIDEO_EXTS = ["mp4", "ogv", "wav", "webm"] as const;
 export type WebVideoExt = (typeof WEB_VIDEO_EXTS)[number];
 
 export interface _Constants {

@@ -91,7 +91,7 @@ interface ButtonProps extends Omit<ButtonProps$1, "children" | "color" | "compon
     whiteSpace?: CSS["whiteSpace"];
     width?: CSS["width"];
 }
-declare const Button: ({ borderColorOnHover, borderRadiuses, borders, boxShadow, className, color, colorOnHover, dense, endNode, fontFamily, fontSize, fontWeight, height, href, icon, iconProps, iconRight, iconSize, justify, loading, margins, maxWidth, onClick, outlined, outlineFill, outlineFillOnHover, padding, pill, pillPosition, pillWidth, size, startNode, text, textClassName, textColor, textColorOnHover, textProps, textTransform, tooltip, tooltipProps, type, underline, variant, whiteSpace, width, ...props }: ButtonProps) => react_jsx_runtime.JSX.Element;
+declare const Button: ({ borderColorOnHover, borderRadiuses, borders, boxShadow, className, color, colorOnHover, dense, endNode, fontFamily, fontSize, fontWeight, height, href, icon, iconProps, iconRight, iconSize, justify, loading, margins, maxWidth, outlined, outlineFill, outlineFillOnHover, padding, pill, pillPosition, pillWidth, size, startNode, text, textClassName, textColor, textColorOnHover, textProps, textTransform, tooltip, tooltipProps, type, underline, variant, whiteSpace, width, ...props }: ButtonProps) => react_jsx_runtime.JSX.Element;
 
 interface ButtonWithInsetProps extends ButtonProps {
     insetText: string;
@@ -124,7 +124,7 @@ interface IconButtonProps extends Omit<IconButtonProps$1, "color"> {
     tooltip?: TooltipWrapperProps["tooltip"];
     tooltipProps?: TooltipWrapperProps["tooltipProps"];
 }
-declare const IconButton: ({ children, className, color, disabled, iconProps, margins, name, onClick, padding, size, tooltip, tooltipProps, ...props }: IconButtonProps) => react_jsx_runtime.JSX.Element;
+declare const IconButton: ({ children, className, color, disabled, iconProps, margins, name, padding, tooltip, tooltipProps, ...props }: IconButtonProps) => react_jsx_runtime.JSX.Element;
 
 interface IconPickerProps extends Omit<ButtonProps, "onChange" | "value"> {
     color?: CssColor;
@@ -143,7 +143,6 @@ interface MenuButtonProps extends IconButtonProps {
     bgColor?: CssColor;
     button?: (onOpen: (event: MouseEvent) => void) => ReactNode;
     children: ReactNode | ((onClose: () => void) => ReactNode);
-    color?: CssColor;
     icon?: IconName;
     keepMounted?: boolean;
     menuClassName?: string;
@@ -157,7 +156,6 @@ interface MultiActionButtonProps extends IconButtonProps {
 declare const MultiActionButton: ({ tooltipProps, ...props }: MultiActionButtonProps) => react_jsx_runtime.JSX.Element;
 
 interface SortMenuProps extends Omit<ButtonProps, "onChange" | "value"> {
-    color?: CssColor;
     hasHeader?: boolean;
     rows: Omit<SortRowProps, "setValue" | "value">[];
     setValue: (value: {
@@ -168,7 +166,6 @@ interface SortMenuProps extends Omit<ButtonProps, "onChange" | "value"> {
         isDesc: boolean;
         key: string;
     };
-    width?: CSS["width"];
 }
 declare const SortMenu: ({ color, hasHeader, height, rows, setValue, value, width, ...buttonProps }: SortMenuProps) => react_jsx_runtime.JSX.Element;
 
@@ -323,7 +320,6 @@ type FilterStore = {
 };
 interface FilterMenuProps extends Omit<ButtonProps, "onChange" | "value"> {
     children: ReactNode | ReactNode[];
-    color?: CssColor;
     menuProps?: Partial<MenuButtonProps>;
     resetFn?: () => void;
     /** Replaces loading the store's results, for menus whose filter applies elsewhere. */
@@ -331,7 +327,6 @@ interface FilterMenuProps extends Omit<ButtonProps, "onChange" | "value"> {
     sortOptions: SortMenuProps["rows"];
     store: FilterStore;
     viewProps?: ViewProps;
-    width?: CSS["width"];
 }
 declare const FilterMenu: react.ForwardRefExoticComponent<Omit<FilterMenuProps, "ref"> & react.RefAttributes<HTMLDivElement>>;
 
@@ -517,7 +512,7 @@ interface ListItemProps extends Omit<ListItemProps$1, "children"> {
     onClick?: (event?: MouseEvent) => void;
     text: ReactNode;
 }
-declare const ListItem: ({ children, color, icon, iconEnd, iconEndMargins, iconMargins, iconProps, onClick, text, ...props }: ListItemProps) => react_jsx_runtime.JSX.Element;
+declare const ListItem: ({ children, className, color, icon, iconEnd, iconEndMargins, iconMargins, iconProps, onClick, text, ...props }: ListItemProps) => react_jsx_runtime.JSX.Element;
 
 type IconName = IconName$1;
 interface IconLayer {
@@ -725,10 +720,11 @@ declare const DataGridHeader: <T extends object>({ columns, expandableContent, e
 interface DataGridRowProps<T extends object> extends Pick<DataGridProps<T>, "alternatingBgColor" | "alternatingColors" | "className" | "columns" | "defaultTextPreset" | "expandableContent" | "expandColumnWidth" | "getRowBgColor" | "isRowSelected" | "onRowClick" | "rowAlign" | "rowGap" | "rowPadding" | "selectedBgColor" | "selectedTextColor" | "textPreset"> {
     expandedRows: Set<number>;
     index: number;
+    pageIndex: number;
     row: T;
     setExpandedRows: react__default.Dispatch<Set<number>>;
 }
-declare const DataGridRow: <T extends object>({ alternatingBgColor, alternatingColors, className, columns, defaultTextPreset, expandableContent, expandedRows, expandColumnWidth, getRowBgColor, index, isRowSelected, onRowClick, row, rowAlign, rowGap, rowPadding, selectedBgColor, selectedTextColor, setExpandedRows, textPreset, }: DataGridRowProps<T>) => react_jsx_runtime.JSX.Element;
+declare const DataGridRow: <T extends object>({ alternatingBgColor, alternatingColors, className, columns, defaultTextPreset, expandableContent, expandedRows, expandColumnWidth, getRowBgColor, index, isRowSelected, onRowClick, pageIndex, row, rowAlign, rowGap, rowPadding, selectedBgColor, selectedTextColor, setExpandedRows, textPreset, }: DataGridRowProps<T>) => react_jsx_runtime.JSX.Element;
 
 interface PaginationProps extends Omit<PaginationProps$1, "onChange"> {
     inline?: boolean;
@@ -998,7 +994,7 @@ interface ChipProps$1 extends ChipProps {
 }
 
 declare const CardBase: {
-    Chip: ({ bgColor, flush, hasFooter, opacity, position, ...props }: ChipProps$1) => react_jsx_runtime.JSX.Element;
+    Chip: ({ bgColor, className, flush, hasFooter, opacity, position, ...props }: ChipProps$1) => react_jsx_runtime.JSX.Element;
     Container: ({ children, className, disabled, display, height, onClick, onDoubleClick, selected, selectedColor, width, ...viewProps }: ContainerProps) => react_jsx_runtime.JSX.Element;
     Footer: ({ children }: FooterProps) => react_jsx_runtime.JSX.Element;
     FooterText: (props: FooterTextProps) => react_jsx_runtime.JSX.Element;

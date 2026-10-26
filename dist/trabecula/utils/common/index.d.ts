@@ -42,9 +42,9 @@ declare const VIDEO_CODECS: ("av1" | "h264" | "hevc" | "mpeg4" | "prores" | "vp8
 type VideoCodec = (typeof VIDEO_CODECS)[number];
 declare const VIDEO_EXTS: ("amv" | "3gp" | "avi" | "f4v" | "flv" | "m4v" | "mkv" | "mov" | "mp4" | "ts" | "webm" | "wmv" | "3gp2" | "3gpp" | "asf" | "divx" | "m2t" | "m2ts" | "m2v" | "m4b" | "m4p" | "mpeg" | "mpg" | "mts" | "ogv" | "qt" | "vob" | "wm" | "wmp")[];
 type VideoExt = (typeof VIDEO_EXTS)[number];
-declare const WEB_VIDEO_CODECS: readonly ["h264", "hevc", "vp8", "vp9", "theora", "av1"];
+declare const WEB_VIDEO_CODECS: readonly ["av1", "h264", "hevc", "theora", "vp8", "vp9"];
 type WebVideoCodec = (typeof WEB_VIDEO_CODECS)[number];
-declare const WEB_VIDEO_EXTS: readonly ["mp4", "webm", "ogv", "wav"];
+declare const WEB_VIDEO_EXTS: readonly ["mp4", "ogv", "wav", "webm"];
 type WebVideoExt = (typeof WEB_VIDEO_EXTS)[number];
 interface _Constants {
     AUDIO: {

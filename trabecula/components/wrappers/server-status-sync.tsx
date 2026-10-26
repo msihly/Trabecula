@@ -29,6 +29,9 @@ export interface ServerStatusSyncProps {
   restartInstruction: string;
 }
 
+const joinStatusLabels = (statuses: ServerProcessStatus[]) =>
+  statuses.map(({ label }) => label).join(" / ");
+
 /** Shows startup until every server process is ready, then notifies when they drop or recover. */
 export const ServerStatusSync = ({
   appName,
@@ -39,11 +42,11 @@ export const ServerStatusSync = ({
   restartInstruction,
 }: ServerStatusSyncProps) => {
   const [hasStarted, setHasStarted] = useState(false);
+  const [serverToaster] = useState(() => new Toaster());
   const [startupMessage, setStartupMessage] = useState(`Starting ${appName} services...`);
 
   const pollInterval = useRef<ReturnType<typeof setInterval>>(null);
   const previousStatusMessage = useRef<string>(null);
-  const serverToaster = useRef(new Toaster()).current;
   const wasApplyingConfig = useRef(false);
   const wasDisconnected = useRef(false);
 
@@ -73,8 +76,8 @@ export const ServerStatusSync = ({
           setStartupMessage(
             [
               failed.length
-                ? `${failed.map(({ label }) => label).join(" / ")} failed to start. ${restartInstruction}`
-                : `Starting ${unavailable.map(({ label }) => label).join(" / ") || `${appName} services`}...`,
+                ? `${joinStatusLabels(failed)} failed to start. ${restartInstruction}`
+                : `Starting ${joinStatusLabels(unavailable) || `${appName} services`}...`,
               ...unavailable
                 .filter(({ message }) => message)
                 .map(({ label, message }) => `${label}: ${message}`),
@@ -93,7 +96,7 @@ export const ServerStatusSync = ({
         stopPolling();
         wasDisconnected.current = true;
         notifyServerStatus(
-          `${failed.map(({ label }) => label).join(" / ")} failed to restart. Restart ${appName}.`,
+          `${joinStatusLabels(failed)} failed to restart. Restart ${appName}.`,
           "error",
           false,
         );
@@ -104,7 +107,7 @@ export const ServerStatusSync = ({
         notifyServerStatus(
           wasApplyingConfig.current
             ? "Applying server configuration..."
-            : `${unavailable.map(({ label }) => label).join(" / ")} process unavailable. Attempting to reconnect...`,
+            : `${joinStatusLabels(unavailable)} process unavailable. Attempting to reconnect...`,
           wasApplyingConfig.current ? "info" : "error",
           false,
         );

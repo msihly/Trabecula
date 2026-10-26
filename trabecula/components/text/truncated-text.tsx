@@ -36,19 +36,19 @@ export const getTextTruncation = (
       remainder: "",
       truncationIndex: text.length,
     };
+  } else {
+    const truncatedText = text.substring(0, maxLength);
+    const lastSpaceIndex = truncatedText.lastIndexOf(" ");
+    const truncationIndex =
+      lastSpaceIndex > maxLength * wordBoundaryRatio ? lastSpaceIndex : maxLength;
+
+    return {
+      isTruncated: true,
+      preview: text.substring(0, truncationIndex),
+      remainder: text.substring(truncationIndex).trim(),
+      truncationIndex,
+    };
   }
-
-  const truncatedText = text.substring(0, maxLength);
-  const lastSpaceIndex = truncatedText.lastIndexOf(" ");
-  const truncationIndex =
-    lastSpaceIndex > maxLength * wordBoundaryRatio ? lastSpaceIndex : maxLength;
-
-  return {
-    isTruncated: true,
-    preview: text.substring(0, truncationIndex),
-    remainder: text.substring(truncationIndex).trim(),
-    truncationIndex,
-  };
 };
 
 export const TruncatedText = ({
@@ -101,8 +101,7 @@ TruncatedText.Remainder = ({
   const { isTruncated, remainder } = getTextTruncation(text, maxLength, wordBoundaryRatio);
 
   if (!isTruncated) return null;
-
-  return <Text {...textProps}>{remainder}</Text>;
+  else return <Text {...textProps}>{remainder}</Text>;
 };
 
 interface ClassesProps extends Pick<TruncatedTextProps, "lineClamp"> {}

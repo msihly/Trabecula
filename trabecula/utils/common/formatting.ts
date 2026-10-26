@@ -37,8 +37,12 @@ const decodeHtmlEntities = (s: string) =>
     return decoded;
   });
 
-const duration = (val: number, isMs = false) =>
-  !isNaN(val) ? dayjs.duration(val, isMs ? "ms" : "s").format("HH:mm:ss") : null;
+const duration = (val: number, isMs = false) => {
+  if (isNaN(val)) return null;
+
+  const dur = dayjs.duration(val, isMs ? "ms" : "s");
+  return `${leadZeros(Math.floor(dur.asHours()), 2)}:${dur.format("mm:ss")}`;
+};
 
 const frameToSec = (frame: number, frameRate: number) => round(frame / frameRate, 3);
 

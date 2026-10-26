@@ -28,6 +28,7 @@ const DEFAULT_ICON_MARGINS: Margins = { right: "1em" };
 
 export const ListItem = ({
   children,
+  className,
   color,
   icon,
   iconEnd,
@@ -58,8 +59,8 @@ export const ListItem = ({
         // @ts-expect-error
         button={Boolean(onClick)}
         onClick={onClick}
-        className={cx(css.root, props.className)}
         {...props}
+        className={cx(css.root, className)}
       >
         {icon && (
           <ListItemIcon className={css.icon}>

@@ -69,6 +69,14 @@ export const DataGridHeader = <T extends object>({
           else if (isSortable) onSort(column);
         };
 
+        const handleHeaderMouseEnter = () => {
+          if (isSortable) setHoveredColumnKey(column.key);
+        };
+
+        const handleHeaderMouseLeave = () => {
+          if (isSortable) setHoveredColumnKey(null);
+        };
+
         const handleResizeClick = (event: ReactMouseEvent<HTMLDivElement>) => {
           event.preventDefault();
           event.stopPropagation();
@@ -99,8 +107,8 @@ export const DataGridHeader = <T extends object>({
             spacing="0.2rem"
             title={typeof column.header === "string" ? column.header : undefined}
             onClick={handleHeaderClick}
-            onMouseEnter={() => isSortable && setHoveredColumnKey(column.key)}
-            onMouseLeave={() => isSortable && setHoveredColumnKey(null)}
+            onMouseEnter={handleHeaderMouseEnter}
+            onMouseLeave={handleHeaderMouseLeave}
             {...getDataGridCellLayout(column.width, column.minWidth, column.maxWidth)}
           >
             <Text

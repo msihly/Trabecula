@@ -8,10 +8,12 @@ const inlineFonts = async () => {
   const css = await readFile(`${CSS_DEST}/fonts.css`, "utf-8");
   const matches = [...css.matchAll(/url\("\.\/fonts\/(.*?)"\)/g)];
   let result = css;
+
   for (const match of matches) {
     const font = await readFile(`${CSS_DEST}/fonts/${match[1]}`);
     result = result.replace(match[0], `url("data:font/woff2;base64,${font.toString("base64")}")`);
   }
+
   await writeFile(`${CSS_DEST}/fonts.css`, result);
 };
 
@@ -71,6 +73,7 @@ export default defineConfig({
     const cssDtsStub = "declare const styles: string;\nexport default styles;\n";
     await writeFile(`${CSS_DEST}/fonts.css.d.ts`, cssDtsStub);
     await writeFile(`${CSS_DEST}/react-toastify.css.d.ts`, cssDtsStub);
+
     await inlineFonts();
   },
 });

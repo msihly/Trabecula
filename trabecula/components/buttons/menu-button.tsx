@@ -9,7 +9,6 @@ export interface MenuButtonProps extends IconButtonProps {
   bgColor?: CssColor;
   button?: (onOpen: (event: MouseEvent) => void) => ReactNode;
   children: ReactNode | ((onClose: () => void) => ReactNode);
-  color?: CssColor;
   icon?: IconName;
   keepMounted?: boolean;
   menuClassName?: string;

@@ -182,12 +182,16 @@ export const DataGrid = <T extends object = DataGridRowData>({
     });
   };
 
-  return !data.length ? (
+  const renderEmptyState = () => (
     <View display="flex" justify={emptyJustify}>
       <Text preset={textPreset} color={emptyColor}>
         {emptyMessage}
       </Text>
     </View>
+  );
+
+  return !data.length ? (
+    renderEmptyState()
   ) : (
     <View column spacing={spacing} width="100%">
       {!hasSearch ? null : (
@@ -215,14 +219,10 @@ export const DataGrid = <T extends object = DataGridRowData>({
       />
 
       {!displayedData.length ? (
-        <View display="flex" justify={emptyJustify}>
-          <Text preset={textPreset} color={emptyColor}>
-            {emptyMessage}
-          </Text>
-        </View>
+        renderEmptyState()
       ) : (
         <View column width="100%">
-          {displayedData.map(({ row }, index) => (
+          {displayedData.map(({ index, row }, pageIndex) => (
             <DataGridRow
               key={index}
               alternatingBgColor={alternatingBgColor}
@@ -237,6 +237,7 @@ export const DataGrid = <T extends object = DataGridRowData>({
               index={index}
               isRowSelected={isRowSelected}
               onRowClick={onRowClick}
+              pageIndex={pageIndex}
               row={row}
               rowAlign={rowAlign}
               rowGap={rowGap}

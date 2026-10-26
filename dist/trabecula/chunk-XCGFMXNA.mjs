@@ -3,7 +3,7 @@ import {
   handleErrors,
   round,
   sleep
-} from "./chunk-6TR333HE.mjs";
+} from "./chunk-TW4B7B5M.mjs";
 import {
   __async
 } from "./chunk-DM4QYMVJ.mjs";
@@ -12,8 +12,8 @@ import {
 import { promises as fs } from "fs";
 import path from "path";
 import { fdir } from "fdir";
-import _md5File from "md5-file";
 import trash from "trash";
+import { default as default2 } from "md5-file";
 var checkFileExists = (path3) => __async(null, null, function* () {
   return !!(yield fs.stat(path3).catch(() => false));
 });
@@ -39,7 +39,8 @@ var deleteFile = (path3, copiedPath) => handleErrors(() => __async(null, null, f
   return true;
 }));
 var dirToFilePaths = (dirPath, filterFn) => __async(null, null, function* () {
-  return yield filterFn ? new fdir().withFullPaths().filter(filterFn).crawl(dirPath).withPromise() : new fdir().withFullPaths().crawl(dirPath).withPromise();
+  const crawler = new fdir().withFullPaths();
+  return yield (filterFn ? crawler.filter(filterFn) : crawler).crawl(dirPath).withPromise();
 });
 var dirToFolderPaths = (dirPath) => __async(null, null, function* () {
   return (yield new fdir().onlyDirs().withFullPaths().crawl(dirPath).withPromise()).map((dir) => dir.split(path.sep).slice(0, -1).join(path.sep)).filter((dir) => path.normalize(dir) !== path.normalize(dirPath));
@@ -52,7 +53,6 @@ var isWithinFolder = (parent, child) => {
 var makeFolder = (path3) => __async(null, null, function* () {
   return yield fs.mkdir(path3, { recursive: true });
 });
-var md5File = _md5File;
 var PENDING_REMOVAL_DELAY = 100;
 var PENDING_REMOVAL_RETRIES = 20;
 var removeEmptyFolder = (dir, removedFolders) => __async(null, null, function* () {
@@ -167,14 +167,16 @@ var makePerfLog = (logTag, toFile = false) => {
   let perfStart = performance.now();
   const perfLog = (logStr) => {
     const str = `${logTag} ${round(performance.now() - perfStart, 0)} ms - ${logStr}`;
-    toFile ? fileLog(str) : console.debug(str);
+    if (toFile) fileLog(str);
+    else console.debug(str);
     perfStart = performance.now();
   };
   const perfLogTotal = (logStr) => {
     const str = `${logTag} Total: ${round(performance.now() - funcPerfStart, 0)} ms - ${logStr}`;
-    toFile ? fileLog(str) : console.debug(str);
+    if (toFile) fileLog(str);
+    else console.debug(str);
   };
-  return { perfLog, perfLogTotal, perfStart };
+  return { perfLog, perfLogTotal };
 };
 
 export {
@@ -184,11 +186,12 @@ export {
   dirToFilePaths,
   dirToFolderPaths,
   extendFileName,
+  isWithinFolder,
   makeFolder,
-  md5File,
   removeEmptyFolders,
+  default2 as default,
   setLogsPath,
   fileLog,
   makePerfLog
 };
-//# sourceMappingURL=chunk-QLP6GQY4.mjs.map
+//# sourceMappingURL=chunk-XCGFMXNA.mjs.map
