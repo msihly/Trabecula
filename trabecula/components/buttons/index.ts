@@ -5,5 +5,6 @@ export * from "./icon";
 export * from "./icon-picker";
 export * from "./menu-button";
 export * from "./multi-action-button";
+export * from "./selection-buttons";
 export * from "./sort-menu";
 export * from "./sort-row";

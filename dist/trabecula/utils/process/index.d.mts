@@ -1,5 +1,6 @@
 import { Server } from 'http';
-import { S as ServerProcessStatus } from '../../server-status-QJGbCwQR.mjs';
+export { S as ServerManager, a as ServerManagerOptions, b as ServerProcessDef } from '../../server-manager-B0jhgJnF.mjs';
+import '../../server-status-QJGbCwQR.mjs';
 
 /** Work a server process asks the main process to do, such as anything needing Electron. */
 interface MainRequest {
@@ -23,6 +24,8 @@ declare const serverShutdownSignal: AbortSignal;
 declare const checkServerShutdown: () => void;
 declare const closeHttpServer: (server?: Server) => Promise<void>;
 declare const isServerStopping: () => boolean;
+/** Listens on the loopback interface, rejecting if the port cannot be bound. */
+declare const listenHttpServer: (server: Server, port: number) => Promise<void>;
 /** Makes the typed function a server process uses to ask the main process for work. */
 declare const makeMainRequester: <Requests extends Record<keyof Requests, MainRequest>>() => <Action extends keyof Requests & string>(action: Action, args: Requests[Action]["args"]) => Promise<Requests[Action]["result"]>;
 declare const reportStartupProgress: (message: string) => void;
@@ -39,39 +42,4 @@ declare const ownProcessTree: () => void;
 /** Only after services stop, allow Electron's explicit relaunch helper to outlive the old app. */
 declare const releaseProcessTreeForRelaunch: () => void;
 
-interface ServerProcessDef {
-    fileName: string;
-    getEnv?: () => Record<string, string>;
-    /** Asks the process to exit cleanly instead of terminating it, as durable state requires. */
-    isGraceful?: boolean;
-    label: string;
-}
-interface ServerManagerOptions {
-    /** Folder containing each process's built `<fileName>.js`. */
-    base: string;
-    configPath: string;
-    isPackaged: boolean;
-    logsPath: string;
-    mainRequestHandlers?: Record<string, (args: any) => unknown>;
-    onStatusChange: (statuses: ServerProcessStatus[]) => void;
-    resourcesPath: string;
-    /** Each stage starts together once the previous one is ready; stages stop in reverse. */
-    stages: ServerProcessDef[][];
-}
-declare class ServerManager {
-    private readonly options;
-    private configRestartCount;
-    private isStopping;
-    private lifecycleRevision;
-    private stages;
-    private uri;
-    constructor(options: ServerManagerOptions);
-    getStatuses(): ServerProcessStatus[];
-    reloadConfig(): Promise<void>;
-    restart(): Promise<void>;
-    start(): Promise<void>;
-    stop(): Promise<void>;
-    private notifyStatusChange;
-}
-
-export { type MainRequest, type MainRequestHandlers, PROCESS_SHUTDOWN_TIMEOUT_MS, ServerManager, type ServerManagerOptions, type ServerProcessDef, type ServerProcessMessage, checkServerShutdown, closeHttpServer, isServerStopping, makeMainRequester, ownProcessTree, registerProcessLifecycle, releaseProcessTreeForRelaunch, reportStartupProgress, serverShutdownSignal };
+export { type MainRequest, type MainRequestHandlers, PROCESS_SHUTDOWN_TIMEOUT_MS, type ServerProcessMessage, checkServerShutdown, closeHttpServer, isServerStopping, listenHttpServer, makeMainRequester, ownProcessTree, registerProcessLifecycle, releaseProcessTreeForRelaunch, reportStartupProgress, serverShutdownSignal };

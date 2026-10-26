@@ -63,6 +63,13 @@ export const closeHttpServer = async (server?: Server) => {
 
 export const isServerStopping = () => stopping;
 
+/** Listens on the loopback interface, rejecting if the port cannot be bound. */
+export const listenHttpServer = (server: Server, port: number) =>
+  new Promise<void>((resolve, reject) => {
+    server.once("error", reject);
+    server.listen(port, "127.0.0.1", resolve);
+  });
+
 /** Makes the typed function a server process uses to ask the main process for work. */
 export const makeMainRequester =
   <Requests extends Record<keyof Requests, MainRequest>>() =>

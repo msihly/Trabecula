@@ -1,6 +1,10 @@
 import { createServer } from "http";
 import { Server, ServerOptions } from "socket.io";
-import { checkServerShutdown, registerProcessLifecycle } from "trabecula/utils/process";
+import {
+  checkServerShutdown,
+  listenHttpServer,
+  registerProcessLifecycle,
+} from "trabecula/utils/process";
 import { fileLog } from "trabecula/utils/server";
 
 export interface SocketProcessOptions {
@@ -32,10 +36,7 @@ export const registerSocketProcess = (getOptions: () => Promise<SocketProcessOpt
         );
       });
 
-      await new Promise<void>((resolve, reject) => {
-        server.once("error", reject);
-        server.listen(port, "127.0.0.1", resolve);
-      });
+      await listenHttpServer(server, port);
 
       fileLog(`[SOCKET] Listening on ${port}`);
     },

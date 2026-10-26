@@ -684,6 +684,10 @@ var serverShutdownSignal = shutdownController.signal;
 var checkServerShutdown = () => {
   if (stopping) throw new Error("Server task cancelled for shutdown.");
 };
+var listenHttpServer = (server, port) => new Promise((resolve, reject) => {
+  server.once("error", reject);
+  server.listen(port, "127.0.0.1", resolve);
+});
 var registerProcessLifecycle = ({
   reload,
   start,
@@ -791,10 +795,7 @@ var registerSocketProcess = (getOptions) => {
           (event) => socket.on(event, (...args) => socket.broadcast.emit(event, ...args))
         );
       });
-      yield new Promise((resolve, reject) => {
-        server.once("error", reject);
-        server.listen(port, "127.0.0.1", resolve);
-      });
+      yield listenHttpServer(server, port);
       fileLog(`[SOCKET] Listening on ${port}`);
     }),
     stop: () => __async(null, null, function* () {

@@ -73,6 +73,7 @@ __export(process_exports, {
   checkServerShutdown: () => checkServerShutdown,
   closeHttpServer: () => closeHttpServer,
   isServerStopping: () => isServerStopping,
+  listenHttpServer: () => listenHttpServer,
   makeMainRequester: () => makeMainRequester,
   ownProcessTree: () => ownProcessTree,
   registerProcessLifecycle: () => registerProcessLifecycle,
@@ -709,6 +710,10 @@ var closeHttpServer = (server) => __async(null, null, function* () {
   });
 });
 var isServerStopping = () => stopping;
+var listenHttpServer = (server, port) => new Promise((resolve, reject) => {
+  server.once("error", reject);
+  server.listen(port, "127.0.0.1", resolve);
+});
 var makeMainRequester = () => (action, args) => new Promise((resolve, reject) => {
   if (!process.connected) return reject(new Error("The main process is unavailable."));
   const requestId = (0, import_crypto.randomUUID)();
@@ -1186,6 +1191,7 @@ var ServerManager = class {
   checkServerShutdown,
   closeHttpServer,
   isServerStopping,
+  listenHttpServer,
   makeMainRequester,
   ownProcessTree,
   registerProcessLifecycle,

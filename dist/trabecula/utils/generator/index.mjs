@@ -82,21 +82,30 @@ import fs from "fs/promises";
 import path from "path";
 import prettier from "prettier";
 var ROOT_PATH = path.resolve(".", "trabecula");
-var createFiles = (folder, fileDefs) => __async(null, null, function* () {
+var createFiles = (_0, _1, ..._2) => __async(null, [_0, _1, ..._2], function* (folder, fileDefs, { format = formatFile, skipUnchanged = false } = {}) {
   yield fs.mkdir(folder, { recursive: true });
   makeIndexDef(fileDefs);
   for (const fileDef of fileDefs) {
+    const filePath = path.resolve(folder, `${fileDef.name}.ts`);
     try {
-      const filePath = path.resolve(folder, `${fileDef.name}.ts`);
-      const file = yield formatFile(
+      const file = yield format(
         `${makeSectionComment("THIS IS A GENERATED FILE. DO NOT EDIT.")}
-${yield fileDef.makeFile()}`
+${yield fileDef.makeFile()}`,
+        filePath
       );
-      yield fs.writeFile(filePath, file);
-      console.log(import_picocolors.default.green(`Created ${filePath}`));
+      let previous = null;
+      if (skipUnchanged) {
+        try {
+          previous = yield fs.readFile(filePath, "utf8");
+        } catch (error) {
+          if (error.code !== "ENOENT") throw error;
+        }
+      }
+      if (previous !== file) yield fs.writeFile(filePath, file);
+      console.log(import_picocolors.default.green(`${previous === file ? "Unchanged" : "Created"} ${filePath}`));
     } catch (err) {
       console.error(import_picocolors.default.red(`
-[ERROR] '${fileDef.name}': ${err.message}
+[ERROR] '${filePath}': ${err.message}
 
 ${err.stack}
 `));
@@ -146,12 +155,90 @@ var parseExportsFromIndex = (indexFilePath) => __async(null, null, function* () 
   );
   return exportsMap.flat();
 });
+
+// trabecula/utils/generator/templates.ts
+var makeFilterQueryType = () => `export type _FilterQuery<Schema> = {
+    [SchemaKey in keyof Schema]?:
+      | Schema[SchemaKey]
+      | Array<Schema[SchemaKey]>
+      | QuerySelector<Schema[SchemaKey]>;
+  } & {
+    _id?: string | Array<string> | QuerySelector<string>;
+    $and?: Array<_FilterQuery<Schema>>;
+    $comment?: string;
+    $nor?: Array<_FilterQuery<Schema>>;
+    $or?: Array<_FilterQuery<Schema>>;
+    $text?: {
+      $caseSensitive?: boolean;
+      $diacriticSensitive?: boolean;
+      $language?: string;
+      $search: string;
+    };
+    $where?: string | Function;
+  };`;
+var makeServerEndpointDefs = () => `export const trpc = initTRPC.create();
+
+    /** All resources defined as mutation to deal with max length URLs in GET requests.
+     *  @see https://github.com/trpc/trpc/discussions/1936
+     */
+    export const serverEndpoint = <Input, Output>(fn: (input: Input) => Promise<Output>) =>
+      trpc.procedure.input((input: Input) => input).mutation(({ input }) => fn(input));`;
+var makeSocketDefs = ({
+  customEvents,
+  modelNames
+}) => {
+  const socketEmitEvents = [];
+  const socketEvents = [];
+  modelNames.forEach((modelName) => {
+    const schemaName = `models.${modelName}Schema`;
+    const events = {
+      created: `on${modelName}Created`,
+      deleted: `on${modelName}Deleted`,
+      updated: `on${modelName}Updated`
+    };
+    socketEmitEvents.push(
+      `${events.created}: (args: ${schemaName}, options?: SocketEventOptions) => void;`,
+      `${events.deleted}: (args: { ids: string[] }, options?: SocketEventOptions) => void;`,
+      `${events.updated}: (args: { id: string; updates: Partial<${schemaName}> }, options?: SocketEventOptions) => void;`
+    );
+    socketEvents.push(events.created, events.deleted, events.updated);
+  });
+  customEvents.forEach((event) => {
+    socketEmitEvents.push(
+      `${event.name}: (${event.args ? `args: ${event.args},` : ""} options?: SocketEventOptions) => void;`
+    );
+    socketEvents.push(event.name);
+  });
+  const makeSocketEventOptionsType = () => `export type SocketEventOptions = { contentId: string; tabId: number };`;
+  const makeSocketEventTypes = () => `export interface SocketEmitEvents { ${socketEmitEvents.sort((a, b) => a.localeCompare(b)).join("\n")} }
+
+    export type SocketEmitEvent = keyof SocketEmitEvents;
+
+    export interface SocketEvents extends SocketEmitEvents { connected: () => void; }`;
+  const makeSocketEvents = () => `export const socketEvents: SocketEmitEvent[] = ["${socketEvents.join('", "')}"];`;
+  return `${makeSectionComment("Socket Definitions")}
+
+    ${makeSocketEventOptionsType()}
+
+    ${makeSocketEventTypes()}
+
+    ${makeSocketEvents()}`;
+};
+var makeStoreDefaultValue = (prop) => {
+  if (prop.defaultValue)
+    return /^([{\[]|dayjs\(\))/.test(prop.defaultValue) ? `() => ${prop.defaultValue}` : prop.defaultValue;
+  else return prop.required ? "" : "null";
+};
 export {
   ROOT_PATH,
   createFiles,
   formatFile,
+  makeFilterQueryType,
   makeIndexDef,
   makeSectionComment,
+  makeServerEndpointDefs,
+  makeSocketDefs,
+  makeStoreDefaultValue,
   parseExports,
   parseExportsFromIndex
 };

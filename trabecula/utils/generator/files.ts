@@ -5,22 +5,45 @@ import prettier from "prettier";
 
 export const ROOT_PATH = path.resolve(".", "trabecula");
 
-export const createFiles = async (folder: string, fileDefs: FileDef[]) => {
+export interface CreateFilesOptions {
+  /** Replaces the default prettier pass, such as to apply lint fixes first. */
+  format?: (str: string, filePath: string) => Promise<string>;
+  /** Leaves files whose generated content has not changed untouched. */
+  skipUnchanged?: boolean;
+}
+
+export const createFiles = async (
+  folder: string,
+  fileDefs: FileDef[],
+  { format = formatFile, skipUnchanged = false }: CreateFilesOptions = {},
+) => {
   await fs.mkdir(folder, { recursive: true });
   makeIndexDef(fileDefs);
 
   for (const fileDef of fileDefs) {
-    try {
-      const filePath = path.resolve(folder, `${fileDef.name}.ts`);
+    const filePath = path.resolve(folder, `${fileDef.name}.ts`);
 
-      const file = await formatFile(
+    try {
+      const file = await format(
         `${makeSectionComment("THIS IS A GENERATED FILE. DO NOT EDIT.")}\n${await fileDef.makeFile()}`,
+        filePath,
       );
 
-      await fs.writeFile(filePath, file);
-      console.log(chalk.green(`Created ${filePath}`));
+      let previous: string = null;
+
+      if (skipUnchanged) {
+        try {
+          previous = await fs.readFile(filePath, "utf8");
+        } catch (error) {
+          if (error.code !== "ENOENT") throw error;
+        }
+      }
+
+      if (previous !== file) await fs.writeFile(filePath, file);
+
+      console.log(chalk.green(`${previous === file ? "Unchanged" : "Created"} ${filePath}`));
     } catch (err) {
-      console.error(chalk.red(`\n[ERROR] '${fileDef.name}': ${err.message}\n\n${err.stack}\n`));
+      console.error(chalk.red(`\n[ERROR] '${filePath}': ${err.message}\n\n${err.stack}\n`));
 
       throw err;
     }
