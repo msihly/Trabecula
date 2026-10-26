@@ -26,7 +26,7 @@ export const Detail = ({
   withTooltip,
   ...props
 }: DetailProps) => {
-  const isEmpty = value === undefined || value === null || value === "";
+  const isEmpty = !value && value !== 0;
 
   return (
     <View column={!row} row={row} spacing={row ? "0.5rem" : null} {...props}>

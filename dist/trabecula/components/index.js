@@ -9721,7 +9721,7 @@ var Detail = (_a) => {
     "whiteSpace",
     "withTooltip"
   ]);
-  const isEmpty = value === void 0 || value === null || value === "";
+  const isEmpty = !value && value !== 0;
   return /* @__PURE__ */ (0, import_jsx_runtime51.jsxs)(View, __spreadProps(__spreadValues({ column: !row, row, spacing: row ? "0.5rem" : null }, props), { children: [
     ["number", "string"].includes(typeof label) ? /* @__PURE__ */ (0, import_jsx_runtime51.jsx)(Text, __spreadProps(__spreadValues({ preset: "detail-label", fontSize: "0.9em", fontWeight: 600 }, labelProps), { children: label })) : label,
     isEmpty || ["number", "string"].includes(typeof value) ? /* @__PURE__ */ (0, import_jsx_runtime51.jsx)(

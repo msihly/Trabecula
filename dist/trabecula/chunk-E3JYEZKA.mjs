@@ -4461,7 +4461,7 @@ var Detail = (_a) => {
     "whiteSpace",
     "withTooltip"
   ]);
-  const isEmpty = value === void 0 || value === null || value === "";
+  const isEmpty = !value && value !== 0;
   return /* @__PURE__ */ jsxs29(View, __spreadProps(__spreadValues({ column: !row, row, spacing: row ? "0.5rem" : null }, props), { children: [
     ["number", "string"].includes(typeof label) ? /* @__PURE__ */ jsx50(Text, __spreadProps(__spreadValues({ preset: "detail-label", fontSize: "0.9em", fontWeight: 600 }, labelProps), { children: label })) : label,
     isEmpty || ["number", "string"].includes(typeof value) ? /* @__PURE__ */ jsx50(
@@ -7009,4 +7009,4 @@ export {
   usePortalContainer,
   MuiProvider
 };
-//# sourceMappingURL=chunk-LQ2YF43K.mjs.map
+//# sourceMappingURL=chunk-E3JYEZKA.mjs.map
