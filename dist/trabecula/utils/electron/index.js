@@ -1079,9 +1079,6 @@ var registerMainProcess = ({
   let servers = null;
   let shutdown = null;
   let shutdownComplete = false;
-  import_electron.app.setAppLogsPath(logsDir);
-  import_electron.app.setPath("appData", folderPath);
-  import_electron.app.setPath("userData", import_path4.default.resolve(folderPath, "userData"));
   if (!import_electron.app.requestSingleInstanceLock()) {
     console.error(
       `${appName} is already running or still shutting down. This launch cannot start services.`
@@ -1092,6 +1089,9 @@ var registerMainProcess = ({
     );
     import_electron.app.exit(1);
   }
+  import_electron.app.setAppLogsPath(logsDir);
+  import_electron.app.setPath("appData", folderPath);
+  import_electron.app.setPath("userData", import_path4.default.resolve(folderPath, "userData"));
   const logsReady = setLogsPath(logsPath2).catch(
     (error) => console.error("Failed to initialize file logging:", error)
   );

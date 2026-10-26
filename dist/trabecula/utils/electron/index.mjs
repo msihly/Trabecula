@@ -43,9 +43,6 @@ var registerMainProcess = ({
   let servers = null;
   let shutdown = null;
   let shutdownComplete = false;
-  app.setAppLogsPath(logsDir);
-  app.setPath("appData", folderPath);
-  app.setPath("userData", path.resolve(folderPath, "userData"));
   if (!app.requestSingleInstanceLock()) {
     console.error(
       `${appName} is already running or still shutting down. This launch cannot start services.`
@@ -56,6 +53,9 @@ var registerMainProcess = ({
     );
     app.exit(1);
   }
+  app.setAppLogsPath(logsDir);
+  app.setPath("appData", folderPath);
+  app.setPath("userData", path.resolve(folderPath, "userData"));
   const logsReady = setLogsPath(logsPath).catch(
     (error) => console.error("Failed to initialize file logging:", error)
   );
