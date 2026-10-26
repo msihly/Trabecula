@@ -26,7 +26,7 @@ export const LoadingOverlay = ({ children, isLoading, sub }: LoadingOverlayProps
         opacity={isLoading ? 1 : 0}
         className={css.loadingOverlay}
       >
-        <CircularProgress color="inherit" variant={isLoading ? "indeterminate" : "determinate"} />
+        <CircularProgress color="inherit" />
 
         {typeof sub === "string" ? (
           <Text preset="title" fontSize="0.9em">

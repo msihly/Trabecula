@@ -11463,7 +11463,7 @@ var LoadingOverlay = ({ children, isLoading, sub }) => {
         opacity: isLoading ? 1 : 0,
         className: css.loadingOverlay,
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(import_material34.CircularProgress, { color: "inherit", variant: isLoading ? "indeterminate" : "determinate" }),
+          /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(import_material34.CircularProgress, { color: "inherit" }),
           typeof sub === "string" ? /* @__PURE__ */ (0, import_jsx_runtime77.jsx)(Text, { preset: "title", fontSize: "0.9em", children: sub }) : sub
         ]
       }

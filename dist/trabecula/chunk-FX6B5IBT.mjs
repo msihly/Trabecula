@@ -6205,7 +6205,7 @@ var LoadingOverlay = ({ children, isLoading, sub }) => {
         opacity: isLoading ? 1 : 0,
         className: css.loadingOverlay,
         children: [
-          /* @__PURE__ */ jsx76(CircularProgress2, { color: "inherit", variant: isLoading ? "indeterminate" : "determinate" }),
+          /* @__PURE__ */ jsx76(CircularProgress2, { color: "inherit" }),
           typeof sub === "string" ? /* @__PURE__ */ jsx76(Text, { preset: "title", fontSize: "0.9em", children: sub }) : sub
         ]
       }
@@ -7009,4 +7009,4 @@ export {
   usePortalContainer,
   MuiProvider
 };
-//# sourceMappingURL=chunk-E3JYEZKA.mjs.map
+//# sourceMappingURL=chunk-FX6B5IBT.mjs.map
