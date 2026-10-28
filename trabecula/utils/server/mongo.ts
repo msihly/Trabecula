@@ -1,14 +1,6 @@
-import { BufferToBinary, FlattenMaps, Types } from "mongoose";
+import { Types } from "mongoose";
 
-interface LeanFields {
-  __v?: number;
-  _id: Types.ObjectId;
-}
-
-/** The second signature accepts lean results for an explicit `T`, which report Buffer paths as `Binary`. */
-export function leanModelToJson<T>(doc: T & LeanFields): T;
-export function leanModelToJson<T>(doc: FlattenMaps<BufferToBinary<T>> & LeanFields): T;
-export function leanModelToJson<T>(doc: LeanFields): T {
+export const leanModelToJson = <T>(doc: T & { __v?: number; _id: Types.ObjectId }) => {
   try {
     if (!doc) return null;
 
@@ -21,7 +13,7 @@ export function leanModelToJson<T>(doc: LeanFields): T {
 
     return null;
   }
-}
+};
 
 export const objectId = (id: string) => new Types.ObjectId(id);
 
