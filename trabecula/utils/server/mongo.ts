@@ -1,8 +1,6 @@
-import { LeanDocument, Types } from "mongoose";
+import { Types } from "mongoose";
 
-export const leanModelToJson = <T>(
-  doc: LeanDocument<T & { __v?: number; _id: Types.ObjectId }>,
-) => {
+export const leanModelToJson = <T>(doc: T & { __v?: number; _id: Types.ObjectId }) => {
   try {
     if (!doc) return null;
 

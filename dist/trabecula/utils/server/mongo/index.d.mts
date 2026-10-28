@@ -1,9 +1,9 @@
-import { LeanDocument, Types } from 'mongoose';
+import { Types } from 'mongoose';
 
-declare const leanModelToJson: <T>(doc: LeanDocument<T & {
+declare const leanModelToJson: <T>(doc: T & {
     __v?: number;
     _id: Types.ObjectId;
-}>) => T;
+}) => T;
 declare const objectId: (id: string) => Types.ObjectId;
 declare const objectIds: (ids: string[]) => Types.ObjectId[];
 
