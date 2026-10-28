@@ -5,12 +5,7 @@ import { TooltipProps, TooltipWrapper } from "trabecula/components";
 import { colors, CSS, CssColor, makeClasses } from "trabecula/utils/client";
 
 export type TextPreset =
-  | "default"
-  | "detail-label"
-  | "label-glow"
-  | "sub-text"
-  | "sub-text-muted"
-  | "title";
+  "default" | "detail-label" | "label-glow" | "sub-text" | "sub-text-muted" | "title";
 
 const SUB_TEXT: CSS = {
   fontWeight: 400,
