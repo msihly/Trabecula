@@ -1,6 +1,6 @@
-import { Types } from 'mongoose';
+import { FlattenMaps, BufferToBinary, Types } from 'mongoose';
 
-declare const leanModelToJson: <T>(doc: T & {
+declare const leanModelToJson: <T>(doc: FlattenMaps<BufferToBinary<T>> & {
     __v?: number;
     _id: Types.ObjectId;
 }) => T;

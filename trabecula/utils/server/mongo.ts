@@ -1,6 +1,8 @@
-import { Types } from "mongoose";
+import { BufferToBinary, FlattenMaps, Types } from "mongoose";
 
-export const leanModelToJson = <T>(doc: T & { __v?: number; _id: Types.ObjectId }) => {
+export const leanModelToJson = <T>(
+  doc: FlattenMaps<BufferToBinary<T>> & { __v?: number; _id: Types.ObjectId },
+) => {
   try {
     if (!doc) return null;
 
