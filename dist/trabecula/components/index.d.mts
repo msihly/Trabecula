@@ -1226,32 +1226,7 @@ type ViewProps<Component extends keyof ReactHTML = "div"> = Omit<ComponentPropsW
     width?: CSS["width"];
     wrap?: CSS["flexWrap"];
 };
-declare const View: <Component extends keyof ReactHTML = "div">(props: Omit<react.PropsWithoutRef<react.ComponentProps<Component>>, "height" | "width" | "wrap" | "align"> & {
-    align?: CSS["alignItems"];
-    bgColor?: CssColor;
-    borderRadiuses?: BorderRadiuses;
-    borders?: Borders;
-    column?: boolean;
-    component?: Component;
-    cursor?: CSS["cursor"];
-    display?: CSS["display"];
-    flex?: CSS["flex"];
-    height?: CSS["height"];
-    justify?: CSS["justifyContent"];
-    margins?: Margins;
-    maxHeight?: CSS["maxHeight"];
-    maxWidth?: CSS["maxWidth"];
-    minHeight?: CSS["minHeight"];
-    minWidth?: CSS["minWidth"];
-    opacity?: CSS["opacity"];
-    overflow?: CSS["overflow"];
-    padding?: Padding;
-    position?: CSS["position"];
-    row?: boolean;
-    spacing?: CSS["marginRight"];
-    width?: CSS["width"];
-    wrap?: CSS["flexWrap"];
-} & RefAttributes<ElementRef<Component>>) => JSX.Element;
+declare const View: <Component extends keyof ReactHTML = "div">(props: ViewProps<Component> & RefAttributes<ElementRef<Component>>) => JSX.Element;
 
 declare const usePortalContainer: () => HTMLElement;
 declare const MuiProvider: ({ children, portalContainer, styleContainer, }: {

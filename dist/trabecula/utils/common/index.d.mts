@@ -24,7 +24,7 @@ interface CountItemsResult<T> {
 }
 declare const countItems: <T>(arr: T[]) => CountItemsResult<T>[];
 declare const getArrayDiff: <T>(a: T[], b: T[]) => T[];
-declare const objectToFloat32Array: (obj: object) => Float32Array;
+declare const objectToFloat32Array: (obj: object) => Float32Array<ArrayBuffer>;
 declare const range: (length: number, start?: number) => number[];
 declare const rotateArrayPos: (direction: "prev" | "next", current: number, length: number) => number;
 declare const sortArray: <T>(arr: T[], key: string, isDesc?: boolean, isNumber?: boolean) => T[];

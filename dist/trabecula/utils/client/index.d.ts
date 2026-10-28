@@ -102,10 +102,10 @@ declare const validateProp: <TStore extends {
 }, K extends keyof TStore>(store: TStore, field: K, validator: () => string) => string;
 
 declare const toast: {
-    error: <TData = unknown>(content: react_toastify.ToastContent<TData>, options?: react_toastify.ToastOptions<{}>) => react_toastify.Id;
-    info: <TData_1 = unknown>(content: react_toastify.ToastContent<TData_1>, options?: react_toastify.ToastOptions<{}>) => react_toastify.Id;
-    success: <TData_2 = unknown>(content: react_toastify.ToastContent<TData_2>, options?: react_toastify.ToastOptions<{}>) => react_toastify.Id;
-    warn: <TData_3 = unknown>(content: react_toastify.ToastContent<TData_3>, options?: react_toastify.ToastOptions<{}>) => react_toastify.Id;
+    error: <TData = unknown>(content: react_toastify.ToastContent<TData>, options?: react_toastify.ToastOptions<{}> | undefined) => react_toastify.Id;
+    info: <TData = unknown>(content: react_toastify.ToastContent<TData>, options?: react_toastify.ToastOptions<{}> | undefined) => react_toastify.Id;
+    success: <TData = unknown>(content: react_toastify.ToastContent<TData>, options?: react_toastify.ToastOptions<{}> | undefined) => react_toastify.Id;
+    warn: <TData = unknown>(content: react_toastify.ToastContent<TData>, options?: react_toastify.ToastOptions<{}> | undefined) => react_toastify.Id;
 };
 declare class Toaster {
     private toastRef;
