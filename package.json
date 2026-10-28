@@ -94,7 +94,7 @@
     "fdir": "^6.4.6",
     "md5-file": "^5.0.0",
     "mobx": "6.16.1",
-    "mobx-keystone": "1.25.0",
+    "mobx-keystone": "2.4.1",
     "mobx-react-lite": "^4.1.1",
     "patch-package": "^6.4.7",
     "react": "^17.0.2",
