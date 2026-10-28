@@ -6,7 +6,7 @@ import {
 
 // trabecula/utils/server/mongo.ts
 import { Types } from "mongoose";
-var leanModelToJson = (doc) => {
+function leanModelToJson(doc) {
   try {
     if (!doc) return null;
     const _a = doc, { _id, __v } = _a, rest = __objRest(_a, ["_id", "__v"]);
@@ -15,7 +15,7 @@ var leanModelToJson = (doc) => {
     console.error(err.message);
     return null;
   }
-};
+}
 var objectId = (id) => new Types.ObjectId(id);
 var objectIds = (ids) => ids.map(objectId);
 export {

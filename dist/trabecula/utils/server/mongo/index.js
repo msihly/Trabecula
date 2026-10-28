@@ -54,7 +54,7 @@ __export(mongo_exports, {
 });
 module.exports = __toCommonJS(mongo_exports);
 var import_mongoose = require("mongoose");
-var leanModelToJson = (doc) => {
+function leanModelToJson(doc) {
   try {
     if (!doc) return null;
     const _a = doc, { _id, __v } = _a, rest = __objRest(_a, ["_id", "__v"]);
@@ -63,7 +63,7 @@ var leanModelToJson = (doc) => {
     console.error(err.message);
     return null;
   }
-};
+}
 var objectId = (id) => new import_mongoose.Types.ObjectId(id);
 var objectIds = (ids) => ids.map(objectId);
 // Annotate the CommonJS export names for ESM import in node:
