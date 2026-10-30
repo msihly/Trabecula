@@ -130,7 +130,6 @@ __export(generator_exports, {
   makeFilterQueryType: () => makeFilterQueryType,
   makeIndexDef: () => makeIndexDef,
   makeSectionComment: () => makeSectionComment,
-  makeServerEndpointDefs: () => makeServerEndpointDefs,
   makeSocketDefs: () => makeSocketDefs,
   makeStoreDefaultValue: () => makeStoreDefaultValue,
   parseExports: () => parseExports,
@@ -238,13 +237,6 @@ var makeFilterQueryType = () => `export type _FilterQuery<Schema> = {
     };
     $where?: string | Function;
   };`;
-var makeServerEndpointDefs = () => `export const trpc = initTRPC.create();
-
-    /** All resources defined as mutation to deal with max length URLs in GET requests.
-     *  @see https://github.com/trpc/trpc/discussions/1936
-     */
-    export const serverEndpoint = <Input, Output>(fn: (input: Input) => Promise<Output>) =>
-      trpc.procedure.input((input: Input) => input).mutation(({ input }) => fn(input));`;
 var makeSocketDefs = ({
   customEvents,
   modelNames
@@ -299,7 +291,6 @@ var makeStoreDefaultValue = (prop) => {
   makeFilterQueryType,
   makeIndexDef,
   makeSectionComment,
-  makeServerEndpointDefs,
   makeSocketDefs,
   makeStoreDefaultValue,
   parseExports,

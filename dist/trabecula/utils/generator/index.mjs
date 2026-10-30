@@ -2,7 +2,7 @@ import {
   __async,
   __commonJS,
   __toESM
-} from "../../chunk-DM4QYMVJ.mjs";
+} from "../../chunk-MYORJUCY.mjs";
 
 // node_modules/picocolors/picocolors.js
 var require_picocolors = __commonJS({
@@ -176,13 +176,6 @@ var makeFilterQueryType = () => `export type _FilterQuery<Schema> = {
     };
     $where?: string | Function;
   };`;
-var makeServerEndpointDefs = () => `export const trpc = initTRPC.create();
-
-    /** All resources defined as mutation to deal with max length URLs in GET requests.
-     *  @see https://github.com/trpc/trpc/discussions/1936
-     */
-    export const serverEndpoint = <Input, Output>(fn: (input: Input) => Promise<Output>) =>
-      trpc.procedure.input((input: Input) => input).mutation(({ input }) => fn(input));`;
 var makeSocketDefs = ({
   customEvents,
   modelNames
@@ -236,7 +229,6 @@ export {
   makeFilterQueryType,
   makeIndexDef,
   makeSectionComment,
-  makeServerEndpointDefs,
   makeSocketDefs,
   makeStoreDefaultValue,
   parseExports,

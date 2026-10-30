@@ -13,8 +13,6 @@ declare const parseExports: (filePath: string) => Promise<string[]>;
 declare const parseExportsFromIndex: (indexFilePath: string) => Promise<string[]>;
 
 declare const makeFilterQueryType: () => string;
-/** Declares `trpc` and the `serverEndpoint` wrapper that a generated server router uses. */
-declare const makeServerEndpointDefs: () => string;
 declare const makeSocketDefs: ({ customEvents, modelNames, }: {
     customEvents: Array<{
         args?: string;
@@ -28,4 +26,4 @@ declare const makeStoreDefaultValue: (prop: {
     required?: boolean;
 }) => string;
 
-export { type CreateFilesOptions, ROOT_PATH, createFiles, formatFile, makeFilterQueryType, makeIndexDef, makeSectionComment, makeServerEndpointDefs, makeSocketDefs, makeStoreDefaultValue, parseExports, parseExportsFromIndex };
+export { type CreateFilesOptions, ROOT_PATH, createFiles, formatFile, makeFilterQueryType, makeIndexDef, makeSectionComment, makeSocketDefs, makeStoreDefaultValue, parseExports, parseExportsFromIndex };

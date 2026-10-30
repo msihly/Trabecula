@@ -21,15 +21,6 @@ export const makeFilterQueryType = () =>
     $where?: string | Function;
   };`;
 
-/** Declares `trpc` and the `serverEndpoint` wrapper that a generated server router uses. */
-export const makeServerEndpointDefs = () =>
-  `export const trpc = initTRPC.create();\n
-    /** All resources defined as mutation to deal with max length URLs in GET requests.
-     *  @see https://github.com/trpc/trpc/discussions/1936
-     */
-    export const serverEndpoint = <Input, Output>(fn: (input: Input) => Promise<Output>) =>
-      trpc.procedure.input((input: Input) => input).mutation(({ input }) => fn(input));`;
-
 export const makeSocketDefs = ({
   customEvents,
   modelNames,

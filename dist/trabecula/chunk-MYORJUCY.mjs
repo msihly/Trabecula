@@ -110,6 +110,7 @@ var __yieldStar = (value) => {
     throw x;
   }, "return" in obj && method("return"), it;
 };
+var __forAwait = (obj, it, method) => (it = obj[__knownSymbol("asyncIterator")]) ? it.call(obj) : (obj = obj[__knownSymbol("iterator")](), it = {}, method = (key, fn) => (fn = obj[key]) && (it[key] = (arg) => new Promise((yes, no, done) => (arg = fn.call(obj, arg), done = arg.done, Promise.resolve(arg.value).then((value) => yes({ value, done }), no)))), method("next"), method("return"), it);
 
 export {
   __pow,
@@ -120,6 +121,7 @@ export {
   __toESM,
   __publicField,
   __async,
-  __yieldStar
+  __yieldStar,
+  __forAwait
 };
-//# sourceMappingURL=chunk-DM4QYMVJ.mjs.map
+//# sourceMappingURL=chunk-MYORJUCY.mjs.map
