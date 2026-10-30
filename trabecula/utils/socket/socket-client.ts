@@ -24,7 +24,8 @@ export class SocketClient<
 
     try {
       this.port = this.options.getPort();
-      this.socket = io(`ws://127.0.0.1:${this.port}`);
+      // In Node, polling runs through xmlhttprequest-ssl, which calls the deprecated `url.parse()`.
+      this.socket = io(`ws://127.0.0.1:${this.port}`, { transports: ["websocket"] });
 
       this.socket.on("connected", () =>
         this.options.log(

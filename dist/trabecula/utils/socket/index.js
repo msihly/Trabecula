@@ -38,7 +38,7 @@ var SocketClient = class {
     if (this.socket) return this.socket;
     try {
       this.port = this.options.getPort();
-      this.socket = (0, import_socket.io)(`ws://127.0.0.1:${this.port}`);
+      this.socket = (0, import_socket.io)(`ws://127.0.0.1:${this.port}`, { transports: ["websocket"] });
       this.socket.on(
         "connected",
         () => this.options.log(
