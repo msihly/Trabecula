@@ -7,7 +7,7 @@ type Forwarded<P, R> = (props: P, ref: Ref<R>) => JSX.Element;
 export function Comp<P, R = HTMLDivElement>(
   component: Forwarded<P, R>,
 ): ForwardRefExoticComponent<PropsWithoutRef<P> & RefAttributes<R>> {
-  // Components never declare a `ref` prop, so the props forwardRef passes are their own props.
+  // React strips `ref` from forwarded props; the cast only restores the component's prop type.
   const Wrapped = forwardRef<R, P>((props, ref) => component(props as P, ref));
 
   return observer(Wrapped);

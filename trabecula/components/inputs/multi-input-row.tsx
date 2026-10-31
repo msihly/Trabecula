@@ -24,7 +24,7 @@ export const MultiInputRow = <T,>({ bgColor, ...props }: MultiInputRowProps<T>) 
   const { css } = useClasses({ bgColor: bgColor || colors.foreground, hasClick });
 
   const value = props.valueExtractor?.(props.value) ?? props.value;
-  const label = String(value);
+  const label = String(value ?? "");
 
   const handleClick = () => props.onClick?.(props.value);
 
