@@ -7843,6 +7843,7 @@ var MultiInputRow = (_a) => {
   const hasClick = !!props.onClick;
   const { css } = useClasses14({ bgColor: bgColor || colors.foreground, hasClick });
   const value = (_b2 = (_a2 = props.valueExtractor) == null ? void 0 : _a2.call(props, props.value)) != null ? _b2 : props.value;
+  const label = String(value);
   const handleClick = () => {
     var _a3;
     return (_a3 = props.onClick) == null ? void 0 : _a3.call(props, props.value);
@@ -7866,14 +7867,14 @@ var MultiInputRow = (_a) => {
         children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(
           Text,
           {
-            tooltip: value,
+            tooltip: label,
             tooltipProps: {
               enterDelay: _CONSTANTS.TOOLTIP.ENTER_DELAY,
               enterNextDelay: _CONSTANTS.TOOLTIP.ENTER_NEXT_DELAY,
               flexShrink: 1
             },
             className: css.label,
-            children: value
+            children: label
           }
         )
       }

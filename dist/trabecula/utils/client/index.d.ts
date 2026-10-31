@@ -4,7 +4,6 @@ import { EffectCallback, DependencyList, MutableRefObject, ReactNode } from 'rea
 import * as mobx_keystone from 'mobx-keystone';
 import { P as PromiseQueue } from '../../queue-CNnYljaI.js';
 import { FixedSizeList, VariableSizeList } from 'react-window';
-import * as react_jsx_runtime from 'react/jsx-runtime';
 import * as react_toastify from 'react-toastify';
 import { ToastContainerProps, TypeOptions } from 'react-toastify';
 import '../../palette-B_EzcvCf.js';
@@ -115,6 +114,6 @@ declare class Toaster {
         type?: TypeOptions;
     }): void;
 }
-declare const ToastContainer: (props: ToastContainerProps) => react_jsx_runtime.JSX.Element;
+declare const ToastContainer: (props: ToastContainerProps) => react.JSX.Element;
 
 export { type PaginatedResult, ToastContainer, Toaster, asyncAction, attachTouchedTracker, clearTouched, copyToClipboard, derefMobx, getMobx, initMobx, makeQueue, makeTouchedProp, toast, triggerAllTouched, useDeepEffect, useDeepMemo, useDragScroll, useElementResize, useForceUpdate, useLazyLoad, usePaginatedList, validateProp };

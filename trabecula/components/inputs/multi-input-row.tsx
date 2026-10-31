@@ -24,6 +24,7 @@ export const MultiInputRow = <T,>({ bgColor, ...props }: MultiInputRowProps<T>) 
   const { css } = useClasses({ bgColor: bgColor || colors.foreground, hasClick });
 
   const value = props.valueExtractor?.(props.value) ?? props.value;
+  const label = String(value);
 
   const handleClick = () => props.onClick?.(props.value);
 
@@ -44,7 +45,7 @@ export const MultiInputRow = <T,>({ bgColor, ...props }: MultiInputRowProps<T>) 
         padding={{ all: "0 0.3rem" }}
       >
         <Text
-          tooltip={value}
+          tooltip={label}
           tooltipProps={{
             enterDelay: _CONSTANTS.TOOLTIP.ENTER_DELAY,
             enterNextDelay: _CONSTANTS.TOOLTIP.ENTER_NEXT_DELAY,
@@ -52,7 +53,7 @@ export const MultiInputRow = <T,>({ bgColor, ...props }: MultiInputRowProps<T>) 
           }}
           className={css.label}
         >
-          {value}
+          {label}
         </Text>
       </View>
 

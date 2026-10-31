@@ -4,7 +4,7 @@ import { IconName } from "trabecula/components";
 import { IconButton, IconButtonProps } from "trabecula/components/buttons";
 import { colors, CSS, CssColor, makeClasses } from "trabecula/utils/client";
 
-export interface MenuButtonProps extends IconButtonProps {
+export interface MenuButtonProps extends Omit<IconButtonProps, "children"> {
   anchorOrigin?: MenuProps["anchorOrigin"];
   bgColor?: CssColor;
   button?: (onOpen: (event: MouseEvent) => void) => ReactNode;
