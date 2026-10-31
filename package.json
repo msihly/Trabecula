@@ -65,7 +65,7 @@
     "check-fix": "pnpm run lint-fix && pnpm run prettier-fix",
     "dist": "pnpm run gen && rimraf dist && tsup",
     "gen": "tsx trabecula/generator/generator.ts",
-    "hmr": "SET HMR=true&& SET BROWSER=none&& pnpm run gen && vite --config ./vite.config.hmr.ts",
+    "hmr": "SET HMR=true&& SET BROWSER=none&& pnpm run gen && vite --config ./vite.config.hmr.mts",
     "lint": "eslint trabecula/{components,generator,utils}/**/*{.ts,.tsx}",
     "lint-fix": "pnpm run lint --fix",
     "prettier": "prettier --check trabecula --config ./.prettierrc --ignore-path ./.prettierignore",
@@ -117,7 +117,7 @@
     "@types/react-window": "^1.8.5",
     "@typescript-eslint/eslint-plugin": "^8.72.1",
     "@typescript-eslint/parser": "^8.72.1",
-    "@vitejs/plugin-react": "^4.0.3",
+    "@vitejs/plugin-react": "^6.1.2",
     "electron": "45.1.0",
     "eslint": "9.39.5",
     "eslint-plugin-import": "^2.31.0",
@@ -139,9 +139,7 @@
     "tsx": "4.23.15",
     "typescript": "5.9.x",
     "typescript-transform-paths": "^3.5.6",
-    "vite": "4.5.14",
-    "vite-plugin-svgr": "^3.2.0",
-    "vite-tsconfig-paths": "4.2.0"
+    "vite": "8.3.5"
   },
   "peerDependencies": {
     "electron": "^45.1.0",

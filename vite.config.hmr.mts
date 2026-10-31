@@ -1,7 +1,5 @@
 import { defineConfig } from "vite";
 import pluginReact from "@vitejs/plugin-react";
-import pluginSVGR from "vite-plugin-svgr";
-import pluginTsconfigPaths from "vite-tsconfig-paths";
 
 const EXTERNALS = [
   "aws-sdk",
@@ -15,16 +13,13 @@ const EXTERNALS = [
 export default defineConfig({
   build: {
     outDir: "build",
-    rollupOptions: { input: { app: "./index.hmr.html" } },
+    rolldownOptions: { input: { app: "./index.hmr.html" } },
   },
   optimizeDeps: { exclude: EXTERNALS },
-  plugins: [
-    pluginReact(),
-    pluginSVGR(),
-    pluginTsconfigPaths(),
-  ],
+  plugins: [pluginReact()],
   resolve: {
     extensions: [".tsx", ".ts", ".jsx", ".js", ".mjs", ".mts", ".json"],
+    tsconfigPaths: true,
   },
   server: {
     open: "./index.hmr.html",
