@@ -26,4 +26,5 @@ declare const makeStoreDefaultValue: (prop: {
     required?: boolean;
 }) => string;
 
-export { type CreateFilesOptions, ROOT_PATH, createFiles, formatFile, makeFilterQueryType, makeIndexDef, makeSectionComment, makeSocketDefs, makeStoreDefaultValue, parseExports, parseExportsFromIndex };
+export { ROOT_PATH, createFiles, formatFile, makeFilterQueryType, makeIndexDef, makeSectionComment, makeSocketDefs, makeStoreDefaultValue, parseExports, parseExportsFromIndex };
+export type { CreateFilesOptions };

@@ -30,4 +30,5 @@ declare const makePerfLog: (logTag: string, toFile?: boolean) => {
     perfLogTotal: (logStr: string) => void;
 };
 
-export { type TreeNode, checkFileExists, createTree, deleteFile, dirToFilePaths, dirToFolderPaths, extendFileName, fileLog, isWithinFolder, makeFolder, makePerfLog, removeEmptyFolders, setLogsPath };
+export { checkFileExists, createTree, deleteFile, dirToFilePaths, dirToFolderPaths, extendFileName, fileLog, isWithinFolder, makeFolder, makePerfLog, removeEmptyFolders, setLogsPath };
+export type { TreeNode };

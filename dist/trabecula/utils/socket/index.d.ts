@@ -28,4 +28,5 @@ declare class SocketClient<Events extends {
     reconnect(): void;
 }
 
-export { SocketClient, type SocketClientOptions };
+export { SocketClient };
+export type { SocketClientOptions };

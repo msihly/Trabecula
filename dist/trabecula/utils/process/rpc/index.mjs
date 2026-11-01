@@ -1,10 +1,10 @@
 import {
   callRpc
-} from "../../../chunk-G3JIWYOV.mjs";
+} from "../../../chunk-QHIRP7ZF.mjs";
 import {
   __async,
   __forAwait
-} from "../../../chunk-MYORJUCY.mjs";
+} from "../../../chunk-OJBUL6U5.mjs";
 
 // trabecula/utils/process/rpc.ts
 import { createServer } from "http";

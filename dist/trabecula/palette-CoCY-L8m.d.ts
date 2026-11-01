@@ -190,4 +190,5 @@ declare const PALETTE_SWATCHES: PaletteColor[][];
 declare const getClosestPaletteColor: (color: string) => PaletteColor;
 declare const getPaletteColorName: (color: string) => string;
 
-export { type PaletteColor as P, PALETTE as a, PALETTE_SWATCHES as b, type PaletteHue as c, type PaletteShade as d, getPaletteColorName as e, getClosestPaletteColor as g };
+export { PALETTE as a, PALETTE_SWATCHES as b, getPaletteColorName as e, getClosestPaletteColor as g };
+export type { PaletteColor as P, PaletteHue as c, PaletteShade as d };

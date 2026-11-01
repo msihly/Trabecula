@@ -1,6 +1,6 @@
 import {
   __async
-} from "./chunk-MYORJUCY.mjs";
+} from "./chunk-OJBUL6U5.mjs";
 
 // trabecula/utils/rpc/rpc-client.ts
 var postJson = (url, body, signal) => __async(null, null, function* () {
@@ -82,4 +82,4 @@ export {
   createHttpRpcClient,
   callRpc
 };
-//# sourceMappingURL=chunk-G3JIWYOV.mjs.map
+//# sourceMappingURL=chunk-QHIRP7ZF.mjs.map

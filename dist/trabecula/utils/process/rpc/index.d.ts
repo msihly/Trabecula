@@ -1,6 +1,6 @@
 import * as http from 'http';
 import { IncomingMessage, ServerResponse } from 'http';
-import { R as RpcRouter } from '../../../rpc-router-uY-Omtyv.js';
+import { RpcRouter } from '../../rpc/index.js';
 
 /**
  * Serves a router's procedures as `POST /<path>`, with the input as the JSON body.

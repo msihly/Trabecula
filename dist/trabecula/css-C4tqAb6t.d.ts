@@ -1,4 +1,4 @@
-import { P as PaletteColor } from './palette-B_EzcvCf.mjs';
+import { P as PaletteColor } from './palette-CoCY-L8m.js';
 import * as csstype from 'csstype';
 import { colors as colors$1 } from '@mui/material';
 import { Theme } from '@mui/material/styles';
@@ -32,10 +32,10 @@ type BorderRadiuses = {
     top?: CSS["borderTopRightRadius"];
 };
 declare const makeBorderRadiuses: (radiuses: BorderRadiuses) => {
-    borderTopLeftRadius: string | number | readonly NonNullable<csstype.Property.BorderRadius<string | number>>[];
-    borderTopRightRadius: string | number | readonly NonNullable<csstype.Property.BorderRadius<string | number>>[];
-    borderBottomLeftRadius: string | number | readonly NonNullable<csstype.Property.BorderRadius<string | number>>[];
-    borderBottomRightRadius: string | number | readonly NonNullable<csstype.Property.BorderRadius<string | number>>[];
+    borderTopLeftRadius: string | number | readonly NonNullable<csstype.Property.BorderTopLeftRadius<string | number>>[];
+    borderTopRightRadius: string | number | readonly NonNullable<csstype.Property.BorderTopRightRadius<string | number>>[];
+    borderBottomLeftRadius: string | number | readonly NonNullable<csstype.Property.BorderTopRightRadius<string | number>>[];
+    borderBottomRightRadius: string | number | readonly NonNullable<csstype.Property.BorderTopRightRadius<string | number>>[];
 };
 type Margins = {
     all?: CSS["margin"];
@@ -285,4 +285,5 @@ declare const colors: {
 /** Picks the light or dark text color with more contrast against an opaque background. */
 declare const getContrastText: (background: CssColor) => "#131313" | "#f5f5f5";
 
-export { type BorderRadiuses as B, type CSS as C, type Margins as M, type Padding as P, type Borders as a, type CssColor as b, type CssNamedColor as c, colors as d, makeBorders as e, makeClasses as f, getContrastText as g, makeMargins as h, makePadding as i, makeBorderRadiuses as m };
+export { colors as d, makeBorders as e, makeClasses as f, getContrastText as g, makeMargins as h, makePadding as i, makeBorderRadiuses as m };
+export type { BorderRadiuses as B, CSS as C, Margins as M, Padding as P, Borders as a, CssColor as b, CssNamedColor as c };

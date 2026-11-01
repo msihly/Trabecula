@@ -39,7 +39,11 @@ var __objRest = (source, exclude) => {
   return target;
 };
 var __commonJS = (cb, mod) => function __require() {
-  return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
+  try {
+    return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
+  } catch (e) {
+    throw mod = 0, e;
+  }
 };
 var __copyProps = (to, from, except, desc) => {
   if (from && typeof from === "object" || typeof from === "function") {
@@ -124,4 +128,4 @@ export {
   __yieldStar,
   __forAwait
 };
-//# sourceMappingURL=chunk-MYORJUCY.mjs.map
+//# sourceMappingURL=chunk-OJBUL6U5.mjs.map

@@ -14,4 +14,5 @@ interface MongoProcessOptions {
 /** Runs a persistent single-member replica set and hands its URI to later stages once writable. */
 declare const registerMongoProcess: (getOptions: () => Promise<MongoProcessOptions>) => void;
 
-export { type MongoProcessOptions, registerMongoProcess };
+export { registerMongoProcess };
+export type { MongoProcessOptions };

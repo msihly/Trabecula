@@ -9752,4 +9752,5 @@ type IconName = keyof typeof ICON_LIGATURES;
 declare const ICON_NAMES: readonly IconName[];
 declare const MUI_ICONS: readonly (keyof typeof MUI_ICON_LIGATURES)[];
 
-export { COUNTRY_FLAG_LIGATURES, ICON_LIGATURES, ICON_NAMES, type IconName, MUI_ICONS, MUI_ICON_LIGATURES };
+export { COUNTRY_FLAG_LIGATURES, ICON_LIGATURES, ICON_NAMES, MUI_ICONS, MUI_ICON_LIGATURES };
+export type { IconName };

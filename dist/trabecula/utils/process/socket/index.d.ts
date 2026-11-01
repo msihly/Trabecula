@@ -9,4 +9,5 @@ interface SocketProcessOptions {
 /** Runs a socket.io server that relays each client's events to every other client. */
 declare const registerSocketProcess: (getOptions: () => Promise<SocketProcessOptions>) => void;
 
-export { type SocketProcessOptions, registerSocketProcess };
+export { registerSocketProcess };
+export type { SocketProcessOptions };

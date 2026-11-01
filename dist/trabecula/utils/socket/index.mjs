@@ -1,6 +1,6 @@
 import {
   __publicField
-} from "../../chunk-MYORJUCY.mjs";
+} from "../../chunk-OJBUL6U5.mjs";
 
 // trabecula/utils/socket/socket-client.ts
 import { io } from "socket.io-client";

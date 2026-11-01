@@ -12,4 +12,5 @@ declare const SERVER_STATUS_IPC: {
     get: string;
 };
 
-export { type ServerProcessStatus as S, SERVER_STATUS_IPC as a, type ServerProcessState as b };
+export { SERVER_STATUS_IPC as a };
+export type { ServerProcessStatus as S, ServerProcessState as b };

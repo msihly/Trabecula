@@ -17,4 +17,5 @@ declare class PromiseQueue {
     resolve(): Promise<void>;
 }
 
-export { PromiseQueue as P, type PromiseQueueOptions as a };
+export { PromiseQueue as P };
+export type { PromiseQueueOptions as a };

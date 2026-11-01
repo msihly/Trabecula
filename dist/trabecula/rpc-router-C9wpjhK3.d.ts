@@ -17,4 +17,5 @@ type RpcResponse = {
 /** Runs the procedure at the request's path, answering with its result or its error's message. */
 declare const callRpc: (router: RpcRouter, { input, path }: RpcRequest, context?: unknown) => Promise<RpcResponse>;
 
-export { type RpcRouter as R, type RpcProcedure as a, type RpcRequest as b, type RpcResponse as c, callRpc as d };
+export { callRpc as d };
+export type { RpcRouter as R, RpcProcedure as a, RpcRequest as b, RpcResponse as c };

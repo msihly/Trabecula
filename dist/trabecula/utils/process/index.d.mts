@@ -1,6 +1,6 @@
 import { Server } from 'http';
-export { S as ServerManager, a as ServerManagerOptions, b as ServerProcessDef } from '../../server-manager-B0jhgJnF.mjs';
-import '../../server-status-QJGbCwQR.mjs';
+export { S as ServerManager, a as ServerManagerOptions, b as ServerProcessDef } from '../../server-manager-SclRFTt8.mjs';
+import '../../server-status-B46yR_M4.mjs';
 
 /** Work a server process asks the main process to do, such as anything needing Electron. */
 interface MainRequest {
@@ -42,4 +42,5 @@ declare const ownProcessTree: () => void;
 /** Only after services stop, allow Electron's explicit relaunch helper to outlive the old app. */
 declare const releaseProcessTreeForRelaunch: () => void;
 
-export { type MainRequest, type MainRequestHandlers, PROCESS_SHUTDOWN_TIMEOUT_MS, type ServerProcessMessage, checkServerShutdown, closeHttpServer, isServerStopping, listenHttpServer, makeMainRequester, ownProcessTree, registerProcessLifecycle, releaseProcessTreeForRelaunch, reportStartupProgress, serverShutdownSignal };
+export { PROCESS_SHUTDOWN_TIMEOUT_MS, checkServerShutdown, closeHttpServer, isServerStopping, listenHttpServer, makeMainRequester, ownProcessTree, registerProcessLifecycle, releaseProcessTreeForRelaunch, reportStartupProgress, serverShutdownSignal };
+export type { MainRequest, MainRequestHandlers, ServerProcessMessage };

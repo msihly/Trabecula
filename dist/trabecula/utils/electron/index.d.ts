@@ -1,5 +1,5 @@
-import { S as ServerManager, a as ServerManagerOptions } from '../../server-manager-CVoCqG7j.js';
-import '../../server-status-QJGbCwQR.js';
+import { ServerManager, ServerManagerOptions } from '../process/index.js';
+import '../../server-status-B46yR_M4.js';
 
 interface MainProcessOptions {
     /** Names the app in the dialog shown when another instance holds the lock. */
@@ -27,4 +27,5 @@ declare const registerMainProcess: ({ appName, devPort, mainDir, resourcesFolder
     startServers: ({ mainRequestHandlers, stages, }: Pick<ServerManagerOptions, "mainRequestHandlers" | "stages">) => ServerManager;
 };
 
-export { type MainProcessOptions, registerMainProcess };
+export { registerMainProcess };
+export type { MainProcessOptions };

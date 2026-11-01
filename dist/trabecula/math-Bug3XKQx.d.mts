@@ -9,4 +9,5 @@ declare const logicOpsToMongo: (op: LogicalOp | "") => "$eq" | "$ne" | "$gt" | "
 declare const round: (num: number, decimals?: number) => number;
 declare const secondsToDuration: (input: number) => string;
 
-export { LOGICAL_OPS as L, type LogicalOp as a, compareLogicOps as b, compareLogic as c, durationRegex as d, durationToSeconds as e, fractionStringToNumber as f, logicOpsToMongo as l, round as r, secondsToDuration as s };
+export { LOGICAL_OPS as L, compareLogicOps as b, compareLogic as c, durationRegex as d, durationToSeconds as e, fractionStringToNumber as f, logicOpsToMongo as l, round as r, secondsToDuration as s };
+export type { LogicalOp as a };
