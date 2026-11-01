@@ -1,7 +1,7 @@
 const tsEslintPlugin = require("@typescript-eslint/eslint-plugin");
 const tsEslintParser = require("@typescript-eslint/parser");
 const simpleImportSortPlugin = require("eslint-plugin-simple-import-sort");
-const tssUnusedClassesPlugin = require("eslint-plugin-tss-unused-classes");
+const tssUnusedClassesPlugin = require("./plugins/tss-unused-classes");
 
 const PROJECT = "trabecula";
 
@@ -12,7 +12,6 @@ module.exports = [
       ".vscode/**",
       "dist/**",
       "node_modules/**",
-      "patches/**",
       "public/**",
       "**/vite.config.*",
     ],

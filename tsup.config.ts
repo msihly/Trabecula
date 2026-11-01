@@ -63,8 +63,6 @@ export default defineConfig({
   onSuccess: async () => {
     await cp("plugins", "dist/plugins", { recursive: true });
 
-    await cp("patches", "dist/patches", { recursive: true });
-
     await cp(
       "node_modules/react-toastify/dist/ReactToastify.css",
       `${CSS_DEST}/react-toastify.css`,

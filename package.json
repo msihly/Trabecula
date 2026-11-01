@@ -8,8 +8,7 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist",
-    "patches"
+    "dist"
   ],
   "exports": {
     "./_generated/client": {
@@ -35,6 +34,7 @@
       "types": "./dist/css/react-toastify.css.d.ts",
       "default": "./dist/css/react-toastify.css"
     },
+    "./plugins/*": "./dist/plugins/*/index.js",
     "./utils/*": {
       "types": "./dist/trabecula/utils/*/index.d.ts",
       "import": "./dist/trabecula/utils/*/index.mjs",
@@ -70,7 +70,7 @@
     "lint-fix": "pnpm run lint --fix",
     "prettier": "prettier --check trabecula --config ./.prettierrc --ignore-path ./.prettierignore",
     "prettier-fix": "pnpm run prettier --write",
-    "setup": "patch-package && husky",
+    "setup": "husky",
     "ts-check": "tsc --noEmit"
   },
   "config": {
@@ -94,7 +94,6 @@
     "mobx": "6.16.1",
     "mobx-keystone": "2.4.1",
     "mobx-react-lite": "^4.1.1",
-    "patch-package": "^6.4.7",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-draggable": "^4.7.2",
@@ -116,9 +115,8 @@
     "@typescript-eslint/parser": "^8.72.1",
     "@vitejs/plugin-react": "^6.1.2",
     "electron": "45.2.1",
-    "eslint": "9.39.5",
-    "eslint-plugin-simple-import-sort": "^12.1.1",
-    "eslint-plugin-tss-unused-classes": "^1.0.2",
+    "eslint": "10.14.0",
+    "eslint-plugin-simple-import-sort": "^14.0.0",
     "husky": "^9.1.7",
     "ligatures": "^0.0.3",
     "mongodb-memory-server": "^11.3.0",
