@@ -826,6 +826,7 @@ declare const Link: ({ bold, children, className, color, rel, target, underline,
 type TextPreset = "default" | "detail-label" | "label-glow" | "sub-text" | "sub-text-muted" | "title";
 declare const PRESETS: Record<TextPreset, CSS>;
 interface TextProps extends Omit<TypographyProps, "color" | "component" | "title" | "variant"> {
+    alignSelf?: CSS["alignSelf"];
     bold?: boolean;
     color?: CssColor;
     component?: ElementType;
@@ -855,7 +856,7 @@ interface TextProps extends Omit<TypographyProps, "color" | "component" | "title
     wordBreak?: CSS["wordBreak"];
 }
 declare const Text: {
-    ({ bold, children, className, color, component, display, flex, flexShrink, fontFamily, fontSize, fontWeight, italic, lineHeight, margins, minHeight, minWidth, opacity, overflow, overflowWrap, padding, preset, textAlign, textOverflow, textTransform, tooltip, tooltipProps, whiteSpace, width, wordBreak, ...props }: TextProps): react.JSX.Element;
+    ({ alignSelf, bold, children, className, color, component, display, flex, flexShrink, fontFamily, fontSize, fontWeight, italic, lineHeight, margins, minHeight, minWidth, opacity, overflow, overflowWrap, padding, preset, textAlign, textOverflow, textTransform, tooltip, tooltipProps, whiteSpace, width, wordBreak, ...props }: TextProps): react.JSX.Element;
     Inline(props: Omit<TextProps, "component">): react.JSX.Element;
 };
 

@@ -9346,6 +9346,7 @@ var PRESETS = {
 };
 var Text = (_a) => {
   var _b = _a, {
+    alignSelf,
     bold = false,
     children,
     className,
@@ -9376,6 +9377,7 @@ var Text = (_a) => {
     width,
     wordBreak
   } = _b, props = __objRest(_b, [
+    "alignSelf",
     "bold",
     "children",
     "className",
@@ -9407,6 +9409,7 @@ var Text = (_a) => {
     "wordBreak"
   ]);
   const { css, cx } = useClasses30({
+    alignSelf,
     bold,
     color,
     display,
@@ -9440,6 +9443,7 @@ var useClasses30 = makeClasses((props) => {
   const preset = PRESETS[props.preset];
   return {
     root: __spreadProps(__spreadValues(__spreadProps(__spreadValues(__spreadProps(__spreadValues({}, preset), {
+      alignSelf: props.alignSelf,
       color: (_a = props.color) != null ? _a : preset == null ? void 0 : preset.color,
       display: props.display,
       flex: props.flex,

@@ -65,6 +65,7 @@ export interface TextProps extends Omit<
   TypographyProps,
   "color" | "component" | "title" | "variant"
 > {
+  alignSelf?: CSS["alignSelf"];
   bold?: boolean;
   color?: CssColor;
   component?: ElementType;
@@ -95,6 +96,7 @@ export interface TextProps extends Omit<
 }
 
 export const Text = ({
+  alignSelf,
   bold = false,
   children,
   className,
@@ -127,6 +129,7 @@ export const Text = ({
   ...props
 }: TextProps) => {
   const { css, cx } = useClasses({
+    alignSelf,
     bold,
     color,
     display,
@@ -166,6 +169,7 @@ Text.Inline = (props: Omit<TextProps, "component">) => <Text display="inline" {.
 
 interface ClassesProps extends Pick<
   TextProps,
+  | "alignSelf"
   | "bold"
   | "color"
   | "display"
@@ -198,6 +202,7 @@ const useClasses = makeClasses((props: ClassesProps) => {
   return {
     root: {
       ...preset,
+      alignSelf: props.alignSelf,
       color: props.color ?? preset?.color,
       display: props.display,
       flex: props.flex,
