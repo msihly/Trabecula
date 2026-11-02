@@ -9,7 +9,7 @@ import { CSS, makeClasses } from "trabecula/utils/client";
 import { dayjs } from "trabecula/utils/common";
 
 export interface DateInputProps extends Omit<
-  DatePickerProps<dayjs.Dayjs>,
+  DatePickerProps<false>,
   "label" | "onChange" | "value"
 > {
   header?: ReactNode;
@@ -51,7 +51,7 @@ export const DateInput = Comp(
 
     const textFieldProps: Omit<InputProps, "color" | "value"> = {
       ...inputProps,
-      ...slotProps?.textField,
+      ...(slotProps?.textField as Partial<InputProps>),
       header,
       headerProps,
       width,
@@ -62,6 +62,8 @@ export const DateInput = Comp(
         <View {...viewProps} width={width}>
           <DatePicker
             {...datePickerProps}
+            // The text field slot renders Trabecula's Input, which needs the field's <input> element.
+            enableAccessibleFieldDOMStructure={false}
             value={dateValue}
             onChange={handleChange}
             slots={{ textField: DateTextField }}

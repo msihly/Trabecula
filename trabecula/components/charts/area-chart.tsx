@@ -25,12 +25,14 @@ export const AreaChart = Comp(
     const formatValue = (value: number | null) =>
       value === null ? "--" : (valueFormatter?.(value) ?? String(value));
 
+    // The chart fills this view, so the legend above it stays within the height.
     return (
-      <View width="100%" className={css.chart}>
+      <View width="100%" height={height} className={css.chart}>
         <LineChart
           axisHighlight={{ x: "line" }}
-          height={height}
-          margin={{ bottom: 30, left: 70, right: 20, top: 40 }}
+          // The plot sits 70 px from the left (20 px default margin and 50 px y-axis) and 30 px
+          // from the bottom (5 px margin and 25 px x-axis).
+          margin={{ bottom: 5 }}
           series={series.map(({ color, label, values }) => ({
             area: true,
             color,
@@ -39,9 +41,12 @@ export const AreaChart = Comp(
             showMark: false,
             valueFormatter: formatValue,
           }))}
-          tooltip={{ trigger: "axis" }}
-          xAxis={[{ data: xValues, scaleType: "time", valueFormatter: xValueFormatter }]}
-          yAxis={[{ valueFormatter: formatValue }]}
+          skipAnimation
+          slotProps={{ tooltip: { trigger: "axis" } }}
+          xAxis={[
+            { data: xValues, height: 25, scaleType: "time", valueFormatter: xValueFormatter },
+          ]}
+          yAxis={[{ valueFormatter: formatValue, width: 50 }]}
         />
       </View>
     );

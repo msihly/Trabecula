@@ -4,7 +4,6 @@ import { CssColor, BorderRadiuses, Borders, CSS, Margins, Padding } from '../uti
 import { ButtonProps as ButtonProps$1, IconButtonProps as IconButtonProps$1, MenuProps, AutocompleteProps, Autocomplete, TextFieldProps, SliderProps as SliderProps$1, ListProps as ListProps$1, ListItemProps as ListItemProps$1, IconProps as IconProps$1, DialogProps, PaginationProps as PaginationProps$1, LinkProps as LinkProps$1, TypographyProps, AccordionProps as AccordionProps$1, TooltipProps as TooltipProps$2, ChipProps as ChipProps$2, DividerProps as DividerProps$1 } from '@mui/material';
 import { IconName as IconName$1 } from '../_generated/client/index.js';
 import { DatePickerProps } from '@mui/x-date-pickers/DatePicker';
-import dayjs from 'dayjs';
 import { LogicalOp } from '../utils/common/index.js';
 import { FixedSizeList } from 'react-window';
 import { TimePickerProps } from '@mui/x-date-pickers/TimePicker';
@@ -247,7 +246,7 @@ type ChipInputProps = Omit<ComponentProps<typeof Autocomplete>, "renderInput" | 
 };
 declare const ChipInput: react.ForwardRefExoticComponent<Omit<ChipInputProps, "ref"> & react.RefAttributes<HTMLDivElement>>;
 
-interface DateInputProps extends Omit<DatePickerProps<dayjs.Dayjs>, "label" | "onChange" | "value"> {
+interface DateInputProps extends Omit<DatePickerProps<false>, "label" | "onChange" | "value"> {
     header?: ReactNode;
     headerProps?: Partial<ViewProps>;
     inputProps?: Omit<Partial<InputProps>, "header" | "headerProps">;
@@ -507,7 +506,7 @@ interface SliderProps extends Omit<SliderProps$1, "color" | "defaultValue" | "ma
 }
 declare const Slider: react.ForwardRefExoticComponent<Omit<SliderProps, "ref"> & react.RefAttributes<HTMLSpanElement>>;
 
-interface TimeInputProps extends Omit<TimePickerProps<dayjs.Dayjs>, "label" | "onChange" | "value"> {
+interface TimeInputProps extends Omit<TimePickerProps<false>, "label" | "onChange" | "value"> {
     inputProps?: Omit<Partial<InputProps>, "label" | "labelProps">;
     label?: InputProps["label"];
     labelProps?: InputProps["labelProps"];

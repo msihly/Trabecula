@@ -1372,12 +1372,11 @@ var AreaChart = Comp(
       var _a;
       return value === null ? "--" : (_a = valueFormatter == null ? void 0 : valueFormatter(value)) != null ? _a : String(value);
     };
-    return /* @__PURE__ */ jsx13(View, { width: "100%", className: css.chart, children: /* @__PURE__ */ jsx13(
+    return /* @__PURE__ */ jsx13(View, { width: "100%", height, className: css.chart, children: /* @__PURE__ */ jsx13(
       LineChart,
       {
         axisHighlight: { x: "line" },
-        height,
-        margin: { bottom: 30, left: 70, right: 20, top: 40 },
+        margin: { bottom: 5 },
         series: series.map(({ color, label, values }) => ({
           area: true,
           color,
@@ -1386,9 +1385,12 @@ var AreaChart = Comp(
           showMark: false,
           valueFormatter: formatValue
         })),
-        tooltip: { trigger: "axis" },
-        xAxis: [{ data: xValues, scaleType: "time", valueFormatter: xValueFormatter }],
-        yAxis: [{ valueFormatter: formatValue }]
+        skipAnimation: true,
+        slotProps: { tooltip: { trigger: "axis" } },
+        xAxis: [
+          { data: xValues, height: 25, scaleType: "time", valueFormatter: xValueFormatter }
+        ],
+        yAxis: [{ valueFormatter: formatValue, width: 50 }]
       }
     ) });
   }
@@ -1566,6 +1568,7 @@ var DateInput = Comp(
     return /* @__PURE__ */ jsx16(LocalizationProvider, { dateAdapter: AdapterDayjs, children: /* @__PURE__ */ jsx16(View, __spreadProps(__spreadValues({}, viewProps), { width, children: /* @__PURE__ */ jsx16(
       DatePicker,
       __spreadProps(__spreadValues({}, datePickerProps), {
+        enableAccessibleFieldDOMStructure: false,
         value: dateValue,
         onChange: handleChange,
         slots: { textField: DateTextField },
@@ -3004,6 +3007,7 @@ var TimeInput = (_a) => {
   return /* @__PURE__ */ jsx31(LocalizationProvider2, { dateAdapter: AdapterDayjs2, children: /* @__PURE__ */ jsx31(View, __spreadProps(__spreadValues({}, viewProps), { width, children: /* @__PURE__ */ jsx31(
     TimePicker,
     __spreadProps(__spreadValues({}, timePickerProps), {
+      enableAccessibleFieldDOMStructure: false,
       value: timeValue,
       onChange: handleChange,
       slots: { textField: TimeTextField },
@@ -7008,4 +7012,4 @@ export {
   usePortalContainer,
   MuiProvider
 };
-//# sourceMappingURL=chunk-2Y7SEOHP.mjs.map
+//# sourceMappingURL=chunk-NJNXOLL3.mjs.map

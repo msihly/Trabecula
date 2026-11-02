@@ -9,7 +9,7 @@ import { CSS, makeClasses } from "trabecula/utils/client";
 import { dayjs } from "trabecula/utils/common";
 
 export interface TimeInputProps extends Omit<
-  TimePickerProps<dayjs.Dayjs>,
+  TimePickerProps<false>,
   "label" | "onChange" | "value"
 > {
   inputProps?: Omit<Partial<InputProps>, "label" | "labelProps">;
@@ -52,7 +52,7 @@ export const TimeInput = ({
 
   const textFieldProps: Omit<InputProps, "color" | "value"> = {
     ...inputProps,
-    ...slotProps?.textField,
+    ...(slotProps?.textField as Partial<InputProps>),
     label,
     labelProps,
     width,
@@ -63,6 +63,8 @@ export const TimeInput = ({
       <View {...viewProps} width={width}>
         <TimePicker
           {...timePickerProps}
+          // The text field slot renders Trabecula's Input, which needs the field's <input> element.
+          enableAccessibleFieldDOMStructure={false}
           value={timeValue}
           onChange={handleChange}
           slots={{ textField: TimeTextField }}

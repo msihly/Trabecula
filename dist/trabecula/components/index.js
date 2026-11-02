@@ -6650,12 +6650,11 @@ var AreaChart = Comp(
       var _a;
       return value === null ? "--" : (_a = valueFormatter == null ? void 0 : valueFormatter(value)) != null ? _a : String(value);
     };
-    return /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(View, { width: "100%", className: css.chart, children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(View, { width: "100%", height, className: css.chart, children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
       import_LineChart.LineChart,
       {
         axisHighlight: { x: "line" },
-        height,
-        margin: { bottom: 30, left: 70, right: 20, top: 40 },
+        margin: { bottom: 5 },
         series: series.map(({ color, label, values }) => ({
           area: true,
           color,
@@ -6664,9 +6663,12 @@ var AreaChart = Comp(
           showMark: false,
           valueFormatter: formatValue
         })),
-        tooltip: { trigger: "axis" },
-        xAxis: [{ data: xValues, scaleType: "time", valueFormatter: xValueFormatter }],
-        yAxis: [{ valueFormatter: formatValue }]
+        skipAnimation: true,
+        slotProps: { tooltip: { trigger: "axis" } },
+        xAxis: [
+          { data: xValues, height: 25, scaleType: "time", valueFormatter: xValueFormatter }
+        ],
+        yAxis: [{ valueFormatter: formatValue, width: 50 }]
       }
     ) });
   }
@@ -6844,6 +6846,7 @@ var DateInput = Comp(
     return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(import_x_date_pickers.LocalizationProvider, { dateAdapter: import_AdapterDayjs.AdapterDayjs, children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(View, __spreadProps(__spreadValues({}, viewProps), { width, children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
       import_DatePicker.DatePicker,
       __spreadProps(__spreadValues({}, datePickerProps), {
+        enableAccessibleFieldDOMStructure: false,
         value: dateValue,
         onChange: handleChange,
         slots: { textField: DateTextField },
@@ -8279,6 +8282,7 @@ var TimeInput = (_a) => {
   return /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(import_x_date_pickers2.LocalizationProvider, { dateAdapter: import_AdapterDayjs2.AdapterDayjs, children: /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(View, __spreadProps(__spreadValues({}, viewProps), { width, children: /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(
     import_TimePicker.TimePicker,
     __spreadProps(__spreadValues({}, timePickerProps), {
+      enableAccessibleFieldDOMStructure: false,
       value: timeValue,
       onChange: handleChange,
       slots: { textField: TimeTextField },
