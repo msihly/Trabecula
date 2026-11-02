@@ -1,5 +1,5 @@
 import * as react from 'react';
-import react__default, { Ref, ForwardRefExoticComponent, PropsWithoutRef, RefAttributes, ReactNode, MouseEvent, ComponentProps, Dispatch, SetStateAction, AriaAttributes, ElementType, DetailedHTMLProps, ImgHTMLAttributes, DragEvent, ReactHTML, ComponentPropsWithoutRef, ElementRef } from 'react';
+import react__default, { Ref, ForwardRefExoticComponent, PropsWithoutRef, RefAttributes, ReactNode, MouseEvent, ComponentProps, Dispatch, SetStateAction, AriaAttributes, ElementType, DetailedHTMLProps, ImgHTMLAttributes, DragEvent, ComponentPropsWithoutRef, ElementRef } from 'react';
 import { CssColor, BorderRadiuses, Borders, CSS, Margins, Padding } from '../utils/client/index.js';
 import { ButtonProps as ButtonProps$1, IconButtonProps as IconButtonProps$1, MenuProps, AutocompleteProps, Autocomplete, TextFieldProps, SliderProps as SliderProps$1, ListProps as ListProps$1, ListItemProps as ListItemProps$1, IconProps as IconProps$1, DialogProps, PaginationProps as PaginationProps$1, LinkProps as LinkProps$1, TypographyProps, AccordionProps as AccordionProps$1, TooltipProps as TooltipProps$2, ChipProps as ChipProps$2, DividerProps as DividerProps$1 } from '@mui/material';
 import { IconName as IconName$1 } from '../_generated/client/index.js';
@@ -13,7 +13,7 @@ import 'csstype';
 import '@mui/material/styles';
 import 'tss-react';
 
-type Forwarded<P, R> = (props: P, ref: Ref<R>) => JSX.Element;
+type Forwarded<P, R> = (props: P, ref: Ref<R>) => React.JSX.Element;
 declare function Comp<P, R = HTMLDivElement>(component: Forwarded<P, R>): ForwardRefExoticComponent<PropsWithoutRef<P> & RefAttributes<R>>;
 
 interface ActivityModalProps {
@@ -235,7 +235,7 @@ interface AutoCompleteProps<Option = AutoCompleteOption, Multiple extends boolea
     renderInput?: AutocompleteProps<Option, Multiple, DisableClearable, FreeSolo>["renderInput"];
     required?: boolean;
 }
-declare const AutoComplete: <Option = AutoCompleteOption, Multiple extends boolean = false, DisableClearable extends boolean = false, FreeSolo extends boolean = false>(props: AutoCompleteProps<Option, Multiple, DisableClearable, FreeSolo> & RefAttributes<HTMLDivElement>) => JSX.Element;
+declare const AutoComplete: <Option = AutoCompleteOption, Multiple extends boolean = false, DisableClearable extends boolean = false, FreeSolo extends boolean = false>(props: AutoCompleteProps<Option, Multiple, DisableClearable, FreeSolo> & RefAttributes<HTMLDivElement>) => React.JSX.Element;
 
 type ChipOption = DropdownOption<any>;
 type ChipInputProps = Omit<ComponentProps<typeof Autocomplete>, "renderInput" | "onChange" | "options"> & {
@@ -434,7 +434,7 @@ interface MultiInputListProps<T = string> {
     hasDelete?: boolean;
     hasDeleteAll?: boolean;
     hasInput?: boolean;
-    renderRow?: (index: number, style: React.CSSProperties) => JSX.Element;
+    renderRow?: (index: number, style: React.CSSProperties) => React.JSX.Element;
     search: {
         onChange: (val: T[]) => void;
         value: T[];
@@ -481,10 +481,10 @@ interface NumRangeProps {
 declare const NumRange: react.ForwardRefExoticComponent<NumRangeProps & react.RefAttributes<HTMLDivElement>>;
 
 type RangeWrapperProps = {
-    endInput: JSX.Element;
+    endInput: React.JSX.Element;
     header?: HeaderWrapperProps["header"];
     headerProps?: HeaderWrapperProps["headerProps"];
-    startInput: JSX.Element;
+    startInput: React.JSX.Element;
 };
 declare const RangeWrapper: react.ForwardRefExoticComponent<RangeWrapperProps & react.RefAttributes<HTMLDivElement>>;
 
@@ -585,7 +585,7 @@ interface ConfirmModalProps {
 declare const ConfirmModal: ({ cancelColor, cancelIcon, cancelText, children, confirmColor, confirmIcon, confirmText, headerText, height, onCancel, onConfirm, setVisible, subText, width, }: ConfirmModalProps) => react.JSX.Element;
 
 interface HeaderProps {
-    children: JSX.Element | JSX.Element[];
+    children: React.JSX.Element | React.JSX.Element[];
     className?: string;
     justify?: CSS["justifyContent"];
     leftNode?: ReactNode;
@@ -960,7 +960,7 @@ declare const Radio: (rawProps: RadioProps) => react.JSX.Element;
 interface TooltipProps$1 extends Omit<TooltipProps$2, "children" | "color"> {
     bgColor?: CssColor;
     borderColor?: CssColor;
-    children: JSX.Element;
+    children: React.JSX.Element;
     color?: CssColor;
     flexShrink?: CSS["flexShrink"];
     fontSize?: CSS["fontSize"];
@@ -972,7 +972,7 @@ interface TooltipProps$1 extends Omit<TooltipProps$2, "children" | "color"> {
 declare const Tooltip: ({ arrow, bgColor, borderColor, children, color, flexShrink, fontSize, maxWidth, minWidth, padding, placement, title, viewProps, ...props }: TooltipProps$1) => react.JSX.Element;
 
 interface TooltipWrapperProps {
-    children: JSX.Element | JSX.Element[];
+    children: React.JSX.Element | React.JSX.Element[];
     tooltip?: TooltipProps$1["title"];
     tooltipProps?: Partial<TooltipProps$1>;
 }
@@ -985,8 +985,8 @@ interface CardProps extends ViewProps, Pick<HeaderWrapperProps, "header" | "head
 declare const Card: react.ForwardRefExoticComponent<CardProps & react.RefAttributes<HTMLDivElement>>;
 
 interface TooltipProps {
-    children: JSX.Element;
-    tooltip: JSX.Element | JSX.Element[];
+    children: React.JSX.Element;
+    tooltip: React.JSX.Element | React.JSX.Element[];
 }
 
 interface ImageProps extends Omit<DetailedHTMLProps<ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>, "alt" | "height" | "src" | "title" | "width"> {
@@ -1061,11 +1061,11 @@ interface ChipProps extends Omit<ChipProps$2, "color" | "icon"> {
 declare const Chip: react.ForwardRefExoticComponent<Omit<ChipProps, "ref"> & react.RefAttributes<HTMLDivElement>>;
 
 interface ConditionalWrapProps {
-    children: JSX.Element | JSX.Element[];
+    children: React.JSX.Element | React.JSX.Element[];
     condition: boolean;
-    wrap: (children: JSX.Element | JSX.Element[]) => JSX.Element;
+    wrap: (children: React.JSX.Element | React.JSX.Element[]) => React.JSX.Element;
 }
-declare const ConditionalWrap: ({ children, condition, wrap, }: ConditionalWrapProps) => JSX.Element;
+declare const ConditionalWrap: ({ children, condition, wrap, }: ConditionalWrapProps) => React.JSX.Element;
 
 interface MenuItem {
     color?: CssColor;
@@ -1122,7 +1122,7 @@ interface HeaderWrapperProps extends ViewProps {
 declare const HeaderWrapper: react.ForwardRefExoticComponent<HeaderWrapperProps & react.RefAttributes<HTMLDivElement>>;
 
 interface HeaderContentProps {
-    children: JSX.Element | JSX.Element[];
+    children: React.JSX.Element | React.JSX.Element[];
     leftNode?: ReactNode;
     rightNode?: ReactNode;
 }
@@ -1163,7 +1163,7 @@ interface ServerStatusSyncProps {
 declare const ServerStatusSync: ({ appName, children, header, ipcRenderer, onStatusMessage, restartInstruction, }: ServerStatusSyncProps) => react.JSX.Element;
 
 interface SideScrollerProps {
-    children: JSX.Element[];
+    children: React.JSX.Element[];
     className?: string;
     innerClassName?: string;
 }
@@ -1198,7 +1198,7 @@ interface UniformListProps extends ViewProps {
 }
 declare const UniformList: ({ children, uniformWidth, ...props }: UniformListProps) => react.JSX.Element;
 
-type ViewProps<Component extends keyof ReactHTML = "div"> = Omit<ComponentPropsWithoutRef<Component>, "align" | "height" | "width" | "wrap"> & {
+type ViewProps<Component extends keyof React.JSX.IntrinsicElements = "div"> = Omit<ComponentPropsWithoutRef<Component>, "align" | "height" | "width" | "wrap"> & {
     align?: CSS["alignItems"];
     bgColor?: CssColor;
     borderRadiuses?: BorderRadiuses;
@@ -1224,7 +1224,7 @@ type ViewProps<Component extends keyof ReactHTML = "div"> = Omit<ComponentPropsW
     width?: CSS["width"];
     wrap?: CSS["flexWrap"];
 };
-declare const View: <Component extends keyof ReactHTML = "div">(props: ViewProps<Component> & RefAttributes<ElementRef<Component>>) => JSX.Element;
+declare const View: <Component extends keyof React.JSX.IntrinsicElements = "div">(props: ViewProps<Component> & RefAttributes<ElementRef<Component>>) => React.JSX.Element;
 
 declare const usePortalContainer: () => HTMLElement;
 declare const MuiProvider: ({ children, portalContainer, styleContainer, }: {

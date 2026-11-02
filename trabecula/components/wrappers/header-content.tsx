@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { ConditionalWrap, View } from "trabecula/components";
 
 export interface HeaderContentProps {
-  children: JSX.Element | JSX.Element[];
+  children: React.JSX.Element | React.JSX.Element[];
   leftNode?: ReactNode;
   rightNode?: ReactNode;
 }

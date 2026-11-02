@@ -5,7 +5,7 @@ import { HeaderContent } from "trabecula/components";
 import { CSS, makeClasses } from "trabecula/utils/client";
 
 export interface HeaderProps {
-  children: JSX.Element | JSX.Element[];
+  children: React.JSX.Element | React.JSX.Element[];
   className?: string;
   justify?: CSS["justifyContent"];
   leftNode?: ReactNode;

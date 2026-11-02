@@ -4,7 +4,7 @@ import { colors, makeClasses, useElementResize } from "trabecula/utils/client";
 import { debounce } from "trabecula/utils/common";
 
 interface SideScrollerProps {
-  children: JSX.Element[];
+  children: React.JSX.Element[];
   className?: string;
   innerClassName?: string;
 }

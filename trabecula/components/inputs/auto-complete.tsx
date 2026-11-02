@@ -65,4 +65,4 @@ export const AutoComplete = Comp(
 >(
   props: AutoCompleteProps<Option, Multiple, DisableClearable, FreeSolo> &
     RefAttributes<HTMLDivElement>,
-) => JSX.Element;
+) => React.JSX.Element;

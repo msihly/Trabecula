@@ -1,11 +1,11 @@
 interface ConditionalWrapProps {
-  children: JSX.Element | JSX.Element[];
+  children: React.JSX.Element | React.JSX.Element[];
   condition: boolean;
-  wrap: (children: JSX.Element | JSX.Element[]) => JSX.Element;
+  wrap: (children: React.JSX.Element | React.JSX.Element[]) => React.JSX.Element;
 }
 
 export const ConditionalWrap = ({
   children,
   condition,
   wrap,
-}: ConditionalWrapProps): JSX.Element => (condition ? wrap(children) : <>{children}</>);
+}: ConditionalWrapProps): React.JSX.Element => (condition ? wrap(children) : <>{children}</>);

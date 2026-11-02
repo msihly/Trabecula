@@ -730,7 +730,7 @@ var useDeepEffect = (cb, deps) => {
 };
 var useDeepMemo = (value) => {
   const comparisonValue = getComparisonValue(value);
-  const comparisonRef = (0, import_react.useRef)();
+  const comparisonRef = (0, import_react.useRef)(void 0);
   const depRef = (0, import_react.useRef)(0);
   const valueRef = (0, import_react.useRef)(value);
   if (!isDeepEqual(comparisonValue, comparisonRef.current)) {

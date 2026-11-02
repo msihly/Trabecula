@@ -7,7 +7,7 @@ import { colors, CSS, CssColor, makeClasses } from "trabecula/utils/client";
 export interface TooltipProps extends Omit<MuiTooltipProps, "children" | "color"> {
   bgColor?: CssColor;
   borderColor?: CssColor;
-  children: JSX.Element;
+  children: React.JSX.Element;
   color?: CssColor;
   flexShrink?: CSS["flexShrink"];
   fontSize?: CSS["fontSize"];

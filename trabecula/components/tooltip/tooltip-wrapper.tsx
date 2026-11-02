@@ -1,13 +1,13 @@
 import { ConditionalWrap, Tooltip, TooltipProps } from "trabecula/components";
 
 export interface TooltipWrapperProps {
-  children: JSX.Element | JSX.Element[];
+  children: React.JSX.Element | React.JSX.Element[];
   tooltip?: TooltipProps["title"];
   tooltipProps?: Partial<TooltipProps>;
 }
 
 export const TooltipWrapper = ({ children, tooltip, tooltipProps = {} }: TooltipWrapperProps) => {
-  const wrap = (c: JSX.Element) => (
+  const wrap = (c: React.JSX.Element) => (
     <Tooltip title={tooltip} {...tooltipProps}>
       {c}
     </Tooltip>

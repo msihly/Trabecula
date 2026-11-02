@@ -1,10 +1,4 @@
-import {
-  ComponentPropsWithoutRef,
-  createElement,
-  ElementRef,
-  ReactHTML,
-  RefAttributes,
-} from "react";
+import { ComponentPropsWithoutRef, createElement, ElementRef, RefAttributes } from "react";
 import { Comp } from "trabecula/components";
 import {
   BorderRadiuses,
@@ -20,7 +14,7 @@ import {
   Padding,
 } from "trabecula/utils/client";
 
-export type ViewProps<Component extends keyof ReactHTML = "div"> = Omit<
+export type ViewProps<Component extends keyof React.JSX.IntrinsicElements = "div"> = Omit<
   ComponentPropsWithoutRef<Component>,
   "align" | "height" | "width" | "wrap"
 > & {
@@ -50,7 +44,7 @@ export type ViewProps<Component extends keyof ReactHTML = "div"> = Omit<
   wrap?: CSS["flexWrap"];
 };
 
-export const View = Comp<ViewProps<keyof ReactHTML>, HTMLElement>(
+export const View = Comp<ViewProps<keyof React.JSX.IntrinsicElements>, HTMLElement>(
   (
     {
       align,
@@ -117,9 +111,9 @@ export const View = Comp<ViewProps<keyof ReactHTML>, HTMLElement>(
       children,
     );
   },
-) as <Component extends keyof ReactHTML = "div">(
+) as <Component extends keyof React.JSX.IntrinsicElements = "div">(
   props: ViewProps<Component> & RefAttributes<ElementRef<Component>>,
-) => JSX.Element;
+) => React.JSX.Element;
 
 interface ClassesProps extends Pick<
   ViewProps,

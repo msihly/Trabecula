@@ -1,8 +1,8 @@
 import { Tooltip as TooltipBase, View } from "trabecula/components";
 
 export interface TooltipProps {
-  children: JSX.Element;
-  tooltip: JSX.Element | JSX.Element[];
+  children: React.JSX.Element;
+  tooltip: React.JSX.Element | React.JSX.Element[];
 }
 
 export const Tooltip = ({ children, tooltip }: TooltipProps) => {

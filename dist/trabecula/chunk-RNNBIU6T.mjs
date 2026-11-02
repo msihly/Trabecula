@@ -122,7 +122,7 @@ var useDeepEffect = (cb, deps) => {
 };
 var useDeepMemo = (value) => {
   const comparisonValue = getComparisonValue(value);
-  const comparisonRef = useRef();
+  const comparisonRef = useRef(void 0);
   const depRef = useRef(0);
   const valueRef = useRef(value);
   if (!isDeepEqual(comparisonValue, comparisonRef.current)) {
@@ -6638,9 +6638,7 @@ var useClasses51 = makeClasses((props) => ({
 }));
 
 // trabecula/components/wrappers/view.tsx
-import {
-  createElement as createElement5
-} from "react";
+import { createElement as createElement5 } from "react";
 var View = Comp(
   (_a, ref) => {
     var _b = _a, {
@@ -7012,4 +7010,4 @@ export {
   usePortalContainer,
   MuiProvider
 };
-//# sourceMappingURL=chunk-NJNXOLL3.mjs.map
+//# sourceMappingURL=chunk-RNNBIU6T.mjs.map

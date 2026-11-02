@@ -9,7 +9,7 @@ export interface MultiInputListProps<T = string> {
   hasDelete?: boolean;
   hasDeleteAll?: boolean;
   hasInput?: boolean;
-  renderRow?: (index: number, style: React.CSSProperties) => JSX.Element;
+  renderRow?: (index: number, style: React.CSSProperties) => React.JSX.Element;
   search: {
     onChange: (val: T[]) => void;
     value: T[];

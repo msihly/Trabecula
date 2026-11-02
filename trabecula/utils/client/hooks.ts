@@ -24,7 +24,7 @@ export const useDeepEffect = (cb: EffectCallback, deps: DependencyList) => {
 export const useDeepMemo = <T>(value: T) => {
   const comparisonValue = getComparisonValue(value);
 
-  const comparisonRef = useRef<any>();
+  const comparisonRef = useRef<any>(undefined);
   const depRef = useRef(0);
   const valueRef = useRef(value);
 

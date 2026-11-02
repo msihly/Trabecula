@@ -2,10 +2,10 @@ import { Comp, HeaderWrapper, HeaderWrapperProps, Text, View } from "trabecula/c
 import { colors } from "trabecula/utils/client";
 
 export type RangeWrapperProps = {
-  endInput: JSX.Element;
+  endInput: React.JSX.Element;
   header?: HeaderWrapperProps["header"];
   headerProps?: HeaderWrapperProps["headerProps"];
-  startInput: JSX.Element;
+  startInput: React.JSX.Element;
 };
 
 export const RangeWrapper = Comp((props: RangeWrapperProps) => {
