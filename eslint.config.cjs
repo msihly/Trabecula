@@ -90,6 +90,12 @@ module.exports = [
               allowTypeImports: true,
             },
             {
+              name: "react-toastify/unstyled",
+              importNames: ["toast", "ToastContainer"],
+              message: `Import from '${PROJECT}/components' instead.`,
+              allowTypeImports: true,
+            },
+            {
               name: "sharp",
               importNames: ["default"],
               message: `Import from '${PROJECT}/utils/common' instead.`,

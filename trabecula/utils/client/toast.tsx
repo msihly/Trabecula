@@ -1,4 +1,6 @@
 import { ReactNode } from "react";
+// The unstyled entry leaves the stylesheet to each app; the main entry adds it to document.head,
+// which in content scripts is the host page.
 import {
   // eslint-disable-next-line @typescript-eslint/no-restricted-imports
   toast as _toast,
@@ -6,7 +8,7 @@ import {
   ToastContainer as ToastContainerBase,
   ToastContainerProps,
   TypeOptions,
-} from "react-toastify";
+} from "react-toastify/unstyled";
 import { Icon, IconName } from "trabecula/components";
 import { colors, CssColor, makeClasses } from "trabecula/utils/client";
 
@@ -41,6 +43,8 @@ export const ToastContainer = (props: ToastContainerProps) => {
     <ToastContainerBase
       autoClose={2000}
       className={css.toast}
+      closeOnClick
+      draggable
       hideProgressBar
       icon={({ type }) => (
         <Icon color={colors.custom.white} name={STATUSES[type]?.icon ?? "Error"} />
@@ -82,14 +86,10 @@ const useClasses = makeClasses({
     "& .Toastify__toast": {
       border: "none",
       color: colors.custom.white,
-      "&-body": {
-        display: "flex",
-        alignItems: "center",
-        fontFamily: "Roboto",
-        fontSize: "1.1rem",
-        fontWeight: 500,
-        whiteSpace: "break-spaces",
-      },
+      fontFamily: "Roboto",
+      fontSize: "1.1rem",
+      fontWeight: 500,
+      whiteSpace: "break-spaces",
       "&-icon": { marginRight: "1em" },
       "&--default": { backgroundColor: STATUSES.default.color },
       "&--error": { backgroundColor: STATUSES.error.color },

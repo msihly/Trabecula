@@ -797,13 +797,13 @@ var import_react4 = require("react");
 var import_mobx_keystone2 = require("mobx-keystone");
 
 // trabecula/utils/client/toast.tsx
-var import_react_toastify = require("react-toastify");
+var import_unstyled = require("react-toastify/unstyled");
 var import_jsx_runtime = require("react/jsx-runtime");
 var toast = {
-  error: import_react_toastify.toast.error,
-  info: import_react_toastify.toast.info,
-  success: import_react_toastify.toast.success,
-  warn: import_react_toastify.toast.warn
+  error: import_unstyled.toast.error,
+  info: import_unstyled.toast.info,
+  success: import_unstyled.toast.success,
+  warn: import_unstyled.toast.warn
 };
 var Toaster = class {
   constructor() {
@@ -815,8 +815,8 @@ var Toaster = class {
     clearTimeout(this.toastTimeoutRef);
     if (autoClose) this.toastTimeoutRef = setTimeout(() => this.toastRef = null, autoClose);
     if (this.toastRef)
-      import_react_toastify.toast.update(this.toastRef, { autoClose, render: text, type: (options == null ? void 0 : options.type) || "info" });
-    else this.toastRef = (0, import_react_toastify.toast)(() => text, { autoClose, type: (options == null ? void 0 : options.type) || "info" });
+      import_unstyled.toast.update(this.toastRef, { autoClose, render: text, type: (options == null ? void 0 : options.type) || "info" });
+    else this.toastRef = (0, import_unstyled.toast)(() => text, { autoClose, type: (options == null ? void 0 : options.type) || "info" });
   }
 };
 var STATUSES = {
@@ -846,14 +846,10 @@ var useClasses = makeClasses({
     "& .Toastify__toast": {
       border: "none",
       color: colors.custom.white,
-      "&-body": {
-        display: "flex",
-        alignItems: "center",
-        fontFamily: "Roboto",
-        fontSize: "1.1rem",
-        fontWeight: 500,
-        whiteSpace: "break-spaces"
-      },
+      fontFamily: "Roboto",
+      fontSize: "1.1rem",
+      fontWeight: 500,
+      whiteSpace: "break-spaces",
       "&-icon": { marginRight: "1em" },
       "&--default": { backgroundColor: STATUSES.default.color },
       "&--error": { backgroundColor: STATUSES.error.color },

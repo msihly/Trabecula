@@ -4,8 +4,8 @@ import { EffectCallback, DependencyList, MutableRefObject, ReactNode } from 'rea
 import * as mobx_keystone from 'mobx-keystone';
 import { PromiseQueue } from '../common/index.mjs';
 import { FixedSizeList, VariableSizeList } from 'react-window';
-import * as react_toastify from 'react-toastify';
-import { ToastContainerProps, TypeOptions } from 'react-toastify';
+import * as react_toastify_unstyled from 'react-toastify/unstyled';
+import { ToastContainerProps, TypeOptions } from 'react-toastify/unstyled';
 import '../../palette-CoCY-L8m.mjs';
 import 'csstype';
 import '@mui/material';
@@ -101,10 +101,10 @@ declare const validateProp: <TStore extends {
 }, K extends keyof TStore>(store: TStore, field: K, validator: () => string) => string;
 
 declare const toast: {
-    error: <TData = unknown>(content: react_toastify.ToastContent<TData>, options?: react_toastify.ToastOptions<{}> | undefined) => react_toastify.Id;
-    info: <TData = unknown>(content: react_toastify.ToastContent<TData>, options?: react_toastify.ToastOptions<{}> | undefined) => react_toastify.Id;
-    success: <TData = unknown>(content: react_toastify.ToastContent<TData>, options?: react_toastify.ToastOptions<{}> | undefined) => react_toastify.Id;
-    warn: <TData = unknown>(content: react_toastify.ToastContent<TData>, options?: react_toastify.ToastOptions<{}> | undefined) => react_toastify.Id;
+    error: <TData = unknown>(content: react_toastify_unstyled.ToastContent<TData>, options?: react_toastify_unstyled.ToastOptions<TData>) => react_toastify_unstyled.Id;
+    info: <TData = unknown>(content: react_toastify_unstyled.ToastContent<TData>, options?: react_toastify_unstyled.ToastOptions<TData>) => react_toastify_unstyled.Id;
+    success: <TData = unknown>(content: react_toastify_unstyled.ToastContent<TData>, options?: react_toastify_unstyled.ToastOptions<TData>) => react_toastify_unstyled.Id;
+    warn: <TData = unknown>(content: react_toastify_unstyled.ToastContent<TData>, options?: react_toastify_unstyled.ToastOptions<TData>) => react_toastify_unstyled.Id;
 };
 declare class Toaster {
     private toastRef;

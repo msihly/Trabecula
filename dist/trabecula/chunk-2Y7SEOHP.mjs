@@ -465,7 +465,7 @@ var validateProp = (store, field, validator) => {
 import {
   toast as _toast,
   ToastContainer as ToastContainerBase
-} from "react-toastify";
+} from "react-toastify/unstyled";
 
 // trabecula/components/comp.tsx
 import { forwardRef } from "react";
@@ -6819,6 +6819,8 @@ var ToastContainer = (props) => {
     __spreadValues({
       autoClose: 2e3,
       className: css.toast,
+      closeOnClick: true,
+      draggable: true,
       hideProgressBar: true,
       icon: ({ type }) => {
         var _a, _b;
@@ -6858,14 +6860,10 @@ var useClasses53 = makeClasses({
     "& .Toastify__toast": {
       border: "none",
       color: colors.custom.white,
-      "&-body": {
-        display: "flex",
-        alignItems: "center",
-        fontFamily: "Roboto",
-        fontSize: "1.1rem",
-        fontWeight: 500,
-        whiteSpace: "break-spaces"
-      },
+      fontFamily: "Roboto",
+      fontSize: "1.1rem",
+      fontWeight: 500,
+      whiteSpace: "break-spaces",
       "&-icon": { marginRight: "1em" },
       "&--default": { backgroundColor: STATUSES.default.color },
       "&--error": { backgroundColor: STATUSES.error.color },
@@ -7010,4 +7008,4 @@ export {
   usePortalContainer,
   MuiProvider
 };
-//# sourceMappingURL=chunk-GVTI43C4.mjs.map
+//# sourceMappingURL=chunk-2Y7SEOHP.mjs.map
