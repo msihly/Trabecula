@@ -1,9 +1,9 @@
 export { B as BorderRadiuses, a as Borders, C as CSS, b as CssColor, c as CssNamedColor, M as Margins, P as Padding, d as colors, g as getContrastText, m as makeBorderRadiuses, e as makeBorders, f as makeClasses, h as makeMargins, i as makePadding } from '../../css-BKhbGxUN.mjs';
 import * as react from 'react';
-import { EffectCallback, DependencyList, MutableRefObject, ReactNode } from 'react';
+import { EffectCallback, DependencyList, MutableRefObject, RefObject, ReactNode } from 'react';
 import * as mobx_keystone from 'mobx-keystone';
 import { PromiseQueue } from '../common/index.mjs';
-import { FixedSizeList, VariableSizeList } from 'react-window';
+import { GridImperativeAPI, ListImperativeAPI } from 'react-window';
 import * as react_toastify_unstyled from 'react-toastify/unstyled';
 import { ToastContainerProps, TypeOptions } from 'react-toastify/unstyled';
 import '../../palette-CoCY-L8m.mjs';
@@ -67,13 +67,10 @@ declare const makeQueue: <T>({ action, items, logPrefix, logSuffix, onComplete, 
 }) => Promise<void>;
 
 interface UseDragScrollProps {
-    listOuterRef: MutableRefObject<any>;
-    listRef: MutableRefObject<FixedSizeList<any> | VariableSizeList<any>>;
+    listRef: RefObject<GridImperativeAPI | ListImperativeAPI>;
     momentum?: number;
-    scrollLeft: MutableRefObject<number>;
-    width: number;
 }
-declare const useDragScroll: ({ listOuterRef, listRef, momentum, scrollLeft, width, }: UseDragScrollProps) => {
+declare const useDragScroll: ({ listRef, momentum }: UseDragScrollProps) => {
     handleMouseDown: (event: React.MouseEvent) => void;
     isDragging: boolean;
 };

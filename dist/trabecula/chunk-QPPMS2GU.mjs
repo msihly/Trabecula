@@ -315,13 +315,7 @@ var makeQueue = ({
 
 // trabecula/utils/client/scrolling.ts
 import { useEffect as useEffect3, useRef as useRef2, useState as useState3 } from "react";
-var useDragScroll = ({
-  listOuterRef,
-  listRef,
-  momentum = 0.8,
-  scrollLeft,
-  width
-}) => {
+var useDragScroll = ({ listRef, momentum = 0.8 }) => {
   const dragDirection = useRef2(null);
   const dragResetTimeout = useRef2(null);
   const initialMouseX = useRef2(null);
@@ -340,13 +334,14 @@ var useDragScroll = ({
     };
   }, []);
   const handleMouseDown = (event) => {
-    var _a;
-    if (!listRef.current || event.button !== 0) return;
+    var _a, _b;
+    const element = (_a = listRef.current) == null ? void 0 : _a.element;
+    if (!element || event.button !== 0) return;
     clearTimeout(dragResetTimeout.current);
-    (_a = removeDragListeners.current) == null ? void 0 : _a.call(removeDragListeners);
+    (_b = removeDragListeners.current) == null ? void 0 : _b.call(removeDragListeners);
     setIsDragging(false);
     initialMouseX.current = event.clientX;
-    scrollStart.current = scrollLeft.current;
+    scrollStart.current = element.scrollLeft;
     velocity.current = 0;
     cancelMomentumTracking();
     document.addEventListener("mousemove", mouseMoveHandler);
@@ -357,41 +352,43 @@ var useDragScroll = ({
     };
   };
   const mouseMoveHandler = (event) => {
-    if (!listRef.current) return;
+    var _a;
+    const element = (_a = listRef.current) == null ? void 0 : _a.element;
+    if (!element) return;
     const walk = (event.clientX - initialMouseX.current) * 3;
     const newScrollLeft = scrollStart.current - walk;
-    const isScrollValid = validateScrollLeft(newScrollLeft);
+    const isScrollValid = validateScrollLeft(element, newScrollLeft);
     if (!isScrollValid) return;
-    listRef.current.scrollTo(newScrollLeft);
+    element.scrollLeft = newScrollLeft;
     velocity.current = newScrollLeft - scrollStart.current;
     dragDirection.current = velocity.current > 0 ? "left" : "right";
     if (Math.abs(velocity.current) > 5) setIsDragging(true);
   };
   const mouseUpHandler = () => {
-    var _a;
-    scrollFinal.current = scrollLeft.current;
+    var _a, _b, _c, _d;
+    scrollFinal.current = (_c = (_b = (_a = listRef.current) == null ? void 0 : _a.element) == null ? void 0 : _b.scrollLeft) != null ? _c : scrollStart.current;
     if (Math.abs(scrollFinal.current - scrollStart.current) > 5) {
       velocity.current = Math.max(Math.abs(velocity.current), 30) * (dragDirection.current === "right" ? -1 : 1);
       beginMomentumTracking();
     }
     dragResetTimeout.current = setTimeout(() => setIsDragging(false), 0);
-    (_a = removeDragListeners.current) == null ? void 0 : _a.call(removeDragListeners);
+    (_d = removeDragListeners.current) == null ? void 0 : _d.call(removeDragListeners);
     removeDragListeners.current = null;
   };
-  const validateScrollLeft = (newScrollLeft) => {
-    var _a;
-    return newScrollLeft >= 0 && newScrollLeft <= ((_a = listOuterRef.current) == null ? void 0 : _a.scrollWidth) - width * 0.8;
-  };
+  const validateScrollLeft = (element, newScrollLeft) => newScrollLeft >= 0 && newScrollLeft <= element.scrollWidth - element.clientWidth * 0.8;
   const beginMomentumTracking = () => {
     cancelMomentumTracking();
     momentumId.current = requestAnimationFrame(momentumLoop);
   };
   const cancelMomentumTracking = () => cancelAnimationFrame(momentumId.current);
   const momentumLoop = () => {
-    const newScrollLeft = scrollLeft.current + velocity.current;
-    const isScrollValid = validateScrollLeft(newScrollLeft);
-    if (!isScrollValid || !listRef.current) return;
-    listRef.current.scrollTo(newScrollLeft);
+    var _a;
+    const element = (_a = listRef.current) == null ? void 0 : _a.element;
+    if (!element) return;
+    const newScrollLeft = element.scrollLeft + velocity.current;
+    const isScrollValid = validateScrollLeft(element, newScrollLeft);
+    if (!isScrollValid) return;
+    element.scrollLeft = newScrollLeft;
     velocity.current *= momentum;
     if (Math.abs(velocity.current) > 0.5) momentumId.current = requestAnimationFrame(momentumLoop);
   };
@@ -2549,9 +2546,7 @@ var LogOpsInput = Comp(
 import { useState as useState10 } from "react";
 
 // trabecula/components/inputs/multi-input-list.tsx
-import { forwardRef as forwardRef2 } from "react";
-import AutoSizer from "react-virtualized-auto-sizer";
-import { FixedSizeList } from "react-window";
+import { List } from "react-window";
 
 // trabecula/components/inputs/multi-input-row.tsx
 import { jsx as jsx24, jsxs as jsxs14 } from "react/jsx-runtime";
@@ -2632,68 +2627,61 @@ var useClasses12 = makeClasses((props) => ({
 
 // trabecula/components/inputs/multi-input-list.tsx
 import { jsx as jsx25, jsxs as jsxs15 } from "react/jsx-runtime";
-var MultiInputList = forwardRef2(
-  ({
-    hasDelete,
-    hasDeleteAll = false,
-    hasInput,
-    renderRow,
-    search,
-    viewProps = {}
-  }, ref) => {
-    const { css } = useClasses13({ hasDeleteAll, hasInput });
-    const handleDeleteAll = () => search.onChange([]);
-    return /* @__PURE__ */ jsxs15(View, { column: true, height: "100%", children: [
-      /* @__PURE__ */ jsx25(
-        View,
-        __spreadProps(__spreadValues({}, viewProps), {
-          column: true,
-          height: "100%",
-          borderRadiuses: {
-            all: "0.3rem",
-            top: hasInput ? 0 : void 0,
-            bottom: hasDeleteAll ? 0 : void 0
-          },
-          className: css.listContainer,
-          children: !search.value.length ? /* @__PURE__ */ jsx25(CenteredText, { text: "No items", color: colors.custom.grey }) : /* @__PURE__ */ jsx25(View, { flex: 1, children: /* @__PURE__ */ jsx25(AutoSizer, { disableWidth: true, children: ({ height }) => /* @__PURE__ */ jsx25(
-            FixedSizeList,
-            {
-              ref,
-              height,
-              width: "100%",
-              layout: "vertical",
-              itemSize: MULTI_INPUT_ROW_HEIGHT,
-              itemCount: search.value.length,
-              children: ({ index, style }) => renderRow ? renderRow(index, style) : /* @__PURE__ */ jsx25(
-                MultiInputRow,
-                {
-                  hasDelete,
-                  value: search.value[index],
-                  search,
-                  style
-                },
-                index
-              )
-            }
-          ) }) })
-        })
-      ),
-      hasDeleteAll && /* @__PURE__ */ jsx25(
-        Button,
-        {
-          text: "Delete All",
-          icon: "Close",
-          onClick: handleDeleteAll,
-          colorOnHover: colors.custom.red,
-          textColor: colors.custom.lightGrey,
-          outlined: true,
-          width: "100%",
-          borderRadiuses: { top: 0 }
-        }
-      )
-    ] });
-  }
-);
+var MultiInputList = ({
+  hasDelete,
+  hasDeleteAll = false,
+  hasInput,
+  renderRow,
+  search,
+  viewProps = {}
+}) => {
+  const { css } = useClasses13({ hasDeleteAll, hasInput });
+  const handleDeleteAll = () => search.onChange([]);
+  return /* @__PURE__ */ jsxs15(View, { column: true, height: "100%", children: [
+    /* @__PURE__ */ jsx25(
+      View,
+      __spreadProps(__spreadValues({}, viewProps), {
+        column: true,
+        height: "100%",
+        borderRadiuses: {
+          all: "0.3rem",
+          top: hasInput ? 0 : void 0,
+          bottom: hasDeleteAll ? 0 : void 0
+        },
+        className: css.listContainer,
+        children: !search.value.length ? /* @__PURE__ */ jsx25(CenteredText, { text: "No items", color: colors.custom.grey }) : /* @__PURE__ */ jsx25(
+          List,
+          {
+            rowComponent: MultiInputListRow,
+            rowCount: search.value.length,
+            rowHeight: MULTI_INPUT_ROW_HEIGHT,
+            rowProps: { hasDelete, renderRow, search }
+          }
+        )
+      })
+    ),
+    hasDeleteAll && /* @__PURE__ */ jsx25(
+      Button,
+      {
+        text: "Delete All",
+        icon: "Close",
+        onClick: handleDeleteAll,
+        colorOnHover: colors.custom.red,
+        textColor: colors.custom.lightGrey,
+        outlined: true,
+        width: "100%",
+        borderRadiuses: { top: 0 }
+      }
+    )
+  ] });
+};
+var MultiInputListRow = ({
+  hasDelete,
+  index,
+  renderRow,
+  search,
+  style
+}) => renderRow ? renderRow(index, style) : /* @__PURE__ */ jsx25(MultiInputRow, { hasDelete, value: search.value[index], search, style });
 var useClasses13 = makeClasses((props) => ({
   listContainer: {
     border: `1px dotted ${colors.custom.grey}`,
@@ -3116,7 +3104,7 @@ var useClasses16 = makeClasses((props) => ({
 // trabecula/components/list/list.tsx
 import { List as MuiList } from "@mui/material";
 import { jsx as jsx34 } from "react/jsx-runtime";
-var List = (_a) => {
+var List2 = (_a) => {
   var _b = _a, {
     children,
     className,
@@ -7043,7 +7031,7 @@ export {
   Slider,
   TimeInput,
   DetailRows,
-  List,
+  List2 as List,
   ListItem,
   Icon,
   ConfirmModal,
@@ -7098,4 +7086,4 @@ export {
   usePortalContainer,
   MuiProvider
 };
-//# sourceMappingURL=chunk-5N7NDWQ4.mjs.map
+//# sourceMappingURL=chunk-QPPMS2GU.mjs.map

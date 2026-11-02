@@ -1,6 +1,4 @@
-import { forwardRef, MutableRefObject } from "react";
-import AutoSizer from "react-virtualized-auto-sizer";
-import { FixedSizeList } from "react-window";
+import { List, RowComponentProps } from "react-window";
 import { Button, CenteredText, View, ViewProps } from "trabecula/components";
 import { colors, makeClasses } from "trabecula/utils/client";
 import { MULTI_INPUT_ROW_HEIGHT, MultiInputRow } from "./multi-input-row";
@@ -17,85 +15,73 @@ export interface MultiInputListProps<T = string> {
   viewProps?: Partial<ViewProps>;
 }
 
-export const MultiInputList = forwardRef(
-  <T,>(
-    {
-      hasDelete,
-      hasDeleteAll = false,
-      hasInput,
-      renderRow,
-      search,
-      viewProps = {},
-    }: MultiInputListProps<T>,
-    ref: MutableRefObject<FixedSizeList>,
-  ) => {
-    const { css } = useClasses({ hasDeleteAll, hasInput });
+export const MultiInputList = <T,>({
+  hasDelete,
+  hasDeleteAll = false,
+  hasInput,
+  renderRow,
+  search,
+  viewProps = {},
+}: MultiInputListProps<T>) => {
+  const { css } = useClasses({ hasDeleteAll, hasInput });
 
-    const handleDeleteAll = () => search.onChange([]);
+  const handleDeleteAll = () => search.onChange([]);
 
-    return (
-      <View column height="100%">
-        <View
-          {...viewProps}
-          column
-          height="100%"
-          borderRadiuses={{
-            all: "0.3rem",
-            top: hasInput ? 0 : undefined,
-            bottom: hasDeleteAll ? 0 : undefined,
-          }}
-          className={css.listContainer}
-        >
-          {!search.value.length ? (
-            <CenteredText text="No items" color={colors.custom.grey} />
-          ) : (
-            <View flex={1}>
-              <AutoSizer disableWidth>
-                {({ height }) => (
-                  <FixedSizeList
-                    ref={ref}
-                    height={height}
-                    width="100%"
-                    layout="vertical"
-                    itemSize={MULTI_INPUT_ROW_HEIGHT}
-                    itemCount={search.value.length}
-                  >
-                    {({ index, style }) =>
-                      renderRow ? (
-                        renderRow(index, style)
-                      ) : (
-                        <MultiInputRow
-                          key={index}
-                          hasDelete={hasDelete}
-                          value={search.value[index]}
-                          search={search}
-                          style={style}
-                        />
-                      )
-                    }
-                  </FixedSizeList>
-                )}
-              </AutoSizer>
-            </View>
-          )}
-        </View>
-
-        {hasDeleteAll && (
-          <Button
-            text="Delete All"
-            icon="Close"
-            onClick={handleDeleteAll}
-            colorOnHover={colors.custom.red}
-            textColor={colors.custom.lightGrey}
-            outlined
-            width="100%"
-            borderRadiuses={{ top: 0 }}
+  return (
+    <View column height="100%">
+      <View
+        {...viewProps}
+        column
+        height="100%"
+        borderRadiuses={{
+          all: "0.3rem",
+          top: hasInput ? 0 : undefined,
+          bottom: hasDeleteAll ? 0 : undefined,
+        }}
+        className={css.listContainer}
+      >
+        {!search.value.length ? (
+          <CenteredText text="No items" color={colors.custom.grey} />
+        ) : (
+          <List
+            rowComponent={MultiInputListRow}
+            rowCount={search.value.length}
+            rowHeight={MULTI_INPUT_ROW_HEIGHT}
+            rowProps={{ hasDelete, renderRow, search }}
           />
         )}
       </View>
-    );
-  },
-);
+
+      {hasDeleteAll && (
+        <Button
+          text="Delete All"
+          icon="Close"
+          onClick={handleDeleteAll}
+          colorOnHover={colors.custom.red}
+          textColor={colors.custom.lightGrey}
+          outlined
+          width="100%"
+          borderRadiuses={{ top: 0 }}
+        />
+      )}
+    </View>
+  );
+};
+
+type MultiInputListRowProps<T> = Pick<MultiInputListProps<T>, "hasDelete" | "renderRow" | "search">;
+
+const MultiInputListRow = <T,>({
+  hasDelete,
+  index,
+  renderRow,
+  search,
+  style,
+}: RowComponentProps<MultiInputListRowProps<T>>) =>
+  renderRow ? (
+    renderRow(index, style)
+  ) : (
+    <MultiInputRow hasDelete={hasDelete} value={search.value[index]} search={search} style={style} />
+  );
 
 interface ClassesProps extends Pick<MultiInputListProps, "hasDeleteAll" | "hasInput"> {}
 

@@ -1,21 +1,12 @@
-import { MutableRefObject, useEffect, useRef, useState } from "react";
-import { FixedSizeList, VariableSizeList } from "react-window";
+import { RefObject, useEffect, useRef, useState } from "react";
+import type { GridImperativeAPI, ListImperativeAPI } from "react-window";
 
 interface UseDragScrollProps {
-  listOuterRef: MutableRefObject<any>;
-  listRef: MutableRefObject<FixedSizeList<any> | VariableSizeList<any>>;
+  listRef: RefObject<GridImperativeAPI | ListImperativeAPI>;
   momentum?: number;
-  scrollLeft: MutableRefObject<number>;
-  width: number;
 }
 
-export const useDragScroll = ({
-  listOuterRef,
-  listRef,
-  momentum = 0.8,
-  scrollLeft,
-  width,
-}: UseDragScrollProps) => {
+export const useDragScroll = ({ listRef, momentum = 0.8 }: UseDragScrollProps) => {
   const dragDirection = useRef<"left" | "right">(null);
   const dragResetTimeout = useRef<ReturnType<typeof setTimeout>>(null);
   const initialMouseX = useRef(null);
@@ -36,13 +27,14 @@ export const useDragScroll = ({
   }, []);
 
   const handleMouseDown = (event: React.MouseEvent) => {
-    if (!listRef.current || event.button !== 0) return;
+    const element = listRef.current?.element;
+    if (!element || event.button !== 0) return;
 
     clearTimeout(dragResetTimeout.current);
     removeDragListeners.current?.();
     setIsDragging(false);
     initialMouseX.current = event.clientX;
-    scrollStart.current = scrollLeft.current;
+    scrollStart.current = element.scrollLeft;
     velocity.current = 0;
     cancelMomentumTracking();
 
@@ -55,14 +47,15 @@ export const useDragScroll = ({
   };
 
   const mouseMoveHandler = (event: MouseEvent) => {
-    if (!listRef.current) return;
+    const element = listRef.current?.element;
+    if (!element) return;
 
     const walk = (event.clientX - initialMouseX.current) * 3;
     const newScrollLeft = scrollStart.current - walk;
-    const isScrollValid = validateScrollLeft(newScrollLeft);
+    const isScrollValid = validateScrollLeft(element, newScrollLeft);
     if (!isScrollValid) return;
 
-    listRef.current.scrollTo(newScrollLeft);
+    element.scrollLeft = newScrollLeft;
 
     velocity.current = newScrollLeft - scrollStart.current;
     dragDirection.current = velocity.current > 0 ? "left" : "right";
@@ -71,7 +64,7 @@ export const useDragScroll = ({
   };
 
   const mouseUpHandler = () => {
-    scrollFinal.current = scrollLeft.current;
+    scrollFinal.current = listRef.current?.element?.scrollLeft ?? scrollStart.current;
 
     if (Math.abs(scrollFinal.current - scrollStart.current) > 5) {
       velocity.current =
@@ -85,8 +78,8 @@ export const useDragScroll = ({
     removeDragListeners.current = null;
   };
 
-  const validateScrollLeft = (newScrollLeft: number) =>
-    newScrollLeft >= 0 && newScrollLeft <= listOuterRef.current?.scrollWidth - width * 0.8;
+  const validateScrollLeft = (element: HTMLElement, newScrollLeft: number) =>
+    newScrollLeft >= 0 && newScrollLeft <= element.scrollWidth - element.clientWidth * 0.8;
 
   /* ---------------------------- BEGIN - MOMENTUM ---------------------------- */
   const beginMomentumTracking = () => {
@@ -97,11 +90,14 @@ export const useDragScroll = ({
   const cancelMomentumTracking = () => cancelAnimationFrame(momentumId.current);
 
   const momentumLoop = () => {
-    const newScrollLeft = scrollLeft.current + velocity.current;
-    const isScrollValid = validateScrollLeft(newScrollLeft);
-    if (!isScrollValid || !listRef.current) return;
+    const element = listRef.current?.element;
+    if (!element) return;
 
-    listRef.current.scrollTo(newScrollLeft);
+    const newScrollLeft = element.scrollLeft + velocity.current;
+    const isScrollValid = validateScrollLeft(element, newScrollLeft);
+    if (!isScrollValid) return;
+
+    element.scrollLeft = newScrollLeft;
     velocity.current *= momentum;
 
     if (Math.abs(velocity.current) > 0.5) momentumId.current = requestAnimationFrame(momentumLoop);

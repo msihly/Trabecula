@@ -6,7 +6,6 @@ import { IconName as IconName$1 } from '../_generated/client/index.js';
 import { DatePickerProps } from '@mui/x-date-pickers/DatePicker';
 import { PickersTextFieldProps } from '@mui/x-date-pickers/PickersTextField';
 import { LogicalOp } from '../utils/common/index.js';
-import { FixedSizeList } from 'react-window';
 import { TimePickerProps } from '@mui/x-date-pickers/TimePicker';
 import { ServerProcessStatus } from '../utils/common/index.js';
 import '../palette-CoCY-L8m.js';
@@ -442,7 +441,7 @@ interface MultiInputListProps<T = string> {
     };
     viewProps?: Partial<ViewProps>;
 }
-declare const MultiInputList: react.ForwardRefExoticComponent<MultiInputListProps<unknown> & react.RefAttributes<FixedSizeList<any>>>;
+declare const MultiInputList: <T>({ hasDelete, hasDeleteAll, hasInput, renderRow, search, viewProps, }: MultiInputListProps<T>) => react.JSX.Element;
 
 declare const MULTI_INPUT_ROW_HEIGHT = 35;
 type MultiInputRowOption<T = string> = DropdownOption<T>;

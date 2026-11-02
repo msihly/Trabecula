@@ -923,13 +923,7 @@ var makeQueue = ({
 
 // trabecula/utils/client/scrolling.ts
 var import_react3 = require("react");
-var useDragScroll = ({
-  listOuterRef,
-  listRef,
-  momentum = 0.8,
-  scrollLeft,
-  width
-}) => {
+var useDragScroll = ({ listRef, momentum = 0.8 }) => {
   const dragDirection = (0, import_react3.useRef)(null);
   const dragResetTimeout = (0, import_react3.useRef)(null);
   const initialMouseX = (0, import_react3.useRef)(null);
@@ -948,13 +942,14 @@ var useDragScroll = ({
     };
   }, []);
   const handleMouseDown = (event) => {
-    var _a;
-    if (!listRef.current || event.button !== 0) return;
+    var _a, _b;
+    const element = (_a = listRef.current) == null ? void 0 : _a.element;
+    if (!element || event.button !== 0) return;
     clearTimeout(dragResetTimeout.current);
-    (_a = removeDragListeners.current) == null ? void 0 : _a.call(removeDragListeners);
+    (_b = removeDragListeners.current) == null ? void 0 : _b.call(removeDragListeners);
     setIsDragging(false);
     initialMouseX.current = event.clientX;
-    scrollStart.current = scrollLeft.current;
+    scrollStart.current = element.scrollLeft;
     velocity.current = 0;
     cancelMomentumTracking();
     document.addEventListener("mousemove", mouseMoveHandler);
@@ -965,41 +960,43 @@ var useDragScroll = ({
     };
   };
   const mouseMoveHandler = (event) => {
-    if (!listRef.current) return;
+    var _a;
+    const element = (_a = listRef.current) == null ? void 0 : _a.element;
+    if (!element) return;
     const walk = (event.clientX - initialMouseX.current) * 3;
     const newScrollLeft = scrollStart.current - walk;
-    const isScrollValid = validateScrollLeft(newScrollLeft);
+    const isScrollValid = validateScrollLeft(element, newScrollLeft);
     if (!isScrollValid) return;
-    listRef.current.scrollTo(newScrollLeft);
+    element.scrollLeft = newScrollLeft;
     velocity.current = newScrollLeft - scrollStart.current;
     dragDirection.current = velocity.current > 0 ? "left" : "right";
     if (Math.abs(velocity.current) > 5) setIsDragging(true);
   };
   const mouseUpHandler = () => {
-    var _a;
-    scrollFinal.current = scrollLeft.current;
+    var _a, _b, _c, _d;
+    scrollFinal.current = (_c = (_b = (_a = listRef.current) == null ? void 0 : _a.element) == null ? void 0 : _b.scrollLeft) != null ? _c : scrollStart.current;
     if (Math.abs(scrollFinal.current - scrollStart.current) > 5) {
       velocity.current = Math.max(Math.abs(velocity.current), 30) * (dragDirection.current === "right" ? -1 : 1);
       beginMomentumTracking();
     }
     dragResetTimeout.current = setTimeout(() => setIsDragging(false), 0);
-    (_a = removeDragListeners.current) == null ? void 0 : _a.call(removeDragListeners);
+    (_d = removeDragListeners.current) == null ? void 0 : _d.call(removeDragListeners);
     removeDragListeners.current = null;
   };
-  const validateScrollLeft = (newScrollLeft) => {
-    var _a;
-    return newScrollLeft >= 0 && newScrollLeft <= ((_a = listOuterRef.current) == null ? void 0 : _a.scrollWidth) - width * 0.8;
-  };
+  const validateScrollLeft = (element, newScrollLeft) => newScrollLeft >= 0 && newScrollLeft <= element.scrollWidth - element.clientWidth * 0.8;
   const beginMomentumTracking = () => {
     cancelMomentumTracking();
     momentumId.current = requestAnimationFrame(momentumLoop);
   };
   const cancelMomentumTracking = () => cancelAnimationFrame(momentumId.current);
   const momentumLoop = () => {
-    const newScrollLeft = scrollLeft.current + velocity.current;
-    const isScrollValid = validateScrollLeft(newScrollLeft);
-    if (!isScrollValid || !listRef.current) return;
-    listRef.current.scrollTo(newScrollLeft);
+    var _a;
+    const element = (_a = listRef.current) == null ? void 0 : _a.element;
+    if (!element) return;
+    const newScrollLeft = element.scrollLeft + velocity.current;
+    const isScrollValid = validateScrollLeft(element, newScrollLeft);
+    if (!isScrollValid) return;
+    element.scrollLeft = newScrollLeft;
     velocity.current *= momentum;
     if (Math.abs(velocity.current) > 0.5) momentumId.current = requestAnimationFrame(momentumLoop);
   };
@@ -8028,11 +8025,9 @@ var LogOpsInput = Comp(
 );
 
 // trabecula/components/inputs/multi-input.tsx
-var import_react15 = require("react");
+var import_react14 = require("react");
 
 // trabecula/components/inputs/multi-input-list.tsx
-var import_react14 = require("react");
-var import_react_virtualized_auto_sizer = __toESM(require("react-virtualized-auto-sizer"));
 var import_react_window = require("react-window");
 
 // trabecula/components/inputs/multi-input-row.tsx
@@ -8114,68 +8109,61 @@ var useClasses12 = makeClasses((props) => ({
 
 // trabecula/components/inputs/multi-input-list.tsx
 var import_jsx_runtime25 = require("react/jsx-runtime");
-var MultiInputList = (0, import_react14.forwardRef)(
-  ({
-    hasDelete,
-    hasDeleteAll = false,
-    hasInput,
-    renderRow,
-    search,
-    viewProps = {}
-  }, ref) => {
-    const { css } = useClasses13({ hasDeleteAll, hasInput });
-    const handleDeleteAll = () => search.onChange([]);
-    return /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(View, { column: true, height: "100%", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(
-        View,
-        __spreadProps(__spreadValues({}, viewProps), {
-          column: true,
-          height: "100%",
-          borderRadiuses: {
-            all: "0.3rem",
-            top: hasInput ? 0 : void 0,
-            bottom: hasDeleteAll ? 0 : void 0
-          },
-          className: css.listContainer,
-          children: !search.value.length ? /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(CenteredText, { text: "No items", color: colors.custom.grey }) : /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(View, { flex: 1, children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_react_virtualized_auto_sizer.default, { disableWidth: true, children: ({ height }) => /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(
-            import_react_window.FixedSizeList,
-            {
-              ref,
-              height,
-              width: "100%",
-              layout: "vertical",
-              itemSize: MULTI_INPUT_ROW_HEIGHT,
-              itemCount: search.value.length,
-              children: ({ index, style }) => renderRow ? renderRow(index, style) : /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(
-                MultiInputRow,
-                {
-                  hasDelete,
-                  value: search.value[index],
-                  search,
-                  style
-                },
-                index
-              )
-            }
-          ) }) })
-        })
-      ),
-      hasDeleteAll && /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(
-        Button,
-        {
-          text: "Delete All",
-          icon: "Close",
-          onClick: handleDeleteAll,
-          colorOnHover: colors.custom.red,
-          textColor: colors.custom.lightGrey,
-          outlined: true,
-          width: "100%",
-          borderRadiuses: { top: 0 }
-        }
-      )
-    ] });
-  }
-);
+var MultiInputList = ({
+  hasDelete,
+  hasDeleteAll = false,
+  hasInput,
+  renderRow,
+  search,
+  viewProps = {}
+}) => {
+  const { css } = useClasses13({ hasDeleteAll, hasInput });
+  const handleDeleteAll = () => search.onChange([]);
+  return /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(View, { column: true, height: "100%", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(
+      View,
+      __spreadProps(__spreadValues({}, viewProps), {
+        column: true,
+        height: "100%",
+        borderRadiuses: {
+          all: "0.3rem",
+          top: hasInput ? 0 : void 0,
+          bottom: hasDeleteAll ? 0 : void 0
+        },
+        className: css.listContainer,
+        children: !search.value.length ? /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(CenteredText, { text: "No items", color: colors.custom.grey }) : /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(
+          import_react_window.List,
+          {
+            rowComponent: MultiInputListRow,
+            rowCount: search.value.length,
+            rowHeight: MULTI_INPUT_ROW_HEIGHT,
+            rowProps: { hasDelete, renderRow, search }
+          }
+        )
+      })
+    ),
+    hasDeleteAll && /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(
+      Button,
+      {
+        text: "Delete All",
+        icon: "Close",
+        onClick: handleDeleteAll,
+        colorOnHover: colors.custom.red,
+        textColor: colors.custom.lightGrey,
+        outlined: true,
+        width: "100%",
+        borderRadiuses: { top: 0 }
+      }
+    )
+  ] });
+};
+var MultiInputListRow = ({
+  hasDelete,
+  index,
+  renderRow,
+  search,
+  style
+}) => renderRow ? renderRow(index, style) : /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(MultiInputRow, { hasDelete, value: search.value[index], search, style });
 var useClasses13 = makeClasses((props) => ({
   listContainer: {
     border: `1px dotted ${colors.custom.grey}`,
@@ -8205,7 +8193,7 @@ var MultiInput = Comp(
   }, inputRef) => {
     const isMax = max > -1 && value.length >= max;
     const disabled = (inputProps == null ? void 0 : inputProps.disabled) || isMax;
-    const [inputValue, setInputValue] = (0, import_react15.useState)("");
+    const [inputValue, setInputValue] = (0, import_react14.useState)("");
     const onKeyDown = (e) => {
       if (e.key === "Enter" && !isMax) {
         e.preventDefault();
@@ -8245,7 +8233,7 @@ var MultiInput = Comp(
 );
 
 // trabecula/components/inputs/num-input.tsx
-var import_react16 = require("react");
+var import_react15 = require("react");
 var import_jsx_runtime27 = require("react/jsx-runtime");
 var NumInput = Comp(
   (_a, ref) => {
@@ -8266,7 +8254,7 @@ var NumInput = Comp(
       "value",
       "valueDisplay"
     ]);
-    const [error, setError] = (0, import_react16.useState)(null);
+    const [error, setError] = (0, import_react15.useState)(null);
     const handleChange = (val) => {
       if (!val) {
         setValue == null ? void 0 : setValue(null);
@@ -8510,7 +8498,7 @@ var useClasses15 = makeClasses((props) => ({
 }));
 
 // trabecula/components/inputs/time-input.tsx
-var import_react17 = require("react");
+var import_react16 = require("react");
 var import_x_date_pickers2 = require("@mui/x-date-pickers");
 var import_AdapterDayjs2 = require("@mui/x-date-pickers/AdapterDayjs");
 var import_TimePicker = require("@mui/x-date-pickers/TimePicker");
@@ -8575,7 +8563,7 @@ var useClasses18 = makeClasses((props) => ({
 // trabecula/components/media/icon.tsx
 var import_material14 = require("@mui/material");
 var import_jsx_runtime36 = require("react/jsx-runtime");
-var import_react18 = require("react");
+var import_react17 = require("react");
 var Icon = (_a) => {
   var _b = _a, {
     className,
@@ -8607,7 +8595,7 @@ var Icon = (_a) => {
     rotation,
     size
   });
-  return /* @__PURE__ */ (0, import_jsx_runtime36.jsx)(View, __spreadProps(__spreadValues({ column: true, margins, className: cx(css.root, className) }, viewProps), { children: (layers == null ? void 0 : layers.length) ? layers.map((layer, i) => /* @__PURE__ */ (0, import_react18.createElement)(
+  return /* @__PURE__ */ (0, import_jsx_runtime36.jsx)(View, __spreadProps(__spreadValues({ column: true, margins, className: cx(css.root, className) }, viewProps), { children: (layers == null ? void 0 : layers.length) ? layers.map((layer, i) => /* @__PURE__ */ (0, import_react17.createElement)(
     import_material14.Icon,
     __spreadProps(__spreadValues({}, props), {
       baseClassName: getIconClassName(layer.name),
@@ -8674,7 +8662,7 @@ var useClasses19 = makeClasses((props) => {
 });
 
 // trabecula/components/modals/confirm-modal.tsx
-var import_react19 = require("react");
+var import_react18 = require("react");
 var import_jsx_runtime37 = require("react/jsx-runtime");
 var ConfirmModal = ({
   cancelColor = colors.custom.grey,
@@ -8692,7 +8680,7 @@ var ConfirmModal = ({
   subText,
   width = "25rem"
 }) => {
-  const [isLoading, setIsLoading] = (0, import_react19.useState)(false);
+  const [isLoading, setIsLoading] = (0, import_react18.useState)(false);
   const handleClose = () => setVisible(false);
   const handleCancel = () => {
     if (!isLoading) {
@@ -8747,7 +8735,7 @@ var ConfirmModal = ({
 };
 
 // trabecula/components/modals/modal/container.tsx
-var import_react20 = require("react");
+var import_react19 = require("react");
 var import_react_draggable = __toESM(require("react-draggable"));
 var import_material15 = require("@mui/material");
 var import_jsx_runtime38 = require("react/jsx-runtime");
@@ -8802,7 +8790,7 @@ var Container = (_a) => {
 };
 var DraggablePaper = (props) => {
   const { css, cx } = useDraggableClasses(null);
-  const ref = (0, import_react20.useRef)(null);
+  const ref = (0, import_react19.useRef)(null);
   return /* @__PURE__ */ (0, import_jsx_runtime38.jsx)(import_react_draggable.default, { nodeRef: ref, cancel: '[class*="MuiDialogContent-root"]', children: /* @__PURE__ */ (0, import_jsx_runtime38.jsx)(import_material15.Paper, __spreadProps(__spreadValues({}, props), { ref, className: cx(props.className, css.draggable) })) });
 };
 var useClasses20 = makeClasses((props) => {
@@ -9013,7 +9001,7 @@ var useClasses24 = makeClasses((props) => ({
 }));
 
 // trabecula/components/table/data-grid.tsx
-var import_react21 = require("react");
+var import_react20 = require("react");
 var import_jsx_runtime44 = require("react/jsx-runtime");
 
 // trabecula/components/table/data-grid.utils.ts
@@ -9037,7 +9025,7 @@ var dataGridCellClasses = {
 };
 
 // trabecula/components/table/data-grid-header.tsx
-var import_react22 = require("react");
+var import_react21 = require("react");
 var import_jsx_runtime45 = require("react/jsx-runtime");
 var useClasses25 = makeClasses({
   cell: dataGridCellClasses.cell,
@@ -9054,7 +9042,7 @@ var useClasses25 = makeClasses({
 });
 
 // trabecula/components/table/data-grid-row.tsx
-var import_react23 = __toESM(require("react"));
+var import_react22 = __toESM(require("react"));
 var import_material21 = require("@mui/material");
 var import_jsx_runtime46 = require("react/jsx-runtime");
 var useClasses26 = makeClasses({
@@ -9077,7 +9065,7 @@ var useClasses26 = makeClasses({
 });
 
 // trabecula/components/table/pagination.tsx
-var import_react24 = require("react");
+var import_react23 = require("react");
 var import_material22 = require("@mui/material");
 var import_jsx_runtime47 = require("react/jsx-runtime");
 var Pagination = Comp(
@@ -9100,8 +9088,8 @@ var Pagination = Comp(
       "viewProps"
     ]);
     const { css, cx } = useClasses27({ inline });
-    const [isJumpModalOpen, setIsJumpModalOpen] = (0, import_react24.useState)(false);
-    const [jumpPage, setJumpPage] = (0, import_react24.useState)(null);
+    const [isJumpModalOpen, setIsJumpModalOpen] = (0, import_react23.useState)(false);
+    const [jumpPage, setJumpPage] = (0, import_react23.useState)(null);
     const hasError = !Number.isInteger(jumpPage) || jumpPage < 1 || jumpPage > count;
     const handleChange = (_, page) => onChange(page);
     const handleJump = () => {
@@ -9225,7 +9213,7 @@ var useClasses27 = makeClasses((props) => ({
 }));
 
 // trabecula/components/table/table.tsx
-var import_react25 = require("react");
+var import_react24 = require("react");
 var import_material23 = require("@mui/material");
 var import_jsx_runtime48 = require("react/jsx-runtime");
 var MUI_TABLE_ROW_HEIGHT = 33;
@@ -9565,7 +9553,7 @@ var useClasses31 = makeClasses((props) => ({
 }));
 
 // trabecula/components/toggles/accordion.tsx
-var import_react26 = require("react");
+var import_react25 = require("react");
 var import_material26 = require("@mui/material");
 var import_jsx_runtime55 = require("react/jsx-runtime");
 var shouldShowHeaderBorder = (props) => {
@@ -9614,9 +9602,9 @@ var useClasses32 = makeClasses((props) => {
 });
 
 // trabecula/components/toggles/accordion-group.tsx
-var import_react27 = require("react");
+var import_react26 = require("react");
 var import_jsx_runtime56 = require("react/jsx-runtime");
-var AccordionGroupContext = (0, import_react27.createContext)(null);
+var AccordionGroupContext = (0, import_react26.createContext)(null);
 
 // trabecula/components/toggles/checkbox.tsx
 var import_material27 = require("@mui/material");
@@ -9977,7 +9965,7 @@ var useClasses39 = makeClasses({
 var import_jsx_runtime65 = require("react/jsx-runtime");
 
 // trabecula/components/wrappers/card-base/image.tsx
-var import_react28 = require("react");
+var import_react27 = require("react");
 var import_jsx_runtime66 = require("react/jsx-runtime");
 var useClasses40 = makeClasses((props) => {
   var _a;
@@ -10171,7 +10159,7 @@ var ConditionalWrap = ({
 }) => condition ? wrap(children) : /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(import_jsx_runtime70.Fragment, { children });
 
 // trabecula/components/wrappers/context-menu.tsx
-var import_react29 = require("react");
+var import_react28 = require("react");
 var import_material32 = require("@mui/material");
 var import_color13 = __toESM(require("color"));
 var import_jsx_runtime71 = require("react/jsx-runtime");
@@ -10477,11 +10465,11 @@ var Pill = Comp(
 );
 
 // trabecula/components/wrappers/server-status-sync.tsx
-var import_react30 = require("react");
+var import_react29 = require("react");
 var import_jsx_runtime79 = require("react/jsx-runtime");
 
 // trabecula/components/wrappers/side-scroller.tsx
-var import_react31 = require("react");
+var import_react30 = require("react");
 var import_jsx_runtime80 = require("react/jsx-runtime");
 var useClasses48 = makeClasses((props) => ({
   items: {
@@ -10530,7 +10518,7 @@ var useClasses48 = makeClasses((props) => ({
 }));
 
 // trabecula/components/wrappers/tab-container.tsx
-var import_react32 = require("react");
+var import_react31 = require("react");
 var import_material35 = require("@mui/material");
 var import_color15 = __toESM(require("color"));
 var import_jsx_runtime81 = require("react/jsx-runtime");
@@ -10610,7 +10598,7 @@ var useClasses50 = makeClasses((props) => ({
 }));
 
 // trabecula/components/wrappers/view.tsx
-var import_react33 = require("react");
+var import_react32 = require("react");
 var View = Comp(
   (_a, ref) => {
     var _b = _a, {
@@ -10694,7 +10682,7 @@ var View = Comp(
       width,
       wrap
     });
-    return (0, import_react33.createElement)(
+    return (0, import_react32.createElement)(
       component,
       __spreadProps(__spreadValues({}, props), { className: cx(className, css.view), ref }),
       children
@@ -10732,13 +10720,13 @@ var useClasses51 = makeClasses((props) => {
 });
 
 // trabecula/views/mui-provider.tsx
-var import_react34 = require("react");
+var import_react33 = require("react");
 var import_cache = __toESM(require("@emotion/cache"));
-var import_react35 = require("@emotion/react");
+var import_react34 = require("@emotion/react");
 var import_material36 = require("@mui/material");
 var import_tss_react2 = require("tss-react");
 var import_jsx_runtime83 = require("react/jsx-runtime");
-var PortalContainerContext = (0, import_react34.createContext)(void 0);
+var PortalContainerContext = (0, import_react33.createContext)(void 0);
 
 // trabecula/utils/client/toast.tsx
 var import_jsx_runtime84 = require("react/jsx-runtime");
