@@ -1,20 +1,15 @@
 import { ReactNode, useEffect, useState } from "react";
-// eslint-disable-next-line @typescript-eslint/no-restricted-imports
-import { TextFieldProps } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker, DatePickerProps } from "@mui/x-date-pickers/DatePicker";
-import { Comp, Input, InputProps, View, ViewProps } from "trabecula/components";
-import { CSS, makeClasses } from "trabecula/utils/client";
+import { Comp, PickerField, PickerFieldProps, View, ViewProps } from "trabecula/components";
+import { CSS } from "trabecula/utils/client";
 import { dayjs } from "trabecula/utils/common";
 
-export interface DateInputProps extends Omit<
-  DatePickerProps<false>,
-  "label" | "onChange" | "value"
-> {
+export interface DateInputProps extends Omit<DatePickerProps, "label" | "onChange" | "value"> {
   header?: ReactNode;
   headerProps?: Partial<ViewProps>;
-  inputProps?: Omit<Partial<InputProps>, "header" | "headerProps">;
+  inputProps?: Omit<Partial<PickerFieldProps>, "header" | "headerProps">;
   setValue?: (val: string) => void;
   value: string;
   viewProps?: Partial<ViewProps>;
@@ -33,8 +28,6 @@ export const DateInput = Comp(
     width,
     ...datePickerProps
   }: DateInputProps) => {
-    const { css } = useClasses(null);
-
     const [dateValue, setDateValue] = useState<dayjs.Dayjs>(value?.length ? dayjs(value) : null);
 
     useEffect(() => {
@@ -49,9 +42,9 @@ export const DateInput = Comp(
       else if (val.isValid()) setValue?.(val.format("YYYY-MM-DD"));
     };
 
-    const textFieldProps: Omit<InputProps, "color" | "value"> = {
+    const textFieldProps: Partial<PickerFieldProps> = {
       ...inputProps,
-      ...(slotProps?.textField as Partial<InputProps>),
+      ...(slotProps?.textField as Partial<PickerFieldProps>),
       header,
       headerProps,
       width,
@@ -62,36 +55,19 @@ export const DateInput = Comp(
         <View {...viewProps} width={width}>
           <DatePicker
             {...datePickerProps}
-            // The text field slot renders Trabecula's Input, which needs the field's <input> element.
-            enableAccessibleFieldDOMStructure={false}
             value={dateValue}
             onChange={handleChange}
-            slots={{ textField: DateTextField }}
+            slots={{ textField: PickerField }}
             slotProps={{
               ...slotProps,
               actionBar: { actions: ["cancel", "clear", "today"], ...slotProps?.actionBar },
               inputAdornment: { ...slotProps?.inputAdornment, tabIndex: -1 },
               openPickerButton: { ...slotProps?.openPickerButton, tabIndex: -1 },
-              textField: textFieldProps as unknown as TextFieldProps,
+              textField: textFieldProps,
             }}
-            className={css.datePicker}
           />
         </View>
       </LocalizationProvider>
     );
   },
 );
-
-const DateTextField = (props: TextFieldProps) => <Input {...(props as unknown as InputProps)} />;
-
-const useClasses = makeClasses({
-  datePicker: {
-    width: "100%",
-    "& .MuiInputBase-input": {
-      paddingLeft: "0.5rem",
-    },
-    "& .MuiIconButton-root": {
-      padding: "0.2rem",
-    },
-  },
-});

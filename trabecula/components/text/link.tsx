@@ -12,8 +12,6 @@ export const Link = ({
   children,
   className,
   color = colors.custom.blue,
-  fontSize = "1em",
-  fontWeight = 400,
   rel = "noopener",
   target = "_blank",
   underline = "hover",
@@ -23,8 +21,6 @@ export const Link = ({
 
   return (
     <MuiLink
-      fontSize={fontSize}
-      fontWeight={fontWeight}
       rel={rel}
       target={target}
       underline={underline}
@@ -41,6 +37,7 @@ interface ClassesProps extends Pick<LinkProps, "bold" | "color"> {}
 const useClasses = makeClasses((props: ClassesProps) => ({
   link: {
     color: props.color,
+    fontSize: "1em",
     fontWeight: props.bold ? 500 : 400,
   },
 }));

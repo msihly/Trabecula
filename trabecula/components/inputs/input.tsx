@@ -87,7 +87,6 @@ export const Input = Comp((rawProps: InputProps, ref?: MutableRefObject<HTMLDivE
     height,
     helperText,
     helperTextProps = {},
-    inputProps,
     label,
     labelProps,
     labelTextProps = {},
@@ -101,6 +100,7 @@ export const Input = Comp((rawProps: InputProps, ref?: MutableRefObject<HTMLDivE
     onKeyDown,
     padding = {},
     setValue,
+    slotProps,
     stopKeyPropagation = true,
     textAlign,
     textColor,
@@ -200,28 +200,31 @@ export const Input = Comp((rawProps: InputProps, ref?: MutableRefObject<HTMLDivE
             helperText
           )
         }
-        FormHelperTextProps={{ component: "div" }}
-        inputProps={{
-          title: typeof value === "string" ? value : undefined,
-          ...inputProps,
-          maxLength,
-          value: value ?? "",
-        }}
-        InputProps={{
-          endAdornment:
-            adornmentPosition === "end" && adornment ? (
-              <InputAdornment position="end">
-                {typeof adornment === "string" ? (
-                  <Text fontSize="0.9em" color={adornmentColor}>
-                    {adornment}
-                  </Text>
-                ) : (
-                  adornment
-                )}
-              </InputAdornment>
-            ) : null,
-          startAdornment: adornmentPosition === "start" ? adornment : null,
-          ...props.InputProps,
+        slotProps={{
+          ...slotProps,
+          formHelperText: { component: "div" },
+          htmlInput: {
+            title: typeof value === "string" ? value : undefined,
+            ...slotProps?.htmlInput,
+            maxLength,
+            value: value ?? "",
+          },
+          input: {
+            endAdornment:
+              adornmentPosition === "end" && adornment ? (
+                <InputAdornment position="end">
+                  {typeof adornment === "string" ? (
+                    <Text fontSize="0.9em" color={adornmentColor}>
+                      {adornment}
+                    </Text>
+                  ) : (
+                    adornment
+                  )}
+                </InputAdornment>
+              ) : null,
+            startAdornment: adornmentPosition === "start" ? adornment : null,
+            ...slotProps?.input,
+          },
         }}
         size="small"
         className={cx(css.input, className)}

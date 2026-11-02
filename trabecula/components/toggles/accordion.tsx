@@ -154,7 +154,7 @@ export const Accordion = (rawProps: AccordionProps) => {
     <MuiAccordion
       {...props}
       expanded={contentExpanded}
-      TransitionProps={{ unmountOnExit: true }}
+      slotProps={{ ...props.slotProps, transition: { unmountOnExit: true } }}
       disableGutters
       className={cx(css.accordion, className)}
     >

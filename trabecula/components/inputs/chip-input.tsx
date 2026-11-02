@@ -1,6 +1,6 @@
-import { ComponentProps, KeyboardEvent, useState } from "react";
+import { KeyboardEvent, useState } from "react";
 // eslint-disable-next-line @typescript-eslint/no-restricted-imports
-import { Autocomplete, Chip, createFilterOptions } from "@mui/material";
+import { Autocomplete, AutocompleteProps, Chip, createFilterOptions } from "@mui/material";
 import { Comp, DropdownOption, Input } from "trabecula/components";
 import { colors, makeClasses } from "trabecula/utils/client";
 
@@ -9,7 +9,7 @@ const filterOptions = createFilterOptions({ limit: 100, matchFrom: "start" });
 export type ChipOption = DropdownOption<any>;
 
 export type ChipInputProps = Omit<
-  ComponentProps<typeof Autocomplete>,
+  AutocompleteProps<ChipOption, true, true, true>,
   "renderInput" | "onChange" | "options"
 > & {
   opaque?: boolean;
@@ -58,9 +58,9 @@ export const ChipInput = Comp(
             stopKeyPropagation={false}
           />
         )}
-        renderTags={(val: ChipOption[], getTagProps) =>
+        renderValue={(val: ChipOption[], getItemProps) =>
           val.map((option: ChipOption, index) => (
-            <Chip {...getTagProps({ index })} key={index} label={option.label} />
+            <Chip {...getItemProps({ index })} key={index} label={option.label} />
           ))
         }
         onChange={handleChange}

@@ -186,7 +186,7 @@ export const ServerStatusSync = ({
         <LoadingOverlay
           isLoading
           sub={
-            <Text preset="title" fontSize="0.9em" padding="1rem" whiteSpace="pre-wrap">
+            <Text preset="title" fontSize="0.9em" padding={{ all: "1rem" }} whiteSpace="pre-wrap">
               {startupMessage}
             </Text>
           }

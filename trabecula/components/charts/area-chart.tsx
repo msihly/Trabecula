@@ -43,8 +43,15 @@ export const AreaChart = Comp(
           }))}
           skipAnimation
           slotProps={{ tooltip: { trigger: "axis" } }}
+          // Line charts default to ending the x-axis at the data; nice limits round it to ticks.
           xAxis={[
-            { data: xValues, height: 25, scaleType: "time", valueFormatter: xValueFormatter },
+            {
+              data: xValues,
+              domainLimit: "nice",
+              height: 25,
+              scaleType: "time",
+              valueFormatter: xValueFormatter,
+            },
           ]}
           yAxis={[{ valueFormatter: formatValue, width: 50 }]}
         />
@@ -55,10 +62,10 @@ export const AreaChart = Comp(
 
 const useClasses = makeClasses({
   chart: {
-    "& .MuiAreaElement-root": {
+    "& .MuiLineChart-area": {
       fillOpacity: 0.35,
     },
-    "& .MuiLineElement-root": {
+    "& .MuiLineChart-line": {
       strokeWidth: 2,
     },
   },

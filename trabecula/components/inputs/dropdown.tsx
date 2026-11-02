@@ -1,14 +1,17 @@
 import type { HTMLAttributes, KeyboardEvent, ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
 // eslint-disable-next-line @typescript-eslint/no-restricted-imports
-import {
-  Autocomplete,
-  AutocompleteRenderInputParams,
-  FilterOptionsState,
-  MenuItem,
-} from "@mui/material";
+import { Autocomplete, AutocompleteRenderInputParams, FilterOptionsState } from "@mui/material";
 import Color from "color";
-import { HeaderWrapper, Icon, Input, InputProps, Text, TextProps } from "trabecula/components";
+import {
+  HeaderWrapper,
+  Icon,
+  Input,
+  InputProps,
+  Text,
+  TextProps,
+  View,
+} from "trabecula/components";
 import { PillLabel } from "trabecula/components/wrappers/pill-label";
 import { CSS, CssColor, makeClasses, useElementResize } from "trabecula/utils/client";
 import { deepMerge } from "trabecula/utils/common";
@@ -86,12 +89,10 @@ export function Dropdown<T = string>({
   inputLineHeight,
   inputOutlineWidth,
   inputPadding,
-  inputProps,
   inputRootAlignItems,
   inputRootHeight,
   inputRootMinHeight,
   inputRootPadding,
-  InputProps,
   itemBgColor,
   label,
   labelProps,
@@ -109,6 +110,7 @@ export function Dropdown<T = string>({
   pillPosition = "right",
   required,
   setValue,
+  slotProps,
   textColor,
   value,
   withClearButton = false,
@@ -222,7 +224,7 @@ export function Dropdown<T = string>({
   };
 
   const handleInputKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-    inputProps?.onKeyDown?.(event);
+    if (typeof slotProps?.htmlInput === "object") slotProps.htmlInput.onKeyDown?.(event);
 
     if (event.defaultPrevented || !freeSolo || event.key !== "Enter") return;
 
@@ -251,23 +253,29 @@ export function Dropdown<T = string>({
       className={cx(css.input, props.className)}
       color={borderColor ?? props.color}
       dense={dense}
-      InputProps={{ ...params.InputProps, ...InputProps }}
-      inputProps={{
-        ...params.inputProps,
-        title: inputValue,
-        ...inputProps,
-        onKeyDown: handleInputKeyDown,
-      }}
       required={required}
+      slotProps={{
+        ...slotProps,
+        ...params.slotProps,
+        htmlInput: {
+          ...params.slotProps.htmlInput,
+          title: inputValue,
+          ...slotProps?.htmlInput,
+          onKeyDown: handleInputKeyDown,
+        },
+        input: { ...params.slotProps.input, ...slotProps?.input },
+      }}
       stopKeyPropagation={false}
-      value={params.inputProps.value as string}
+      value={params.slotProps.htmlInput.value as string}
     />
   );
 
+  // MUI menu items throw outside a menu, so options render as plain list items.
   const renderOption = (itemProps: HTMLAttributes<HTMLLIElement>, option: DropdownOption<T>) => (
-    <MenuItem
+    <View
       {...itemProps}
       key={String(option.value)}
+      component="li"
       className={cx(itemProps.className, css.menuItem)}
       title={option.label}
     >
@@ -282,7 +290,7 @@ export function Dropdown<T = string>({
           {option.label}
         </Text>
       </PillLabel>
-    </MenuItem>
+    </View>
   );
 
   return (
@@ -298,14 +306,12 @@ export function Dropdown<T = string>({
         autoHighlight={autoHighlight}
         autoSelect={autoSelect}
         className={css.autocomplete}
-        componentsProps={{ paper: { className: css.paper } }}
         disableClearable={!withClearButton}
         disabled={disabled}
         filterOptions={filterOptions}
         freeSolo={freeSolo}
         fullWidth
         inputValue={inputValue}
-        ListboxProps={{ className: css.listbox }}
         onChange={handleChange}
         onClose={handleClose}
         onInputChange={handleInputChange}
@@ -316,6 +322,7 @@ export function Dropdown<T = string>({
         renderOption={renderOption}
         selectOnFocus={false}
         size="small"
+        slotProps={{ listbox: { className: css.listbox }, paper: { className: css.paper } }}
         value={valueOption}
       />
     </HeaderWrapper>

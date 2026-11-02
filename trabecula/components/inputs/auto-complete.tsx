@@ -47,10 +47,14 @@ export const AutoComplete = Comp(
               variant="outlined"
               {...inputProps}
               {...params}
-              inputProps={{ ...inputProps.inputProps, ...params.inputProps }}
-              InputProps={{ ...inputProps.InputProps, ...params.InputProps }}
+              slotProps={{
+                ...inputProps.slotProps,
+                ...params.slotProps,
+                htmlInput: { ...inputProps.slotProps?.htmlInput, ...params.slotProps.htmlInput },
+                input: { ...inputProps.slotProps?.input, ...params.slotProps.input },
+              }}
               stopKeyPropagation={false}
-              value={params.inputProps.value as string}
+              value={params.slotProps.htmlInput.value as string}
             />
           ))
         }

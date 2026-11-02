@@ -2,7 +2,16 @@ import { ElementType } from "react";
 // eslint-disable-next-line @typescript-eslint/no-restricted-imports
 import { Typography, TypographyProps } from "@mui/material";
 import { TooltipProps, TooltipWrapper } from "trabecula/components";
-import { colors, CSS, CssColor, makeClasses } from "trabecula/utils/client";
+import {
+  colors,
+  CSS,
+  CssColor,
+  makeClasses,
+  makeMargins,
+  makePadding,
+  Margins,
+  Padding,
+} from "trabecula/utils/client";
 
 export type TextPreset =
   "default" | "detail-label" | "label-glow" | "sub-text" | "sub-text-muted" | "title";
@@ -54,32 +63,34 @@ const PRESETS: Record<TextPreset, CSS> = {
 
 export interface TextProps extends Omit<
   TypographyProps,
-  | "color"
-  | "component"
-  | "fontSize"
-  | "fontWeight"
-  | "lineHeight"
-  | "opacity"
-  | "overflow"
-  | "textDecoration"
-  | "title"
-  | "variant"
+  "color" | "component" | "title" | "variant"
 > {
   bold?: boolean;
   color?: CssColor;
   component?: ElementType;
+  display?: CSS["display"];
+  flex?: CSS["flex"];
+  flexShrink?: CSS["flexShrink"];
+  fontFamily?: CSS["fontFamily"];
   fontSize?: CSS["fontSize"];
   fontWeight?: CSS["fontWeight"];
   italic?: boolean;
   lineHeight?: CSS["lineHeight"];
+  margins?: Margins;
+  minHeight?: CSS["minHeight"];
+  minWidth?: CSS["minWidth"];
   opacity?: CSS["opacity"];
   overflow?: CSS["overflow"];
   overflowWrap?: CSS["overflowWrap"];
+  padding?: Padding;
   preset?: TextPreset;
+  textAlign?: CSS["textAlign"];
   textOverflow?: CSS["textOverflow"];
+  textTransform?: CSS["textTransform"];
   tooltip?: TooltipProps["title"];
   tooltipProps?: Partial<TooltipProps>;
   whiteSpace?: CSS["whiteSpace"];
+  width?: CSS["width"];
   wordBreak?: CSS["wordBreak"];
 }
 
@@ -89,46 +100,62 @@ export const Text = ({
   className,
   color,
   component = "span",
+  display,
+  flex,
+  flexShrink,
   fontFamily = "Roboto",
   fontSize,
   fontWeight,
   italic = false,
   lineHeight,
+  margins,
+  minHeight,
+  minWidth,
   opacity,
   overflow,
   overflowWrap,
+  padding,
   preset = "default",
+  textAlign,
   textOverflow,
+  textTransform,
   tooltip,
   tooltipProps,
   whiteSpace = "nowrap",
+  width,
   wordBreak,
   ...props
 }: TextProps) => {
   const { css, cx } = useClasses({
     bold,
     color,
+    display,
+    flex,
+    flexShrink,
+    fontFamily,
     fontSize,
     fontWeight,
     italic,
     lineHeight,
+    margins,
+    minHeight,
+    minWidth,
     opacity,
     overflow,
     overflowWrap,
+    padding,
     preset,
+    textAlign,
     textOverflow,
+    textTransform,
     whiteSpace,
+    width,
     wordBreak,
   });
 
   return (
     <TooltipWrapper tooltip={tooltip} tooltipProps={tooltipProps}>
-      <Typography
-        {...props}
-        component={component}
-        fontFamily={fontFamily}
-        className={cx(css.root, className)}
-      >
+      <Typography {...props} component={component} className={cx(css.root, className)}>
         {children}
       </Typography>
     </TooltipWrapper>
@@ -141,16 +168,27 @@ interface ClassesProps extends Pick<
   TextProps,
   | "bold"
   | "color"
+  | "display"
+  | "flex"
+  | "flexShrink"
+  | "fontFamily"
   | "fontSize"
   | "fontWeight"
   | "italic"
   | "lineHeight"
+  | "margins"
+  | "minHeight"
+  | "minWidth"
   | "opacity"
   | "overflow"
   | "overflowWrap"
+  | "padding"
   | "preset"
+  | "textAlign"
   | "textOverflow"
+  | "textTransform"
   | "whiteSpace"
+  | "width"
   | "wordBreak"
 > {}
 
@@ -161,15 +199,26 @@ const useClasses = makeClasses((props: ClassesProps) => {
     root: {
       ...preset,
       color: props.color ?? preset?.color,
+      display: props.display,
+      flex: props.flex,
+      flexShrink: props.flexShrink,
+      fontFamily: props.fontFamily,
       fontSize: props.fontSize ?? preset?.fontSize,
       fontWeight: props.bold ? 600 : (props.fontWeight ?? preset?.fontWeight),
       fontStyle: props.italic ? "italic" : undefined,
       lineHeight: props.lineHeight ?? 1.2,
+      ...makeMargins(props.margins),
+      minHeight: props.minHeight,
+      minWidth: props.minWidth,
       opacity: props.opacity,
       overflow: props.overflow ?? preset?.overflow,
       overflowWrap: props.overflowWrap,
+      ...makePadding(props.padding),
+      textAlign: props.textAlign ?? preset?.textAlign,
       textOverflow: props.textOverflow ?? "ellipsis",
+      textTransform: props.textTransform,
       whiteSpace: props.whiteSpace ?? preset?.whiteSpace,
+      width: props.width,
       wordBreak: props.wordBreak,
     },
   };

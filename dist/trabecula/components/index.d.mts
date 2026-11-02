@@ -1,9 +1,10 @@
 import * as react from 'react';
-import react__default, { Ref, ForwardRefExoticComponent, PropsWithoutRef, RefAttributes, ReactNode, MouseEvent, ComponentProps, Dispatch, SetStateAction, AriaAttributes, ElementType, DetailedHTMLProps, ImgHTMLAttributes, DragEvent, ComponentPropsWithoutRef, ElementRef } from 'react';
+import react__default, { Ref, ForwardRefExoticComponent, PropsWithoutRef, RefAttributes, ReactNode, MouseEvent, Dispatch, SetStateAction, AriaAttributes, ElementType, DetailedHTMLProps, ImgHTMLAttributes, DragEvent, ComponentPropsWithoutRef, ElementRef } from 'react';
 import { CssColor, BorderRadiuses, Borders, CSS, Margins, Padding } from '../utils/client/index.mjs';
-import { ButtonProps as ButtonProps$1, IconButtonProps as IconButtonProps$1, MenuProps, AutocompleteProps, Autocomplete, TextFieldProps, SliderProps as SliderProps$1, ListProps as ListProps$1, ListItemProps as ListItemProps$1, IconProps as IconProps$1, DialogProps, PaginationProps as PaginationProps$1, LinkProps as LinkProps$1, TypographyProps, AccordionProps as AccordionProps$1, TooltipProps as TooltipProps$2, ChipProps as ChipProps$2, DividerProps as DividerProps$1 } from '@mui/material';
+import { ButtonProps as ButtonProps$1, IconButtonProps as IconButtonProps$1, MenuProps, AutocompleteProps, TextFieldProps, SliderProps as SliderProps$1, ListProps as ListProps$1, ListItemProps as ListItemProps$1, IconProps as IconProps$1, DialogProps, PaginationProps as PaginationProps$1, LinkProps as LinkProps$1, TypographyProps, AccordionProps as AccordionProps$1, TooltipProps as TooltipProps$2, ChipProps as ChipProps$2, DividerProps as DividerProps$1 } from '@mui/material';
 import { IconName as IconName$1 } from '../_generated/client/index.mjs';
 import { DatePickerProps } from '@mui/x-date-pickers/DatePicker';
+import { PickersTextFieldProps } from '@mui/x-date-pickers/PickersTextField';
 import { LogicalOp } from '../utils/common/index.mjs';
 import { FixedSizeList } from 'react-window';
 import { TimePickerProps } from '@mui/x-date-pickers/TimePicker';
@@ -238,7 +239,7 @@ interface AutoCompleteProps<Option = AutoCompleteOption, Multiple extends boolea
 declare const AutoComplete: <Option = AutoCompleteOption, Multiple extends boolean = false, DisableClearable extends boolean = false, FreeSolo extends boolean = false>(props: AutoCompleteProps<Option, Multiple, DisableClearable, FreeSolo> & RefAttributes<HTMLDivElement>) => React.JSX.Element;
 
 type ChipOption = DropdownOption<any>;
-type ChipInputProps = Omit<ComponentProps<typeof Autocomplete>, "renderInput" | "onChange" | "options"> & {
+type ChipInputProps = Omit<AutocompleteProps<ChipOption, true, true, true>, "renderInput" | "onChange" | "options"> & {
     opaque?: boolean;
     options?: ChipOption[];
     setValue?: (val: any) => void;
@@ -246,10 +247,10 @@ type ChipInputProps = Omit<ComponentProps<typeof Autocomplete>, "renderInput" | 
 };
 declare const ChipInput: react.ForwardRefExoticComponent<Omit<ChipInputProps, "ref"> & react.RefAttributes<HTMLDivElement>>;
 
-interface DateInputProps extends Omit<DatePickerProps<false>, "label" | "onChange" | "value"> {
+interface DateInputProps extends Omit<DatePickerProps, "label" | "onChange" | "value"> {
     header?: ReactNode;
     headerProps?: Partial<ViewProps>;
-    inputProps?: Omit<Partial<InputProps>, "header" | "headerProps">;
+    inputProps?: Omit<Partial<PickerFieldProps>, "header" | "headerProps">;
     setValue?: (val: string) => void;
     value: string;
     viewProps?: Partial<ViewProps>;
@@ -310,7 +311,7 @@ interface DropdownProps<T = string> extends Omit<InputProps, "header" | "label" 
     withClearButton?: boolean;
     withValueTest?: boolean;
 }
-declare function Dropdown<T = string>({ autoHighlight, autoSelect, borderColor, caretColor, caretSize, dense, disabled, freeSolo, header, headerProps, inputFontSize, inputFontWeight, inputHeight, inputLineHeight, inputOutlineWidth, inputPadding, inputProps, inputRootAlignItems, inputRootHeight, inputRootMinHeight, inputRootPadding, InputProps, itemBgColor, label, labelProps, labelTextProps, listboxBorder, listboxBorderRadius, menuItemBorder, menuItemMinHeight, menuItemPadding, menuItemSelectedBgColor, optionTextProps, options, paperBorder, paperBorderRadius, pillPosition, required, setValue, textColor, value, withClearButton, withValueTest, ...props }: DropdownProps<T>): react.JSX.Element;
+declare function Dropdown<T = string>({ autoHighlight, autoSelect, borderColor, caretColor, caretSize, dense, disabled, freeSolo, header, headerProps, inputFontSize, inputFontWeight, inputHeight, inputLineHeight, inputOutlineWidth, inputPadding, inputRootAlignItems, inputRootHeight, inputRootMinHeight, inputRootPadding, itemBgColor, label, labelProps, labelTextProps, listboxBorder, listboxBorderRadius, menuItemBorder, menuItemMinHeight, menuItemPadding, menuItemSelectedBgColor, optionTextProps, options, paperBorder, paperBorderRadius, pillPosition, required, setValue, slotProps, textColor, value, withClearButton, withValueTest, ...props }: DropdownProps<T>): react.JSX.Element;
 
 interface FilterHeaderProps {
     label: string;
@@ -480,6 +481,15 @@ interface NumRangeProps {
 }
 declare const NumRange: react.ForwardRefExoticComponent<NumRangeProps & react.RefAttributes<HTMLDivElement>>;
 
+type PickerFieldProps = PickersTextFieldProps & {
+    borderRadiuses?: BorderRadiuses;
+    header?: HeaderWrapperProps["header"];
+    headerProps?: HeaderWrapperProps["headerProps"];
+    width?: CSS["width"];
+};
+/** The text field of the date and time pickers, styled like Input. */
+declare const PickerField: ({ borderRadiuses, className, header, headerProps, onKeyDown, width, ...props }: PickerFieldProps) => react.JSX.Element;
+
 type RangeWrapperProps = {
     endInput: React.JSX.Element;
     header?: HeaderWrapperProps["header"];
@@ -506,10 +516,10 @@ interface SliderProps extends Omit<SliderProps$1, "color" | "defaultValue" | "ma
 }
 declare const Slider: react.ForwardRefExoticComponent<Omit<SliderProps, "ref"> & react.RefAttributes<HTMLSpanElement>>;
 
-interface TimeInputProps extends Omit<TimePickerProps<false>, "label" | "onChange" | "value"> {
-    inputProps?: Omit<Partial<InputProps>, "label" | "labelProps">;
-    label?: InputProps["label"];
-    labelProps?: InputProps["labelProps"];
+interface TimeInputProps extends Omit<TimePickerProps, "label" | "onChange" | "value"> {
+    inputProps?: Omit<Partial<PickerFieldProps>, "header" | "headerProps">;
+    label?: PickerFieldProps["header"];
+    labelProps?: PickerFieldProps["headerProps"];
     setValue?: (val: string) => void;
     value: string;
     viewProps?: Partial<ViewProps>;
@@ -811,30 +821,41 @@ interface LinkProps extends Omit<LinkProps$1, "color"> {
     bold?: boolean;
     color?: CssColor;
 }
-declare const Link: ({ bold, children, className, color, fontSize, fontWeight, rel, target, underline, ...props }: LinkProps) => react.JSX.Element;
+declare const Link: ({ bold, children, className, color, rel, target, underline, ...props }: LinkProps) => react.JSX.Element;
 
 type TextPreset = "default" | "detail-label" | "label-glow" | "sub-text" | "sub-text-muted" | "title";
 declare const PRESETS: Record<TextPreset, CSS>;
-interface TextProps extends Omit<TypographyProps, "color" | "component" | "fontSize" | "fontWeight" | "lineHeight" | "opacity" | "overflow" | "textDecoration" | "title" | "variant"> {
+interface TextProps extends Omit<TypographyProps, "color" | "component" | "title" | "variant"> {
     bold?: boolean;
     color?: CssColor;
     component?: ElementType;
+    display?: CSS["display"];
+    flex?: CSS["flex"];
+    flexShrink?: CSS["flexShrink"];
+    fontFamily?: CSS["fontFamily"];
     fontSize?: CSS["fontSize"];
     fontWeight?: CSS["fontWeight"];
     italic?: boolean;
     lineHeight?: CSS["lineHeight"];
+    margins?: Margins;
+    minHeight?: CSS["minHeight"];
+    minWidth?: CSS["minWidth"];
     opacity?: CSS["opacity"];
     overflow?: CSS["overflow"];
     overflowWrap?: CSS["overflowWrap"];
+    padding?: Padding;
     preset?: TextPreset;
+    textAlign?: CSS["textAlign"];
     textOverflow?: CSS["textOverflow"];
+    textTransform?: CSS["textTransform"];
     tooltip?: TooltipProps$1["title"];
     tooltipProps?: Partial<TooltipProps$1>;
     whiteSpace?: CSS["whiteSpace"];
+    width?: CSS["width"];
     wordBreak?: CSS["wordBreak"];
 }
 declare const Text: {
-    ({ bold, children, className, color, component, fontFamily, fontSize, fontWeight, italic, lineHeight, opacity, overflow, overflowWrap, preset, textOverflow, tooltip, tooltipProps, whiteSpace, wordBreak, ...props }: TextProps): react.JSX.Element;
+    ({ bold, children, className, color, component, display, flex, flexShrink, fontFamily, fontSize, fontWeight, italic, lineHeight, margins, minHeight, minWidth, opacity, overflow, overflowWrap, padding, preset, textAlign, textOverflow, textTransform, tooltip, tooltipProps, whiteSpace, width, wordBreak, ...props }: TextProps): react.JSX.Element;
     Inline(props: Omit<TextProps, "component">): react.JSX.Element;
 };
 
@@ -1233,5 +1254,5 @@ declare const MuiProvider: ({ children, portalContainer, styleContainer, }: {
     styleContainer?: Node;
 }) => react.JSX.Element;
 
-export { Accordion, AccordionGroup, ActivityModal, ActivityOperationCard, AreaChart, AutoComplete, Button, ButtonWithInset, Card, CardBase, CardGrid, CenteredText, Checkbox, Chip, ChipInput, ColorPicker, Comp, ConditionalWrap, ConfirmModal, ContextMenu, DEFAULT_INPUT_HEADER_PROPS, DENSE_INPUT_PADDING, DataGrid, DataGridHeader, DataGridRow, DateDetail, DateInput, DateRange, DeselectAllButton, Detail, DetailRows, DisabledOverlay, Divider, DropOverlay, Dropdown, FilterHeader, FilterMenu, HeaderContent, HeaderWrapper, Icon, IconButton, IconPicker, Input, Link, List, ListItem, LoadingOverlay, LogOpsInput, MULTI_INPUT_ROW_HEIGHT, MenuButton, Modal, MuiProvider, MultiActionButton, MultiInput, MultiInputList, MultiInputRow, NumInput, NumRange, Pagination, Pill, ProgressBar, ProgressCircle, Radio, RangeWrapper, SelectAllButton, SelectAllInQueryButton, SelectionButtons, ServerStatusSync, SideScroller, Slider, SortMenu, SortRow, PRESETS as TEXT_PRESETS, TabContainer, Table, Text, TimeInput, Tooltip, TooltipWrapper, TruncatedText, UniformList, View, clampDataGridColumnWidth, compareDataGridValues, createAutoCompleteOptions, dataGridCellClasses, getDataGridCellLayout, getDataGridColumnValue, getDataGridValueText, getTextTruncation, selectAllInView, useAccordionGroup, useAccordionGroupSection, usePortalContainer };
-export type { AccordionProps, ActivityModalProps, ActivityOperationCardProps, AreaChartProps, AreaChartSeries, AutoCompleteOption, AutoCompleteProps, ButtonProps, ButtonWithInsetProps, CardGridProps, CardProps, CenteredTextProps, CheckboxProps, ChipInputProps, ChipOption, ChipProps, ColorPickerProps, ConfirmModalProps, ContainerProps$1 as ContainerProps, ContentProps, ContextMenuProps, DataGridCellLayoutProps, DataGridColumn, DataGridColumnConfig, DataGridColumnKey, DataGridHeaderProps, DataGridProps, DataGridRender, DataGridRenderContext, DataGridRowData, DataGridRowProps, DataGridSort, DataGridSortDirection, DataGridValue, DateDetailProps, DateInputProps, DateRangeProps, DetailProps, DisabledOverlayProps, DividerProps, DropOverlayProps, DropdownOption, DropdownProps, FilterHeaderProps, FilterMenuProps, FooterProps$1 as FooterProps, HeaderContentProps, HeaderProps, HeaderWrapperProps, IconButtonProps, IconLayer, IconName, IconPickerProps, IconProps, InputProps, ListItemProps, ListProps, LoadingOverlayProps, LogOpsInputProps, MenuButtonProps, MultiActionButtonProps, MultiInputListProps, MultiInputProps, MultiInputRowOption, MultiInputRowProps, NumInputProps, NumRangeProps, PaginationProps, PillProps, ProgressBarProps, ProgressCircleProps, RadioProps, RangeWrapperProps, SelectionButtonProps, SelectionButtonsProps, ServerStatusIpc, ServerStatusMessageType, ServerStatusSyncProps, SliderMark, SliderProps, SortMenuProps, SortRowProps, TabContainerProps, TableColumn, TableProps, TextPreset, TextProps, TextTruncation, TimeInputProps, TooltipProps$1 as TooltipProps, TooltipWrapperProps, TruncatedTextProps, TruncatedTextRemainderProps, UniformListProps, ViewProps };
+export { Accordion, AccordionGroup, ActivityModal, ActivityOperationCard, AreaChart, AutoComplete, Button, ButtonWithInset, Card, CardBase, CardGrid, CenteredText, Checkbox, Chip, ChipInput, ColorPicker, Comp, ConditionalWrap, ConfirmModal, ContextMenu, DEFAULT_INPUT_HEADER_PROPS, DENSE_INPUT_PADDING, DataGrid, DataGridHeader, DataGridRow, DateDetail, DateInput, DateRange, DeselectAllButton, Detail, DetailRows, DisabledOverlay, Divider, DropOverlay, Dropdown, FilterHeader, FilterMenu, HeaderContent, HeaderWrapper, Icon, IconButton, IconPicker, Input, Link, List, ListItem, LoadingOverlay, LogOpsInput, MULTI_INPUT_ROW_HEIGHT, MenuButton, Modal, MuiProvider, MultiActionButton, MultiInput, MultiInputList, MultiInputRow, NumInput, NumRange, Pagination, PickerField, Pill, ProgressBar, ProgressCircle, Radio, RangeWrapper, SelectAllButton, SelectAllInQueryButton, SelectionButtons, ServerStatusSync, SideScroller, Slider, SortMenu, SortRow, PRESETS as TEXT_PRESETS, TabContainer, Table, Text, TimeInput, Tooltip, TooltipWrapper, TruncatedText, UniformList, View, clampDataGridColumnWidth, compareDataGridValues, createAutoCompleteOptions, dataGridCellClasses, getDataGridCellLayout, getDataGridColumnValue, getDataGridValueText, getTextTruncation, selectAllInView, useAccordionGroup, useAccordionGroupSection, usePortalContainer };
+export type { AccordionProps, ActivityModalProps, ActivityOperationCardProps, AreaChartProps, AreaChartSeries, AutoCompleteOption, AutoCompleteProps, ButtonProps, ButtonWithInsetProps, CardGridProps, CardProps, CenteredTextProps, CheckboxProps, ChipInputProps, ChipOption, ChipProps, ColorPickerProps, ConfirmModalProps, ContainerProps$1 as ContainerProps, ContentProps, ContextMenuProps, DataGridCellLayoutProps, DataGridColumn, DataGridColumnConfig, DataGridColumnKey, DataGridHeaderProps, DataGridProps, DataGridRender, DataGridRenderContext, DataGridRowData, DataGridRowProps, DataGridSort, DataGridSortDirection, DataGridValue, DateDetailProps, DateInputProps, DateRangeProps, DetailProps, DisabledOverlayProps, DividerProps, DropOverlayProps, DropdownOption, DropdownProps, FilterHeaderProps, FilterMenuProps, FooterProps$1 as FooterProps, HeaderContentProps, HeaderProps, HeaderWrapperProps, IconButtonProps, IconLayer, IconName, IconPickerProps, IconProps, InputProps, ListItemProps, ListProps, LoadingOverlayProps, LogOpsInputProps, MenuButtonProps, MultiActionButtonProps, MultiInputListProps, MultiInputProps, MultiInputRowOption, MultiInputRowProps, NumInputProps, NumRangeProps, PaginationProps, PickerFieldProps, PillProps, ProgressBarProps, ProgressCircleProps, RadioProps, RangeWrapperProps, SelectionButtonProps, SelectionButtonsProps, ServerStatusIpc, ServerStatusMessageType, ServerStatusSyncProps, SliderMark, SliderProps, SortMenuProps, SortRowProps, TabContainerProps, TableColumn, TableProps, TextPreset, TextProps, TextTruncation, TimeInputProps, TooltipProps$1 as TooltipProps, TooltipWrapperProps, TruncatedTextProps, TruncatedTextRemainderProps, UniformListProps, ViewProps };

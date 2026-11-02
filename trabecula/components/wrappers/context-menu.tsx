@@ -57,7 +57,7 @@ export const ContextMenu = ({ children, disabled, id, menuItems, ...props }: Con
           mouseX !== null && mouseY !== null ? { left: mouseX, top: mouseY } : undefined
         }
         PopoverClasses={{ paper: css.contextMenu }}
-        MenuListProps={{ className: css.contextMenuInner }}
+        slotProps={{ list: { className: css.contextMenuInner } }}
       >
         {menuItems
           .filter(Boolean)

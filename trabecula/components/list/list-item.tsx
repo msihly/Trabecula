@@ -2,6 +2,7 @@ import { MouseEvent, ReactNode } from "react";
 import {
   // eslint-disable-next-line @typescript-eslint/no-restricted-imports
   ListItem as MuiListItem,
+  ListItemButton,
   ListItemIcon,
   // eslint-disable-next-line @typescript-eslint/no-restricted-imports
   ListItemProps as MuiListItemProps,
@@ -44,6 +45,24 @@ export const ListItem = ({
 
   const { css, cx } = useClasses({ color });
 
+  const content = (
+    <>
+      {icon && (
+        <ListItemIcon className={css.icon}>
+          <Icon {...iconProps} name={icon} margins={iconMargins} />
+        </ListItemIcon>
+      )}
+
+      <ListItemText className={css.text}>{text}</ListItemText>
+
+      {iconEnd && (
+        <ListItemIcon className={css.icon}>
+          <Icon name={iconEnd} margins={iconEndMargins} />
+        </ListItemIcon>
+      )}
+    </>
+  );
+
   return (
     <TooltipWrapper
       tooltip={children}
@@ -52,30 +71,23 @@ export const ListItem = ({
         bgColor: Color(colors.custom.black).fade(0.03).hex() as CssColor,
         padding: 0,
         placement: "right-start",
-        PopperProps: { className: css.tooltipPopper },
+        slotProps: { popper: { className: css.tooltipPopper } },
       }}
     >
-      <MuiListItem
-        // @ts-expect-error
-        button={Boolean(onClick)}
-        onClick={onClick}
-        {...props}
-        className={cx(css.root, className)}
-      >
-        {icon && (
-          <ListItemIcon className={css.icon}>
-            <Icon {...iconProps} name={icon} margins={iconMargins} />
-          </ListItemIcon>
-        )}
-
-        <ListItemText className={css.text}>{text}</ListItemText>
-
-        {iconEnd && (
-          <ListItemIcon className={css.icon}>
-            <Icon name={iconEnd} margins={iconEndMargins} />
-          </ListItemIcon>
-        )}
-      </MuiListItem>
+      {onClick ? (
+        <ListItemButton
+          component="li"
+          onClick={onClick}
+          {...props}
+          className={cx(css.root, className)}
+        >
+          {content}
+        </ListItemButton>
+      ) : (
+        <MuiListItem {...props} className={cx(css.root, className)}>
+          {content}
+        </MuiListItem>
+      )}
     </TooltipWrapper>
   );
 };
