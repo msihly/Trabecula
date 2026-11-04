@@ -28,11 +28,11 @@ export const MultiInputList = <T,>({
   const handleDeleteAll = () => search.onChange([]);
 
   return (
-    <View column height="100%">
+    <View column flex={1} minHeight={0}>
       <View
         {...viewProps}
         column
-        height="100%"
+        flex={1}
         borderRadiuses={{
           all: "0.3rem",
           top: hasInput ? 0 : undefined,
@@ -80,7 +80,12 @@ const MultiInputListRow = <T,>({
   renderRow ? (
     renderRow(index, style)
   ) : (
-    <MultiInputRow hasDelete={hasDelete} value={search.value[index]} search={search} style={style} />
+    <MultiInputRow
+      hasDelete={hasDelete}
+      value={search.value[index]}
+      search={search}
+      style={style}
+    />
   );
 
 interface ClassesProps extends Pick<MultiInputListProps, "hasDeleteAll" | "hasInput"> {}

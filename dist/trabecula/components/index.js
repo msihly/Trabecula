@@ -7919,12 +7919,12 @@ var MultiInputList = ({
 }) => {
   const { css } = useClasses14({ hasDeleteAll, hasInput });
   const handleDeleteAll = () => search.onChange([]);
-  return /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(View, { column: true, height: "100%", children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(View, { column: true, flex: 1, minHeight: 0, children: [
     /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
       View,
       __spreadProps(__spreadValues({}, viewProps), {
         column: true,
-        height: "100%",
+        flex: 1,
         borderRadiuses: {
           all: "0.3rem",
           top: hasInput ? 0 : void 0,
@@ -7963,7 +7963,15 @@ var MultiInputListRow = ({
   renderRow,
   search,
   style
-}) => renderRow ? renderRow(index, style) : /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(MultiInputRow, { hasDelete, value: search.value[index], search, style });
+}) => renderRow ? renderRow(index, style) : /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
+  MultiInputRow,
+  {
+    hasDelete,
+    value: search.value[index],
+    search,
+    style
+  }
+);
 var useClasses14 = makeClasses((props) => ({
   listContainer: {
     border: `1px dotted ${colors.custom.grey}`,

@@ -2637,12 +2637,12 @@ var MultiInputList = ({
 }) => {
   const { css } = useClasses13({ hasDeleteAll, hasInput });
   const handleDeleteAll = () => search.onChange([]);
-  return /* @__PURE__ */ jsxs15(View, { column: true, height: "100%", children: [
+  return /* @__PURE__ */ jsxs15(View, { column: true, flex: 1, minHeight: 0, children: [
     /* @__PURE__ */ jsx25(
       View,
       __spreadProps(__spreadValues({}, viewProps), {
         column: true,
-        height: "100%",
+        flex: 1,
         borderRadiuses: {
           all: "0.3rem",
           top: hasInput ? 0 : void 0,
@@ -2681,7 +2681,15 @@ var MultiInputListRow = ({
   renderRow,
   search,
   style
-}) => renderRow ? renderRow(index, style) : /* @__PURE__ */ jsx25(MultiInputRow, { hasDelete, value: search.value[index], search, style });
+}) => renderRow ? renderRow(index, style) : /* @__PURE__ */ jsx25(
+  MultiInputRow,
+  {
+    hasDelete,
+    value: search.value[index],
+    search,
+    style
+  }
+);
 var useClasses13 = makeClasses((props) => ({
   listContainer: {
     border: `1px dotted ${colors.custom.grey}`,
@@ -7086,4 +7094,4 @@ export {
   usePortalContainer,
   MuiProvider
 };
-//# sourceMappingURL=chunk-UCKNENKD.mjs.map
+//# sourceMappingURL=chunk-J3EPVCLR.mjs.map
