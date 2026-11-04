@@ -1505,13 +1505,13 @@ var ColorPicker = Comp(
       __spreadProps(__spreadValues({}, buttonProps), {
         onClick: onOpen,
         color,
-        justify: "space-between",
+        justify: "center",
         padding: { left: "0.5em", right: "0.5em" },
         width,
         text: /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(View, { row: true, spacing: "0.5rem", align: "center", children: [
-          noIcon ? /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(View, {}) : /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Icon, { name: "Palette", size: "1.15em" }),
+          !noIcon && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Icon, { name: "Palette", size: "1.15em" }),
           /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Text, { lineHeight: 1, children: label }),
-          value !== null && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Icon, { name: "Circle", color: value })
+          value !== null && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Icon, { name: "Circle", color: value, size: "1.15em" })
         ] })
       })
     );
@@ -6537,12 +6537,12 @@ var IconPicker = Comp(
       __spreadProps(__spreadValues({}, buttonProps), {
         onClick: onOpen,
         color,
-        justify: "space-between",
+        justify: "center",
         padding: { left: "0.5em", right: "0.5em" },
         width,
-        text: /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(View, { row: true, spacing: "0.5rem", align: "center", padding: { left: "0.5rem" }, children: [
+        text: /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(View, { row: true, spacing: "0.5rem", align: "center", children: [
           /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Text, { lineHeight: 1, children: label }),
-          value && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Icon, { name: value })
+          value && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Icon, { name: value, size: "1.15em" })
         ] })
       })
     );

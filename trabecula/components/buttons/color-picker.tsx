@@ -61,16 +61,16 @@ export const ColorPicker = Comp(
         {...buttonProps}
         onClick={onOpen}
         color={color}
-        justify="space-between"
+        justify="center"
         padding={{ left: "0.5em", right: "0.5em" }}
         width={width}
         text={
           <View row spacing="0.5rem" align="center">
-            {noIcon ? <View /> : <Icon name="Palette" size="1.15em" />}
+            {!noIcon && <Icon name="Palette" size="1.15em" />}
 
             <Text lineHeight={1}>{label}</Text>
 
-            {value !== null && <Icon name="Circle" color={value} />}
+            {value !== null && <Icon name="Circle" color={value} size="1.15em" />}
           </View>
         }
       />

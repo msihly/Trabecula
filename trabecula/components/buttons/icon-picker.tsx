@@ -92,14 +92,14 @@ export const IconPicker = Comp(
         {...buttonProps}
         onClick={onOpen}
         color={color}
-        justify="space-between"
+        justify="center"
         padding={{ left: "0.5em", right: "0.5em" }}
         width={width}
         text={
-          <View row spacing="0.5rem" align="center" padding={{ left: "0.5rem" }}>
+          <View row spacing="0.5rem" align="center">
             <Text lineHeight={1}>{label}</Text>
 
-            {value && <Icon name={value} />}
+            {value && <Icon name={value} size="1.15em" />}
           </View>
         }
       />
