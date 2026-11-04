@@ -1511,7 +1511,7 @@ var ColorPicker = Comp(
         text: /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(View, { row: true, spacing: "0.5rem", align: "center", children: [
           noIcon ? /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(View, {}) : /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Icon, { name: "Palette", size: "1.15em" }),
           /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Text, { lineHeight: 1, children: label }),
-          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Icon, { name: "Circle", color: value === null ? "transparent" : value })
+          value !== null && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Icon, { name: "Circle", color: value })
         ] })
       })
     );
@@ -6542,7 +6542,7 @@ var IconPicker = Comp(
         width,
         text: /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(View, { row: true, spacing: "0.5rem", align: "center", padding: { left: "0.5rem" }, children: [
           /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Text, { lineHeight: 1, children: label }),
-          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Icon, { name: value })
+          value && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Icon, { name: value })
         ] })
       })
     );

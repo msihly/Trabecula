@@ -908,7 +908,7 @@ var ColorPicker = Comp(
         text: /* @__PURE__ */ jsxs4(View, { row: true, spacing: "0.5rem", align: "center", children: [
           noIcon ? /* @__PURE__ */ jsx5(View, {}) : /* @__PURE__ */ jsx5(Icon, { name: "Palette", size: "1.15em" }),
           /* @__PURE__ */ jsx5(Text, { lineHeight: 1, children: label }),
-          /* @__PURE__ */ jsx5(Icon, { name: "Circle", color: value === null ? "transparent" : value })
+          value !== null && /* @__PURE__ */ jsx5(Icon, { name: "Circle", color: value })
         ] })
       })
     );
@@ -1054,7 +1054,7 @@ var IconPicker = Comp(
         width,
         text: /* @__PURE__ */ jsxs6(View, { row: true, spacing: "0.5rem", align: "center", padding: { left: "0.5rem" }, children: [
           /* @__PURE__ */ jsx7(Text, { lineHeight: 1, children: label }),
-          /* @__PURE__ */ jsx7(Icon, { name: value })
+          value && /* @__PURE__ */ jsx7(Icon, { name: value })
         ] })
       })
     );
@@ -7086,4 +7086,4 @@ export {
   usePortalContainer,
   MuiProvider
 };
-//# sourceMappingURL=chunk-QPPMS2GU.mjs.map
+//# sourceMappingURL=chunk-3RD4NWOI.mjs.map

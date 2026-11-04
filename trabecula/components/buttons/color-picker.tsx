@@ -70,7 +70,7 @@ export const ColorPicker = Comp(
 
             <Text lineHeight={1}>{label}</Text>
 
-            <Icon name="Circle" color={value === null ? "transparent" : value} />
+            {value !== null && <Icon name="Circle" color={value} />}
           </View>
         }
       />

@@ -99,7 +99,7 @@ export const IconPicker = Comp(
           <View row spacing="0.5rem" align="center" padding={{ left: "0.5rem" }}>
             <Text lineHeight={1}>{label}</Text>
 
-            <Icon name={value} />
+            {value && <Icon name={value} />}
           </View>
         }
       />
