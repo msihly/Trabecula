@@ -5882,6 +5882,7 @@ var Chip2 = Comp(
       label,
       padding,
       radiuses,
+      size = "small",
       width
     } = _b, props = __objRest(_b, [
       "bgColor",
@@ -5896,6 +5897,7 @@ var Chip2 = Comp(
       "label",
       "padding",
       "radiuses",
+      "size",
       "width"
     ]);
     const { css, cx } = useClasses42({
@@ -5911,6 +5913,7 @@ var Chip2 = Comp(
     return /* @__PURE__ */ jsx69(
       MuiChip,
       __spreadProps(__spreadValues({}, props), {
+        size,
         label,
         icon: icon ? /* @__PURE__ */ jsx69(
           Icon,
@@ -7100,4 +7103,4 @@ export {
   usePortalContainer,
   MuiProvider
 };
-//# sourceMappingURL=chunk-ELMGE2AN.mjs.map
+//# sourceMappingURL=chunk-DCPJTA2F.mjs.map

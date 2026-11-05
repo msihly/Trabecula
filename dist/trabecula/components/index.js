@@ -11142,6 +11142,7 @@ var Chip2 = Comp(
       label,
       padding,
       radiuses,
+      size = "small",
       width
     } = _b, props = __objRest(_b, [
       "bgColor",
@@ -11156,6 +11157,7 @@ var Chip2 = Comp(
       "label",
       "padding",
       "radiuses",
+      "size",
       "width"
     ]);
     const { css, cx } = useClasses43({
@@ -11171,6 +11173,7 @@ var Chip2 = Comp(
     return /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(
       import_material31.Chip,
       __spreadProps(__spreadValues({}, props), {
+        size,
         label,
         icon: icon ? /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(
           Icon,

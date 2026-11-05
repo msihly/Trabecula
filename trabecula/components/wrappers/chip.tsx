@@ -41,6 +41,7 @@ export const Chip = Comp(
     label,
     padding,
     radiuses,
+    size = "small",
     width,
     ...props
   }: ChipProps) => {
@@ -58,6 +59,7 @@ export const Chip = Comp(
     return (
       <MuiChip
         {...props}
+        size={size}
         label={label}
         icon={
           icon ? (
