@@ -161,7 +161,7 @@ const useClasses = makeClasses((props: ClassesProps) => ({
       borderRight: `2px solid ${Color(props.color).lighten(0.4).string()}`,
     },
     backgroundColor: props.color,
-    color: colors.custom.grey,
+    color: colors.custom.lightGrey,
     height: props.tabHeight,
     minHeight: 0,
     minWidth: "7em",
@@ -171,7 +171,8 @@ const useClasses = makeClasses((props: ClassesProps) => ({
     whiteSpace: "break-spaces",
   },
   tabList: {
-    "& .MuiTabs-indicator": { display: "none" },
+    // Marks the selected tab, whose background matches the others.
+    "& .MuiTabs-indicator": { backgroundColor: colors.custom.blue },
     backgroundColor: props.color,
     borderRadius: props.withBorder ? `${props.borderRadius} ${props.borderRadius} 0 0` : undefined,
     flex: 1,

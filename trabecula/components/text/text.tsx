@@ -14,7 +14,7 @@ import {
 } from "trabecula/utils/client";
 
 export type TextPreset =
-  "default" | "detail-label" | "label-glow" | "sub-text" | "sub-text-muted" | "title";
+  "default" | "detail-label" | "faint-info" | "label-glow" | "sub-text" | "title";
 
 const SUB_TEXT: CSS = {
   fontWeight: 400,
@@ -34,6 +34,14 @@ const PRESETS: Record<TextPreset, CSS> = {
     fontWeight: 500,
     whiteSpace: "nowrap",
   },
+  /**
+   * Faint, low-priority details for advanced users, such as IDs and counts. Too low in contrast
+   * for subtitles, labels, or other text meant to be read on most surfaces; use `sub-text`.
+   */
+  "faint-info": {
+    ...SUB_TEXT,
+    color: colors.custom.grey,
+  },
   "label-glow": {
     color: colors.custom.white,
     fontWeight: 400,
@@ -45,10 +53,6 @@ const PRESETS: Record<TextPreset, CSS> = {
   "sub-text": {
     ...SUB_TEXT,
     color: colors.custom.lightGrey,
-  },
-  "sub-text-muted": {
-    ...SUB_TEXT,
-    color: colors.custom.grey,
   },
   title: {
     color: colors.custom.white,

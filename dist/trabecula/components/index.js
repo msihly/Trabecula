@@ -730,6 +730,7 @@ var customColors = {
   brown: "#6d4c41",
   darkGrey: "#2b2b2b",
   green: "#2e7d32",
+  /** Recedes on the app's dark surfaces, too dark for text meant to be read; use lightGrey. */
   grey: "#4b4b4b",
   lightBlue: "#578cdd",
   lightGrey: "#bdbdbd",
@@ -9856,6 +9857,13 @@ var PRESETS = {
     fontWeight: 500,
     whiteSpace: "nowrap"
   },
+  /**
+   * Faint, low-priority details for advanced users, such as IDs and counts. Too low in contrast
+   * for subtitles, labels, or other text meant to be read on most surfaces; use `sub-text`.
+   */
+  "faint-info": __spreadProps(__spreadValues({}, SUB_TEXT), {
+    color: colors.custom.grey
+  }),
   "label-glow": {
     color: colors.custom.white,
     fontWeight: 400,
@@ -9866,9 +9874,6 @@ var PRESETS = {
   },
   "sub-text": __spreadProps(__spreadValues({}, SUB_TEXT), {
     color: colors.custom.lightGrey
-  }),
-  "sub-text-muted": __spreadProps(__spreadValues({}, SUB_TEXT), {
-    color: colors.custom.grey
   }),
   title: {
     color: colors.custom.white,
@@ -11939,7 +11944,7 @@ var useClasses50 = makeClasses((props) => {
         borderRight: `2px solid ${(0, import_color15.default)(props.color).lighten(0.4).string()}`
       },
       backgroundColor: props.color,
-      color: colors.custom.grey,
+      color: colors.custom.lightGrey,
       height: props.tabHeight,
       minHeight: 0,
       minWidth: "7em",
@@ -11949,7 +11954,8 @@ var useClasses50 = makeClasses((props) => {
       whiteSpace: "break-spaces"
     },
     tabList: {
-      "& .MuiTabs-indicator": { display: "none" },
+      // Marks the selected tab, whose background matches the others.
+      "& .MuiTabs-indicator": { backgroundColor: colors.custom.blue },
       backgroundColor: props.color,
       borderRadius: props.withBorder ? `${props.borderRadius} ${props.borderRadius} 0 0` : void 0,
       flex: 1,

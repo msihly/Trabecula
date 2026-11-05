@@ -86,6 +86,7 @@ declare const colors: {
         readonly brown: "#6d4c41";
         readonly darkGrey: "#2b2b2b";
         readonly green: "#2e7d32";
+        /** Recedes on the app's dark surfaces, too dark for text meant to be read; use lightGrey. */
         readonly grey: "#4b4b4b";
         readonly lightBlue: "#578cdd";
         readonly lightGrey: "#bdbdbd";

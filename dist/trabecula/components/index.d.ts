@@ -822,7 +822,7 @@ interface LinkProps extends Omit<LinkProps$1, "color"> {
 }
 declare const Link: ({ bold, children, className, color, rel, target, underline, ...props }: LinkProps) => react.JSX.Element;
 
-type TextPreset = "default" | "detail-label" | "label-glow" | "sub-text" | "sub-text-muted" | "title";
+type TextPreset = "default" | "detail-label" | "faint-info" | "label-glow" | "sub-text" | "title";
 declare const PRESETS: Record<TextPreset, CSS>;
 interface TextProps extends Omit<TypographyProps, "color" | "component" | "title" | "variant"> {
     alignSelf?: CSS["alignSelf"];
