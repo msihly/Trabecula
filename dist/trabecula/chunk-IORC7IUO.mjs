@@ -1699,7 +1699,7 @@ var Input = Comp((rawProps, ref) => {
     color,
     dense = false,
     flex,
-    fontFamily = "Roboto",
+    fontFamily = "Karla",
     fontSize,
     fontWeight,
     hasHelper = false,
@@ -4646,7 +4646,7 @@ var Text = (_a) => {
     display,
     flex,
     flexShrink,
-    fontFamily = "Roboto",
+    fontFamily = "Karla",
     fontSize,
     fontWeight,
     italic = false,
@@ -5204,7 +5204,7 @@ var useClasses33 = makeClasses((props) => ({
     "&:hover": props.noHover ? {} : { backgroundColor: Color8(props.color).fade(0.8).string() },
     "& .MuiFormControlLabel-label": {
       paddingRight: "0.4rem",
-      fontFamily: "Roboto"
+      fontFamily: "Karla"
     }
   })
 }));
@@ -6872,21 +6872,22 @@ import { TssCacheProvider } from "tss-react";
 import { jsx as jsx83 } from "react/jsx-runtime";
 var PortalContainerContext = createContext2(void 0);
 var usePortalContainer = () => useContext2(PortalContainerContext);
+var makeTheme = ({ portalContainer, titleBarHeight } = {}) => createTheme({
+  components: {
+    MuiDialog: { styleOverrides: { root: { top: titleBarHeight } } },
+    MuiModal: { defaultProps: { container: portalContainer } },
+    MuiPopover: { defaultProps: { container: portalContainer } },
+    MuiPopper: { defaultProps: { container: portalContainer } }
+  },
+  palette: { mode: "dark" },
+  typography: { fontFamily: "Karla" }
+});
 var MuiProvider = ({
   children,
   portalContainer,
   styleContainer
 }) => {
-  const [theme] = useState25(
-    () => createTheme({
-      components: {
-        MuiModal: { defaultProps: { container: portalContainer } },
-        MuiPopover: { defaultProps: { container: portalContainer } },
-        MuiPopper: { defaultProps: { container: portalContainer } }
-      },
-      palette: { mode: "dark" }
-    })
-  );
+  const [theme] = useState25(() => makeTheme({ portalContainer }));
   const [muiCache] = useState25(
     () => createCache({ container: styleContainer, key: "mui", prepend: true, stylisPlugins: [] })
   );
@@ -6966,7 +6967,7 @@ var useClasses52 = makeClasses({
     "& .Toastify__toast": {
       border: "none",
       color: colors.custom.white,
-      fontFamily: "Roboto",
+      fontFamily: "Karla",
       fontSize: "1.1rem",
       fontWeight: 500,
       whiteSpace: "break-spaces",
@@ -7113,6 +7114,7 @@ export {
   UniformList,
   View,
   usePortalContainer,
+  makeTheme,
   MuiProvider
 };
-//# sourceMappingURL=chunk-2DR4GKRV.mjs.map
+//# sourceMappingURL=chunk-IORC7IUO.mjs.map

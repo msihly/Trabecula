@@ -86,7 +86,7 @@ const useClasses = makeClasses({
     "& .Toastify__toast": {
       border: "none",
       color: colors.custom.white,
-      fontFamily: "Roboto",
+      fontFamily: "Karla",
       fontSize: "1.1rem",
       fontWeight: 500,
       whiteSpace: "break-spaces",

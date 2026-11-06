@@ -78,7 +78,7 @@ export const Input = Comp((rawProps: InputProps, ref?: MutableRefObject<HTMLDivE
     color,
     dense = false,
     flex,
-    fontFamily = "Roboto",
+    fontFamily = "Karla",
     fontSize,
     fontWeight,
     hasHelper = false,

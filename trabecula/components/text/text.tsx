@@ -109,7 +109,7 @@ export const Text = ({
   display,
   flex,
   flexShrink,
-  fontFamily = "Roboto",
+  fontFamily = "Karla",
   fontSize,
   fontWeight,
   italic = false,

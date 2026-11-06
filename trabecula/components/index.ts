@@ -14,4 +14,9 @@ export * from "./text";
 export * from "./toggles";
 export * from "./tooltip";
 export * from "./wrappers";
-export { MuiProvider, usePortalContainer } from "trabecula/views/mui-provider";
+export {
+  makeTheme,
+  type MakeThemeOptions,
+  MuiProvider,
+  usePortalContainer,
+} from "trabecula/views/mui-provider";

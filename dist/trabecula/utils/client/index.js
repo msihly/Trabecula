@@ -7181,7 +7181,7 @@ var Input = Comp((rawProps, ref) => {
     color,
     dense = false,
     flex,
-    fontFamily = "Roboto",
+    fontFamily = "Karla",
     fontSize,
     fontWeight,
     hasHelper = false,
@@ -9368,7 +9368,7 @@ var Text = (_a) => {
     display,
     flex,
     flexShrink,
-    fontFamily = "Roboto",
+    fontFamily = "Karla",
     fontSize,
     fontWeight,
     italic = false,
@@ -9653,7 +9653,7 @@ var useClasses33 = makeClasses((props) => ({
     "&:hover": props.noHover ? {} : { backgroundColor: (0, import_color9.default)(props.color).fade(0.8).string() },
     "& .MuiFormControlLabel-label": {
       paddingRight: "0.4rem",
-      fontFamily: "Roboto"
+      fontFamily: "Karla"
     }
   })
 }));
@@ -10827,7 +10827,7 @@ var useClasses52 = makeClasses({
     "& .Toastify__toast": {
       border: "none",
       color: colors.custom.white,
-      fontFamily: "Roboto",
+      fontFamily: "Karla",
       fontSize: "1.1rem",
       fontWeight: 500,
       whiteSpace: "break-spaces",

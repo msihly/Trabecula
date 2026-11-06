@@ -19,6 +19,14 @@
   src: url("./fonts/avenir-heavy.woff2") format("woff2");
 }
 
+/* A variable font, so one file covers every weight, limited to its own weight axis. */
+@font-face {
+  font-family: "Karla";
+  font-weight: 100 900;
+  font-style: normal;
+  src: url("./fonts/karla.woff2") format("woff2");
+}
+
 @font-face {
   font-family: "Roboto";
   font-weight: 400 500;

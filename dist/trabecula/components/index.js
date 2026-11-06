@@ -171,6 +171,7 @@ __export(components_exports, {
   getDataGridColumnValue: () => getDataGridColumnValue,
   getDataGridValueText: () => getDataGridValueText,
   getTextTruncation: () => getTextTruncation,
+  makeTheme: () => makeTheme,
   selectAllInView: () => selectAllInView,
   useAccordionGroup: () => useAccordionGroup,
   useAccordionGroupSection: () => useAccordionGroupSection,
@@ -848,7 +849,7 @@ var useClasses = makeClasses({
     "& .Toastify__toast": {
       border: "none",
       color: colors.custom.white,
-      fontFamily: "Roboto",
+      fontFamily: "Karla",
       fontSize: "1.1rem",
       fontWeight: 500,
       whiteSpace: "break-spaces",
@@ -6981,7 +6982,7 @@ var Input = Comp((rawProps, ref) => {
     color,
     dense = false,
     flex,
-    fontFamily = "Roboto",
+    fontFamily = "Karla",
     fontSize,
     fontWeight,
     hasHelper = false,
@@ -9908,7 +9909,7 @@ var Text = (_a) => {
     display,
     flex,
     flexShrink,
-    fontFamily = "Roboto",
+    fontFamily = "Karla",
     fontSize,
     fontWeight,
     italic = false,
@@ -10464,7 +10465,7 @@ var useClasses34 = makeClasses((props) => ({
     "&:hover": props.noHover ? {} : { backgroundColor: (0, import_color9.default)(props.color).fade(0.8).string() },
     "& .MuiFormControlLabel-label": {
       paddingRight: "0.4rem",
-      fontFamily: "Roboto"
+      fontFamily: "Karla"
     }
   })
 }));
@@ -12132,21 +12133,22 @@ var import_tss_react2 = require("tss-react");
 var import_jsx_runtime84 = require("react/jsx-runtime");
 var PortalContainerContext = (0, import_react33.createContext)(void 0);
 var usePortalContainer = () => (0, import_react33.useContext)(PortalContainerContext);
+var makeTheme = ({ portalContainer, titleBarHeight } = {}) => (0, import_material36.createTheme)({
+  components: {
+    MuiDialog: { styleOverrides: { root: { top: titleBarHeight } } },
+    MuiModal: { defaultProps: { container: portalContainer } },
+    MuiPopover: { defaultProps: { container: portalContainer } },
+    MuiPopper: { defaultProps: { container: portalContainer } }
+  },
+  palette: { mode: "dark" },
+  typography: { fontFamily: "Karla" }
+});
 var MuiProvider = ({
   children,
   portalContainer,
   styleContainer
 }) => {
-  const [theme] = (0, import_react33.useState)(
-    () => (0, import_material36.createTheme)({
-      components: {
-        MuiModal: { defaultProps: { container: portalContainer } },
-        MuiPopover: { defaultProps: { container: portalContainer } },
-        MuiPopper: { defaultProps: { container: portalContainer } }
-      },
-      palette: { mode: "dark" }
-    })
-  );
+  const [theme] = (0, import_react33.useState)(() => makeTheme({ portalContainer }));
   const [muiCache] = (0, import_react33.useState)(
     () => (0, import_cache.default)({ container: styleContainer, key: "mui", prepend: true, stylisPlugins: [] })
   );
@@ -12248,6 +12250,7 @@ var MuiProvider = ({
   getDataGridColumnValue,
   getDataGridValueText,
   getTextTruncation,
+  makeTheme,
   selectAllInView,
   useAccordionGroup,
   useAccordionGroupSection,

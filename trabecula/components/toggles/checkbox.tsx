@@ -142,7 +142,7 @@ const useClasses = makeClasses((props: ClassesProps) => ({
     "&:hover": props.noHover ? {} : { backgroundColor: Color(props.color).fade(0.8).string() },
     "& .MuiFormControlLabel-label": {
       paddingRight: "0.4rem",
-      fontFamily: "Roboto",
+      fontFamily: "Karla",
     },
   },
 }));
