@@ -2945,6 +2945,11 @@ var useClasses14 = makeClasses((props) => {
       },
       "& .MuiIconButton-root": {
         padding: "0.2rem"
+      },
+      // The pickers pad their text taller than the field's fixed height, so the field centers it.
+      "& .MuiPickersInputBase-sectionsContainer": {
+        paddingBottom: 0,
+        paddingTop: 0
       }
     }
   };
@@ -7153,4 +7158,4 @@ export {
   makeTheme,
   MuiProvider
 };
-//# sourceMappingURL=chunk-ROQCYHQM.mjs.map
+//# sourceMappingURL=chunk-233Y3TRX.mjs.map

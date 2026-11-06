@@ -81,5 +81,10 @@ const useClasses = makeClasses((props: ClassesProps) => ({
     "& .MuiIconButton-root": {
       padding: "0.2rem",
     },
+    // The pickers pad their text taller than the field's fixed height, so the field centers it.
+    "& .MuiPickersInputBase-sectionsContainer": {
+      paddingBottom: 0,
+      paddingTop: 0,
+    },
   },
 }));
