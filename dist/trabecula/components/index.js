@@ -6897,6 +6897,7 @@ var DateRange = Comp(
     setStartDate,
     startDate
   }) => {
+    const viewProps = __spreadValues({ flex: 1, minWidth: 0 }, dateInputProps.viewProps);
     return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
       RangeWrapper,
       {
@@ -6907,7 +6908,8 @@ var DateRange = Comp(
           __spreadProps(__spreadValues({}, dateInputProps), {
             value: startDate,
             setValue: setStartDate,
-            inputProps: { borderRadiuses: { top: 0, right: 0 } }
+            inputProps: { borderRadiuses: { top: 0, right: 0 } },
+            viewProps
           })
         ),
         endInput: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
@@ -6915,7 +6917,8 @@ var DateRange = Comp(
           __spreadProps(__spreadValues({}, dateInputProps), {
             value: endDate,
             setValue: setEndDate,
-            inputProps: { borderRadiuses: { top: 0, left: 0 } }
+            inputProps: { borderRadiuses: { top: 0, left: 0 } },
+            viewProps
           })
         )
       }
