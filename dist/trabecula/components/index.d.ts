@@ -1073,6 +1073,11 @@ declare const CardGrid: react.ForwardRefExoticComponent<CardGridProps & react.Re
 interface ChipProps extends Omit<ChipProps$2, "color" | "icon"> {
     bgColor?: CssColor;
     color?: CssColor;
+    /**
+     * Splits the chip into a fraction, with the label as the numerator and this as the denominator,
+     * on a darker side past a diagonal.
+     */
+    denominator?: ReactNode;
     fontSize?: CSS["fontSize"];
     fontWeight?: CSS["fontWeight"];
     height?: CSS["height"];

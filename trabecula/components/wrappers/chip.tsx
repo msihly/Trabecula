@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 // eslint-disable-next-line @typescript-eslint/no-restricted-imports
 import { Chip as MuiChip, ChipProps as MuiChipProps } from "@mui/material";
-import { Comp, Icon, IconName, IconProps } from "trabecula/components";
+import { Comp, Icon, IconName, IconProps, View } from "trabecula/components";
 import {
   BorderRadiuses,
   CSS,
@@ -12,9 +12,17 @@ import {
   Padding,
 } from "trabecula/utils/client";
 
+/** How far the diagonal between a fraction's sides leans. */
+const FRACTION_SLANT = "0.4em";
+
 export interface ChipProps extends Omit<MuiChipProps, "color" | "icon"> {
   bgColor?: CssColor;
   color?: CssColor;
+  /**
+   * Splits the chip into a fraction, with the label as the numerator and this as the denominator,
+   * on a darker side past a diagonal.
+   */
+  denominator?: ReactNode;
   fontSize?: CSS["fontSize"];
   fontWeight?: CSS["fontWeight"];
   height?: CSS["height"];
@@ -32,6 +40,7 @@ export const Chip = Comp(
     bgColor,
     className,
     color,
+    denominator,
     fontSize,
     fontWeight,
     height,
@@ -45,6 +54,8 @@ export const Chip = Comp(
     width,
     ...props
   }: ChipProps) => {
+    const isFraction = denominator != null;
+
     const { css, cx } = useClasses({
       bgColor,
       color,
@@ -60,7 +71,21 @@ export const Chip = Comp(
       <MuiChip
         {...props}
         size={size}
-        label={label}
+        label={
+          isFraction ? (
+            <>
+              <View row align="center" className={css.numerator}>
+                {label}
+              </View>
+
+              <View row align="center" className={css.denominator}>
+                {denominator}
+              </View>
+            </>
+          ) : (
+            label
+          )
+        }
         icon={
           icon ? (
             <Icon
@@ -72,7 +97,7 @@ export const Chip = Comp(
             />
           ) : undefined
         }
-        className={cx(css.chip, className)}
+        className={cx(css.chip, isFraction && css.fraction, className)}
       />
     );
   },
@@ -96,5 +121,25 @@ const useClasses = makeClasses((props: ClassesProps) => ({
       fontSize: props.fontSize,
       fontWeight: props.fontWeight,
     },
+  },
+  denominator: {
+    height: "100%",
+    marginLeft: `-${FRACTION_SLANT}`,
+    padding: `0 0.6em 0 calc(0.35em + ${FRACTION_SLANT})`,
+    backgroundColor: "rgba(0, 0, 0, 0.35)",
+    clipPath: `polygon(${FRACTION_SLANT} 0, 100% 0, 100% 100%, 0 100%)`,
+  },
+  /** The sides fill the chip, which clips the denominator's background to its rounded corners. */
+  fraction: {
+    overflow: "hidden",
+    "& > .MuiChip-label": {
+      display: "flex",
+      height: "100%",
+      padding: 0,
+    },
+  },
+  numerator: {
+    height: "100%",
+    padding: `0 calc(0.3em + ${FRACTION_SLANT}) 0 0.6em`,
   },
 }));

@@ -13,7 +13,7 @@ type Borders = {
     left?: CSS["borderLeft"];
 };
 declare const makeBorders: (props?: Borders) => {
-    border: readonly (string | (string & {}))[] | csstype.Property.Border<string | number> | readonly NonNullable<csstype.Property.Border<string | number>>[];
+    border: csstype.Property.Border<string | number> | readonly NonNullable<csstype.Property.Border<string | number>>[] | readonly (string | (string & {}))[];
     borderTop: readonly (string | (string & {}))[] | csstype.Property.BorderTop<string | number> | readonly NonNullable<csstype.Property.BorderTop<string | number>>[];
     borderBottom: readonly (string | (string & {}))[] | csstype.Property.BorderBottom<string | number> | readonly NonNullable<csstype.Property.BorderBottom<string | number>>[];
     borderRight: readonly (string | (string & {}))[] | csstype.Property.BorderRight<string | number> | readonly NonNullable<csstype.Property.BorderRight<string | number>>[];

@@ -1,7 +1,7 @@
 import { AriaAttributes } from "react";
 import { LinearProgress } from "@mui/material";
 import Color from "color";
-import { Comp, Text, View, ViewProps } from "trabecula/components";
+import { Chip, Comp, Text, View, ViewProps } from "trabecula/components";
 import { colors, CSS, makeClasses } from "trabecula/utils/client";
 
 export interface ProgressBarProps extends Pick<AriaAttributes, "aria-label" | "aria-labelledby"> {
@@ -23,21 +23,22 @@ export const ProgressBar = Comp((props: ProgressBarProps) => {
   return (
     <View row flex={1} align="center" spacing="1rem" {...props.viewProps}>
       {props.withText ? (
-        <View row spacing="0.5rem">
-          <Text minWidth={minWidth} textAlign="center">
-            {props.numerator > -1
-              ? (props.numeratorFormatter?.(props.numerator) ?? props.numerator)
-              : "--"}
-          </Text>
-
-          <Text>{"/"}</Text>
-
-          <Text minWidth={minWidth} textAlign="center" color={colors.custom.lightGrey}>
-            {props.denominator > -1
-              ? (props.denominatorFormatter?.(props.denominator) ?? props.denominator)
-              : "--"}
-          </Text>
-        </View>
+        <Chip
+          label={
+            <Text minWidth={minWidth} textAlign="center">
+              {props.numerator > -1
+                ? (props.numeratorFormatter?.(props.numerator) ?? props.numerator)
+                : "--"}
+            </Text>
+          }
+          denominator={
+            <Text minWidth={minWidth} textAlign="center">
+              {props.denominator > -1
+                ? (props.denominatorFormatter?.(props.denominator) ?? props.denominator)
+                : "--"}
+            </Text>
+          }
+        />
       ) : null}
 
       <LinearProgress

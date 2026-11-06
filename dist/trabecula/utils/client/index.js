@@ -8945,11 +8945,13 @@ var ProgressBar = Comp((props) => {
   const minWidth = (props == null ? void 0 : props.minWidth) || "2em";
   const { css } = useClasses23(null);
   return /* @__PURE__ */ (0, import_jsx_runtime42.jsxs)(View, __spreadProps(__spreadValues({ row: true, flex: 1, align: "center", spacing: "1rem" }, props.viewProps), { children: [
-    props.withText ? /* @__PURE__ */ (0, import_jsx_runtime42.jsxs)(View, { row: true, spacing: "0.5rem", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime42.jsx)(Text, { minWidth, textAlign: "center", children: props.numerator > -1 ? (_b = (_a = props.numeratorFormatter) == null ? void 0 : _a.call(props, props.numerator)) != null ? _b : props.numerator : "--" }),
-      /* @__PURE__ */ (0, import_jsx_runtime42.jsx)(Text, { children: "/" }),
-      /* @__PURE__ */ (0, import_jsx_runtime42.jsx)(Text, { minWidth, textAlign: "center", color: colors.custom.lightGrey, children: props.denominator > -1 ? (_d = (_c = props.denominatorFormatter) == null ? void 0 : _c.call(props, props.denominator)) != null ? _d : props.denominator : "--" })
-    ] }) : null,
+    props.withText ? /* @__PURE__ */ (0, import_jsx_runtime42.jsx)(
+      Chip2,
+      {
+        label: /* @__PURE__ */ (0, import_jsx_runtime42.jsx)(Text, { minWidth, textAlign: "center", children: props.numerator > -1 ? (_b = (_a = props.numeratorFormatter) == null ? void 0 : _a.call(props, props.numerator)) != null ? _b : props.numerator : "--" }),
+        denominator: /* @__PURE__ */ (0, import_jsx_runtime42.jsx)(Text, { minWidth, textAlign: "center", children: props.denominator > -1 ? (_d = (_c = props.denominatorFormatter) == null ? void 0 : _c.call(props, props.denominator)) != null ? _d : props.denominator : "--" })
+      }
+    ) : null,
     /* @__PURE__ */ (0, import_jsx_runtime42.jsx)(
       import_material19.LinearProgress,
       {
@@ -10102,12 +10104,14 @@ var useClasses41 = makeClasses((props, theme) => ({
 // trabecula/components/wrappers/chip.tsx
 var import_material31 = require("@mui/material");
 var import_jsx_runtime69 = require("react/jsx-runtime");
+var FRACTION_SLANT = "0.4em";
 var Chip2 = Comp(
   (_a) => {
     var _b = _a, {
       bgColor,
       className,
       color,
+      denominator,
       fontSize,
       fontWeight,
       height,
@@ -10123,6 +10127,7 @@ var Chip2 = Comp(
       "bgColor",
       "className",
       "color",
+      "denominator",
       "fontSize",
       "fontWeight",
       "height",
@@ -10135,6 +10140,7 @@ var Chip2 = Comp(
       "size",
       "width"
     ]);
+    const isFraction = denominator != null;
     const { css, cx } = useClasses42({
       bgColor,
       color,
@@ -10149,7 +10155,10 @@ var Chip2 = Comp(
       import_material31.Chip,
       __spreadProps(__spreadValues({}, props), {
         size,
-        label,
+        label: isFraction ? /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(import_jsx_runtime69.Fragment, { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(View, { row: true, align: "center", className: css.numerator, children: label }),
+          /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(View, { row: true, align: "center", className: css.denominator, children: denominator })
+        ] }) : label,
         icon: icon ? /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
           Icon,
           __spreadValues({
@@ -10159,7 +10168,7 @@ var Chip2 = Comp(
             margins: { left: "0.5rem !important" }
           }, iconProps)
         ) : void 0,
-        className: cx(css.chip, className)
+        className: cx(css.chip, isFraction && css.fraction, className)
       })
     );
   }
@@ -10175,7 +10184,27 @@ var useClasses42 = makeClasses((props) => ({
       fontSize: props.fontSize,
       fontWeight: props.fontWeight
     })
-  })
+  }),
+  denominator: {
+    height: "100%",
+    marginLeft: `-${FRACTION_SLANT}`,
+    padding: `0 0.6em 0 calc(0.35em + ${FRACTION_SLANT})`,
+    backgroundColor: "rgba(0, 0, 0, 0.35)",
+    clipPath: `polygon(${FRACTION_SLANT} 0, 100% 0, 100% 100%, 0 100%)`
+  },
+  /** The sides fill the chip, which clips the denominator's background to its rounded corners. */
+  fraction: {
+    overflow: "hidden",
+    "& > .MuiChip-label": {
+      display: "flex",
+      height: "100%",
+      padding: 0
+    }
+  },
+  numerator: {
+    height: "100%",
+    padding: `0 calc(0.3em + ${FRACTION_SLANT}) 0 0.6em`
+  }
 }));
 
 // trabecula/components/wrappers/conditional.tsx

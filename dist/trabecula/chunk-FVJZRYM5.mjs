@@ -3598,11 +3598,13 @@ var ProgressBar = Comp((props) => {
   const minWidth = (props == null ? void 0 : props.minWidth) || "2em";
   const { css } = useClasses23(null);
   return /* @__PURE__ */ jsxs22(View, __spreadProps(__spreadValues({ row: true, flex: 1, align: "center", spacing: "1rem" }, props.viewProps), { children: [
-    props.withText ? /* @__PURE__ */ jsxs22(View, { row: true, spacing: "0.5rem", children: [
-      /* @__PURE__ */ jsx42(Text, { minWidth, textAlign: "center", children: props.numerator > -1 ? (_b = (_a = props.numeratorFormatter) == null ? void 0 : _a.call(props, props.numerator)) != null ? _b : props.numerator : "--" }),
-      /* @__PURE__ */ jsx42(Text, { children: "/" }),
-      /* @__PURE__ */ jsx42(Text, { minWidth, textAlign: "center", color: colors.custom.lightGrey, children: props.denominator > -1 ? (_d = (_c = props.denominatorFormatter) == null ? void 0 : _c.call(props, props.denominator)) != null ? _d : props.denominator : "--" })
-    ] }) : null,
+    props.withText ? /* @__PURE__ */ jsx42(
+      Chip2,
+      {
+        label: /* @__PURE__ */ jsx42(Text, { minWidth, textAlign: "center", children: props.numerator > -1 ? (_b = (_a = props.numeratorFormatter) == null ? void 0 : _a.call(props, props.numerator)) != null ? _b : props.numerator : "--" }),
+        denominator: /* @__PURE__ */ jsx42(Text, { minWidth, textAlign: "center", children: props.denominator > -1 ? (_d = (_c = props.denominatorFormatter) == null ? void 0 : _c.call(props, props.denominator)) != null ? _d : props.denominator : "--" })
+      }
+    ) : null,
     /* @__PURE__ */ jsx42(
       LinearProgress2,
       {
@@ -5878,13 +5880,15 @@ var useClasses41 = makeClasses((props, theme) => ({
 
 // trabecula/components/wrappers/chip.tsx
 import { Chip as MuiChip } from "@mui/material";
-import { jsx as jsx69 } from "react/jsx-runtime";
+import { Fragment as Fragment7, jsx as jsx69, jsxs as jsxs34 } from "react/jsx-runtime";
+var FRACTION_SLANT = "0.4em";
 var Chip2 = Comp(
   (_a) => {
     var _b = _a, {
       bgColor,
       className,
       color,
+      denominator,
       fontSize,
       fontWeight,
       height,
@@ -5900,6 +5904,7 @@ var Chip2 = Comp(
       "bgColor",
       "className",
       "color",
+      "denominator",
       "fontSize",
       "fontWeight",
       "height",
@@ -5912,6 +5917,7 @@ var Chip2 = Comp(
       "size",
       "width"
     ]);
+    const isFraction = denominator != null;
     const { css, cx } = useClasses42({
       bgColor,
       color,
@@ -5926,7 +5932,10 @@ var Chip2 = Comp(
       MuiChip,
       __spreadProps(__spreadValues({}, props), {
         size,
-        label,
+        label: isFraction ? /* @__PURE__ */ jsxs34(Fragment7, { children: [
+          /* @__PURE__ */ jsx69(View, { row: true, align: "center", className: css.numerator, children: label }),
+          /* @__PURE__ */ jsx69(View, { row: true, align: "center", className: css.denominator, children: denominator })
+        ] }) : label,
         icon: icon ? /* @__PURE__ */ jsx69(
           Icon,
           __spreadValues({
@@ -5936,7 +5945,7 @@ var Chip2 = Comp(
             margins: { left: "0.5rem !important" }
           }, iconProps)
         ) : void 0,
-        className: cx(css.chip, className)
+        className: cx(css.chip, isFraction && css.fraction, className)
       })
     );
   }
@@ -5952,22 +5961,42 @@ var useClasses42 = makeClasses((props) => ({
       fontSize: props.fontSize,
       fontWeight: props.fontWeight
     })
-  })
+  }),
+  denominator: {
+    height: "100%",
+    marginLeft: `-${FRACTION_SLANT}`,
+    padding: `0 0.6em 0 calc(0.35em + ${FRACTION_SLANT})`,
+    backgroundColor: "rgba(0, 0, 0, 0.35)",
+    clipPath: `polygon(${FRACTION_SLANT} 0, 100% 0, 100% 100%, 0 100%)`
+  },
+  /** The sides fill the chip, which clips the denominator's background to its rounded corners. */
+  fraction: {
+    overflow: "hidden",
+    "& > .MuiChip-label": {
+      display: "flex",
+      height: "100%",
+      padding: 0
+    }
+  },
+  numerator: {
+    height: "100%",
+    padding: `0 calc(0.3em + ${FRACTION_SLANT}) 0 0.6em`
+  }
 }));
 
 // trabecula/components/wrappers/conditional.tsx
-import { Fragment as Fragment7, jsx as jsx70 } from "react/jsx-runtime";
+import { Fragment as Fragment8, jsx as jsx70 } from "react/jsx-runtime";
 var ConditionalWrap = ({
   children,
   condition,
   wrap
-}) => condition ? wrap(children) : /* @__PURE__ */ jsx70(Fragment7, { children });
+}) => condition ? wrap(children) : /* @__PURE__ */ jsx70(Fragment8, { children });
 
 // trabecula/components/wrappers/context-menu.tsx
 import { useState as useState21 } from "react";
 import { Menu as Menu2 } from "@mui/material";
 import Color12 from "color";
-import { jsx as jsx71, jsxs as jsxs34 } from "react/jsx-runtime";
+import { jsx as jsx71, jsxs as jsxs35 } from "react/jsx-runtime";
 var ContextMenu = (_a) => {
   var _b = _a, { children, disabled, id, menuItems } = _b, props = __objRest(_b, ["children", "disabled", "id", "menuItems"]);
   const { css } = useClasses43(null);
@@ -5983,7 +6012,7 @@ var ContextMenu = (_a) => {
     setMouseX(null);
     setMouseY(null);
   };
-  return /* @__PURE__ */ jsxs34(View, __spreadProps(__spreadValues({}, props), { id, onContextMenu: handleContext, children: [
+  return /* @__PURE__ */ jsxs35(View, __spreadProps(__spreadValues({}, props), { id, onContextMenu: handleContext, children: [
     children,
     /* @__PURE__ */ jsx71(
       Menu2,
@@ -6051,14 +6080,14 @@ var useClasses43 = makeClasses({
 });
 
 // trabecula/components/wrappers/disabled-overlay.tsx
-import { Fragment as Fragment8, jsx as jsx72, jsxs as jsxs35 } from "react/jsx-runtime";
+import { Fragment as Fragment9, jsx as jsx72, jsxs as jsxs36 } from "react/jsx-runtime";
 var DisabledOverlay = ({
   children,
   isDisabled = false,
   zIndex = 2
 }) => {
   const { css } = useClasses44({ isDisabled, zIndex });
-  return /* @__PURE__ */ jsxs35(Fragment8, { children: [
+  return /* @__PURE__ */ jsxs36(Fragment9, { children: [
     children,
     isDisabled && /* @__PURE__ */ jsx72(View, { className: css.disabledOverlay })
   ] });
@@ -6151,7 +6180,7 @@ var useClasses46 = makeClasses({
 });
 
 // trabecula/components/wrappers/header.tsx
-import { jsx as jsx75, jsxs as jsxs36 } from "react/jsx-runtime";
+import { jsx as jsx75, jsxs as jsxs37 } from "react/jsx-runtime";
 var DEFAULT_HEADER_PROPS = {
   bgColor: colors.custom.black,
   borderRadiuses: { top: 6 },
@@ -6241,7 +6270,7 @@ var HeaderWrapper = Comp((rawProps, ref) => {
     wrap
   };
   const mergedHeaderProps = deepMerge(DEFAULT_HEADER_PROPS, headerProps);
-  const wrapHeader = (content) => /* @__PURE__ */ jsxs36(
+  const wrapHeader = (content) => /* @__PURE__ */ jsxs37(
     View,
     __spreadProps(__spreadValues(__spreadProps(__spreadValues({}, layoutProps), {
       "aria-label": "header-wrapper"
@@ -6280,12 +6309,12 @@ var HeaderWrapper = Comp((rawProps, ref) => {
 });
 
 // trabecula/components/wrappers/header-content.tsx
-import { jsx as jsx76, jsxs as jsxs37 } from "react/jsx-runtime";
+import { jsx as jsx76, jsxs as jsxs38 } from "react/jsx-runtime";
 var HeaderContent = ({ children, leftNode, rightNode }) => /* @__PURE__ */ jsx76(
   ConditionalWrap,
   {
     condition: leftNode !== void 0 || rightNode !== void 0,
-    wrap: (wrappedChildren) => /* @__PURE__ */ jsxs37(View, { row: true, flex: 1, minWidth: 0, align: "center", children: [
+    wrap: (wrappedChildren) => /* @__PURE__ */ jsxs38(View, { row: true, flex: 1, minWidth: 0, align: "center", children: [
       /* @__PURE__ */ jsx76(View, { row: true, flex: "1 1 0", minWidth: 0, align: "center", justify: "flex-start", children: leftNode }),
       wrappedChildren,
       /* @__PURE__ */ jsx76(View, { row: true, flex: "1 1 0", minWidth: 0, align: "center", justify: "flex-end", children: rightNode })
@@ -6296,12 +6325,12 @@ var HeaderContent = ({ children, leftNode, rightNode }) => /* @__PURE__ */ jsx76
 
 // trabecula/components/wrappers/loading-overlay.tsx
 import { CircularProgress as CircularProgress2 } from "@mui/material";
-import { Fragment as Fragment9, jsx as jsx77, jsxs as jsxs38 } from "react/jsx-runtime";
+import { Fragment as Fragment10, jsx as jsx77, jsxs as jsxs39 } from "react/jsx-runtime";
 var LoadingOverlay = ({ children, isLoading, sub }) => {
   const { css } = useClasses47({ isLoading });
-  return /* @__PURE__ */ jsxs38(Fragment9, { children: [
+  return /* @__PURE__ */ jsxs39(Fragment10, { children: [
     children,
-    /* @__PURE__ */ jsxs38(
+    /* @__PURE__ */ jsxs39(
       View,
       {
         column: true,
@@ -6356,7 +6385,7 @@ var Pill = Comp(
 
 // trabecula/components/wrappers/server-status-sync.tsx
 import { useEffect as useEffect12, useRef as useRef6, useState as useState22 } from "react";
-import { Fragment as Fragment10, jsx as jsx79, jsxs as jsxs39 } from "react/jsx-runtime";
+import { Fragment as Fragment11, jsx as jsx79, jsxs as jsxs40 } from "react/jsx-runtime";
 var joinStatusLabels = (statuses) => statuses.map(({ label }) => label).join(" / ");
 var ServerStatusSync = ({
   appName,
@@ -6465,7 +6494,7 @@ var ServerStatusSync = ({
       ipcRenderer.off(SERVER_STATUS_IPC.changed, handleServerStatusChanged);
     };
   }, []);
-  return hasStarted ? /* @__PURE__ */ jsx79(Fragment10, { children }) : /* @__PURE__ */ jsxs39(View, { column: true, height: "100vh", children: [
+  return hasStarted ? /* @__PURE__ */ jsx79(Fragment11, { children }) : /* @__PURE__ */ jsxs40(View, { column: true, height: "100vh", children: [
     header,
     /* @__PURE__ */ jsx79(View, { flex: 1, position: "relative", children: /* @__PURE__ */ jsx79(
       LoadingOverlay,
@@ -6479,7 +6508,7 @@ var ServerStatusSync = ({
 
 // trabecula/components/wrappers/side-scroller.tsx
 import { useEffect as useEffect13, useRef as useRef7, useState as useState23 } from "react";
-import { jsx as jsx80, jsxs as jsxs40 } from "react/jsx-runtime";
+import { jsx as jsx80, jsxs as jsxs41 } from "react/jsx-runtime";
 var SideScroller = ({ children, className, innerClassName }) => {
   const ref = useRef7(null);
   const { width } = useElementResize(ref);
@@ -6514,7 +6543,7 @@ var SideScroller = ({ children, className, innerClassName }) => {
   useEffect13(() => {
     updateButtonVisibility();
   }, [children, width]);
-  return /* @__PURE__ */ jsxs40(View, { className: cx(css.root, className), children: [
+  return /* @__PURE__ */ jsxs41(View, { className: cx(css.root, className), children: [
     /* @__PURE__ */ jsx80(
       IconButton,
       {
@@ -6586,7 +6615,7 @@ var useClasses48 = makeClasses((props) => ({
 import { useState as useState24 } from "react";
 import { Tab, Tabs } from "@mui/material";
 import Color14 from "color";
-import { jsx as jsx81, jsxs as jsxs41 } from "react/jsx-runtime";
+import { jsx as jsx81, jsxs as jsxs42 } from "react/jsx-runtime";
 var TabContainer = ({
   activeTab,
   borderRadius = "0.5rem",
@@ -6617,8 +6646,8 @@ var TabContainer = ({
     if (activeTab === void 0) setSelectedTab(tabIndex);
     onTabChange == null ? void 0 : onTabChange(tabIndex);
   };
-  return /* @__PURE__ */ jsxs41(View, __spreadProps(__spreadValues({ column: true, height: "100%", minHeight: 0 }, viewProps), { children: [
-    /* @__PURE__ */ jsxs41(View, { row: true, height: tabHeight, className: css.header, children: [
+  return /* @__PURE__ */ jsxs42(View, __spreadProps(__spreadValues({ column: true, height: "100%", minHeight: 0 }, viewProps), { children: [
+    /* @__PURE__ */ jsxs42(View, { row: true, height: tabHeight, className: css.header, children: [
       /* @__PURE__ */ jsx81(
         Tabs,
         {
@@ -7117,4 +7146,4 @@ export {
   makeTheme,
   MuiProvider
 };
-//# sourceMappingURL=chunk-IORC7IUO.mjs.map
+//# sourceMappingURL=chunk-FVJZRYM5.mjs.map
