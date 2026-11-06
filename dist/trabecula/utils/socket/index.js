@@ -75,14 +75,17 @@ var SocketClient = class {
       this.options.log(`Socket emit error: ${error.message}`, "error");
     }
   }
-  /** Defers sending and drops the event while disconnected, for frequent updates. */
+  /**
+   * Defers sending and drops the event while disconnected, for frequent updates. Socket.io's
+   * volatile flag isn't used, as it also drops events sent while an earlier one is being written.
+   */
   emitVolatile(event, ...args) {
     if (!this.socket) this.connect();
     try {
       setImmediate(() => {
         var _a;
         try {
-          (_a = this.socket) == null ? void 0 : _a.volatile.emit(event, ...args);
+          if ((_a = this.socket) == null ? void 0 : _a.connected) this.socket.emit(event, ...args);
         } catch (error) {
           this.options.log(`Volatile socket emit error: ${error.message}`, "error");
         }

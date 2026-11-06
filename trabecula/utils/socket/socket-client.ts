@@ -68,14 +68,17 @@ export class SocketClient<
     }
   }
 
-  /** Defers sending and drops the event while disconnected, for frequent updates. */
+  /**
+   * Defers sending and drops the event while disconnected, for frequent updates. Socket.io's
+   * volatile flag isn't used, as it also drops events sent while an earlier one is being written.
+   */
   emitVolatile<Event extends EmitEvent>(event: Event, ...args: Parameters<Events[Event]>) {
     if (!this.socket) this.connect();
 
     try {
       setImmediate(() => {
         try {
-          this.socket?.volatile.emit(event, ...args);
+          if (this.socket?.connected) this.socket.emit(event, ...args);
         } catch (error) {
           this.options.log(`Volatile socket emit error: ${error.message}`, "error");
         }

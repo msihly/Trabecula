@@ -19,7 +19,10 @@ declare class SocketClient<Events extends {
     connect(): Socket<_socket_io_component_emitter.DefaultEventsMap, _socket_io_component_emitter.DefaultEventsMap>;
     disconnect(): void;
     emit<Event extends EmitEvent>(event: Event, ...args: Parameters<Events[Event]>): void;
-    /** Defers sending and drops the event while disconnected, for frequent updates. */
+    /**
+     * Defers sending and drops the event while disconnected, for frequent updates. Socket.io's
+     * volatile flag isn't used, as it also drops events sent while an earlier one is being written.
+     */
     emitVolatile<Event extends EmitEvent>(event: Event, ...args: Parameters<Events[Event]>): void;
     isConnected(): boolean;
     off<Event extends Extract<keyof Events, string>>(event: Event, listener: SocketListener): void;
