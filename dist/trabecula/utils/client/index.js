@@ -8571,6 +8571,7 @@ var useClasses17 = makeClasses((props) => ({
 var import_material13 = require("@mui/material");
 var import_color6 = __toESM(require("color"));
 var import_jsx_runtime35 = require("react/jsx-runtime");
+var SUBMENU_COLOR = (0, import_color6.default)(colors.custom.black).fade(0.03).hex();
 var useClasses18 = makeClasses((props) => ({
   icon: {
     minWidth: 0

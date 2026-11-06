@@ -8446,6 +8446,7 @@ var import_color6 = __toESM(require("color"));
 var import_jsx_runtime36 = require("react/jsx-runtime");
 var DEFAULT_ICON_END_MARGINS = { left: "1em" };
 var DEFAULT_ICON_MARGINS = { right: "1em" };
+var SUBMENU_COLOR = (0, import_color6.default)(colors.custom.black).fade(0.03).hex();
 var ListItem = (_a) => {
   var _b = _a, {
     children,
@@ -8484,7 +8485,8 @@ var ListItem = (_a) => {
       tooltip: children,
       tooltipProps: {
         arrow: false,
-        bgColor: (0, import_color6.default)(colors.custom.black).fade(0.03).hex(),
+        bgColor: SUBMENU_COLOR,
+        borderColor: SUBMENU_COLOR,
         padding: 0,
         placement: "right-start",
         slotProps: { popper: { className: css.tooltipPopper } }
@@ -11334,11 +11336,22 @@ var SubItem = ({
   onClose,
   subItem
 }) => {
+  var _a;
+  const color = subItem.color || colors.custom.lightGrey;
   const handleClick = () => {
     subItem.onClick();
     onClose();
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(ListItem, { text: subItem.label, icon: subItem.icon, onClick: handleClick });
+  return /* @__PURE__ */ (0, import_jsx_runtime72.jsx)(
+    ListItem,
+    {
+      text: subItem.label,
+      icon: subItem.icon,
+      iconProps: __spreadValues({ color }, (_a = subItem.iconProps) != null ? _a : {}),
+      color,
+      onClick: handleClick
+    }
+  );
 };
 var useClasses44 = makeClasses({
   contextMenu: {

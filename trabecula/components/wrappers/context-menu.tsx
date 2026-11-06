@@ -117,12 +117,22 @@ const SubItem = ({
   onClose: () => void;
   subItem: ContextMenuProps["menuItems"][number]["subItems"][number];
 }) => {
+  const color = subItem.color || colors.custom.lightGrey;
+
   const handleClick = () => {
     subItem.onClick();
     onClose();
   };
 
-  return <ListItem text={subItem.label} icon={subItem.icon} onClick={handleClick} />;
+  return (
+    <ListItem
+      text={subItem.label}
+      icon={subItem.icon}
+      iconProps={{ color, ...(subItem.iconProps ?? {}) }}
+      color={color}
+      onClick={handleClick}
+    />
+  );
 };
 
 const useClasses = makeClasses({

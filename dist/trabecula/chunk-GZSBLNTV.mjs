@@ -3168,6 +3168,7 @@ import Color5 from "color";
 import { Fragment as Fragment5, jsx as jsx35, jsxs as jsxs19 } from "react/jsx-runtime";
 var DEFAULT_ICON_END_MARGINS = { left: "1em" };
 var DEFAULT_ICON_MARGINS = { right: "1em" };
+var SUBMENU_COLOR = Color5(colors.custom.black).fade(0.03).hex();
 var ListItem = (_a) => {
   var _b = _a, {
     children,
@@ -3206,7 +3207,8 @@ var ListItem = (_a) => {
       tooltip: children,
       tooltipProps: {
         arrow: false,
-        bgColor: Color5(colors.custom.black).fade(0.03).hex(),
+        bgColor: SUBMENU_COLOR,
+        borderColor: SUBMENU_COLOR,
         padding: 0,
         placement: "right-start",
         slotProps: { popper: { className: css.tooltipPopper } }
@@ -6073,11 +6075,22 @@ var SubItem = ({
   onClose,
   subItem
 }) => {
+  var _a;
+  const color = subItem.color || colors.custom.lightGrey;
   const handleClick = () => {
     subItem.onClick();
     onClose();
   };
-  return /* @__PURE__ */ jsx71(ListItem, { text: subItem.label, icon: subItem.icon, onClick: handleClick });
+  return /* @__PURE__ */ jsx71(
+    ListItem,
+    {
+      text: subItem.label,
+      icon: subItem.icon,
+      iconProps: __spreadValues({ color }, (_a = subItem.iconProps) != null ? _a : {}),
+      color,
+      onClick: handleClick
+    }
+  );
 };
 var useClasses43 = makeClasses({
   contextMenu: {
@@ -7158,4 +7171,4 @@ export {
   makeTheme,
   MuiProvider
 };
-//# sourceMappingURL=chunk-233Y3TRX.mjs.map
+//# sourceMappingURL=chunk-GZSBLNTV.mjs.map

@@ -27,6 +27,9 @@ export interface ListItemProps extends Omit<MuiListItemProps, "children"> {
 const DEFAULT_ICON_END_MARGINS: Margins = { left: "1em" };
 const DEFAULT_ICON_MARGINS: Margins = { right: "1em" };
 
+/** Submenus share the menu's background, without the tooltip's accent border. */
+const SUBMENU_COLOR = Color(colors.custom.black).fade(0.03).hex() as CssColor;
+
 export const ListItem = ({
   children,
   className,
@@ -68,7 +71,8 @@ export const ListItem = ({
       tooltip={children}
       tooltipProps={{
         arrow: false,
-        bgColor: Color(colors.custom.black).fade(0.03).hex() as CssColor,
+        bgColor: SUBMENU_COLOR,
+        borderColor: SUBMENU_COLOR,
         padding: 0,
         placement: "right-start",
         slotProps: { popper: { className: css.tooltipPopper } },
