@@ -13,23 +13,39 @@ type SelectionToast = {
   info: (message: string) => unknown;
 };
 
-export interface SelectionButtonProps extends Omit<MultiActionButtonProps, "name" | "onClick"> {
+/**
+ * Each button takes only the parts of the selection store it uses, so searches without query
+ * selection can still deselect all and select all in view.
+ */
+export interface SelectionButtonProps<
+  StoreKey extends keyof SelectionStore = keyof SelectionStore,
+> extends Omit<MultiActionButtonProps, "name" | "onClick"> {
   /** Plural name of the selectable items, such as "files". */
   itemLabel: string;
-  store: SelectionStore;
+  store: Pick<SelectionStore, StoreKey>;
   /** The app's own toast, so its notification handling, such as history, applies. */
   toast: SelectionToast;
 }
 
-export type SelectionButtonsProps = Pick<SelectionButtonProps, "itemLabel" | "store" | "toast">;
+export type SelectionButtonsProps<StoreKey extends keyof SelectionStore = keyof SelectionStore> =
+  Pick<SelectionButtonProps<StoreKey>, "itemLabel" | "store" | "toast">;
 
-export const selectAllInView = ({ itemLabel, store, toast }: SelectionButtonsProps) => {
+export const selectAllInView = ({
+  itemLabel,
+  store,
+  toast,
+}: SelectionButtonsProps<"results" | "toggleSelected">) => {
   store.toggleSelected(store.results.map(({ id }) => ({ id, isSelected: true })));
   toast.info(`Added ${store.results.length} ${itemLabel} to selection`);
 };
 
 export const DeselectAllButton = Comp(
-  ({ itemLabel, store, toast, ...props }: SelectionButtonProps) => {
+  ({
+    itemLabel,
+    store,
+    toast,
+    ...props
+  }: SelectionButtonProps<"selectedIds" | "toggleSelected">) => {
     const handleClick = () => {
       store.toggleSelected(store.selectedIds.map((id) => ({ id, isSelected: false })));
       toast.info(`Deselected all ${itemLabel}`);
@@ -48,7 +64,7 @@ export const DeselectAllButton = Comp(
 );
 
 export const SelectAllButton = Comp(
-  ({ itemLabel, store, toast, ...props }: SelectionButtonProps) => {
+  ({ itemLabel, store, toast, ...props }: SelectionButtonProps<"results" | "toggleSelected">) => {
     const handleClick = () => selectAllInView({ itemLabel, store, toast });
 
     return (
@@ -63,7 +79,7 @@ export const SelectAllButton = Comp(
 );
 
 export const SelectAllInQueryButton = Comp(
-  ({ itemLabel, store, toast, ...props }: SelectionButtonProps) => {
+  ({ itemLabel, store, toast, ...props }: SelectionButtonProps<"selectAllInQuery">) => {
     const handleClick = async () => {
       const res = await store.selectAllInQuery();
 

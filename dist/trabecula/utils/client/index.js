@@ -6672,13 +6672,25 @@ var MultiActionButton = (_a) => {
 
 // trabecula/components/buttons/selection-buttons.tsx
 var import_jsx_runtime10 = require("react/jsx-runtime");
-var selectAllInView = ({ itemLabel, store, toast: toast2 }) => {
+var selectAllInView = ({
+  itemLabel,
+  store,
+  toast: toast2
+}) => {
   store.toggleSelected(store.results.map(({ id }) => ({ id, isSelected: true })));
   toast2.info(`Added ${store.results.length} ${itemLabel} to selection`);
 };
 var DeselectAllButton = Comp(
   (_a) => {
-    var _b = _a, { itemLabel, store, toast: toast2 } = _b, props = __objRest(_b, ["itemLabel", "store", "toast"]);
+    var _b = _a, {
+      itemLabel,
+      store,
+      toast: toast2
+    } = _b, props = __objRest(_b, [
+      "itemLabel",
+      "store",
+      "toast"
+    ]);
     const handleClick = () => {
       store.toggleSelected(store.selectedIds.map((id) => ({ id, isSelected: false })));
       toast2.info(`Deselected all ${itemLabel}`);

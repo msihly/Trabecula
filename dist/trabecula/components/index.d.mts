@@ -172,18 +172,22 @@ type SelectionToast = {
     error: (message: string) => unknown;
     info: (message: string) => unknown;
 };
-interface SelectionButtonProps extends Omit<MultiActionButtonProps, "name" | "onClick"> {
+/**
+ * Each button takes only the parts of the selection store it uses, so searches without query
+ * selection can still deselect all and select all in view.
+ */
+interface SelectionButtonProps<StoreKey extends keyof SelectionStore = keyof SelectionStore> extends Omit<MultiActionButtonProps, "name" | "onClick"> {
     /** Plural name of the selectable items, such as "files". */
     itemLabel: string;
-    store: SelectionStore;
+    store: Pick<SelectionStore, StoreKey>;
     /** The app's own toast, so its notification handling, such as history, applies. */
     toast: SelectionToast;
 }
-type SelectionButtonsProps = Pick<SelectionButtonProps, "itemLabel" | "store" | "toast">;
-declare const selectAllInView: ({ itemLabel, store, toast }: SelectionButtonsProps) => void;
-declare const DeselectAllButton: react.ForwardRefExoticComponent<Omit<SelectionButtonProps, "ref"> & react.RefAttributes<HTMLDivElement>>;
-declare const SelectAllButton: react.ForwardRefExoticComponent<Omit<SelectionButtonProps, "ref"> & react.RefAttributes<HTMLDivElement>>;
-declare const SelectAllInQueryButton: react.ForwardRefExoticComponent<Omit<SelectionButtonProps, "ref"> & react.RefAttributes<HTMLDivElement>>;
+type SelectionButtonsProps<StoreKey extends keyof SelectionStore = keyof SelectionStore> = Pick<SelectionButtonProps<StoreKey>, "itemLabel" | "store" | "toast">;
+declare const selectAllInView: ({ itemLabel, store, toast, }: SelectionButtonsProps<"results" | "toggleSelected">) => void;
+declare const DeselectAllButton: react.ForwardRefExoticComponent<Omit<SelectionButtonProps<"selectedIds" | "toggleSelected">, "ref"> & react.RefAttributes<HTMLDivElement>>;
+declare const SelectAllButton: react.ForwardRefExoticComponent<Omit<SelectionButtonProps<"results" | "toggleSelected">, "ref"> & react.RefAttributes<HTMLDivElement>>;
+declare const SelectAllInQueryButton: react.ForwardRefExoticComponent<Omit<SelectionButtonProps<"selectAllInQuery">, "ref"> & react.RefAttributes<HTMLDivElement>>;
 /** Deselect all, select all in view and select all in query, in that order. */
 declare const SelectionButtons: (props: SelectionButtonsProps) => react.JSX.Element;
 

@@ -1184,13 +1184,25 @@ var MultiActionButton = (_a) => {
 
 // trabecula/components/buttons/selection-buttons.tsx
 import { Fragment as Fragment2, jsx as jsx10, jsxs as jsxs8 } from "react/jsx-runtime";
-var selectAllInView = ({ itemLabel, store, toast: toast2 }) => {
+var selectAllInView = ({
+  itemLabel,
+  store,
+  toast: toast2
+}) => {
   store.toggleSelected(store.results.map(({ id }) => ({ id, isSelected: true })));
   toast2.info(`Added ${store.results.length} ${itemLabel} to selection`);
 };
 var DeselectAllButton = Comp(
   (_a) => {
-    var _b = _a, { itemLabel, store, toast: toast2 } = _b, props = __objRest(_b, ["itemLabel", "store", "toast"]);
+    var _b = _a, {
+      itemLabel,
+      store,
+      toast: toast2
+    } = _b, props = __objRest(_b, [
+      "itemLabel",
+      "store",
+      "toast"
+    ]);
     const handleClick = () => {
       store.toggleSelected(store.selectedIds.map((id) => ({ id, isSelected: false })));
       toast2.info(`Deselected all ${itemLabel}`);
@@ -7103,4 +7115,4 @@ export {
   usePortalContainer,
   MuiProvider
 };
-//# sourceMappingURL=chunk-DCPJTA2F.mjs.map
+//# sourceMappingURL=chunk-2DR4GKRV.mjs.map
