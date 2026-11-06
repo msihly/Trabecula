@@ -74,11 +74,11 @@ export const Chip = Comp(
         label={
           isFraction ? (
             <>
-              <View row align="center" className={css.numerator}>
+              <View row align="center" justify="center" className={css.numerator}>
                 {label}
               </View>
 
-              <View row align="center" className={css.denominator}>
+              <View row align="center" justify="center" className={css.denominator}>
                 {denominator}
               </View>
             </>
@@ -129,11 +129,15 @@ const useClasses = makeClasses((props: ClassesProps) => ({
     backgroundColor: "rgba(0, 0, 0, 0.35)",
     clipPath: `polygon(${FRACTION_SLANT} 0, 100% 0, 100% 100%, 0 100%)`,
   },
-  /** The sides fill the chip, which clips the denominator's background to its rounded corners. */
+  /**
+   * The sides fill the chip, which clips the denominator's background to its rounded corners. Equal
+   * columns size both sides to the wider one, so a short numerator stays as wide as its denominator.
+   */
   fraction: {
     overflow: "hidden",
     "& > .MuiChip-label": {
-      display: "flex",
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr",
       height: "100%",
       padding: 0,
     },

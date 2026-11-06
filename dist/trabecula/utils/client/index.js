@@ -10156,8 +10156,8 @@ var Chip2 = Comp(
       __spreadProps(__spreadValues({}, props), {
         size,
         label: isFraction ? /* @__PURE__ */ (0, import_jsx_runtime69.jsxs)(import_jsx_runtime69.Fragment, { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(View, { row: true, align: "center", className: css.numerator, children: label }),
-          /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(View, { row: true, align: "center", className: css.denominator, children: denominator })
+          /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(View, { row: true, align: "center", justify: "center", className: css.numerator, children: label }),
+          /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(View, { row: true, align: "center", justify: "center", className: css.denominator, children: denominator })
         ] }) : label,
         icon: icon ? /* @__PURE__ */ (0, import_jsx_runtime69.jsx)(
           Icon,
@@ -10192,11 +10192,15 @@ var useClasses42 = makeClasses((props) => ({
     backgroundColor: "rgba(0, 0, 0, 0.35)",
     clipPath: `polygon(${FRACTION_SLANT} 0, 100% 0, 100% 100%, 0 100%)`
   },
-  /** The sides fill the chip, which clips the denominator's background to its rounded corners. */
+  /**
+   * The sides fill the chip, which clips the denominator's background to its rounded corners. Equal
+   * columns size both sides to the wider one, so a short numerator stays as wide as its denominator.
+   */
   fraction: {
     overflow: "hidden",
     "& > .MuiChip-label": {
-      display: "flex",
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr",
       height: "100%",
       padding: 0
     }

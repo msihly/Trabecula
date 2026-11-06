@@ -5933,8 +5933,8 @@ var Chip2 = Comp(
       __spreadProps(__spreadValues({}, props), {
         size,
         label: isFraction ? /* @__PURE__ */ jsxs34(Fragment7, { children: [
-          /* @__PURE__ */ jsx69(View, { row: true, align: "center", className: css.numerator, children: label }),
-          /* @__PURE__ */ jsx69(View, { row: true, align: "center", className: css.denominator, children: denominator })
+          /* @__PURE__ */ jsx69(View, { row: true, align: "center", justify: "center", className: css.numerator, children: label }),
+          /* @__PURE__ */ jsx69(View, { row: true, align: "center", justify: "center", className: css.denominator, children: denominator })
         ] }) : label,
         icon: icon ? /* @__PURE__ */ jsx69(
           Icon,
@@ -5969,11 +5969,15 @@ var useClasses42 = makeClasses((props) => ({
     backgroundColor: "rgba(0, 0, 0, 0.35)",
     clipPath: `polygon(${FRACTION_SLANT} 0, 100% 0, 100% 100%, 0 100%)`
   },
-  /** The sides fill the chip, which clips the denominator's background to its rounded corners. */
+  /**
+   * The sides fill the chip, which clips the denominator's background to its rounded corners. Equal
+   * columns size both sides to the wider one, so a short numerator stays as wide as its denominator.
+   */
   fraction: {
     overflow: "hidden",
     "& > .MuiChip-label": {
-      display: "flex",
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr",
       height: "100%",
       padding: 0
     }
@@ -7146,4 +7150,4 @@ export {
   makeTheme,
   MuiProvider
 };
-//# sourceMappingURL=chunk-FVJZRYM5.mjs.map
+//# sourceMappingURL=chunk-RT5SAXBU.mjs.map
