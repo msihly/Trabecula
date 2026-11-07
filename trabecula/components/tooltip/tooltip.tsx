@@ -90,6 +90,10 @@ const useClasses = makeClasses((props: ClassesProps) => {
       overflow: "hidden",
       textOverflow: "ellipsis",
       userSelect: "auto",
+      // The wrapped element fills the space its parent gives the tooltip, as it would unwrapped.
+      "& > *": {
+        flexGrow: 1,
+      },
     },
     tooltip: {
       border: `1px solid ${props.borderColor}`,

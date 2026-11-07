@@ -5399,7 +5399,11 @@ var useClasses36 = makeClasses((props) => {
       flexShrink: props.flexShrink,
       overflow: "hidden",
       textOverflow: "ellipsis",
-      userSelect: "auto"
+      userSelect: "auto",
+      // The wrapped element fills the space its parent gives the tooltip, as it would unwrapped.
+      "& > *": {
+        flexGrow: 1
+      }
     },
     tooltip: {
       border: `1px solid ${props.borderColor}`,
@@ -6022,10 +6026,11 @@ var useClasses43 = makeClasses((props) => {
         fontWeight: props.fontWeight
       })
     }),
+    // The diagonal crosses the columns' boundary at its middle, so both sides look equally wide.
     denominator: {
       height: "100%",
-      marginLeft: `-${FRACTION_SLANT}`,
-      padding: `0 0.6em 0 calc(0.35em + ${FRACTION_SLANT})`,
+      marginLeft: `calc(${FRACTION_SLANT} / -2)`,
+      padding: `0 0.6em 0 calc(0.15em + ${FRACTION_SLANT})`,
       backgroundColor: "rgba(0, 0, 0, 0.35)",
       clipPath: `polygon(${FRACTION_SLANT} 0, 100% 0, 100% 100%, 0 100%)`
     },
@@ -6045,7 +6050,7 @@ var useClasses43 = makeClasses((props) => {
     },
     numerator: {
       height: "100%",
-      padding: `0 calc(0.3em + ${FRACTION_SLANT}) 0 0.6em`
+      padding: `0 calc(0.15em + ${FRACTION_SLANT} / 2) 0 0.6em`
     }
   };
 });
@@ -7227,4 +7232,4 @@ export {
   makeTheme,
   MuiProvider
 };
-//# sourceMappingURL=chunk-RN7CJDKD.mjs.map
+//# sourceMappingURL=chunk-YNBRXAHC.mjs.map
