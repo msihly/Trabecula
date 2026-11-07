@@ -19,7 +19,7 @@ export interface TooltipProps extends Omit<MuiTooltipProps, "children" | "color"
 
 export const Tooltip = ({
   arrow = true,
-  bgColor = colors.background,
+  bgColor = colors.overlay,
   borderColor = colors.custom.blue,
   children,
   color,

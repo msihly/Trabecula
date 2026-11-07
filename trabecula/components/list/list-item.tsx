@@ -8,7 +8,6 @@ import {
   ListItemProps as MuiListItemProps,
   ListItemText,
 } from "@mui/material";
-import Color from "color";
 import { Icon, IconName, IconProps, TooltipWrapper } from "trabecula/components";
 import { colors, CssColor, makeClasses, Margins } from "trabecula/utils/client";
 
@@ -26,9 +25,6 @@ export interface ListItemProps extends Omit<MuiListItemProps, "children"> {
 
 const DEFAULT_ICON_END_MARGINS: Margins = { left: "1em" };
 const DEFAULT_ICON_MARGINS: Margins = { right: "1em" };
-
-/** Submenus share the menu's background, without the tooltip's accent border. */
-const SUBMENU_COLOR = Color(colors.custom.black).fade(0.03).hex() as CssColor;
 
 export const ListItem = ({
   children,
@@ -71,8 +67,9 @@ export const ListItem = ({
       tooltip={children}
       tooltipProps={{
         arrow: false,
-        bgColor: SUBMENU_COLOR,
-        borderColor: SUBMENU_COLOR,
+        // Submenus share the menu's background, without the tooltip's accent border.
+        bgColor: colors.overlay,
+        borderColor: colors.overlay,
         padding: 0,
         placement: "right-start",
         slotProps: { popper: { className: css.tooltipPopper } },
@@ -105,7 +102,7 @@ const useClasses = makeClasses((props: ClassesProps) => ({
   root: {
     padding: "0.1rem 0.8rem",
     "&:not(:last-child)": {
-      borderBottom: `1px solid ${colors.custom.darkGrey}`,
+      borderBottom: `1px solid ${colors.border}`,
     },
   },
   text: {

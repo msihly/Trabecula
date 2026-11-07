@@ -20,7 +20,7 @@ export interface ConfirmModalProps {
 }
 
 export const ConfirmModal = ({
-  cancelColor = colors.custom.grey,
+  cancelColor,
   cancelIcon = "Close",
   cancelText = "Cancel",
   children,

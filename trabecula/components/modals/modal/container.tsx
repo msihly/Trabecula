@@ -86,6 +86,7 @@ const useClasses = makeClasses((props: ClassesProps) => ({
       height: props.height,
       width: props.width,
       background: colors.background,
+      border: `1px solid ${colors.border}`,
       overflow: "hidden",
     },
   },

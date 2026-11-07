@@ -1,6 +1,5 @@
 import { AriaAttributes } from "react";
 import { LinearProgress } from "@mui/material";
-import Color from "color";
 import { Chip, Comp, Text, View, ViewProps } from "trabecula/components";
 import { colors, CSS, makeClasses } from "trabecula/utils/client";
 
@@ -58,7 +57,7 @@ export const ProgressBar = Comp((props: ProgressBarProps) => {
 const useClasses = makeClasses({
   progressBar: {
     flex: 1,
-    backgroundColor: Color(colors.custom.blue).fade(0.5).string(),
+    backgroundColor: colors.control,
     "& .MuiLinearProgress-bar": {
       backgroundColor: colors.custom.blue,
     },

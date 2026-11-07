@@ -1,6 +1,5 @@
 import { ReactNode, useState } from "react";
 import { Menu } from "@mui/material";
-import Color from "color";
 import { Divider, IconName, IconProps, ListItem, View, ViewProps } from "trabecula/components";
 import { colors, CssColor, makeClasses } from "trabecula/utils/client";
 
@@ -137,7 +136,7 @@ const SubItem = ({
 
 const useClasses = makeClasses({
   contextMenu: {
-    background: Color(colors.custom.black).fade(0.03).string(),
+    background: colors.overlay,
   },
   contextMenuInner: {
     padding: 0,

@@ -96,7 +96,7 @@ const useClasses = makeClasses((props: ClassesProps) => ({
     borderTop: props.hasInput ? "none" : undefined,
     borderBottom: props.hasDeleteAll ? "none" : undefined,
     minHeight: "2.5rem",
-    backgroundColor: "rgb(0 0 0 / 0.2)",
+    backgroundColor: colors.input,
     overflowY: "auto",
   },
 }));

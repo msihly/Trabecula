@@ -4,6 +4,7 @@ import {
   ICON_NAMES
 } from "./chunk-7QQIYBHS.mjs";
 import {
+  CONTROL_RADIUS,
   DENSE_FORM_ROW_HEIGHT,
   FORM_ROW_HEIGHT,
   Fmt,
@@ -20,7 +21,7 @@ import {
   getPaletteColorName,
   handleErrors,
   isDeepEqual
-} from "./chunk-DRCDFDNB.mjs";
+} from "./chunk-VYYXIBKJ.mjs";
 import {
   __async,
   __objRest,
@@ -77,29 +78,46 @@ var makeClasses = (fnOrObj) => {
 };
 var customColors = {
   black: "#131313",
-  blue: "#2866c5",
+  blue: "#3b6fd1",
   blueGrey: "#546e7a",
   brown: "#6d4c41",
   darkGrey: "#2b2b2b",
-  green: "#2e7d32",
+  green: "#3d8b45",
   /** Recedes on the app's dark surfaces, too dark for text meant to be read; use lightGrey. */
   grey: "#4b4b4b",
-  lightBlue: "#578cdd",
+  lightBlue: "#8fb0ee",
   lightGrey: "#bdbdbd",
-  orange: "#ad6a27",
-  purple: "#683980",
-  red: "#982525",
-  white: "#f5f5f5",
+  orange: "#b9772f",
+  purple: "#7e4d9f",
+  red: "#b33c3c",
+  white: "#ededef",
   yellow: "#e3c648"
 };
 var colors = {
-  background: "#1E1E1E",
+  background: "#1B1B1E",
+  /** The hairline around panels and controls, and between their parts. */
+  border: "rgba(255, 255, 255, 0.07)",
+  /** The fill of neutral buttons, which lightens whatever surface they sit on. */
+  control: "rgba(255, 255, 255, 0.07)",
   custom: customColors,
-  foreground: "#2C2C2C",
-  foregroundCard: "#343434",
+  foreground: "#222225",
+  /** Raised one step above foreground, such as headers nested in a panel. */
+  foregroundCard: "#29292D",
+  /** Recessed below the surface around it, so fields read as places to type. */
+  input: "#161618",
   mui: muiColors,
+  /** Menus and tooltips, floating above everything else. */
+  overlay: "#303035",
   palette: PALETTE,
   swatches: PALETTE_SWATCHES
+};
+var getChipColors = (color, opacity = 0.5) => {
+  const tint = Color(color).lighten(0.2);
+  return {
+    background: tint.fade(1 - opacity).toString(),
+    border: `2px solid ${color}`,
+    color: getContrastText(tint.mix(Color(colors.foreground), 0.5).hex())
+  };
 };
 var getContrastText = (background) => {
   const color = Color(background);
@@ -581,11 +599,11 @@ import { jsx as jsx3, jsxs as jsxs3 } from "react/jsx-runtime";
 var Button = (_a) => {
   var _b = _a, {
     borderColorOnHover,
-    borderRadiuses = { all: "0.3rem" },
+    borderRadiuses = { all: CONTROL_RADIUS },
     borders,
     boxShadow,
     className,
-    color = colors.custom.grey,
+    color = colors.control,
     colorOnHover,
     dense = false,
     endNode,
@@ -756,11 +774,17 @@ var Button = (_a) => {
     })
   ) });
 };
+var getHoverColor = (color) => {
+  const fill = Color2(color);
+  const alpha = fill.alpha();
+  if (alpha > 0 && alpha < 1) return fill.alpha(Math.min(alpha + 0.05, 1)).string();
+  else return fill.lighten(0.1).string();
+};
 var useClasses2 = makeClasses((props) => {
   var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o;
   const bgColor = props.outlined ? props.outlineFill : props.isLinkDisplay ? "transparent" : props.color;
-  const bgColorOnHover = props.isLinkDisplay ? "transparent" : props.outlined ? (_a = props.outlineFillOnHover) != null ? _a : Color2(props.outlineFill).lighten(0.1).string() : (_b = props.colorOnHover) != null ? _b : Color2(props.color).lighten(0.1).string();
-  const borderColor = props.outlined ? props.color : "transparent";
+  const bgColorOnHover = props.isLinkDisplay ? "transparent" : props.outlined ? (_a = props.outlineFillOnHover) != null ? _a : Color2(props.outlineFill).lighten(0.1).string() : (_b = props.colorOnHover) != null ? _b : getHoverColor(props.color);
+  const borderColor = props.outlined ? props.color : props.isLinkDisplay || Color2(props.color).alpha() === 0 ? "transparent" : colors.border;
   const borderColorOnHover = (_c = props.borderColorOnHover) != null ? _c : props.outlined && props.colorOnHover ? props.colorOnHover : void 0;
   const linkPadding = props.isLinkDisplay && !((_d = props.padding) == null ? void 0 : _d.all) ? 0 : void 0;
   const textDecoration = props.underline === "always" ? "underline" : "none";
@@ -808,6 +832,12 @@ var useClasses2 = makeClasses((props) => {
       "&:visited": {
         color: props.textColor,
         textDecoration
+      },
+      // MUI's disabled fill is brighter than the neutral fill, so disabled buttons dim their own.
+      "&.Mui-disabled": {
+        backgroundColor: bgColor,
+        color: props.textColor,
+        opacity: 0.5
       }
     }),
     text: {
@@ -859,7 +889,6 @@ import { jsx as jsx5, jsxs as jsxs4 } from "react/jsx-runtime";
 var ColorPicker = Comp(
   (_a) => {
     var _b = _a, {
-      color = colors.custom.black,
       label = "Color",
       menuProps = {},
       noIcon = false,
@@ -870,7 +899,6 @@ var ColorPicker = Comp(
       viewProps = {},
       width = "fit-content"
     } = _b, buttonProps = __objRest(_b, [
-      "color",
       "label",
       "menuProps",
       "noIcon",
@@ -902,7 +930,6 @@ var ColorPicker = Comp(
       Button,
       __spreadProps(__spreadValues({}, buttonProps), {
         onClick: onOpen,
-        color,
         justify: "center",
         padding: { left: "0.5em", right: "0.5em" },
         width,
@@ -987,6 +1014,7 @@ var IconButton = (_a) => {
 };
 var useClasses4 = makeClasses((props) => ({
   root: __spreadProps(__spreadValues(__spreadValues({}, makeMargins(props.margins)), makePadding(props.padding)), {
+    borderRadius: CONTROL_RADIUS,
     opacity: props.disabled ? 0.5 : 1,
     transition: "all 100ms ease-in-out"
   })
@@ -1001,7 +1029,6 @@ var SEARCH_STYLES_UNFILLED = SEARCH_STYLES.filter((s) => s !== "Filled");
 var IconPicker = Comp(
   (_a) => {
     var _b = _a, {
-      color = colors.custom.black,
       label = "Icon",
       menuProps = {},
       setValue,
@@ -1010,7 +1037,6 @@ var IconPicker = Comp(
       width = "fit-content",
       withStylePicker = false
     } = _b, buttonProps = __objRest(_b, [
-      "color",
       "label",
       "menuProps",
       "setValue",
@@ -1049,7 +1075,6 @@ var IconPicker = Comp(
       Button,
       __spreadProps(__spreadValues({}, buttonProps), {
         onClick: onOpen,
-        color,
         justify: "center",
         padding: { left: "0.5em", right: "0.5em" },
         width,
@@ -1114,7 +1139,7 @@ import { Fragment, jsx as jsx8, jsxs as jsxs7 } from "react/jsx-runtime";
 var MenuButton = (_a) => {
   var _b = _a, {
     anchorOrigin = { horizontal: "right", vertical: "bottom" },
-    bgColor = colors.background,
+    bgColor = colors.overlay,
     button,
     children,
     color,
@@ -1264,7 +1289,6 @@ import { jsx as jsx11, jsxs as jsxs9 } from "react/jsx-runtime";
 import { createElement } from "react";
 var SortMenu = (_a) => {
   var _b = _a, {
-    color = colors.custom.black,
     hasHeader,
     height = "inherit",
     rows,
@@ -1272,7 +1296,6 @@ var SortMenu = (_a) => {
     value,
     width = "fit-content"
   } = _b, buttonProps = __objRest(_b, [
-    "color",
     "hasHeader",
     "height",
     "rows",
@@ -1286,14 +1309,13 @@ var SortMenu = (_a) => {
     Button,
     __spreadProps(__spreadValues({}, buttonProps), {
       onClick: onOpen,
-      color,
       icon: "Sort",
       iconRight: (value == null ? void 0 : value.isDesc) ? "ArrowDownward" : "ArrowUpward",
       iconProps: { size: "1.15em" },
       justify: "space-between",
       height,
       width,
-      borderRadiuses: __spreadValues({ all: "0.3rem" }, hasHeader ? { top: 0 } : {}),
+      borderRadiuses: __spreadValues({ all: CONTROL_RADIUS }, hasHeader ? { top: 0 } : {}),
       padding: { left: "0.5em", right: "0.5em" },
       className: cx(css.button, buttonProps == null ? void 0 : buttonProps.className),
       text: /* @__PURE__ */ jsxs9(View, { column: true, align: "flex-start", justify: "center", width: "100%", children: [
@@ -1694,7 +1716,7 @@ var Input = Comp((rawProps, ref) => {
     adornment,
     adornmentColor = colors.custom.grey,
     adornmentPosition = "end",
-    background = "rgb(0 0 0 / 0.2)",
+    background = colors.input,
     borderRadiuses,
     borders,
     children,
@@ -2300,7 +2322,7 @@ var FilterMenu = Comp(
   (_a) => {
     var _b = _a, {
       children,
-      color = colors.custom.black,
+      color,
       menuProps = {},
       resetFn,
       searchFn,
@@ -2365,7 +2387,6 @@ var FilterMenu = Comp(
             icon: "Refresh",
             onClick: handleReset,
             disabled: store.isLoading,
-            color: colors.foregroundCard,
             colorOnHover: colors.custom.red
           }
         ),
@@ -2375,7 +2396,6 @@ var FilterMenu = Comp(
             rows: sortOptions,
             value: store.sortValue,
             setValue: store.setSortValue,
-            color: colors.foregroundCard,
             width: "9rem"
           }
         ),
@@ -2445,7 +2465,6 @@ var SavedSearchMenu = Comp(({ searchFn, store }) => {
         icon: "Save",
         onClick: handleEdit,
         disabled: store.isLoading,
-        color: colors.foregroundCard,
         colorOnHover: colors.custom.blue
       }
     ),
@@ -2455,7 +2474,6 @@ var SavedSearchMenu = Comp(({ searchFn, store }) => {
         icon: "Delete",
         onClick: () => store.setIsDeleteModalOpen(true),
         disabled: store.isLoading || !store.selectedSavedSearchId,
-        color: colors.foregroundCard,
         colorOnHover: colors.custom.red
       }
     ),
@@ -2482,7 +2500,7 @@ var SavedSearchModal = Comp(({ label, onClose, onSave, setLabel }) => /* @__PURE
   /* @__PURE__ */ jsx22(Modal.Header, { children: /* @__PURE__ */ jsx22(Text, { preset: "title", children: "Save Search" }) }),
   /* @__PURE__ */ jsx22(Modal.Content, { spacing: "0.5rem", dividers: false, children: /* @__PURE__ */ jsx22(Input, { header: "Label", value: label, setValue: setLabel, autoFocus: true }) }),
   /* @__PURE__ */ jsxs12(Modal.Footer, { children: [
-    /* @__PURE__ */ jsx22(Button, { text: "Cancel", icon: "Close", onClick: onClose, color: colors.foregroundCard }),
+    /* @__PURE__ */ jsx22(Button, { text: "Cancel", icon: "Close", onClick: onClose }),
     /* @__PURE__ */ jsx22(
       Button,
       {
@@ -2632,7 +2650,7 @@ var useClasses12 = makeClasses((props) => ({
   },
   root: {
     alignItems: "center",
-    borderBottom: `1px solid ${colors.custom.black}`,
+    borderBottom: `1px solid ${colors.border}`,
     height: MULTI_INPUT_ROW_HEIGHT,
     width: "100%",
     backgroundColor: props.bgColor,
@@ -2712,7 +2730,7 @@ var useClasses13 = makeClasses((props) => ({
     borderTop: props.hasInput ? "none" : void 0,
     borderBottom: props.hasDeleteAll ? "none" : void 0,
     minHeight: "2.5rem",
-    backgroundColor: "rgb(0 0 0 / 0.2)",
+    backgroundColor: colors.input,
     overflowY: "auto"
   }
 }));
@@ -2929,7 +2947,7 @@ var useClasses14 = makeClasses((props) => {
         color: colors.custom.grey
       },
       "& .MuiPickersOutlinedInput-root": {
-        background: "rgb(0 0 0 / 0.2)",
+        background: colors.input,
         height: FORM_ROW_HEIGHT,
         paddingLeft: "0.5rem",
         "& fieldset": __spreadValues({
@@ -2965,7 +2983,7 @@ var RangeWrapper = Comp((props) => {
       {
         column: true,
         justify: "center",
-        bgColor: "rgb(0 0 0 / 0.2)",
+        bgColor: colors.input,
         padding: { all: "0 0.4rem" },
         borders: {
           top: `1px dotted ${colors.custom.grey}`,
@@ -3137,7 +3155,7 @@ var List2 = (_a) => {
   var _b = _a, {
     children,
     className,
-    dividerColor = colors.mui.grey["400"],
+    dividerColor = colors.border,
     noDividers = false
   } = _b, props = __objRest(_b, [
     "children",
@@ -3164,11 +3182,9 @@ import {
   ListItemIcon,
   ListItemText
 } from "@mui/material";
-import Color5 from "color";
 import { Fragment as Fragment5, jsx as jsx35, jsxs as jsxs19 } from "react/jsx-runtime";
 var DEFAULT_ICON_END_MARGINS = { left: "1em" };
 var DEFAULT_ICON_MARGINS = { right: "1em" };
-var SUBMENU_COLOR = Color5(colors.custom.black).fade(0.03).hex();
 var ListItem = (_a) => {
   var _b = _a, {
     children,
@@ -3207,8 +3223,9 @@ var ListItem = (_a) => {
       tooltip: children,
       tooltipProps: {
         arrow: false,
-        bgColor: SUBMENU_COLOR,
-        borderColor: SUBMENU_COLOR,
+        // Submenus share the menu's background, without the tooltip's accent border.
+        bgColor: colors.overlay,
+        borderColor: colors.overlay,
         padding: 0,
         placement: "right-start",
         slotProps: { popper: { className: css.tooltipPopper } }
@@ -3233,7 +3250,7 @@ var useClasses18 = makeClasses((props) => ({
   root: {
     padding: "0.1rem 0.8rem",
     "&:not(:last-child)": {
-      borderBottom: `1px solid ${colors.custom.darkGrey}`
+      borderBottom: `1px solid ${colors.border}`
     }
   },
   text: {
@@ -3349,7 +3366,7 @@ var useClasses19 = makeClasses((props) => {
 import { useState as useState13 } from "react";
 import { jsx as jsx37, jsxs as jsxs20 } from "react/jsx-runtime";
 var ConfirmModal = ({
-  cancelColor = colors.custom.grey,
+  cancelColor,
   cancelIcon = "Close",
   cancelText = "Cancel",
   children,
@@ -3489,6 +3506,7 @@ var useClasses20 = makeClasses((props) => {
         height: props.height,
         width: props.width,
         background: colors.background,
+        border: `1px solid ${colors.border}`,
         overflow: "hidden"
       }
     }
@@ -3601,7 +3619,6 @@ var Modal = {
 
 // trabecula/components/progress/bar.tsx
 import { LinearProgress as LinearProgress2 } from "@mui/material";
-import Color6 from "color";
 import { jsx as jsx42, jsxs as jsxs22 } from "react/jsx-runtime";
 var ProgressBar = Comp((props) => {
   var _a, _b, _c, _d, _e;
@@ -3633,7 +3650,7 @@ var ProgressBar = Comp((props) => {
 var useClasses23 = makeClasses({
   progressBar: {
     flex: 1,
-    backgroundColor: Color6(colors.custom.blue).fade(0.5).string(),
+    backgroundColor: colors.control,
     "& .MuiLinearProgress-bar": {
       backgroundColor: colors.custom.blue
     }
@@ -3642,13 +3659,13 @@ var useClasses23 = makeClasses({
 
 // trabecula/components/progress/circle.tsx
 import { CircularProgress } from "@mui/material";
-import Color7 from "color";
+import Color5 from "color";
 import { jsx as jsx43, jsxs as jsxs23 } from "react/jsx-runtime";
 var ProgressCircle = Comp((props) => {
   var _a;
   const color = props.color || colors.custom.white;
   const { css } = useClasses24({
-    bgColor: props.variant === "indeterminate" ? void 0 : props.bgColor || Color7(color).fade(0.5).string(),
+    bgColor: props.variant === "indeterminate" ? void 0 : props.bgColor || Color5(color).fade(0.5).string(),
     color
   });
   return /* @__PURE__ */ jsxs23(View, { column: true, position: "relative", justify: "center", align: "center", children: [
@@ -4318,15 +4335,7 @@ var Pagination = Comp(
               }
             ) }),
             /* @__PURE__ */ jsxs27(Modal.Footer, { uniformWidth: "7rem", children: [
-              /* @__PURE__ */ jsx47(
-                Button,
-                {
-                  text: "Cancel",
-                  icon: "Close",
-                  onClick: () => setIsJumpModalOpen(false),
-                  color: colors.foregroundCard
-                }
-              ),
+              /* @__PURE__ */ jsx47(Button, { text: "Cancel", icon: "Close", onClick: () => setIsJumpModalOpen(false) }),
               /* @__PURE__ */ jsx47(
                 Button,
                 {
@@ -4347,14 +4356,14 @@ var Pagination = Comp(
 var useClasses27 = makeClasses((props) => ({
   pagination: {
     borderRadius: 0,
-    borderTop: "0.2rem solid #1b58a7",
+    borderTop: `1px solid ${colors.border}`,
     margin: 0,
     padding: "0.2rem 0.5rem 0.2rem",
     width: "100%",
     backgroundColor: colors.background,
     "& .MuiPagination-ul": { flexWrap: "nowrap" },
     "& > ul": { justifyContent: "center" },
-    "& li button": { borderRadius: "0.2rem" }
+    "& li button": { borderRadius: CONTROL_RADIUS }
   },
   root: {
     position: "absolute",
@@ -5130,7 +5139,7 @@ var getInitialExpandedSections = (sectionIds, defaultExpanded) => {
 
 // trabecula/components/toggles/checkbox.tsx
 import { Checkbox as MuiCheckbox, FormControlLabel as FormControlLabel2 } from "@mui/material";
-import Color8 from "color";
+import Color6 from "color";
 import { jsx as jsx57 } from "react/jsx-runtime";
 var Checkbox = ({
   center,
@@ -5213,7 +5222,7 @@ var useClasses33 = makeClasses((props) => ({
     whiteSpace: props.whiteSpace,
     transition: "all 200ms ease-in-out",
     userSelect: "none",
-    "&:hover": props.noHover ? {} : { backgroundColor: Color8(props.color).fade(0.8).string() },
+    "&:hover": props.noHover ? {} : { backgroundColor: Color6(props.color).fade(0.8).string() },
     "& .MuiFormControlLabel-label": {
       paddingRight: "0.4rem",
       fontFamily: "Karla"
@@ -5223,7 +5232,7 @@ var useClasses33 = makeClasses((props) => ({
 
 // trabecula/components/toggles/radio.tsx
 import { FormControlLabel as FormControlLabel3, Radio as MuiRadio } from "@mui/material";
-import Color9 from "color";
+import Color7 from "color";
 import { jsx as jsx58 } from "react/jsx-runtime";
 var Radio2 = (rawProps) => {
   const {
@@ -5298,8 +5307,8 @@ var useClasses34 = makeClasses((props) => ({
     transition: "all 200ms ease-in-out",
     userSelect: "none",
     "&:hover": props.noHover ? {} : {
-      border: `1px solid ${Color9(props.color).fade(0.8).string()}`,
-      backgroundColor: Color9(props.color).fade(0.9).string()
+      border: `1px solid ${Color7(props.color).fade(0.8).string()}`,
+      backgroundColor: Color7(props.color).fade(0.9).string()
     }
   }),
   radio: __spreadProps(__spreadValues({}, makePadding(props.padding)), {
@@ -5310,12 +5319,12 @@ var useClasses34 = makeClasses((props) => ({
 
 // trabecula/components/tooltip/tooltip.tsx
 import { Tooltip as MuiTooltip } from "@mui/material";
-import Color10 from "color";
+import Color8 from "color";
 import { jsx as jsx59 } from "react/jsx-runtime";
 var Tooltip = (_a) => {
   var _b = _a, {
     arrow = true,
-    bgColor = colors.background,
+    bgColor = colors.overlay,
     borderColor = colors.custom.blue,
     children,
     color,
@@ -5379,7 +5388,7 @@ var useClasses35 = makeClasses((props) => ({
     maxWidth: props.maxWidth,
     minWidth: props.minWidth,
     padding: props.padding,
-    backgroundColor: Color10(props.bgColor).fade(0.03).string(),
+    backgroundColor: Color8(props.bgColor).fade(0.03).string(),
     color: props.color,
     fontSize: props.fontSize,
     whiteSpace: "pre-wrap",
@@ -5483,10 +5492,14 @@ var Card = Comp(
       opacity,
       position
     };
-    borderRadiuses = deepMerge({ bottom: "0.5rem", top: !!header ? 0 : "0.5rem" }, borderRadiuses);
-    headerProps = deepMerge({ width: "100%" }, headerProps != null ? headerProps : {});
+    const hasHeader = !!header;
+    borderRadiuses = deepMerge({ bottom: "0.5rem", top: hasHeader ? 0 : "0.5rem" }, borderRadiuses);
+    headerProps = deepMerge(
+      { bgColor, borders: { all: `1px solid ${colors.border}` }, width: "100%" },
+      headerProps != null ? headerProps : {}
+    );
     padding = deepMerge({ all: "0.5rem" }, padding);
-    const { css, cx } = useClasses36({ boxShadow, elevated });
+    const { css, cx } = useClasses36({ boxShadow, elevated, hasHeader });
     return /* @__PURE__ */ jsx61(
       HeaderWrapper,
       __spreadProps(__spreadValues(__spreadValues({}, boxProps), viewProps), {
@@ -5532,6 +5545,8 @@ var useClasses36 = makeClasses((props) => {
   var _a;
   return {
     root: {
+      border: `1px solid ${colors.border}`,
+      borderTop: props.hasHeader ? "none" : void 0,
       boxShadow: (_a = props.boxShadow) != null ? _a : props.elevated ? "0.1rem 0.1rem 0.3rem rgb(0 0 0 / 50%)" : void 0
     }
   };
@@ -5541,14 +5556,12 @@ var useClasses36 = makeClasses((props) => {
 import { jsx as jsx62 } from "react/jsx-runtime";
 var Chip3 = (_a) => {
   var _b = _a, {
-    bgColor = colors.background,
     className,
     flush = false,
     hasFooter,
     opacity = 0.6,
     position
   } = _b, props = __objRest(_b, [
-    "bgColor",
     "className",
     "flush",
     "hasFooter",
@@ -5556,7 +5569,7 @@ var Chip3 = (_a) => {
     "position"
   ]);
   const { css, cx } = useClasses37({ flush, hasFooter, opacity, position });
-  return /* @__PURE__ */ jsx62(Chip2, __spreadProps(__spreadValues({}, props), { bgColor, className: cx(css.chip, className) }));
+  return /* @__PURE__ */ jsx62(Chip2, __spreadProps(__spreadValues({ overMedia: true }, props), { className: cx(css.chip, className) }));
 };
 var useClasses37 = makeClasses((props) => ({
   chip: {
@@ -5573,7 +5586,7 @@ var useClasses37 = makeClasses((props) => ({
 
 // trabecula/components/wrappers/card-base/container.tsx
 import { Paper as Paper3 } from "@mui/material";
-import Color11 from "color";
+import Color9 from "color";
 import { jsx as jsx63 } from "react/jsx-runtime";
 var Container2 = (_a) => {
   var _b = _a, {
@@ -5626,7 +5639,7 @@ var useClasses38 = makeClasses((props, theme) => {
       [theme.breakpoints.down("md")]: props.height ? void 0 : { height: "14rem" },
       [theme.breakpoints.down("sm")]: props.height ? void 0 : { height: "12rem" }
     }, props.width ? { width: props.width } : {}), {
-      background: !props.disabled && props.selected ? `linear-gradient(to bottom right, ${Color11(props.selectedColor).lighten(0.4).string()}, ${props.selectedColor} 60%)` : "transparent",
+      background: !props.disabled && props.selected ? `linear-gradient(to bottom right, ${Color9(props.selectedColor).lighten(0.4).string()}, ${props.selectedColor} 60%)` : "transparent",
       overflow: "hidden",
       cursor: "pointer",
       userSelect: "none"
@@ -5890,12 +5903,14 @@ var useClasses41 = makeClasses((props, theme) => ({
 
 // trabecula/components/wrappers/chip.tsx
 import { Chip as MuiChip } from "@mui/material";
+import Color10 from "color";
 import { Fragment as Fragment7, jsx as jsx69, jsxs as jsxs34 } from "react/jsx-runtime";
 var FRACTION_SLANT = "0.4em";
+var MEDIA_FILL = Color10(colors.custom.black).fade(0.25).string();
 var Chip2 = Comp(
   (_a) => {
     var _b = _a, {
-      bgColor,
+      bgColor = colors.custom.grey,
       className,
       color,
       denominator,
@@ -5906,6 +5921,7 @@ var Chip2 = Comp(
       iconColor,
       iconProps,
       label,
+      overMedia = false,
       padding,
       radiuses,
       size = "small",
@@ -5922,6 +5938,7 @@ var Chip2 = Comp(
       "iconColor",
       "iconProps",
       "label",
+      "overMedia",
       "padding",
       "radiuses",
       "size",
@@ -5934,6 +5951,7 @@ var Chip2 = Comp(
       fontSize,
       fontWeight,
       height,
+      overMedia,
       padding,
       radiuses,
       width
@@ -5960,43 +5978,53 @@ var Chip2 = Comp(
     );
   }
 );
-var useClasses42 = makeClasses((props) => ({
-  chip: __spreadProps(__spreadValues({}, makeBorderRadiuses(props.radiuses)), {
-    height: props.height,
-    width: props.width,
-    backgroundColor: props.bgColor,
-    color: props.color,
-    transition: "all 200ms ease-in-out",
-    "& > .MuiChip-label": __spreadProps(__spreadValues({}, makePadding(props.padding)), {
-      fontSize: props.fontSize,
-      fontWeight: props.fontWeight
-    })
-  }),
-  denominator: {
-    height: "100%",
-    marginLeft: `-${FRACTION_SLANT}`,
-    padding: `0 0.6em 0 calc(0.35em + ${FRACTION_SLANT})`,
-    backgroundColor: "rgba(0, 0, 0, 0.35)",
-    clipPath: `polygon(${FRACTION_SLANT} 0, 100% 0, 100% 100%, 0 100%)`
-  },
-  /**
-   * The sides fill the chip, which clips the denominator's background to its rounded corners. Equal
-   * columns size both sides to the wider one, so a short numerator stays as wide as its denominator.
-   */
-  fraction: {
-    overflow: "hidden",
-    "& > .MuiChip-label": {
-      display: "grid",
-      gridTemplateColumns: "1fr 1fr",
+var useClasses42 = makeClasses((props) => {
+  var _a;
+  const chipColors = getChipColors(props.bgColor);
+  const getFill = (tint) => props.overMedia ? `linear-gradient(${tint}, ${tint}), ${MEDIA_FILL}` : tint;
+  return {
+    chip: __spreadProps(__spreadValues({}, makeBorderRadiuses(props.radiuses)), {
+      height: props.height,
+      width: props.width,
+      background: getFill(chipColors.background),
+      border: chipColors.border,
+      color: (_a = props.color) != null ? _a : chipColors.color,
+      transition: "all 200ms ease-in-out",
+      "&.MuiChip-clickable:hover": {
+        background: getFill(getChipColors(props.bgColor, 0.65).background)
+      },
+      "& > .MuiChip-label": __spreadProps(__spreadValues({}, makePadding(props.padding)), {
+        fontSize: props.fontSize,
+        fontWeight: props.fontWeight
+      })
+    }),
+    denominator: {
       height: "100%",
-      padding: 0
+      marginLeft: `-${FRACTION_SLANT}`,
+      padding: `0 0.6em 0 calc(0.35em + ${FRACTION_SLANT})`,
+      backgroundColor: "rgba(0, 0, 0, 0.35)",
+      clipPath: `polygon(${FRACTION_SLANT} 0, 100% 0, 100% 100%, 0 100%)`
+    },
+    /**
+     * The sides fill the chip, which clips the denominator's background to its rounded corners.
+     * Equal columns size both sides to the wider one, so a short numerator stays as wide as its
+     * denominator.
+     */
+    fraction: {
+      overflow: "hidden",
+      "& > .MuiChip-label": {
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr",
+        height: "100%",
+        padding: 0
+      }
+    },
+    numerator: {
+      height: "100%",
+      padding: `0 calc(0.3em + ${FRACTION_SLANT}) 0 0.6em`
     }
-  },
-  numerator: {
-    height: "100%",
-    padding: `0 calc(0.3em + ${FRACTION_SLANT}) 0 0.6em`
-  }
-}));
+  };
+});
 
 // trabecula/components/wrappers/conditional.tsx
 import { Fragment as Fragment8, jsx as jsx70 } from "react/jsx-runtime";
@@ -6009,7 +6037,6 @@ var ConditionalWrap = ({
 // trabecula/components/wrappers/context-menu.tsx
 import { useState as useState21 } from "react";
 import { Menu as Menu2 } from "@mui/material";
-import Color12 from "color";
 import { jsx as jsx71, jsxs as jsxs35 } from "react/jsx-runtime";
 var ContextMenu = (_a) => {
   var _b = _a, { children, disabled, id, menuItems } = _b, props = __objRest(_b, ["children", "disabled", "id", "menuItems"]);
@@ -6094,7 +6121,7 @@ var SubItem = ({
 };
 var useClasses43 = makeClasses({
   contextMenu: {
-    background: Color12(colors.custom.black).fade(0.03).string()
+    background: colors.overlay
   },
   contextMenuInner: {
     padding: 0
@@ -6183,7 +6210,7 @@ var useClasses45 = makeClasses((props) => ({
 }));
 
 // trabecula/components/wrappers/drop-overlay.tsx
-import Color13 from "color";
+import Color11 from "color";
 import { jsx as jsx74 } from "react/jsx-runtime";
 var DropOverlay = ({ onDragLeave, onDrop }) => {
   const { css } = useClasses46(null);
@@ -6191,7 +6218,7 @@ var DropOverlay = ({ onDragLeave, onDrop }) => {
 };
 var useClasses46 = makeClasses({
   overlay: {
-    backgroundColor: Color13(colors.custom.blue).fade(0.5).string(),
+    backgroundColor: Color11(colors.custom.blue).fade(0.5).string(),
     border: `15px dashed ${colors.custom.blue}`,
     bottom: 0,
     left: 0,
@@ -6207,7 +6234,7 @@ var useClasses46 = makeClasses({
 // trabecula/components/wrappers/header.tsx
 import { jsx as jsx75, jsxs as jsxs37 } from "react/jsx-runtime";
 var DEFAULT_HEADER_PROPS = {
-  bgColor: colors.custom.black,
+  bgColor: colors.foregroundCard,
   borderRadiuses: { top: 6 },
   fontSize: "0.8em",
   justify: "center",
@@ -6639,7 +6666,7 @@ var useClasses48 = makeClasses((props) => ({
 // trabecula/components/wrappers/tab-container.tsx
 import { useState as useState24 } from "react";
 import { Tab, Tabs } from "@mui/material";
-import Color14 from "color";
+import Color12 from "color";
 import { jsx as jsx81, jsxs as jsxs42 } from "react/jsx-runtime";
 var TabContainer = ({
   activeTab,
@@ -6666,7 +6693,7 @@ var TabContainer = ({
   });
   const [selectedTab, setSelectedTab] = useState24("0");
   const currentTab = activeTab != null ? activeTab : selectedTab;
-  const pillBgColor = Color14(color).isDark() ? "rgba(255, 255, 255, 0.12)" : "rgba(0, 0, 0, 0.25)";
+  const pillBgColor = Color12(color).isDark() ? "rgba(255, 255, 255, 0.12)" : "rgba(0, 0, 0, 0.25)";
   const handleChange = (_event, tabIndex) => {
     if (activeTab === void 0) setSelectedTab(tabIndex);
     onTabChange == null ? void 0 : onTabChange(tabIndex);
@@ -6746,11 +6773,11 @@ var useClasses49 = makeClasses((props) => {
         color: colors.custom.white
       },
       "&:hover": {
-        backgroundColor: Color14(props.color).lighten(0.3).string(),
+        backgroundColor: Color12(props.color).lighten(0.3).string(),
         transition: "all 200ms ease-in-out"
       },
       "&:not(:last-child)": {
-        borderRight: `2px solid ${Color14(props.color).lighten(0.4).string()}`
+        borderRight: `2px solid ${Color12(props.color).lighten(0.4).string()}`
       },
       backgroundColor: props.color,
       color: colors.custom.lightGrey,
@@ -6933,7 +6960,7 @@ var makeTheme = ({ portalContainer, titleBarHeight } = {}) => createTheme({
     MuiPopover: { defaultProps: { container: portalContainer } },
     MuiPopper: { defaultProps: { container: portalContainer } }
   },
-  palette: { mode: "dark" },
+  palette: { divider: colors.border, mode: "dark" },
   typography: { fontFamily: "Karla" }
 });
 var MuiProvider = ({
@@ -7053,6 +7080,7 @@ export {
   makePadding,
   makeClasses,
   colors,
+  getChipColors,
   getContrastText,
   useDeepEffect,
   useDeepMemo,
@@ -7171,4 +7199,4 @@ export {
   makeTheme,
   MuiProvider
 };
-//# sourceMappingURL=chunk-GZSBLNTV.mjs.map
+//# sourceMappingURL=chunk-F3TOQVFG.mjs.map

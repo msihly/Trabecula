@@ -70,7 +70,7 @@ export const Input = Comp((rawProps: InputProps, ref?: MutableRefObject<HTMLDivE
     adornment,
     adornmentColor = colors.custom.grey,
     adornmentPosition = "end",
-    background = "rgb(0 0 0 / 0.2)",
+    background = colors.input,
     borderRadiuses,
     borders,
     children,

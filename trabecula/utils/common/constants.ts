@@ -208,6 +208,8 @@ export interface _Constants {
   };
 }
 
+/** The corner radius buttons share, which sets them apart from fully rounded chips. */
+export const CONTROL_RADIUS = "0.4rem";
 export const DENSE_FORM_ROW_HEIGHT = "1.8rem";
 export const FORM_ROW_HEIGHT = "2.25rem";
 

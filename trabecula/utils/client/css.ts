@@ -263,31 +263,51 @@ export type CssColor = "inherit" | HexColor | RgbColor | HslColor | CssNamedColo
 
 const customColors = {
   black: "#131313",
-  blue: "#2866c5",
+  blue: "#3b6fd1",
   blueGrey: "#546e7a",
   brown: "#6d4c41",
   darkGrey: "#2b2b2b",
-  green: "#2e7d32",
+  green: "#3d8b45",
   /** Recedes on the app's dark surfaces, too dark for text meant to be read; use lightGrey. */
   grey: "#4b4b4b",
-  lightBlue: "#578cdd",
+  lightBlue: "#8fb0ee",
   lightGrey: "#bdbdbd",
-  orange: "#ad6a27",
-  purple: "#683980",
-  red: "#982525",
-  white: "#f5f5f5",
+  orange: "#b9772f",
+  purple: "#7e4d9f",
+  red: "#b33c3c",
+  white: "#ededef",
   yellow: "#e3c648",
 } as const;
 
 export const colors = {
-  background: "#1E1E1E",
+  background: "#1B1B1E",
+  /** The hairline around panels and controls, and between their parts. */
+  border: "rgba(255, 255, 255, 0.07)",
+  /** The fill of neutral buttons, which lightens whatever surface they sit on. */
+  control: "rgba(255, 255, 255, 0.07)",
   custom: customColors,
-  foreground: "#2C2C2C",
-  foregroundCard: "#343434",
+  foreground: "#222225",
+  /** Raised one step above foreground, such as headers nested in a panel. */
+  foregroundCard: "#29292D",
+  /** Recessed below the surface around it, so fields read as places to type. */
+  input: "#161618",
   mui: muiColors,
+  /** Menus and tooltips, floating above everything else. */
+  overlay: "#303035",
   palette: PALETTE,
   swatches: PALETTE_SWATCHES,
 } as const;
+
+/** A translucent tint of the color, outlined in it, with text readable against the tint. */
+export const getChipColors = (color: CssColor, opacity = 0.5) => {
+  const tint = Color(color).lighten(0.2);
+
+  return {
+    background: tint.fade(1 - opacity).toString() as CssColor,
+    border: `2px solid ${color}`,
+    color: getContrastText(tint.mix(Color(colors.foreground), 0.5).hex() as CssColor),
+  };
+};
 
 /** Picks the light or dark text color with more contrast against an opaque background. */
 export const getContrastText = (background: CssColor) => {

@@ -3,6 +3,7 @@ import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 import { createTheme, ThemeProvider } from "@mui/material";
 import { TssCacheProvider } from "tss-react";
+import { colors } from "trabecula/utils/client";
 
 const PortalContainerContext = createContext<HTMLElement | undefined>(undefined);
 
@@ -24,7 +25,7 @@ export const makeTheme = ({ portalContainer, titleBarHeight }: MakeThemeOptions 
       MuiPopover: { defaultProps: { container: portalContainer } },
       MuiPopper: { defaultProps: { container: portalContainer } },
     },
-    palette: { mode: "dark" },
+    palette: { divider: colors.border, mode: "dark" },
     typography: { fontFamily: "Karla" },
   });
 

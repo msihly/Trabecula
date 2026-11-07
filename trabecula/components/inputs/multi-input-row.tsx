@@ -86,7 +86,7 @@ const useClasses = makeClasses((props: ClassesProps) => ({
   },
   root: {
     alignItems: "center",
-    borderBottom: `1px solid ${colors.custom.black}`,
+    borderBottom: `1px solid ${colors.border}`,
     height: MULTI_INPUT_ROW_HEIGHT,
     width: "100%",
     backgroundColor: props.bgColor,

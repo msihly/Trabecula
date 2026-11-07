@@ -1,5 +1,5 @@
 import { Chip as ChipBase, ChipProps as ChipBaseProps } from "trabecula/components";
-import { colors, makeClasses } from "trabecula/utils/client";
+import { makeClasses } from "trabecula/utils/client";
 
 export interface ChipProps extends ChipBaseProps {
   flush?: boolean;
@@ -9,7 +9,6 @@ export interface ChipProps extends ChipBaseProps {
 }
 
 export const Chip = ({
-  bgColor = colors.background,
   className,
   flush = false,
   hasFooter,
@@ -19,7 +18,7 @@ export const Chip = ({
 }: ChipProps) => {
   const { css, cx } = useClasses({ flush, hasFooter, opacity, position });
 
-  return <ChipBase {...props} bgColor={bgColor} className={cx(css.chip, className)} />;
+  return <ChipBase overMedia {...props} className={cx(css.chip, className)} />;
 };
 
 interface ClassesProps extends Pick<ChipProps, "flush" | "hasFooter" | "opacity" | "position"> {}

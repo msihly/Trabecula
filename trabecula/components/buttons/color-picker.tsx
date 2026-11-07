@@ -30,7 +30,6 @@ export interface ColorPickerProps extends Omit<ButtonProps, "onChange" | "value"
 
 export const ColorPicker = Comp(
   ({
-    color = colors.custom.black,
     label = "Color",
     menuProps = {},
     noIcon = false,
@@ -60,7 +59,6 @@ export const ColorPicker = Comp(
       <Button
         {...buttonProps}
         onClick={onOpen}
-        color={color}
         justify="center"
         padding={{ left: "0.5em", right: "0.5em" }}
         width={width}

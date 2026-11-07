@@ -39,7 +39,6 @@ export interface IconPickerProps extends Omit<ButtonProps, "onChange" | "value">
 
 export const IconPicker = Comp(
   ({
-    color = colors.custom.black,
     label = "Icon",
     menuProps = {},
     setValue,
@@ -91,7 +90,6 @@ export const IconPicker = Comp(
       <Button
         {...buttonProps}
         onClick={onOpen}
-        color={color}
         justify="center"
         padding={{ left: "0.5em", right: "0.5em" }}
         width={width}

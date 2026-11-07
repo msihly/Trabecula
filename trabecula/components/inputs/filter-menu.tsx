@@ -54,7 +54,7 @@ export interface FilterMenuProps extends Omit<ButtonProps, "onChange" | "value">
 export const FilterMenu = Comp(
   ({
     children,
-    color = colors.custom.black,
+    color,
     menuProps = {},
     resetFn,
     searchFn,
@@ -120,7 +120,6 @@ export const FilterMenu = Comp(
               icon="Refresh"
               onClick={handleReset}
               disabled={store.isLoading}
-              color={colors.foregroundCard}
               colorOnHover={colors.custom.red}
             />
 
@@ -128,7 +127,6 @@ export const FilterMenu = Comp(
               rows={sortOptions}
               value={store.sortValue}
               setValue={store.setSortValue}
-              color={colors.foregroundCard}
               width="9rem"
             />
 
@@ -216,7 +214,6 @@ const SavedSearchMenu = Comp(({ searchFn, store }: SavedSearchMenuProps) => {
         icon="Save"
         onClick={handleEdit}
         disabled={store.isLoading}
-        color={colors.foregroundCard}
         colorOnHover={colors.custom.blue}
       />
 
@@ -224,7 +221,6 @@ const SavedSearchMenu = Comp(({ searchFn, store }: SavedSearchMenuProps) => {
         icon="Delete"
         onClick={() => store.setIsDeleteModalOpen(true)}
         disabled={store.isLoading || !store.selectedSavedSearchId}
-        color={colors.foregroundCard}
         colorOnHover={colors.custom.red}
       />
 
@@ -266,7 +262,7 @@ const SavedSearchModal = Comp(({ label, onClose, onSave, setLabel }: SavedSearch
     </Modal.Content>
 
     <Modal.Footer>
-      <Button text="Cancel" icon="Close" onClick={onClose} color={colors.foregroundCard} />
+      <Button text="Cancel" icon="Close" onClick={onClose} />
 
       <Button
         text="Save"

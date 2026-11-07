@@ -63,7 +63,7 @@ const useClasses = makeClasses((props: ClassesProps) => ({
       color: colors.custom.grey,
     },
     "& .MuiPickersOutlinedInput-root": {
-      background: "rgb(0 0 0 / 0.2)",
+      background: colors.input,
       height: FORM_ROW_HEIGHT,
       paddingLeft: "0.5rem",
       "& fieldset": {

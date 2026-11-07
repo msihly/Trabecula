@@ -10,7 +10,7 @@ export interface ListProps extends MuiListProps {
 export const List = ({
   children,
   className,
-  dividerColor = colors.mui.grey["400"],
+  dividerColor = colors.border,
   noDividers = false,
   ...props
 }: ListProps) => {

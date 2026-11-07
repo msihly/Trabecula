@@ -78,27 +78,36 @@ type HslColor = `hsl(${number}, ${number}%, ${number}%)` | `hsla(${number}, ${nu
 type CssNamedColor = "aliceblue" | "antiquewhite" | "aqua" | "aquamarine" | "azure" | "beige" | "bisque" | "black" | "blanchedalmond" | "blue" | "blueviolet" | "brown" | "burlywood" | "cadetblue" | "chartreuse" | "chocolate" | "coral" | "cornflowerblue" | "cornsilk" | "crimson" | "cyan" | "darkblue" | "darkcyan" | "darkgoldenrod" | "darkgray" | "darkgreen" | "darkgrey" | "darkkhaki" | "darkmagenta" | "darkolivegreen" | "darkorange" | "darkorchid" | "darkred" | "darksalmon" | "darkseagreen" | "darkslateblue" | "darkslategray" | "darkslategrey" | "darkturquoise" | "darkviolet" | "deeppink" | "deepskyblue" | "dimgray" | "dimgrey" | "dodgerblue" | "firebrick" | "floralwhite" | "forestgreen" | "fuchsia" | "gainsboro" | "ghostwhite" | "gold" | "goldenrod" | "gray" | "green" | "greenyellow" | "grey" | "honeydew" | "hotpink" | "indianred" | "indigo" | "ivory" | "khaki" | "lavender" | "lavenderblush" | "lawngreen" | "lemonchiffon" | "lightblue" | "lightcoral" | "lightcyan" | "lightgoldenrodyellow" | "lightgray" | "lightgreen" | "lightgrey" | "lightpink" | "lightsalmon" | "lightseagreen" | "lightskyblue" | "lightslategray" | "lightslategrey" | "lightsteelblue" | "lightyellow" | "lime" | "limegreen" | "linen" | "magenta" | "maroon" | "mediumaquamarine" | "mediumblue" | "mediumorchid" | "mediumpurple" | "mediumseagreen" | "mediumslateblue" | "mediumspringgreen" | "mediumturquoise" | "mediumvioletred" | "midnightblue" | "mintcream" | "mistyrose" | "moccasin" | "navajowhite" | "navy" | "oldlace" | "olive" | "olivedrab" | "orange" | "orangered" | "orchid" | "palegoldenrod" | "palegreen" | "paleturquoise" | "palevioletred" | "papayawhip" | "peachpuff" | "peru" | "pink" | "plum" | "powderblue" | "purple" | "rebeccapurple" | "red" | "rosybrown" | "royalblue" | "saddlebrown" | "salmon" | "sandybrown" | "seagreen" | "seashell" | "sienna" | "silver" | "skyblue" | "slateblue" | "slategray" | "slategrey" | "snow" | "springgreen" | "steelblue" | "tan" | "teal" | "thistle" | "tomato" | "turquoise" | "violet" | "wheat" | "white" | "whitesmoke" | "yellow" | "yellowgreen" | "transparent" | "currentColor";
 type CssColor = "inherit" | HexColor | RgbColor | HslColor | CssNamedColor;
 declare const colors: {
-    readonly background: "#1E1E1E";
+    readonly background: "#1B1B1E";
+    /** The hairline around panels and controls, and between their parts. */
+    readonly border: "rgba(255, 255, 255, 0.07)";
+    /** The fill of neutral buttons, which lightens whatever surface they sit on. */
+    readonly control: "rgba(255, 255, 255, 0.07)";
     readonly custom: {
         readonly black: "#131313";
-        readonly blue: "#2866c5";
+        readonly blue: "#3b6fd1";
         readonly blueGrey: "#546e7a";
         readonly brown: "#6d4c41";
         readonly darkGrey: "#2b2b2b";
-        readonly green: "#2e7d32";
+        readonly green: "#3d8b45";
         /** Recedes on the app's dark surfaces, too dark for text meant to be read; use lightGrey. */
         readonly grey: "#4b4b4b";
-        readonly lightBlue: "#578cdd";
+        readonly lightBlue: "#8fb0ee";
         readonly lightGrey: "#bdbdbd";
-        readonly orange: "#ad6a27";
-        readonly purple: "#683980";
-        readonly red: "#982525";
-        readonly white: "#f5f5f5";
+        readonly orange: "#b9772f";
+        readonly purple: "#7e4d9f";
+        readonly red: "#b33c3c";
+        readonly white: "#ededef";
         readonly yellow: "#e3c648";
     };
-    readonly foreground: "#2C2C2C";
-    readonly foregroundCard: "#343434";
+    readonly foreground: "#222225";
+    /** Raised one step above foreground, such as headers nested in a panel. */
+    readonly foregroundCard: "#29292D";
+    /** Recessed below the surface around it, so fields read as places to type. */
+    readonly input: "#161618";
     readonly mui: typeof colors$1;
+    /** Menus and tooltips, floating above everything else. */
+    readonly overlay: "#303035";
     readonly palette: {
         readonly red: {
             readonly 300: "#fca5a5";
@@ -283,8 +292,14 @@ declare const colors: {
     };
     readonly swatches: PaletteColor[][];
 };
+/** A translucent tint of the color, outlined in it, with text readable against the tint. */
+declare const getChipColors: (color: CssColor, opacity?: number) => {
+    background: CssColor;
+    border: string;
+    color: "#131313" | "#ededef";
+};
 /** Picks the light or dark text color with more contrast against an opaque background. */
-declare const getContrastText: (background: CssColor) => "#131313" | "#f5f5f5";
+declare const getContrastText: (background: CssColor) => "#131313" | "#ededef";
 
-export { colors as d, makeBorders as e, makeClasses as f, getContrastText as g, makeMargins as h, makePadding as i, makeBorderRadiuses as m };
+export { colors as d, getContrastText as e, makeBorders as f, getChipColors as g, makeClasses as h, makeMargins as i, makePadding as j, makeBorderRadiuses as m };
 export type { BorderRadiuses as B, CSS as C, Margins as M, Padding as P, Borders as a, CssColor as b, CssNamedColor as c };

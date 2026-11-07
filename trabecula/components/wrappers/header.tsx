@@ -4,7 +4,7 @@ import { colors } from "trabecula/utils/client";
 import { deepMerge } from "trabecula/utils/common";
 
 const DEFAULT_HEADER_PROPS: HeaderWrapperProps["headerProps"] = {
-  bgColor: colors.custom.black,
+  bgColor: colors.foregroundCard,
   borderRadiuses: { top: 6 },
   fontSize: "0.8em",
   justify: "center",

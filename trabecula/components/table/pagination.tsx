@@ -17,6 +17,7 @@ import {
   ViewProps,
 } from "trabecula/components";
 import { colors, makeClasses } from "trabecula/utils/client";
+import { CONTROL_RADIUS } from "trabecula/utils/common";
 
 export interface PaginationProps extends Omit<PaginationBaseProps, "onChange"> {
   inline?: boolean;
@@ -129,12 +130,7 @@ export const Pagination = Comp(
             </Modal.Content>
 
             <Modal.Footer uniformWidth="7rem">
-              <Button
-                text="Cancel"
-                icon="Close"
-                onClick={() => setIsJumpModalOpen(false)}
-                color={colors.foregroundCard}
-              />
+              <Button text="Cancel" icon="Close" onClick={() => setIsJumpModalOpen(false)} />
 
               <Button
                 text="Jump"
@@ -156,14 +152,14 @@ interface ClassesProps extends Pick<PaginationProps, "inline"> {}
 const useClasses = makeClasses((props: ClassesProps) => ({
   pagination: {
     borderRadius: 0,
-    borderTop: "0.2rem solid #1b58a7",
+    borderTop: `1px solid ${colors.border}`,
     margin: 0,
     padding: "0.2rem 0.5rem 0.2rem",
     width: "100%",
     backgroundColor: colors.background,
     "& .MuiPagination-ul": { flexWrap: "nowrap" },
     "& > ul": { justifyContent: "center" },
-    "& li button": { borderRadius: "0.2rem" },
+    "& li button": { borderRadius: CONTROL_RADIUS },
   },
   root: {
     position: "absolute",

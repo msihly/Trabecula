@@ -204,7 +204,7 @@ interface SortMenuProps extends Omit<ButtonProps, "onChange" | "value"> {
         key: string;
     };
 }
-declare const SortMenu: ({ color, hasHeader, height, rows, setValue, value, width, ...buttonProps }: SortMenuProps) => react.JSX.Element;
+declare const SortMenu: ({ hasHeader, height, rows, setValue, value, width, ...buttonProps }: SortMenuProps) => react.JSX.Element;
 
 interface SortRowProps {
     attribute: string;
@@ -1052,7 +1052,7 @@ interface ChipProps$1 extends ChipProps {
 }
 
 declare const CardBase: {
-    Chip: ({ bgColor, className, flush, hasFooter, opacity, position, ...props }: ChipProps$1) => react.JSX.Element;
+    Chip: ({ className, flush, hasFooter, opacity, position, ...props }: ChipProps$1) => react.JSX.Element;
     Container: ({ children, className, disabled, display, height, onClick, onDoubleClick, selected, selectedColor, width, ...viewProps }: ContainerProps) => react.JSX.Element;
     Footer: ({ children }: FooterProps) => react.JSX.Element;
     FooterText: (props: FooterTextProps) => react.JSX.Element;
@@ -1071,6 +1071,7 @@ interface CardGridProps extends ViewProps {
 declare const CardGrid: react.ForwardRefExoticComponent<CardGridProps & react.RefAttributes<HTMLDivElement>>;
 
 interface ChipProps extends Omit<ChipProps$2, "color" | "icon"> {
+    /** The tag color, which tints the chip's fill and outlines it. */
     bgColor?: CssColor;
     color?: CssColor;
     /**
@@ -1085,6 +1086,8 @@ interface ChipProps extends Omit<ChipProps$2, "color" | "icon"> {
     iconColor?: CssColor;
     iconProps?: Partial<IconProps>;
     label: ReactNode;
+    /** Lays the tint over a dark fill, keeping the chip readable over images. */
+    overMedia?: boolean;
     padding?: Padding;
     radiuses?: BorderRadiuses;
     width?: CSS["width"];

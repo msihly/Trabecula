@@ -16,6 +16,7 @@ import {
   Margins,
   Padding,
 } from "trabecula/utils/client";
+import { CONTROL_RADIUS } from "trabecula/utils/common";
 
 export interface IconButtonProps extends Omit<MuiIconButtonProps, "color"> {
   children?: ReactNode | ReactNode[];
@@ -60,6 +61,7 @@ const useClasses = makeClasses((props: ClassesProps) => ({
   root: {
     ...makeMargins(props.margins),
     ...makePadding(props.padding),
+    borderRadius: CONTROL_RADIUS,
     opacity: props.disabled ? 0.5 : 1,
     transition: "all 100ms ease-in-out",
   },

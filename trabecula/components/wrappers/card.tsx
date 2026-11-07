@@ -57,11 +57,17 @@ export const Card = Comp(
       position,
     };
 
-    borderRadiuses = deepMerge({ bottom: "0.5rem", top: !!header ? 0 : "0.5rem" }, borderRadiuses);
-    headerProps = deepMerge({ width: "100%" }, headerProps ?? {});
+    const hasHeader = !!header;
+
+    borderRadiuses = deepMerge({ bottom: "0.5rem", top: hasHeader ? 0 : "0.5rem" }, borderRadiuses);
+    // The header shares the card's color, and its own hairline divides it from the body.
+    headerProps = deepMerge(
+      { bgColor, borders: { all: `1px solid ${colors.border}` }, width: "100%" },
+      headerProps ?? {},
+    );
     padding = deepMerge({ all: "0.5rem" }, padding);
 
-    const { css, cx } = useClasses({ boxShadow, elevated });
+    const { css, cx } = useClasses({ boxShadow, elevated, hasHeader });
 
     return (
       <HeaderWrapper
@@ -106,10 +112,14 @@ export const Card = Comp(
   },
 );
 
-interface ClassesProps extends Pick<CardProps, "boxShadow" | "elevated"> {}
+interface ClassesProps extends Pick<CardProps, "boxShadow" | "elevated"> {
+  hasHeader: boolean;
+}
 
 const useClasses = makeClasses((props: ClassesProps) => ({
   root: {
+    border: `1px solid ${colors.border}`,
+    borderTop: props.hasHeader ? "none" : undefined,
     boxShadow:
       props.boxShadow ?? (props.elevated ? "0.1rem 0.1rem 0.3rem rgb(0 0 0 / 50%)" : undefined),
   },

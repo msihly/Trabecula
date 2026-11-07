@@ -31,7 +31,7 @@ import {
   Margins,
   Padding,
 } from "trabecula/utils/client";
-import { DENSE_FORM_ROW_HEIGHT } from "trabecula/utils/common";
+import { CONTROL_RADIUS, DENSE_FORM_ROW_HEIGHT } from "trabecula/utils/common";
 
 export interface ButtonProps extends Omit<
   MuiButtonProps,
@@ -82,11 +82,11 @@ export interface ButtonProps extends Omit<
 
 export const Button = ({
   borderColorOnHover,
-  borderRadiuses = { all: "0.3rem" },
+  borderRadiuses = { all: CONTROL_RADIUS },
   borders,
   boxShadow,
   className,
-  color = colors.custom.grey,
+  color = colors.control,
   colorOnHover,
   dense = false,
   endNode,
@@ -257,6 +257,15 @@ interface ClassesProps extends Pick<
   isLinkDisplay: boolean;
 }
 
+/** Translucent fills brighten by gaining opacity, since lightening leaves white as white. */
+const getHoverColor = (color: CssColor) => {
+  const fill = Color(color);
+  const alpha = fill.alpha();
+
+  if (alpha > 0 && alpha < 1) return fill.alpha(Math.min(alpha + 0.05, 1)).string();
+  else return fill.lighten(0.1).string();
+};
+
 const useClasses = makeClasses((props: ClassesProps) => {
   const bgColor = props.outlined
     ? props.outlineFill
@@ -267,8 +276,12 @@ const useClasses = makeClasses((props: ClassesProps) => {
     ? "transparent"
     : props.outlined
       ? (props.outlineFillOnHover ?? Color(props.outlineFill).lighten(0.1).string())
-      : (props.colorOnHover ?? Color(props.color).lighten(0.1).string());
-  const borderColor = props.outlined ? props.color : "transparent";
+      : (props.colorOnHover ?? getHoverColor(props.color));
+  const borderColor = props.outlined
+    ? props.color
+    : props.isLinkDisplay || Color(props.color).alpha() === 0
+      ? "transparent"
+      : colors.border;
   const borderColorOnHover =
     props.borderColorOnHover ??
     (props.outlined && props.colorOnHover ? props.colorOnHover : undefined);
@@ -321,6 +334,12 @@ const useClasses = makeClasses((props: ClassesProps) => {
       "&:visited": {
         color: props.textColor,
         textDecoration,
+      },
+      // MUI's disabled fill is brighter than the neutral fill, so disabled buttons dim their own.
+      "&.Mui-disabled": {
+        backgroundColor: bgColor,
+        color: props.textColor,
+        opacity: 0.5,
       },
     },
     text: {

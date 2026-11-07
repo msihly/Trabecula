@@ -16,7 +16,7 @@ export const RangeWrapper = Comp((props: RangeWrapperProps) => {
       <View
         column
         justify="center"
-        bgColor="rgb(0 0 0 / 0.2)"
+        bgColor={colors.input}
         padding={{ all: "0 0.4rem" }}
         borders={{
           top: `1px dotted ${colors.custom.grey}`,

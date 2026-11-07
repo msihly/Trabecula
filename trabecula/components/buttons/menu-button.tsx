@@ -18,7 +18,7 @@ export interface MenuButtonProps extends Omit<IconButtonProps, "children"> {
 
 export const MenuButton = ({
   anchorOrigin = { horizontal: "right", vertical: "bottom" },
-  bgColor = colors.background,
+  bgColor = colors.overlay,
   button,
   children,
   color,

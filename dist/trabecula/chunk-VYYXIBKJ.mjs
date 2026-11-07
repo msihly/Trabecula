@@ -258,6 +258,7 @@ var VIDEO_EXTS_UNCOMMON = [
 var VIDEO_EXTS = [...VIDEO_EXTS_COMMON, ...VIDEO_EXTS_UNCOMMON];
 var WEB_VIDEO_CODECS = ["av1", "h264", "hevc", "theora", "vp8", "vp9"];
 var WEB_VIDEO_EXTS = ["mp4", "ogv", "wav", "webm"];
+var CONTROL_RADIUS = "0.4rem";
 var DENSE_FORM_ROW_HEIGHT = "1.8rem";
 var FORM_ROW_HEIGHT = "2.25rem";
 var _CONSTANTS = {
@@ -898,6 +899,7 @@ export {
   sumArray,
   uniqueArrayFilter,
   uniqueArrayMerge,
+  CONTROL_RADIUS,
   DENSE_FORM_ROW_HEIGHT,
   FORM_ROW_HEIGHT,
   _CONSTANTS,
@@ -940,4 +942,4 @@ export {
   getSelectionRange,
   SERVER_STATUS_IPC
 };
-//# sourceMappingURL=chunk-DRCDFDNB.mjs.map
+//# sourceMappingURL=chunk-VYYXIBKJ.mjs.map
