@@ -13,6 +13,7 @@ import {
   Margins,
   Padding,
 } from "trabecula/utils/client";
+import { UNCHECKED_TOGGLE_COLOR } from "./checkbox";
 
 export interface RadioProps {
   boldWhenChecked?: boolean;
@@ -141,7 +142,10 @@ const useClasses = makeClasses((props: ClassesProps) => ({
   },
   radio: {
     ...makePadding(props.padding),
-    color: `${props.color} !important`,
+    color: `${UNCHECKED_TOGGLE_COLOR} !important`,
     opacity: props.disabled ? 0.5 : 1,
+    "&.Mui-checked": {
+      color: `${props.color} !important`,
+    },
   },
 }));

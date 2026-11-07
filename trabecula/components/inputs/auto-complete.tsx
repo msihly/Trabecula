@@ -1,6 +1,7 @@
 import { RefAttributes } from "react";
 import { Autocomplete, AutocompleteProps as MuiAutocompleteProps } from "@mui/material";
 import { Comp, DropdownOption, Input, InputProps } from "trabecula/components";
+import { colors, makeClasses } from "trabecula/utils/client";
 
 export type AutoCompleteOption = DropdownOption<any>;
 
@@ -30,6 +31,8 @@ export const AutoComplete = Comp(
     }: AutoCompleteProps<unknown, boolean, boolean, boolean>,
     ref,
   ) => {
+    const { css, cx } = useClasses(null);
+
     return (
       <Autocomplete
         autoComplete
@@ -37,6 +40,7 @@ export const AutoComplete = Comp(
         fullWidth
         size="small"
         {...props}
+        classes={{ ...props.classes, paper: cx(css.paper, props.classes?.paper) }}
         ref={ref}
         renderInput={
           renderInput ??
@@ -70,3 +74,11 @@ export const AutoComplete = Comp(
   props: AutoCompleteProps<Option, Multiple, DisableClearable, FreeSolo> &
     RefAttributes<HTMLDivElement>,
 ) => React.JSX.Element;
+
+const useClasses = makeClasses({
+  // The menu color, in place of the paper's darker default and its elevation overlay.
+  paper: {
+    backgroundColor: colors.overlay,
+    backgroundImage: "none",
+  },
+});

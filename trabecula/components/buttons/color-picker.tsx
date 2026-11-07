@@ -88,7 +88,8 @@ export const ColorPicker = Comp(
             text="No Color"
             icon="Close"
             onClick={handleNoColor}
-            color={value === null ? colors.custom.black : colors.background}
+            color={value === null ? colors.control : "transparent"}
+            colorOnHover={colors.control}
             textColor={value === null ? colors.custom.white : colors.custom.lightGrey}
           />
 

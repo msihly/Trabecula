@@ -16,6 +16,9 @@ import {
 
 type CheckboxState = "false" | "null" | "true";
 
+/** Unchecked toggles stay muted; only checked and indeterminate ones take the accent color. */
+export const UNCHECKED_TOGGLE_COLOR = Color(colors.custom.lightGrey).fade(0.5).string();
+
 export interface CheckboxProps {
   center?: boolean;
   checked: boolean;
@@ -126,8 +129,11 @@ interface ClassesProps extends Pick<
 const useClasses = makeClasses((props: ClassesProps) => ({
   checkbox: {
     ...makePadding(props.padding),
-    color: `${props.color} !important`,
+    color: `${UNCHECKED_TOGGLE_COLOR} !important`,
     opacity: props.disabled ? 0.5 : 1,
+    "&.Mui-checked, &.MuiCheckbox-indeterminate": {
+      color: `${props.color} !important`,
+    },
   },
   label: {
     display: "flex",

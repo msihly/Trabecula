@@ -37,7 +37,7 @@ export const Slider = Comp<SliderProps, HTMLSpanElement>(
   (
     {
       className,
-      color = colors.custom.lightBlue,
+      color = colors.custom.blue,
       flex,
       height,
       margins,

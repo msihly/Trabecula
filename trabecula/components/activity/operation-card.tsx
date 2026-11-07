@@ -36,14 +36,7 @@ export const ActivityOperationCard = Comp(
     const { css } = useClasses(null);
 
     return (
-      <Card
-        bgColor={colors.background}
-        flex="none"
-        minWidth={0}
-        padding={{ all: "0.6rem" }}
-        spacing="0.4rem"
-        width="100%"
-      >
+      <Card flex="none" minWidth={0} padding={{ all: "0.6rem" }} spacing="0.4rem" width="100%">
         <View row align="center" justify="space-between" spacing="1rem" wrap="wrap">
           <View row flex={1} align="center" minWidth={0} spacing="0.5rem">
             <Icon color={statusColor} name={icon} />

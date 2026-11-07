@@ -13,7 +13,7 @@ import {
   View,
 } from "trabecula/components";
 import { PillLabel } from "trabecula/components/wrappers/pill-label";
-import { CSS, CssColor, makeClasses, useElementResize } from "trabecula/utils/client";
+import { colors, CSS, CssColor, makeClasses, useElementResize } from "trabecula/utils/client";
 import { deepMerge } from "trabecula/utils/common";
 import { DEFAULT_INPUT_HEADER_PROPS, DENSE_INPUT_PADDING } from "./input";
 
@@ -426,6 +426,9 @@ const useClasses = makeClasses((props: ClassesProps) => {
       borderRadius: props.paperBorderRadius,
       maxWidth: props.paperWidth,
       minWidth: props.paperWidth,
+      // The menu color, in place of the paper's darker default and its elevation overlay.
+      backgroundColor: colors.overlay,
+      backgroundImage: "none",
     },
   };
 });

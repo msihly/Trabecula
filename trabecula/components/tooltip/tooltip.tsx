@@ -3,6 +3,7 @@ import { Tooltip as MuiTooltip, TooltipProps as MuiTooltipProps } from "@mui/mat
 import Color from "color";
 import { View, ViewProps } from "trabecula/components";
 import { colors, CSS, CssColor, makeClasses } from "trabecula/utils/client";
+import { CONTROL_RADIUS } from "trabecula/utils/common";
 
 export interface TooltipProps extends Omit<MuiTooltipProps, "children" | "color"> {
   bgColor?: CssColor;
@@ -20,7 +21,7 @@ export interface TooltipProps extends Omit<MuiTooltipProps, "children" | "color"
 export const Tooltip = ({
   arrow = true,
   bgColor = colors.overlay,
-  borderColor = colors.custom.blue,
+  borderColor = colors.border,
   children,
   color,
   flexShrink = 0,
@@ -71,30 +72,40 @@ interface ClassesProps extends Pick<
   | "padding"
 > {}
 
-const useClasses = makeClasses((props: ClassesProps) => ({
-  arrow: {
-    color: props.borderColor,
-  },
-  container: {
-    display: "flex",
-    flexShrink: props.flexShrink,
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    userSelect: "auto",
-  },
-  tooltip: {
-    border: `3px solid ${props.borderColor}`,
-    maxWidth: props.maxWidth,
-    minWidth: props.minWidth,
-    padding: props.padding,
-    backgroundColor: Color(props.bgColor).fade(0.03).string(),
-    color: props.color,
-    fontSize: props.fontSize,
-    whiteSpace: "pre-wrap",
-    width: "max-content",
-    boxShadow: "rgb(0 0 0 / 97%) 0px 0px 2px 0px",
-  },
-  popper: {
-    zIndex: 1000000,
-  },
-}));
+const useClasses = makeClasses((props: ClassesProps) => {
+  const bgColor = Color(props.bgColor).fade(0.03).string();
+
+  return {
+    // The arrow continues the tooltip, outlined in its border.
+    arrow: {
+      color: bgColor,
+      "&::before": {
+        border: `1px solid ${props.borderColor}`,
+        boxSizing: "border-box",
+      },
+    },
+    container: {
+      display: "flex",
+      flexShrink: props.flexShrink,
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+      userSelect: "auto",
+    },
+    tooltip: {
+      border: `1px solid ${props.borderColor}`,
+      borderRadius: CONTROL_RADIUS,
+      maxWidth: props.maxWidth,
+      minWidth: props.minWidth,
+      padding: props.padding,
+      backgroundColor: bgColor,
+      color: props.color,
+      fontSize: props.fontSize,
+      whiteSpace: "pre-wrap",
+      width: "max-content",
+      boxShadow: "0 0.5rem 1.5rem rgb(0 0 0 / 45%)",
+    },
+    popper: {
+      zIndex: 1000000,
+    },
+  };
+});

@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { View } from "trabecula/components";
-import { makeClasses } from "trabecula/utils/client";
+import { colors, makeClasses } from "trabecula/utils/client";
 
 export interface FooterProps {
   children?: ReactNode | ReactNode[];
@@ -26,6 +26,6 @@ const useClasses = makeClasses({
     borderBottomRightRadius: "inherit",
     padding: 0,
     height: "3rem",
-    background: "linear-gradient(to bottom, transparent, black)",
+    background: `linear-gradient(to bottom, transparent, ${colors.foreground})`,
   },
 });

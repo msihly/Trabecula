@@ -112,7 +112,8 @@ export const IconPicker = Comp(
             text="No Icon"
             icon="Close"
             onClick={handleNoIcon}
-            color={value === null ? colors.custom.black : colors.background}
+            color={value === null ? colors.control : "transparent"}
+            colorOnHover={colors.control}
             textColor={value === null ? colors.custom.white : colors.custom.lightGrey}
           />
 

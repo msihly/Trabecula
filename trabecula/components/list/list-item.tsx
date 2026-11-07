@@ -67,7 +67,7 @@ export const ListItem = ({
       tooltip={children}
       tooltipProps={{
         arrow: false,
-        // Submenus share the menu's background, without the tooltip's accent border.
+        // Submenus match the menu: its background, without the tooltip's border.
         bgColor: colors.overlay,
         borderColor: colors.overlay,
         padding: 0,

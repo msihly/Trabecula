@@ -41,7 +41,7 @@ export const MultiInputList = <T,>({
         className={css.listContainer}
       >
         {!search.value.length ? (
-          <CenteredText text="No items" color={colors.custom.grey} />
+          <CenteredText text="No items" color={colors.custom.lightGrey} />
         ) : (
           <List
             rowComponent={MultiInputListRow}

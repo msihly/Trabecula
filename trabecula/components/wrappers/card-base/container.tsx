@@ -1,6 +1,5 @@
 import { MouseEvent, ReactNode } from "react";
 import { Paper } from "@mui/material";
-import Color from "color";
 import { View, ViewProps } from "trabecula/components";
 import { colors, CssColor, makeClasses } from "trabecula/utils/client";
 
@@ -51,7 +50,8 @@ const useClasses = makeClasses((props: ClassesProps, theme) => ({
   container: {
     position: "relative",
     display: props.display,
-    border: `2px solid ${colors.background}`,
+    // Spaces cards apart without framing them, keeping the selection ring inside the border.
+    border: "2px solid transparent",
     borderRadius: 4,
     padding: "0.25rem",
     height: props.height ?? "20rem",
@@ -60,12 +60,8 @@ const useClasses = makeClasses((props: ClassesProps, theme) => ({
     [theme.breakpoints.down("md")]: props.height ? undefined : { height: "14rem" },
     [theme.breakpoints.down("sm")]: props.height ? undefined : { height: "12rem" },
     ...(props.width ? { width: props.width } : {}),
-    background:
-      !props.disabled && props.selected
-        ? `linear-gradient(to bottom right, ${Color(props.selectedColor)
-            .lighten(0.4)
-            .string()}, ${props.selectedColor} 60%)`
-        : "transparent",
+    background: !props.disabled && props.selected ? props.selectedColor : "transparent",
+    backgroundClip: "padding-box",
     overflow: "hidden",
     cursor: "pointer",
     userSelect: "none",
@@ -76,7 +72,10 @@ const useClasses = makeClasses((props: ClassesProps, theme) => ({
     flexDirection: "column",
     flex: 1,
     height: "100%",
-    backgroundColor: colors.background,
+    backgroundColor: colors.foreground,
+    // Replaces the elevation's lightening overlay, which the panel color already gives.
+    backgroundImage: "none",
+    border: `1px solid ${colors.border}`,
     userSelect: "none",
   },
 }));

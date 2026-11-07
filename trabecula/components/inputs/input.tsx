@@ -68,7 +68,7 @@ export interface InputProps extends Omit<
 export const Input = Comp((rawProps: InputProps, ref?: MutableRefObject<HTMLDivElement>) => {
   const {
     adornment,
-    adornmentColor = colors.custom.grey,
+    adornmentColor = colors.custom.lightGrey,
     adornmentPosition = "end",
     background = colors.input,
     borderRadiuses,

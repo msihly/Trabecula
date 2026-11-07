@@ -36,7 +36,7 @@ declare const uniqueArrayMerge: <T>(oldArray: T[], newArrays: T[]) => T[];
 
 declare const AUDIO_CODECS: ("None" | "aac_he" | "aac_ld" | "aac" | "ac3" | "aiff" | "alac" | "avc" | "dts" | "flac" | "mp2" | "mp3" | "mp4als" | "opus" | "pcm_alaw" | "pcm_bluray" | "pcm_dvd" | "pcm_s16be" | "pcm_s16le" | "pcm_s24le" | "pcm_s32le" | "pcm_u8" | "pcm" | "tta" | "vorbis" | "wav" | "wmapro" | "wmav1" | "wmav2" | "aac_latm" | "ape" | "aptx_hd" | "aptx" | "avs" | "binkaudio_dct" | "binkaudio_rdft" | "cavs" | "cook" | "hcom" | "iac" | "mace3" | "mace6" | "paf_audio" | "ra_144" | "ra_288" | "ralf" | "sipr" | "tak" | "westwood_snd1" | "wmalossless" | "wmavoice" | "xma1" | "xma2")[];
 type AudioCodec = (typeof AUDIO_CODECS)[number];
-declare const IMAGE_EXTS: ("gif" | "heic" | "jpeg" | "jpg" | "png" | "webp" | "apng" | "avif" | "bmp" | "jfif" | "jif" | "jiff" | "svg" | "tiff")[];
+declare const IMAGE_EXTS: ("svg" | "gif" | "heic" | "jpeg" | "jpg" | "png" | "webp" | "apng" | "avif" | "bmp" | "jfif" | "jif" | "jiff" | "tiff")[];
 type ImageExt = (typeof IMAGE_EXTS)[number];
 declare const VIDEO_CODECS: ("snow" | "av1" | "h264" | "hevc" | "mpeg4" | "prores" | "vp8" | "vp9" | "wmv1" | "amv" | "asv1" | "asv2" | "auravision" | "binkvideo" | "camstudio" | "cinepak" | "dirac" | "dnxhd" | "dnxhr" | "dvvideo" | "ffv1" | "flv1" | "h263" | "h263p" | "huffyuv" | "indeo3" | "indeo5" | "jpeg2000" | "jpegls" | "lagarith" | "mjpeg" | "mjpegb" | "mpeg1video" | "mpeg2video" | "msmpeg4v1" | "msmpeg4v2" | "msmpeg4v3" | "rawvideo" | "rv10" | "rv20" | "rv30" | "rv40" | "smacker" | "sp5x" | "svq1" | "svq3" | "theora" | "tscc" | "utvideo" | "uyvy422" | "v210" | "vixl" | "vp6" | "vp6f" | "wmv2" | "wmv3" | "yuyv422" | "zlib" | "zmbv")[];
 type VideoCodec = (typeof VIDEO_CODECS)[number];

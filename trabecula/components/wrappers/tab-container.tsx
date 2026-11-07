@@ -131,7 +131,7 @@ interface ClassesProps extends Pick<
 
 const useClasses = makeClasses((props: ClassesProps) => ({
   content: {
-    border: props.withBorder ? `3px solid ${props.color}` : undefined,
+    border: props.withBorder ? `1px solid ${colors.border}` : undefined,
     borderRadius: props.withBorder ? `0 0 ${props.borderRadius} ${props.borderRadius}` : undefined,
     borderTop: "none",
     flex: 1,
@@ -141,6 +141,9 @@ const useClasses = makeClasses((props: ClassesProps) => ({
   },
   header: {
     backgroundColor: props.color,
+    // Continues the content's hairline around the tabs, with no line between tabs and content.
+    border: props.withBorder ? `1px solid ${colors.border}` : undefined,
+    borderBottom: "none",
     borderRadius: props.withBorder ? `${props.borderRadius} ${props.borderRadius} 0 0` : undefined,
     flexShrink: 0,
   },
@@ -158,7 +161,7 @@ const useClasses = makeClasses((props: ClassesProps) => ({
       transition: "all 200ms ease-in-out",
     },
     "&:not(:last-child)": {
-      borderRight: `2px solid ${Color(props.color).lighten(0.4).string()}`,
+      borderRight: `1px solid ${colors.border}`,
     },
     backgroundColor: props.color,
     color: colors.custom.lightGrey,
