@@ -1452,7 +1452,7 @@ var AutoComplete = Comp(
       "renderInput",
       "required"
     ]);
-    var _a2;
+    var _a2, _b2;
     const { css, cx } = useClasses9(null);
     return /* @__PURE__ */ jsx14(
       Autocomplete,
@@ -1462,10 +1462,13 @@ var AutoComplete = Comp(
         fullWidth: true,
         size: "small"
       }, props), {
-        classes: __spreadProps(__spreadValues({}, props.classes), { paper: cx(css.paper, (_a2 = props.classes) == null ? void 0 : _a2.paper) }),
+        classes: __spreadProps(__spreadValues({}, props.classes), {
+          listbox: cx(css.listbox, (_a2 = props.classes) == null ? void 0 : _a2.listbox),
+          paper: cx(css.paper, (_b2 = props.classes) == null ? void 0 : _b2.paper)
+        }),
         ref,
         renderInput: renderInput != null ? renderInput : ((params) => {
-          var _a3, _b2;
+          var _a3, _b3;
           return /* @__PURE__ */ jsx14(
             Input,
             __spreadProps(__spreadValues(__spreadValues({
@@ -1475,7 +1478,7 @@ var AutoComplete = Comp(
             }, inputProps), params), {
               slotProps: __spreadProps(__spreadValues(__spreadValues({}, inputProps.slotProps), params.slotProps), {
                 htmlInput: __spreadValues(__spreadValues({}, (_a3 = inputProps.slotProps) == null ? void 0 : _a3.htmlInput), params.slotProps.htmlInput),
-                input: __spreadValues(__spreadValues({}, (_b2 = inputProps.slotProps) == null ? void 0 : _b2.input), params.slotProps.input)
+                input: __spreadValues(__spreadValues({}, (_b3 = inputProps.slotProps) == null ? void 0 : _b3.input), params.slotProps.input)
               }),
               stopKeyPropagation: false,
               value: params.slotProps.htmlInput.value
@@ -1487,6 +1490,10 @@ var AutoComplete = Comp(
   }
 );
 var useClasses9 = makeClasses({
+  // Results fill the popup, without bands of its color above and below them.
+  listbox: {
+    padding: 0
+  },
   // The menu color, in place of the paper's darker default and its elevation overlay.
   paper: {
     backgroundColor: colors.overlay,
@@ -4628,7 +4635,7 @@ var PRESETS = {
     overflow: "hidden"
   },
   "detail-label": {
-    color: colors.custom.lightBlue,
+    color: colors.custom.lightGrey,
     fontWeight: 500,
     whiteSpace: "nowrap"
   },
@@ -7232,4 +7239,4 @@ export {
   makeTheme,
   MuiProvider
 };
-//# sourceMappingURL=chunk-DVKLMPU3.mjs.map
+//# sourceMappingURL=chunk-QPDL5DZO.mjs.map

@@ -30,7 +30,7 @@ const PRESETS: Record<TextPreset, CSS> = {
     overflow: "hidden",
   },
   "detail-label": {
-    color: colors.custom.lightBlue,
+    color: colors.custom.lightGrey,
     fontWeight: 500,
     whiteSpace: "nowrap",
   },

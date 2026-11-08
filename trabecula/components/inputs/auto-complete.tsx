@@ -40,7 +40,11 @@ export const AutoComplete = Comp(
         fullWidth
         size="small"
         {...props}
-        classes={{ ...props.classes, paper: cx(css.paper, props.classes?.paper) }}
+        classes={{
+          ...props.classes,
+          listbox: cx(css.listbox, props.classes?.listbox),
+          paper: cx(css.paper, props.classes?.paper),
+        }}
         ref={ref}
         renderInput={
           renderInput ??
@@ -76,6 +80,10 @@ export const AutoComplete = Comp(
 ) => React.JSX.Element;
 
 const useClasses = makeClasses({
+  // Results fill the popup, without bands of its color above and below them.
+  listbox: {
+    padding: 0,
+  },
   // The menu color, in place of the paper's darker default and its elevation overlay.
   paper: {
     backgroundColor: colors.overlay,
