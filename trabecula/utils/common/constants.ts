@@ -60,6 +60,28 @@ const AUDIO_CODECS_UNCOMMON = [
 const AUDIO_CODECS = [...AUDIO_CODECS_COMMON, ...AUDIO_CODECS_UNCOMMON];
 export type AudioCodec = (typeof AUDIO_CODECS)[number];
 
+const AUDIO_EXTS_COMMON = ["aac", "flac", "m4a", "mp3", "ogg", "opus", "wav", "wma"] as const;
+
+const AUDIO_EXTS_UNCOMMON = [
+  "ac3",
+  "aif",
+  "aiff",
+  "amr",
+  "ape",
+  "au",
+  "caf",
+  "dsf",
+  "mka",
+  "mp2",
+  "mpa",
+  "oga",
+  "tta",
+  "wv",
+] as const;
+
+const AUDIO_EXTS = [...AUDIO_EXTS_COMMON, ...AUDIO_EXTS_UNCOMMON];
+export type AudioExt = (typeof AUDIO_EXTS)[number];
+
 const IMAGE_EXTS_COMMON = ["gif", "heic", "jpeg", "jpg", "png", "webp"] as const;
 
 const IMAGE_EXTS_UNCOMMON = ["apng", "avif", "bmp", "jfif", "jif", "jiff", "svg", "tiff"] as const;
@@ -184,6 +206,9 @@ export interface _Constants {
     CODECS: AudioCodec[];
     CODECS_COMMON: AudioCodec[];
     CODECS_UNCOMMON: AudioCodec[];
+    EXTS: AudioExt[];
+    EXTS_COMMON: AudioExt[];
+    EXTS_UNCOMMON: AudioExt[];
   };
   IMAGE: {
     EXTS: ImageExt[];
@@ -218,6 +243,9 @@ export const _CONSTANTS: _Constants = {
     CODECS: AUDIO_CODECS,
     CODECS_COMMON: AUDIO_CODECS_COMMON as unknown as AudioCodec[],
     CODECS_UNCOMMON: AUDIO_CODECS_UNCOMMON as unknown as AudioCodec[],
+    EXTS: AUDIO_EXTS,
+    EXTS_COMMON: AUDIO_EXTS_COMMON as unknown as AudioExt[],
+    EXTS_UNCOMMON: AUDIO_EXTS_UNCOMMON as unknown as AudioExt[],
   },
   IMAGE: {
     EXTS: IMAGE_EXTS,

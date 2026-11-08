@@ -21,7 +21,7 @@ import {
   getPaletteColorName,
   handleErrors,
   isDeepEqual
-} from "./chunk-VYYXIBKJ.mjs";
+} from "./chunk-GXQXF2J3.mjs";
 import {
   __async,
   __objRest,
@@ -7232,4 +7232,4 @@ export {
   makeTheme,
   MuiProvider
 };
-//# sourceMappingURL=chunk-YNBRXAHC.mjs.map
+//# sourceMappingURL=chunk-DVKLMPU3.mjs.map

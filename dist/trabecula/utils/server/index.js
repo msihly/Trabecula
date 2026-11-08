@@ -130,6 +130,24 @@ var AUDIO_CODECS_UNCOMMON = [
   "xma2"
 ];
 var AUDIO_CODECS = [...AUDIO_CODECS_COMMON, ...AUDIO_CODECS_UNCOMMON];
+var AUDIO_EXTS_COMMON = ["aac", "flac", "m4a", "mp3", "ogg", "opus", "wav", "wma"];
+var AUDIO_EXTS_UNCOMMON = [
+  "ac3",
+  "aif",
+  "aiff",
+  "amr",
+  "ape",
+  "au",
+  "caf",
+  "dsf",
+  "mka",
+  "mp2",
+  "mpa",
+  "oga",
+  "tta",
+  "wv"
+];
+var AUDIO_EXTS = [...AUDIO_EXTS_COMMON, ...AUDIO_EXTS_UNCOMMON];
 var IMAGE_EXTS_COMMON = ["gif", "heic", "jpeg", "jpg", "png", "webp"];
 var IMAGE_EXTS_UNCOMMON = ["apng", "avif", "bmp", "jfif", "jif", "jiff", "svg", "tiff"];
 var IMAGE_EXTS = [...IMAGE_EXTS_COMMON, ...IMAGE_EXTS_UNCOMMON];
