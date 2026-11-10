@@ -262,7 +262,7 @@ export type CssNamedColor =
 export type CssColor = "inherit" | HexColor | RgbColor | HslColor | CssNamedColor;
 
 /** The primary blue of progress bars, badges, and every other blue accent. */
-const PRIMARY_BLUE = "#3b6fd1";
+const PRIMARY_BLUE = "#578cdd";
 
 const customColors = {
   black: "#131313",
@@ -277,7 +277,7 @@ const customColors = {
   lightBlue: PRIMARY_BLUE,
   lightGrey: "#bdbdbd",
   orange: "#b9772f",
-  purple: "#7e4d9f",
+  purple: "#71438e",
   red: "#b33c3c",
   white: "#ededef",
   yellow: "#e3c648",

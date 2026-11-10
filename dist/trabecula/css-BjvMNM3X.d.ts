@@ -1,4 +1,4 @@
-import { P as PaletteColor } from './palette-CoCY-L8m.mjs';
+import { P as PaletteColor } from './palette-CoCY-L8m.js';
 import * as csstype from 'csstype';
 import { colors as colors$1 } from '@mui/material';
 import { Theme } from '@mui/material/styles';
@@ -85,7 +85,7 @@ declare const colors: {
     readonly control: "rgba(255, 255, 255, 0.07)";
     readonly custom: {
         readonly black: "#131313";
-        readonly blue: "#3b6fd1";
+        readonly blue: "#578cdd";
         readonly blueGrey: "#546e7a";
         readonly brown: "#6d4c41";
         readonly darkGrey: "#2b2b2b";
@@ -93,10 +93,10 @@ declare const colors: {
         /** Recedes on the app's dark surfaces, too dark for text meant to be read; use lightGrey. */
         readonly grey: "#4b4b4b";
         /** The primary blue too, so no paler blue resembling MUI's default ever shows. */
-        readonly lightBlue: "#3b6fd1";
+        readonly lightBlue: "#578cdd";
         readonly lightGrey: "#bdbdbd";
         readonly orange: "#b9772f";
-        readonly purple: "#7e4d9f";
+        readonly purple: "#71438e";
         readonly red: "#b33c3c";
         readonly white: "#ededef";
         readonly yellow: "#e3c648";

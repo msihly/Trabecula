@@ -748,7 +748,7 @@ var makeClasses = (fnOrObj) => {
     return { css, cx };
   };
 };
-var PRIMARY_BLUE = "#3b6fd1";
+var PRIMARY_BLUE = "#578cdd";
 var customColors = {
   black: "#131313",
   blue: PRIMARY_BLUE,
@@ -762,7 +762,7 @@ var customColors = {
   lightBlue: PRIMARY_BLUE,
   lightGrey: "#bdbdbd",
   orange: "#b9772f",
-  purple: "#7e4d9f",
+  purple: "#71438e",
   red: "#b33c3c",
   white: "#ededef",
   yellow: "#e3c648"
@@ -7647,8 +7647,7 @@ var FilterMenu = Comp(
       searchFn,
       sortOptions,
       store,
-      viewProps = {},
-      width = "8rem"
+      viewProps = {}
     } = _b, buttonProps = __objRest(_b, [
       "children",
       "color",
@@ -7657,8 +7656,7 @@ var FilterMenu = Comp(
       "searchFn",
       "sortOptions",
       "store",
-      "viewProps",
-      "width"
+      "viewProps"
     ]);
     const hasSavedSearchApi = !!store.applySavedSearch && !!store.deleteSavedSearch && !!store.loadSavedSearches && !!store.saveSavedSearch;
     const handleReset = () => {
@@ -7680,7 +7678,6 @@ var FilterMenu = Comp(
         color: store.hasChanges ? colors.custom.purple : color,
         justify: "space-between",
         padding: { left: "0.5em", right: "0.5em" },
-        width,
         text: /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(View, { row: true, align: "center", spacing: "0.5rem", children: [
           /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(Icon, { name: "FilterAlt", size: "1.15em" }),
           /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(Text, { children: "Filter" })

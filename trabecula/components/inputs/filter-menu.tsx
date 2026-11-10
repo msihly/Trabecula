@@ -61,7 +61,6 @@ export const FilterMenu = Comp(
     sortOptions,
     store,
     viewProps = {},
-    width = "8rem",
     ...buttonProps
   }: FilterMenuProps) => {
     const hasSavedSearchApi =
@@ -92,7 +91,6 @@ export const FilterMenu = Comp(
         color={store.hasChanges ? colors.custom.purple : color}
         justify="space-between"
         padding={{ left: "0.5em", right: "0.5em" }}
-        width={width}
         text={
           <View row align="center" spacing="0.5rem">
             <Icon name="FilterAlt" size="1.15em" />
