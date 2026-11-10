@@ -7028,9 +7028,10 @@ var makeTheme = ({ portalContainer, titleBarHeight } = {}) => createTheme({
 var MuiProvider = ({
   children,
   portalContainer,
-  styleContainer
+  styleContainer,
+  titleBarHeight
 }) => {
-  const [theme] = useState25(() => makeTheme({ portalContainer }));
+  const [theme] = useState25(() => makeTheme({ portalContainer, titleBarHeight }));
   const [muiCache] = useState25(
     () => createCache({ container: styleContainer, key: "mui", prepend: true, stylisPlugins: [] })
   );
@@ -7263,4 +7264,4 @@ export {
   makeTheme,
   MuiProvider
 };
-//# sourceMappingURL=chunk-VX7JHJG3.mjs.map
+//# sourceMappingURL=chunk-T4PTNJVD.mjs.map

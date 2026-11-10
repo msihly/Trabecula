@@ -12312,9 +12312,10 @@ var makeTheme = ({ portalContainer, titleBarHeight } = {}) => (0, import_materia
 var MuiProvider = ({
   children,
   portalContainer,
-  styleContainer
+  styleContainer,
+  titleBarHeight
 }) => {
-  const [theme] = (0, import_react32.useState)(() => makeTheme({ portalContainer }));
+  const [theme] = (0, import_react32.useState)(() => makeTheme({ portalContainer, titleBarHeight }));
   const [muiCache] = (0, import_react32.useState)(
     () => (0, import_cache.default)({ container: styleContainer, key: "mui", prepend: true, stylisPlugins: [] })
   );

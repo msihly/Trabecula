@@ -34,12 +34,14 @@ export const MuiProvider = ({
   children,
   portalContainer,
   styleContainer,
+  titleBarHeight,
 }: {
   children: React.ReactNode;
   portalContainer?: HTMLElement;
   styleContainer?: Node;
+  titleBarHeight?: MakeThemeOptions["titleBarHeight"];
 }) => {
-  const [theme] = useState(() => makeTheme({ portalContainer }));
+  const [theme] = useState(() => makeTheme({ portalContainer, titleBarHeight }));
   const [muiCache] = useState(() =>
     createCache({ container: styleContainer, key: "mui", prepend: true, stylisPlugins: [] }),
   );

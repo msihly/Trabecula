@@ -1279,10 +1279,11 @@ interface MakeThemeOptions {
 }
 /** The theme every app shares, so an app with its own provider still looks the same. */
 declare const makeTheme: ({ portalContainer, titleBarHeight }?: MakeThemeOptions) => _mui_material.Theme;
-declare const MuiProvider: ({ children, portalContainer, styleContainer, }: {
+declare const MuiProvider: ({ children, portalContainer, styleContainer, titleBarHeight, }: {
     children: React.ReactNode;
     portalContainer?: HTMLElement;
     styleContainer?: Node;
+    titleBarHeight?: MakeThemeOptions["titleBarHeight"];
 }) => react.JSX.Element;
 
 export { Accordion, AccordionGroup, ActivityModal, ActivityOperationCard, AreaChart, AutoComplete, Button, ButtonWithInset, Card, CardBase, CardGrid, CenteredText, Checkbox, Chip, ChipInput, ColorPicker, Comp, ConditionalWrap, ConfirmModal, ContextMenu, DEFAULT_INPUT_HEADER_PROPS, DENSE_INPUT_PADDING, DataGrid, DataGridHeader, DataGridRow, DateDetail, DateInput, DateRange, DeselectAllButton, Detail, DetailRows, DisabledOverlay, Divider, DropOverlay, Dropdown, FilterHeader, FilterMenu, HeaderContent, HeaderWrapper, Icon, IconButton, IconPicker, Input, Link, List, ListItem, LoadingOverlay, LogOpsInput, MULTI_INPUT_ROW_HEIGHT, MenuButton, Modal, ModalGroupContext, MuiProvider, MultiActionButton, MultiInput, MultiInputList, MultiInputRow, NumInput, NumRange, Pagination, PickerField, Pill, ProgressBar, ProgressCircle, Radio, RangeWrapper, SelectAllButton, SelectAllInQueryButton, SelectionButtons, ServerStatusSync, SideScroller, Slider, SortMenu, SortRow, PRESETS as TEXT_PRESETS, TabContainer, Table, Text, TimeInput, Tooltip, TooltipWrapper, TruncatedText, UNCHECKED_TOGGLE_COLOR, UniformList, View, clampDataGridColumnWidth, compareDataGridValues, createAutoCompleteOptions, dataGridCellClasses, getDataGridCellLayout, getDataGridColumnValue, getDataGridValueText, getTextTruncation, makeTheme, selectAllInView, useAccordionGroup, useAccordionGroupSection, usePortalContainer };
