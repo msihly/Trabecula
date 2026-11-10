@@ -7458,7 +7458,7 @@ var useClasses11 = makeClasses((props) => {
         padding: props.dense ? DENSE_INPUT_PADDING : void 0
       },
       "& .MuiFormHelperText-root": {
-        margin: "0.3rem 0 0 0",
+        margin: props.floatingHelper ? 0 : "0.3rem 0 0 0",
         color: (_g = (_f = props.helperTextProps) == null ? void 0 : _f.color) != null ? _g : props.color,
         fontSize: "0.75em",
         lineHeight: 1,
@@ -8317,7 +8317,6 @@ var MultiInput = Comp(
 );
 
 // trabecula/components/inputs/num-input.tsx
-var import_react15 = require("react");
 var import_jsx_runtime27 = require("react/jsx-runtime");
 var NumInput = Comp(
   (_a, ref) => {
@@ -8338,21 +8337,15 @@ var NumInput = Comp(
       "value",
       "valueDisplay"
     ]);
-    const [error, setError] = (0, import_react15.useState)(null);
+    const error = setValueDisplay || value == null ? null : maxValue != null && value > maxValue ? `Max: ${maxValue}` : minValue != null && value < minValue ? `Min: ${minValue}` : null;
     const handleChange = (val) => {
       if (!val) {
         setValue == null ? void 0 : setValue(null);
         setValueDisplay == null ? void 0 : setValueDisplay(null);
-        setError(null);
       } else if (setValueDisplay) {
         setValueDisplay(val);
-      } else if (isNaN(+val)) {
-        setError("Must be a number");
-      } else {
+      } else if (!isNaN(+val)) {
         setValue == null ? void 0 : setValue(+val);
-        if (maxValue != null && +val > maxValue) setError(`Max: ${maxValue}`);
-        else if (minValue != null && +val < minValue) setError(`Min: ${minValue}`);
-        else setError(null);
       }
     };
     return /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
@@ -8581,7 +8574,7 @@ var useClasses16 = makeClasses((props) => ({
 }));
 
 // trabecula/components/inputs/time-input.tsx
-var import_react16 = require("react");
+var import_react15 = require("react");
 var import_x_date_pickers2 = require("@mui/x-date-pickers");
 var import_AdapterDayjs2 = require("@mui/x-date-pickers/AdapterDayjs");
 var import_TimePicker = require("@mui/x-date-pickers/TimePicker");
@@ -8645,7 +8638,7 @@ var useClasses19 = makeClasses((props) => ({
 // trabecula/components/media/icon.tsx
 var import_material14 = require("@mui/material");
 var import_jsx_runtime36 = require("react/jsx-runtime");
-var import_react17 = require("react");
+var import_react16 = require("react");
 var Icon = (_a) => {
   var _b = _a, {
     className,
@@ -8677,7 +8670,7 @@ var Icon = (_a) => {
     rotation,
     size
   });
-  return /* @__PURE__ */ (0, import_jsx_runtime36.jsx)(View, __spreadProps(__spreadValues({ column: true, margins, className: cx(css.root, className) }, viewProps), { children: (layers == null ? void 0 : layers.length) ? layers.map((layer, i) => /* @__PURE__ */ (0, import_react17.createElement)(
+  return /* @__PURE__ */ (0, import_jsx_runtime36.jsx)(View, __spreadProps(__spreadValues({ column: true, margins, className: cx(css.root, className) }, viewProps), { children: (layers == null ? void 0 : layers.length) ? layers.map((layer, i) => /* @__PURE__ */ (0, import_react16.createElement)(
     import_material14.Icon,
     __spreadProps(__spreadValues({}, props), {
       baseClassName: getIconClassName(layer.name),
@@ -8744,7 +8737,7 @@ var useClasses20 = makeClasses((props) => {
 });
 
 // trabecula/components/modals/confirm-modal.tsx
-var import_react18 = require("react");
+var import_react17 = require("react");
 var import_jsx_runtime37 = require("react/jsx-runtime");
 var ConfirmModal = ({
   cancelColor,
@@ -8762,7 +8755,7 @@ var ConfirmModal = ({
   subText,
   width = "25rem"
 }) => {
-  const [isLoading, setIsLoading] = (0, import_react18.useState)(false);
+  const [isLoading, setIsLoading] = (0, import_react17.useState)(false);
   const handleClose = () => setVisible(false);
   const handleCancel = () => {
     if (!isLoading) {
@@ -8817,11 +8810,11 @@ var ConfirmModal = ({
 };
 
 // trabecula/components/modals/modal/container.tsx
-var import_react19 = require("react");
+var import_react18 = require("react");
 var import_react_draggable = __toESM(require("react-draggable"));
 var import_material15 = require("@mui/material");
 var import_jsx_runtime38 = require("react/jsx-runtime");
-var ModalGroupContext = (0, import_react19.createContext)(void 0);
+var ModalGroupContext = (0, import_react18.createContext)(void 0);
 var Container = (_a) => {
   var _b = _a, {
     children,
@@ -8854,9 +8847,9 @@ var Container = (_a) => {
     "visible",
     "width"
   ]);
-  const group = (0, import_react19.useContext)(ModalGroupContext);
+  const group = (0, import_react18.useContext)(ModalGroupContext);
   const { css, cx } = useClasses21({ height, margin, maxHeight, maxWidth, width });
-  const [ownerGroup, setOwnerGroup] = (0, import_react19.useState)(group);
+  const [ownerGroup, setOwnerGroup] = (0, import_react18.useState)(group);
   if (!visible && ownerGroup !== group) setOwnerGroup(group);
   const isGroupActive = ownerGroup === group;
   const handleClose = (_, reason) => {
@@ -8880,7 +8873,7 @@ var Container = (_a) => {
 };
 var DraggablePaper = (props) => {
   const { css, cx } = useDraggableClasses(null);
-  const ref = (0, import_react19.useRef)(null);
+  const ref = (0, import_react18.useRef)(null);
   return /* @__PURE__ */ (0, import_jsx_runtime38.jsx)(import_react_draggable.default, { nodeRef: ref, cancel: '[class*="MuiDialogContent-root"]', children: /* @__PURE__ */ (0, import_jsx_runtime38.jsx)(import_material15.Paper, __spreadProps(__spreadValues({}, props), { ref, className: cx(props.className, css.draggable) })) });
 };
 var useClasses21 = makeClasses((props) => {
@@ -9093,7 +9086,7 @@ var useClasses25 = makeClasses((props) => ({
 }));
 
 // trabecula/components/table/data-grid.tsx
-var import_react20 = require("react");
+var import_react19 = require("react");
 var import_jsx_runtime44 = require("react/jsx-runtime");
 
 // trabecula/components/table/data-grid.utils.ts
@@ -9117,7 +9110,7 @@ var dataGridCellClasses = {
 };
 
 // trabecula/components/table/data-grid-header.tsx
-var import_react21 = require("react");
+var import_react20 = require("react");
 var import_jsx_runtime45 = require("react/jsx-runtime");
 var useClasses26 = makeClasses({
   cell: dataGridCellClasses.cell,
@@ -9134,7 +9127,7 @@ var useClasses26 = makeClasses({
 });
 
 // trabecula/components/table/data-grid-row.tsx
-var import_react22 = __toESM(require("react"));
+var import_react21 = __toESM(require("react"));
 var import_material21 = require("@mui/material");
 var import_jsx_runtime46 = require("react/jsx-runtime");
 var useClasses27 = makeClasses({
@@ -9157,7 +9150,7 @@ var useClasses27 = makeClasses({
 });
 
 // trabecula/components/table/pagination.tsx
-var import_react23 = require("react");
+var import_react22 = require("react");
 var import_material22 = require("@mui/material");
 var import_jsx_runtime47 = require("react/jsx-runtime");
 var Pagination = Comp(
@@ -9180,8 +9173,8 @@ var Pagination = Comp(
       "viewProps"
     ]);
     const { css, cx } = useClasses28({ inline });
-    const [isJumpModalOpen, setIsJumpModalOpen] = (0, import_react23.useState)(false);
-    const [jumpPage, setJumpPage] = (0, import_react23.useState)(null);
+    const [isJumpModalOpen, setIsJumpModalOpen] = (0, import_react22.useState)(false);
+    const [jumpPage, setJumpPage] = (0, import_react22.useState)(null);
     const hasError = !Number.isInteger(jumpPage) || jumpPage < 1 || jumpPage > count;
     const handleChange = (_, page) => onChange(page);
     const handleJump = () => {
@@ -9297,7 +9290,7 @@ var useClasses28 = makeClasses((props) => ({
 }));
 
 // trabecula/components/table/table.tsx
-var import_react24 = require("react");
+var import_react23 = require("react");
 var import_material23 = require("@mui/material");
 var import_jsx_runtime48 = require("react/jsx-runtime");
 var MUI_TABLE_ROW_HEIGHT = 33;
@@ -9641,7 +9634,7 @@ var useClasses32 = makeClasses((props) => ({
 }));
 
 // trabecula/components/toggles/accordion.tsx
-var import_react25 = require("react");
+var import_react24 = require("react");
 var import_material26 = require("@mui/material");
 var import_jsx_runtime55 = require("react/jsx-runtime");
 var shouldShowHeaderBorder = (props) => {
@@ -9690,9 +9683,9 @@ var useClasses33 = makeClasses((props) => {
 });
 
 // trabecula/components/toggles/accordion-group.tsx
-var import_react26 = require("react");
+var import_react25 = require("react");
 var import_jsx_runtime56 = require("react/jsx-runtime");
-var AccordionGroupContext = (0, import_react26.createContext)(null);
+var AccordionGroupContext = (0, import_react25.createContext)(null);
 
 // trabecula/components/toggles/checkbox.tsx
 var import_material27 = require("@mui/material");
@@ -10083,7 +10076,7 @@ var useClasses40 = makeClasses({
 var import_jsx_runtime65 = require("react/jsx-runtime");
 
 // trabecula/components/wrappers/card-base/image.tsx
-var import_react27 = require("react");
+var import_react26 = require("react");
 var import_jsx_runtime66 = require("react/jsx-runtime");
 var useClasses41 = makeClasses((props) => {
   var _a;
@@ -10327,7 +10320,7 @@ var ConditionalWrap = ({
 }) => condition ? wrap(children) : /* @__PURE__ */ (0, import_jsx_runtime70.jsx)(import_jsx_runtime70.Fragment, { children });
 
 // trabecula/components/wrappers/context-menu.tsx
-var import_react28 = require("react");
+var import_react27 = require("react");
 var import_material32 = require("@mui/material");
 var import_jsx_runtime71 = require("react/jsx-runtime");
 var useClasses44 = makeClasses({
@@ -10632,11 +10625,11 @@ var Pill = Comp(
 );
 
 // trabecula/components/wrappers/server-status-sync.tsx
-var import_react29 = require("react");
+var import_react28 = require("react");
 var import_jsx_runtime79 = require("react/jsx-runtime");
 
 // trabecula/components/wrappers/side-scroller.tsx
-var import_react30 = require("react");
+var import_react29 = require("react");
 var import_jsx_runtime80 = require("react/jsx-runtime");
 var useClasses49 = makeClasses((props) => ({
   items: {
@@ -10685,7 +10678,7 @@ var useClasses49 = makeClasses((props) => ({
 }));
 
 // trabecula/components/wrappers/tab-container.tsx
-var import_react31 = require("react");
+var import_react30 = require("react");
 var import_material35 = require("@mui/material");
 var import_color12 = __toESM(require("color"));
 var import_jsx_runtime81 = require("react/jsx-runtime");
@@ -10769,7 +10762,7 @@ var useClasses51 = makeClasses((props) => ({
 }));
 
 // trabecula/components/wrappers/view.tsx
-var import_react32 = require("react");
+var import_react31 = require("react");
 var View = Comp(
   (_a, ref) => {
     var _b = _a, {
@@ -10853,7 +10846,7 @@ var View = Comp(
       width,
       wrap
     });
-    return (0, import_react32.createElement)(
+    return (0, import_react31.createElement)(
       component,
       __spreadProps(__spreadValues({}, props), { className: cx(className, css.view), ref }),
       children
@@ -10891,13 +10884,13 @@ var useClasses52 = makeClasses((props) => {
 });
 
 // trabecula/views/mui-provider.tsx
-var import_react33 = require("react");
+var import_react32 = require("react");
 var import_cache = __toESM(require("@emotion/cache"));
-var import_react34 = require("@emotion/react");
+var import_react33 = require("@emotion/react");
 var import_material36 = require("@mui/material");
 var import_tss_react2 = require("tss-react");
 var import_jsx_runtime83 = require("react/jsx-runtime");
-var PortalContainerContext = (0, import_react33.createContext)(void 0);
+var PortalContainerContext = (0, import_react32.createContext)(void 0);
 
 // trabecula/utils/client/toast.tsx
 var import_jsx_runtime84 = require("react/jsx-runtime");

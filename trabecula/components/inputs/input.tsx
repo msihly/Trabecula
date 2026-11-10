@@ -339,7 +339,7 @@ const useClasses = makeClasses((props: ClassesProps) => ({
       padding: props.dense ? DENSE_INPUT_PADDING : undefined,
     },
     "& .MuiFormHelperText-root": {
-      margin: "0.3rem 0 0 0",
+      margin: props.floatingHelper ? 0 : "0.3rem 0 0 0",
       color: props.helperTextProps?.color ?? props.color,
       fontSize: "0.75em",
       lineHeight: 1,

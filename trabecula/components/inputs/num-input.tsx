@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Comp, Input, InputProps } from "trabecula/components";
 import { colors } from "trabecula/utils/client";
 
@@ -11,7 +10,7 @@ export interface NumInputProps extends Omit<InputProps, "setValue" | "value"> {
   valueDisplay?: string;
 }
 
-/** Shows invalid entries as error text below the input, which never shifts the layout. */
+/** Shows a value past its limits as error text below the input, which never shifts the layout. */
 export const NumInput = Comp(
   (
     {
@@ -26,23 +25,25 @@ export const NumInput = Comp(
     }: NumInputProps,
     ref,
   ) => {
-    const [error, setError] = useState<string | null>(null);
+    // Inputs that format their own text, such as durations, don't show raw limits.
+    const error =
+      setValueDisplay || value == null
+        ? null
+        : maxValue != null && value > maxValue
+          ? `Max: ${maxValue}`
+          : minValue != null && value < minValue
+            ? `Min: ${minValue}`
+            : null;
 
+    /** Anything that isn't a number is ignored, leaving the value as it was. */
     const handleChange = (val: string) => {
       if (!val) {
         setValue?.(null);
         setValueDisplay?.(null);
-        setError(null);
       } else if (setValueDisplay) {
         setValueDisplay(val);
-      } else if (isNaN(+val)) {
-        setError("Must be a number");
-      } else {
+      } else if (!isNaN(+val)) {
         setValue?.(+val);
-
-        if (maxValue != null && +val > maxValue) setError(`Max: ${maxValue}`);
-        else if (minValue != null && +val < minValue) setError(`Min: ${minValue}`);
-        else setError(null);
       }
     };
 
