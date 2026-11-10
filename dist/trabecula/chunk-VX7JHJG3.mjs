@@ -2362,6 +2362,7 @@ var FilterMenu = Comp(
       "store",
       "viewProps"
     ]);
+    const { css } = useClasses13(null);
     const hasSavedSearchApi = !!store.applySavedSearch && !!store.deleteSavedSearch && !!store.loadSavedSearches && !!store.saveSavedSearch;
     const handleReset = () => {
       if (resetFn) resetFn();
@@ -2375,19 +2376,22 @@ var FilterMenu = Comp(
         store.loadFiltered({ noCache: true, page: 1 });
       }
     };
-    const renderButton = (onOpen) => /* @__PURE__ */ jsx22(
-      Button,
-      __spreadProps(__spreadValues({}, buttonProps), {
-        onClick: onOpen,
-        color: store.hasChanges ? colors.custom.purple : color,
-        justify: "space-between",
-        padding: { left: "0.5em", right: "0.5em" },
-        text: /* @__PURE__ */ jsxs12(View, { row: true, align: "center", spacing: "0.5rem", children: [
-          /* @__PURE__ */ jsx22(Icon, { name: "FilterAlt", size: "1.15em" }),
-          /* @__PURE__ */ jsx22(Text, { children: "Filter" })
-        ] })
-      })
-    );
+    const renderButton = (onOpen) => /* @__PURE__ */ jsxs12(View, { display: "inline-flex", position: "relative", flex: "none", children: [
+      /* @__PURE__ */ jsx22(
+        Button,
+        __spreadProps(__spreadValues({}, buttonProps), {
+          onClick: onOpen,
+          color,
+          justify: "space-between",
+          padding: { left: "0.5em", right: "0.7em" },
+          text: /* @__PURE__ */ jsxs12(View, { row: true, align: "center", spacing: "0.5rem", children: [
+            /* @__PURE__ */ jsx22(Icon, { name: "FilterAlt", size: "1.15em" }),
+            /* @__PURE__ */ jsx22(Text, { children: "Filter" })
+          ] })
+        })
+      ),
+      store.hasChanges && /* @__PURE__ */ jsx22(View, { className: css.badge })
+    ] });
     return /* @__PURE__ */ jsx22(MenuButton, __spreadProps(__spreadValues({ button: renderButton }, menuProps), { children: /* @__PURE__ */ jsxs12(View, __spreadProps(__spreadValues({ column: true, padding: { all: "0.5rem" }, spacing: "0.5rem", overflow: "auto" }, viewProps), { children: [
       /* @__PURE__ */ jsxs12(View, { row: true, spacing: "0.5rem", width: "100%", children: [
         /* @__PURE__ */ jsx22(
@@ -2428,6 +2432,20 @@ var FilterMenu = Comp(
     ] })) }));
   }
 );
+var useClasses13 = makeClasses({
+  badge: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    transform: "translate(50%, -50%)",
+    height: 10,
+    width: 10,
+    borderRadius: "50%",
+    backgroundColor: colors.custom.purple,
+    pointerEvents: "none",
+    zIndex: 1
+  }
+});
 var SavedSearchMenu = Comp(({ searchFn, store }) => {
   var _a;
   const [inputValue, setInputValue] = useState9("");
@@ -2609,7 +2627,7 @@ var MultiInputRow = (_a) => {
   var _b = _a, { bgColor } = _b, props = __objRest(_b, ["bgColor"]);
   var _a2, _b2;
   const hasClick = !!props.onClick;
-  const { css } = useClasses13({ bgColor: bgColor || colors.foreground, hasClick });
+  const { css } = useClasses14({ bgColor: bgColor || colors.foreground, hasClick });
   const value = (_b2 = (_a2 = props.valueExtractor) == null ? void 0 : _a2.call(props, props.value)) != null ? _b2 : props.value;
   const label = String(value != null ? value : "");
   const handleClick = () => {
@@ -2660,7 +2678,7 @@ var MultiInputRow = (_a) => {
     )
   ] });
 };
-var useClasses13 = makeClasses((props) => ({
+var useClasses14 = makeClasses((props) => ({
   label: {
     padding: "0 0.3rem",
     fontSize: "0.8em",
@@ -2689,7 +2707,7 @@ var MultiInputList = ({
   search,
   viewProps = {}
 }) => {
-  const { css } = useClasses14({ hasDeleteAll, hasInput });
+  const { css } = useClasses15({ hasDeleteAll, hasInput });
   const handleDeleteAll = () => search.onChange([]);
   return /* @__PURE__ */ jsxs15(View, { column: true, flex: 1, minHeight: 0, children: [
     /* @__PURE__ */ jsx25(
@@ -2744,7 +2762,7 @@ var MultiInputListRow = ({
     style
   }
 );
-var useClasses14 = makeClasses((props) => ({
+var useClasses15 = makeClasses((props) => ({
   listContainer: {
     border: `1px dotted ${colors.custom.grey}`,
     borderTop: props.hasInput ? "none" : void 0,
@@ -2922,7 +2940,7 @@ var PickerField = (_a) => {
     "onKeyDown",
     "width"
   ]);
-  const { css, cx } = useClasses15({ borderRadiuses, hasHeader: !!header });
+  const { css, cx } = useClasses16({ borderRadiuses, hasHeader: !!header });
   const handleKeyDown = (event) => {
     event.stopPropagation();
     onKeyDown == null ? void 0 : onKeyDown(event);
@@ -2945,7 +2963,7 @@ var PickerField = (_a) => {
     }
   );
 };
-var useClasses15 = makeClasses((props) => {
+var useClasses16 = makeClasses((props) => {
   var _a;
   return {
     field: {
@@ -3033,7 +3051,7 @@ var Slider = Comp(
       "value",
       "width"
     ]);
-    const { css, cx } = useClasses16({ color, flex, height, margins, orientation, padding, width });
+    const { css, cx } = useClasses17({ color, flex, height, margins, orientation, padding, width });
     const handleChange = (_, value2) => setValue == null ? void 0 : setValue(value2);
     const handleCommit = (_, value2) => onCommit == null ? void 0 : onCommit(value2);
     return /* @__PURE__ */ jsx31(
@@ -3049,7 +3067,7 @@ var Slider = Comp(
     );
   }
 );
-var useClasses16 = makeClasses((props) => ({
+var useClasses17 = makeClasses((props) => ({
   slider: __spreadProps(__spreadValues(__spreadValues({
     color: props.color,
     "& .MuiSlider-markLabel": {
@@ -3129,13 +3147,13 @@ var TIME_FORMAT = "HH:mm:ss";
 // trabecula/components/list/detail-rows.tsx
 import { jsx as jsx33, jsxs as jsxs18 } from "react/jsx-runtime";
 var DetailRows = ({ labelWidth = "8rem", rows }) => {
-  const { css } = useClasses17({ labelWidth });
+  const { css } = useClasses18({ labelWidth });
   return /* @__PURE__ */ jsx33(View, { className: css.table, children: rows.map(({ label, value }, i) => /* @__PURE__ */ jsxs18(View, { className: css.row, children: [
     typeof label === "string" ? /* @__PURE__ */ jsx33(Text, { className: css.label, children: label }) : label,
     typeof value === "string" ? /* @__PURE__ */ jsx33(Text, { noWrap: true, tooltip: value, children: value }) : value
   ] }, `${i}-${label}`)) });
 };
-var useClasses17 = makeClasses((props) => ({
+var useClasses18 = makeClasses((props) => ({
   label: {
     flexShrink: 0,
     marginRight: "1rem",
@@ -3170,10 +3188,10 @@ var List2 = (_a) => {
     "dividerColor",
     "noDividers"
   ]);
-  const { css, cx } = useClasses18({ dividerColor, noDividers });
+  const { css, cx } = useClasses19({ dividerColor, noDividers });
   return /* @__PURE__ */ jsx34(MuiList, __spreadProps(__spreadValues({ className: cx(css.list, className) }, props), { children }));
 };
-var useClasses18 = makeClasses((props) => ({
+var useClasses19 = makeClasses((props) => ({
   list: {
     padding: 0,
     "& > *:not(:last-child)": {
@@ -3218,7 +3236,7 @@ var ListItem = (_a) => {
   ]);
   iconMargins = __spreadValues(__spreadValues({}, DEFAULT_ICON_MARGINS), iconMargins);
   iconEndMargins = __spreadValues(__spreadValues({}, DEFAULT_ICON_END_MARGINS), iconEndMargins);
-  const { css, cx } = useClasses19({ color });
+  const { css, cx } = useClasses20({ color });
   const content = /* @__PURE__ */ jsxs19(Fragment5, { children: [
     icon && /* @__PURE__ */ jsx35(ListItemIcon, { className: css.icon, children: /* @__PURE__ */ jsx35(Icon, __spreadProps(__spreadValues({}, iconProps), { name: icon, margins: iconMargins })) }),
     /* @__PURE__ */ jsx35(ListItemText, { className: css.text, children: text }),
@@ -3250,7 +3268,7 @@ var ListItem = (_a) => {
     }
   );
 };
-var useClasses19 = makeClasses((props) => ({
+var useClasses20 = makeClasses((props) => ({
   icon: {
     minWidth: 0
   },
@@ -3295,7 +3313,7 @@ var Icon = (_a) => {
     "viewProps"
   ]);
   var _a2;
-  const { css, cx } = useClasses20({
+  const { css, cx } = useClasses21({
     color,
     hasLayers: !!(layers == null ? void 0 : layers.length),
     layers,
@@ -3330,7 +3348,7 @@ var makeLayerTransform = ({ rotation, x, y }) => {
   const rotate = rotation !== void 0 ? ` rotate(${rotation}deg)` : "";
   return `translate(-50%, -50%) translate(${offsetX}, ${offsetY})${rotate}`;
 };
-var useClasses20 = makeClasses((props) => {
+var useClasses21 = makeClasses((props) => {
   var _a;
   const rootSize = !props.hasLayers ? void 0 : defaultCssValue(props.layerSize);
   return {
@@ -3481,7 +3499,7 @@ var Container = (_a) => {
     "width"
   ]);
   const group = useContext(ModalGroupContext);
-  const { css, cx } = useClasses21({ height, margin, maxHeight, maxWidth, width });
+  const { css, cx } = useClasses22({ height, margin, maxHeight, maxWidth, width });
   const [ownerGroup, setOwnerGroup] = useState13(group);
   if (!visible && ownerGroup !== group) setOwnerGroup(group);
   const isGroupActive = ownerGroup === group;
@@ -3509,7 +3527,7 @@ var DraggablePaper = (props) => {
   const ref = useRef4(null);
   return /* @__PURE__ */ jsx38(Draggable, { nodeRef: ref, cancel: '[class*="MuiDialogContent-root"]', children: /* @__PURE__ */ jsx38(Paper, __spreadProps(__spreadValues({}, props), { ref, className: cx(props.className, css.draggable) })) });
 };
-var useClasses21 = makeClasses((props) => {
+var useClasses22 = makeClasses((props) => {
   var _a, _b;
   return {
     modal: {
@@ -3555,7 +3573,7 @@ var Content = (_a) => {
     "padding",
     "position"
   ]);
-  const { css } = useClasses22(null);
+  const { css } = useClasses23(null);
   padding = __spreadValues({ all: `${dividers ? "0.5rem" : "0.2rem"} 1rem` }, padding);
   return /* @__PURE__ */ jsx39(DialogContent, { dividers, className: css.content, children: /* @__PURE__ */ jsx39(
     View,
@@ -3574,7 +3592,7 @@ var Content = (_a) => {
     })
   ) });
 };
-var useClasses22 = makeClasses({
+var useClasses23 = makeClasses({
   content: {
     display: "flex",
     padding: 0
@@ -3610,10 +3628,10 @@ var Header = ({
   leftNode,
   rightNode
 }) => {
-  const { css, cx } = useClasses23({ justify });
+  const { css, cx } = useClasses24({ justify });
   return /* @__PURE__ */ jsx41(DialogTitle, { className: cx(css.root, className), children: /* @__PURE__ */ jsx41(HeaderContent, { leftNode, rightNode, children }) });
 };
-var useClasses23 = makeClasses((props) => ({
+var useClasses24 = makeClasses((props) => ({
   root: {
     display: "flex",
     flexDirection: "row",
@@ -3638,7 +3656,7 @@ import { jsx as jsx42, jsxs as jsxs22 } from "react/jsx-runtime";
 var ProgressBar = Comp((props) => {
   var _a, _b, _c, _d, _e;
   const minWidth = (props == null ? void 0 : props.minWidth) || "2em";
-  const { css } = useClasses24(null);
+  const { css } = useClasses25(null);
   return /* @__PURE__ */ jsxs22(View, __spreadProps(__spreadValues({ row: true, flex: 1, align: "center", spacing: "1rem" }, props.viewProps), { children: [
     props.withText ? /* @__PURE__ */ jsx42(
       Chip2,
@@ -3662,7 +3680,7 @@ var ProgressBar = Comp((props) => {
     )
   ] }));
 });
-var useClasses24 = makeClasses({
+var useClasses25 = makeClasses({
   progressBar: {
     flex: 1,
     backgroundColor: colors.control,
@@ -3679,7 +3697,7 @@ import { jsx as jsx43, jsxs as jsxs23 } from "react/jsx-runtime";
 var ProgressCircle = Comp((props) => {
   var _a;
   const color = props.color || colors.custom.white;
-  const { css } = useClasses25({
+  const { css } = useClasses26({
     bgColor: props.variant === "indeterminate" ? void 0 : props.bgColor || Color5(color).fade(0.5).string(),
     color
   });
@@ -3707,7 +3725,7 @@ var ProgressCircle = Comp((props) => {
     ) })
   ] });
 });
-var useClasses25 = makeClasses((props) => ({
+var useClasses26 = makeClasses((props) => ({
   bgCircle: {
     zIndex: 1,
     "& circle": { color: props.bgColor }
@@ -3989,7 +4007,7 @@ var DataGridHeader = ({
   sort,
   textPreset
 }) => {
-  const { css, cx } = useClasses26(null);
+  const { css, cx } = useClasses27(null);
   const [hoveredColumnKey, setHoveredColumnKey] = useState15(null);
   const suppressSortClickRef = useRef5(false);
   return /* @__PURE__ */ jsxs25(
@@ -4091,7 +4109,7 @@ var DataGridHeader = ({
     }
   );
 };
-var useClasses26 = makeClasses({
+var useClasses27 = makeClasses({
   cell: dataGridCellClasses.cell,
   resizeHandle: {
     bottom: 0,
@@ -4133,7 +4151,7 @@ var DataGridRow = ({
   textPreset
 }) => {
   var _a;
-  const { css, cx } = useClasses27(null);
+  const { css, cx } = useClasses28(null);
   const isExpanded = expandedRows.has(index);
   const isSelected = (_a = isRowSelected == null ? void 0 : isRowSelected(row, index)) != null ? _a : false;
   const getBackgroundColor = () => {
@@ -4229,7 +4247,7 @@ var DataGridRow = ({
     ) }) : null
   ] });
 };
-var useClasses27 = makeClasses({
+var useClasses28 = makeClasses({
   cell: dataGridCellClasses.cell,
   expansion: {
     margin: 0,
@@ -4274,7 +4292,7 @@ var Pagination = Comp(
       "onFullLoad",
       "viewProps"
     ]);
-    const { css, cx } = useClasses28({ inline });
+    const { css, cx } = useClasses29({ inline });
     const [isJumpModalOpen, setIsJumpModalOpen] = useState16(false);
     const [jumpPage, setJumpPage] = useState16(null);
     const hasError = !Number.isInteger(jumpPage) || jumpPage < 1 || jumpPage > count;
@@ -4368,7 +4386,7 @@ var Pagination = Comp(
     );
   }
 );
-var useClasses28 = makeClasses((props) => ({
+var useClasses29 = makeClasses((props) => ({
   pagination: {
     borderRadius: 0,
     borderTop: `1px solid ${colors.border}`,
@@ -4421,7 +4439,7 @@ var Table = ({
     [page, rowsPerPage, rows]
   );
   const emptyRows = rowsPerPage - displayedRows.length;
-  const { css, cx } = useClasses29({ emptyRows });
+  const { css, cx } = useClasses30({ emptyRows });
   const handleRowsPerPageChange = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
@@ -4458,7 +4476,7 @@ var Table = ({
   ] });
 };
 var TableCellTrunc = ({ className, value, wrap = false }) => {
-  const { css, cx } = useClasses29(null);
+  const { css, cx } = useClasses30(null);
   return /* @__PURE__ */ jsx48(TableCell, { className: cx(css.tableCell, className), title: String(value), children: wrap ? /* @__PURE__ */ jsx48(
     Text,
     {
@@ -4473,7 +4491,7 @@ var TableCellTrunc = ({ className, value, wrap = false }) => {
     }
   ) : value });
 };
-var useClasses29 = makeClasses((props) => {
+var useClasses30 = makeClasses((props) => {
   var _a;
   return {
     emptyRow: { height: MUI_TABLE_ROW_HEIGHT * ((_a = props == null ? void 0 : props.emptyRows) != null ? _a : 0) },
@@ -4602,7 +4620,7 @@ var Link = (_a) => {
     "target",
     "underline"
   ]);
-  const { css, cx } = useClasses30({ bold, color });
+  const { css, cx } = useClasses31({ bold, color });
   return /* @__PURE__ */ jsx52(
     MuiLink,
     __spreadProps(__spreadValues({
@@ -4615,7 +4633,7 @@ var Link = (_a) => {
     })
   );
 };
-var useClasses30 = makeClasses((props) => ({
+var useClasses31 = makeClasses((props) => ({
   link: {
     color: props.color,
     fontSize: "1em",
@@ -4735,7 +4753,7 @@ var Text = (_a) => {
     "width",
     "wordBreak"
   ]);
-  const { css, cx } = useClasses31({
+  const { css, cx } = useClasses32({
     alignSelf,
     bold,
     color,
@@ -4765,7 +4783,7 @@ var Text = (_a) => {
   return /* @__PURE__ */ jsx53(TooltipWrapper, { tooltip, tooltipProps, children: /* @__PURE__ */ jsx53(Typography, __spreadProps(__spreadValues({}, props), { component, className: cx(css.root, className), children })) });
 };
 Text.Inline = (props) => /* @__PURE__ */ jsx53(Text, __spreadValues({ display: "inline" }, props));
-var useClasses31 = makeClasses((props) => {
+var useClasses32 = makeClasses((props) => {
   var _a, _b, _c, _d, _e, _f, _g, _h;
   const preset = PRESETS[props.preset];
   return {
@@ -4849,7 +4867,7 @@ var TruncatedText = (_a) => {
     "wordBoundaryRatio",
     "wordBreak"
   ]);
-  const { css, cx } = useClasses32({ lineClamp });
+  const { css, cx } = useClasses33({ lineClamp });
   const { isTruncated, preview } = getTextTruncation(text, maxLength, wordBoundaryRatio);
   const shouldClamp = lineClamp > 0;
   return /* @__PURE__ */ jsxs30(
@@ -4884,7 +4902,7 @@ TruncatedText.Remainder = (_a) => {
   if (!isTruncated) return null;
   else return /* @__PURE__ */ jsx54(Text, __spreadProps(__spreadValues({}, textProps), { children: remainder }));
 };
-var useClasses32 = makeClasses((props) => ({
+var useClasses33 = makeClasses((props) => ({
   text: {
     WebkitBoxOrient: props.lineClamp > 0 ? "vertical" : void 0,
     WebkitLineClamp: props.lineClamp > 0 ? props.lineClamp : void 0
@@ -4956,7 +4974,7 @@ var Accordion = (rawProps) => {
   const effectiveExpanded = isExpanded != null ? isExpanded : internalExpanded;
   const contentExpanded = showExpandToggle ? effectiveExpanded : true;
   const hasHeaderWrapper = title !== void 0 || headerBgColor !== void 0 || headerBorderColor !== void 0 || headerPadding !== void 0;
-  const { css, cx } = useClasses33({
+  const { css, cx } = useClasses34({
     borderColor,
     contentExpanded,
     contentPadding,
@@ -5034,7 +5052,7 @@ var shouldShowHeaderBorder = (props) => {
   else if (props.headerBorderMode === "expanded") return props.contentExpanded;
   else return props.showExpandToggle ? props.showBorder : true;
 };
-var useClasses33 = makeClasses((props) => {
+var useClasses34 = makeClasses((props) => {
   var _a;
   return {
     accordion: {
@@ -5182,7 +5200,7 @@ var Checkbox = ({
   width = "100%"
 }) => {
   var _a, _b, _c;
-  const { css, cx } = useClasses34({
+  const { css, cx } = useClasses35({
     center,
     color: (ternary != null ? ternary : indeterminate) ? ternaryColor || indeterminateColor || color : color,
     disabled,
@@ -5223,7 +5241,7 @@ var Checkbox = ({
     }
   );
 };
-var useClasses34 = makeClasses((props) => ({
+var useClasses35 = makeClasses((props) => ({
   checkbox: __spreadProps(__spreadValues({}, makePadding(props.padding)), {
     color: `${UNCHECKED_TOGGLE_COLOR} !important`,
     opacity: props.disabled ? 0.5 : 1,
@@ -5275,7 +5293,7 @@ var Radio2 = (rawProps) => {
     whiteSpace = "nowrap",
     width = "100%"
   } = rawProps;
-  const { css, cx } = useClasses35({
+  const { css, cx } = useClasses36({
     center,
     color,
     disabled,
@@ -5312,7 +5330,7 @@ var Radio2 = (rawProps) => {
     }
   );
 };
-var useClasses35 = makeClasses((props) => ({
+var useClasses36 = makeClasses((props) => ({
   label: __spreadProps(__spreadValues({
     display: "flex",
     flex: props.flex,
@@ -5373,7 +5391,7 @@ var Tooltip = (_a) => {
     "title",
     "viewProps"
   ]);
-  const { css } = useClasses36({
+  const { css } = useClasses37({
     bgColor,
     borderColor,
     color,
@@ -5394,7 +5412,7 @@ var Tooltip = (_a) => {
     })
   );
 };
-var useClasses36 = makeClasses((props) => {
+var useClasses37 = makeClasses((props) => {
   const bgColor = Color8(props.bgColor).fade(0.03).string();
   return {
     // The arrow continues the tooltip, outlined in its border.
@@ -5534,7 +5552,7 @@ var Card = Comp(
       headerProps != null ? headerProps : {}
     );
     padding = deepMerge({ all: "0.5rem" }, padding);
-    const { css, cx } = useClasses37({ boxShadow, elevated, hasHeader });
+    const { css, cx } = useClasses38({ boxShadow, elevated, hasHeader });
     return /* @__PURE__ */ jsx61(
       HeaderWrapper,
       __spreadProps(__spreadValues(__spreadValues({}, boxProps), viewProps), {
@@ -5576,7 +5594,7 @@ var Card = Comp(
     );
   }
 );
-var useClasses37 = makeClasses((props) => {
+var useClasses38 = makeClasses((props) => {
   var _a;
   return {
     root: {
@@ -5603,10 +5621,10 @@ var Chip3 = (_a) => {
     "opacity",
     "position"
   ]);
-  const { css, cx } = useClasses38({ flush, hasFooter, opacity, position });
+  const { css, cx } = useClasses39({ flush, hasFooter, opacity, position });
   return /* @__PURE__ */ jsx62(Chip2, __spreadProps(__spreadValues({ overMedia: true }, props), { className: cx(css.chip, className) }));
 };
-var useClasses38 = makeClasses((props) => ({
+var useClasses39 = makeClasses((props) => ({
   chip: {
     position: "absolute",
     top: props.position.includes("top") ? props.flush ? 0 : "0.3rem" : void 0,
@@ -5646,7 +5664,7 @@ var Container2 = (_a) => {
     "selectedColor",
     "width"
   ]);
-  const { css, cx } = useClasses39({ disabled, display, height, selected, selectedColor, width });
+  const { css, cx } = useClasses40({ disabled, display, height, selected, selectedColor, width });
   return /* @__PURE__ */ jsx63(View, __spreadProps(__spreadValues({}, viewProps), { className: cx(css.container, className), children: /* @__PURE__ */ jsx63(
     Paper3,
     {
@@ -5658,7 +5676,7 @@ var Container2 = (_a) => {
     }
   ) }));
 };
-var useClasses39 = makeClasses((props, theme) => {
+var useClasses40 = makeClasses((props, theme) => {
   var _a;
   return {
     container: __spreadProps(__spreadValues({
@@ -5698,10 +5716,10 @@ var useClasses39 = makeClasses((props, theme) => {
 // trabecula/components/wrappers/card-base/footer.tsx
 import { jsx as jsx64 } from "react/jsx-runtime";
 var Footer2 = ({ children }) => {
-  const { css } = useClasses40(null);
+  const { css } = useClasses41(null);
   return /* @__PURE__ */ jsx64(View, { className: css.footer, children });
 };
-var useClasses40 = makeClasses({
+var useClasses41 = makeClasses({
   footer: {
     position: "absolute",
     bottom: 0,
@@ -5749,7 +5767,7 @@ var Image = ({
   const [imagePos, setImagePos] = useState20(null);
   const [isHovered, setIsHovered] = useState20(false);
   const [thumbIndex, setThumbIndex] = useState20(0);
-  const { css, cx } = useClasses41({ fit, height, imagePos, rounded });
+  const { css, cx } = useClasses42({ fit, height, imagePos, rounded });
   const thumbPath = (_a = thumbPaths == null ? void 0 : thumbPaths[thumbIndex]) != null ? _a : thumbPaths == null ? void 0 : thumbPaths[0];
   useEffect11(() => {
     const interval = !disabled && (autoAnimate || isHovered) && (thumbPaths == null ? void 0 : thumbPaths.length) > 1 ? setInterval(() => setThumbIndex((index) => (index + 1) % thumbPaths.length), 300) : null;
@@ -5811,7 +5829,7 @@ var Image = ({
     }
   );
 };
-var useClasses41 = makeClasses((props) => {
+var useClasses42 = makeClasses((props) => {
   var _a;
   const radii = __spreadValues(__spreadValues({}, ["all", "top"].includes(props.rounded) && {
     borderTopLeftRadius: "inherit",
@@ -5892,7 +5910,7 @@ var CardGrid = Comp(
       "padding",
       "position"
     ]);
-    const { css, cx } = useClasses42({ flexFlow, hasCards: cards.length > 0, maxCards, position });
+    const { css, cx } = useClasses43({ flexFlow, hasCards: cards.length > 0, maxCards, position });
     return /* @__PURE__ */ jsxs33(View, __spreadProps(__spreadValues({}, props), { className: cx(css.root, className), children: [
       cards.length ? /* @__PURE__ */ jsx68(
         View,
@@ -5907,7 +5925,7 @@ var CardGrid = Comp(
     ] }));
   }
 );
-var useClasses42 = makeClasses((props, theme) => ({
+var useClasses43 = makeClasses((props, theme) => ({
   cards: __spreadProps(__spreadValues({
     display: "flex",
     flexFlow: props.flexFlow,
@@ -5984,7 +6002,7 @@ var Chip2 = Comp(
       "width"
     ]);
     const isFraction = denominator != null;
-    const { css, cx } = useClasses43({
+    const { css, cx } = useClasses44({
       bgColor,
       color,
       fontSize,
@@ -6017,7 +6035,7 @@ var Chip2 = Comp(
     );
   }
 );
-var useClasses43 = makeClasses((props) => {
+var useClasses44 = makeClasses((props) => {
   var _a;
   const chipColors = getChipColors(props.bgColor);
   const getFill = (tint) => props.overMedia ? `linear-gradient(${tint}, ${tint}), ${MEDIA_FILL}` : tint;
@@ -6080,7 +6098,7 @@ import { Menu as Menu2 } from "@mui/material";
 import { jsx as jsx71, jsxs as jsxs35 } from "react/jsx-runtime";
 var ContextMenu = (_a) => {
   var _b = _a, { children, disabled, id, menuItems } = _b, props = __objRest(_b, ["children", "disabled", "id", "menuItems"]);
-  const { css } = useClasses44(null);
+  const { css } = useClasses45(null);
   const [mouseX, setMouseX] = useState21(null);
   const [mouseY, setMouseY] = useState21(null);
   const handleContext = (event) => {
@@ -6118,7 +6136,7 @@ var Item = ({
   onClose
 }) => {
   var _a, _b, _c;
-  const { css } = useClasses44(null);
+  const { css } = useClasses45(null);
   const color = item.color || colors.custom.lightGrey;
   const handleClick = item.onClick ? () => {
     item.onClick();
@@ -6159,7 +6177,7 @@ var SubItem = ({
     }
   );
 };
-var useClasses44 = makeClasses({
+var useClasses45 = makeClasses({
   contextMenu: {
     background: colors.overlay
   },
@@ -6178,13 +6196,13 @@ var DisabledOverlay = ({
   isDisabled = false,
   zIndex = 2
 }) => {
-  const { css } = useClasses45({ isDisabled, zIndex });
+  const { css } = useClasses46({ isDisabled, zIndex });
   return /* @__PURE__ */ jsxs36(Fragment9, { children: [
     children,
     isDisabled && /* @__PURE__ */ jsx72(View, { className: css.disabledOverlay })
   ] });
 };
-var useClasses45 = makeClasses((props) => ({
+var useClasses46 = makeClasses((props) => ({
   disabledOverlay: {
     position: "absolute",
     top: 0,
@@ -6227,7 +6245,7 @@ var Divider = Comp(
       "margins",
       "orientation"
     ]);
-    const { css, cx } = useClasses46({ alignSelf, borderWidth, color, height, margins, orientation });
+    const { css, cx } = useClasses47({ alignSelf, borderWidth, color, height, margins, orientation });
     return /* @__PURE__ */ jsx73(
       MuiDivider,
       __spreadProps(__spreadValues({}, props), {
@@ -6239,7 +6257,7 @@ var Divider = Comp(
     );
   }
 );
-var useClasses46 = makeClasses((props) => ({
+var useClasses47 = makeClasses((props) => ({
   divider: __spreadValues({
     alignSelf: props.alignSelf,
     borderColor: props.color,
@@ -6253,10 +6271,10 @@ var useClasses46 = makeClasses((props) => ({
 import Color10 from "color";
 import { jsx as jsx74 } from "react/jsx-runtime";
 var DropOverlay = ({ onDragLeave, onDrop }) => {
-  const { css } = useClasses47(null);
+  const { css } = useClasses48(null);
   return /* @__PURE__ */ jsx74(View, { onDragLeave, onDrop, className: css.overlay });
 };
-var useClasses47 = makeClasses({
+var useClasses48 = makeClasses({
   overlay: {
     backgroundColor: Color10(colors.custom.blue).fade(0.5).string(),
     border: `15px dashed ${colors.custom.blue}`,
@@ -6419,7 +6437,7 @@ var HeaderContent = ({ children, leftNode, rightNode }) => /* @__PURE__ */ jsx76
 import { CircularProgress as CircularProgress2 } from "@mui/material";
 import { Fragment as Fragment10, jsx as jsx77, jsxs as jsxs39 } from "react/jsx-runtime";
 var LoadingOverlay = ({ children, isLoading, sub }) => {
-  const { css } = useClasses48({ isLoading });
+  const { css } = useClasses49({ isLoading });
   return /* @__PURE__ */ jsxs39(Fragment10, { children: [
     children,
     /* @__PURE__ */ jsxs39(
@@ -6441,7 +6459,7 @@ var LoadingOverlay = ({ children, isLoading, sub }) => {
     )
   ] });
 };
-var useClasses48 = makeClasses((props) => ({
+var useClasses49 = makeClasses((props) => ({
   loadingOverlay: {
     position: "absolute",
     top: 0,
@@ -6608,7 +6626,7 @@ var SideScroller = ({ children, className, innerClassName }) => {
     isLeftButtonVisible: false,
     isRightButtonVisible: false
   });
-  const { css, cx } = useClasses49(buttonVisibility);
+  const { css, cx } = useClasses50(buttonVisibility);
   const handleScroll = (direction) => {
     if (!ref.current) return;
     const scrollAmount = (direction === "left" ? -1 : 1) * width / 2;
@@ -6657,7 +6675,7 @@ var SideScroller = ({ children, className, innerClassName }) => {
     )
   ] });
 };
-var useClasses49 = makeClasses((props) => ({
+var useClasses50 = makeClasses((props) => ({
   items: {
     display: "flex",
     flexFlow: "row nowrap",
@@ -6723,7 +6741,7 @@ var TabContainer = ({
   viewProps = {},
   withBorder = false
 }) => {
-  const { css, cx } = useClasses50({
+  const { css, cx } = useClasses51({
     borderRadius,
     color,
     maxWidth,
@@ -6786,7 +6804,7 @@ var TabContainer = ({
     }) })
   ] }));
 };
-var useClasses50 = makeClasses((props) => {
+var useClasses51 = makeClasses((props) => {
   var _a;
   return {
     content: {
@@ -6853,10 +6871,10 @@ var useClasses50 = makeClasses((props) => {
 import { jsx as jsx82 } from "react/jsx-runtime";
 var UniformList = (_a) => {
   var _b = _a, { children, uniformWidth } = _b, props = __objRest(_b, ["children", "uniformWidth"]);
-  const { css, cx } = useClasses51({ uniformWidth });
+  const { css, cx } = useClasses52({ uniformWidth });
   return /* @__PURE__ */ jsx82(View, __spreadProps(__spreadValues({}, props), { className: cx(css.uniform, props == null ? void 0 : props.className), children }));
 };
-var useClasses51 = makeClasses((props) => ({
+var useClasses52 = makeClasses((props) => ({
   uniform: {
     "& > *": {
       flexBasis: "100%",
@@ -6925,7 +6943,7 @@ var View = Comp(
       "wrap"
     ]);
     if (row) column = false;
-    const { css, cx } = useClasses52({
+    const { css, cx } = useClasses53({
       align,
       bgColor,
       borderRadiuses,
@@ -6957,7 +6975,7 @@ var View = Comp(
     );
   }
 );
-var useClasses52 = makeClasses((props) => {
+var useClasses53 = makeClasses((props) => {
   var _a;
   return {
     view: __spreadValues(__spreadProps(__spreadValues(__spreadValues(__spreadValues(__spreadValues({
@@ -7045,7 +7063,7 @@ var Toaster = class {
   }
 };
 var ToastContainer = (props) => {
-  const { css } = useClasses53(null);
+  const { css } = useClasses54(null);
   return /* @__PURE__ */ jsx84(
     ToastContainerBase,
     __spreadValues({
@@ -7087,7 +7105,7 @@ var STATUSES = {
     icon: "NewReleases"
   }
 };
-var useClasses53 = makeClasses({
+var useClasses54 = makeClasses({
   toast: {
     "& .Toastify__toast": {
       border: "none",
@@ -7245,4 +7263,4 @@ export {
   makeTheme,
   MuiProvider
 };
-//# sourceMappingURL=chunk-JJ4UJOJA.mjs.map
+//# sourceMappingURL=chunk-VX7JHJG3.mjs.map

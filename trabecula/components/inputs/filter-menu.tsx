@@ -18,7 +18,7 @@ import {
   View,
   ViewProps,
 } from "trabecula/components";
-import { colors } from "trabecula/utils/client";
+import { colors, makeClasses } from "trabecula/utils/client";
 
 type FilterStore = {
   applySavedSearch: (id: string) => any;
@@ -63,6 +63,8 @@ export const FilterMenu = Comp(
     viewProps = {},
     ...buttonProps
   }: FilterMenuProps) => {
+    const { css } = useClasses(null);
+
     const hasSavedSearchApi =
       !!store.applySavedSearch &&
       !!store.deleteSavedSearch &&
@@ -84,21 +86,26 @@ export const FilterMenu = Comp(
       }
     };
 
+    // The icon's own margins widen the left side, which the extra right padding balances.
     const renderButton = (onOpen: (event: React.MouseEvent<HTMLButtonElement>) => void) => (
-      <Button
-        {...buttonProps}
-        onClick={onOpen}
-        color={store.hasChanges ? colors.custom.purple : color}
-        justify="space-between"
-        padding={{ left: "0.5em", right: "0.5em" }}
-        text={
-          <View row align="center" spacing="0.5rem">
-            <Icon name="FilterAlt" size="1.15em" />
+      <View display="inline-flex" position="relative" flex="none">
+        <Button
+          {...buttonProps}
+          onClick={onOpen}
+          color={color}
+          justify="space-between"
+          padding={{ left: "0.5em", right: "0.7em" }}
+          text={
+            <View row align="center" spacing="0.5rem">
+              <Icon name="FilterAlt" size="1.15em" />
 
-            <Text>{"Filter"}</Text>
-          </View>
-        }
-      />
+              <Text>{"Filter"}</Text>
+            </View>
+          }
+        />
+
+        {store.hasChanges && <View className={css.badge} />}
+      </View>
     );
 
     return (
@@ -143,6 +150,22 @@ export const FilterMenu = Comp(
     );
   },
 );
+
+/** Marks filters with changes that haven't been searched yet. */
+const useClasses = makeClasses({
+  badge: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    transform: "translate(50%, -50%)",
+    height: 10,
+    width: 10,
+    borderRadius: "50%",
+    backgroundColor: colors.custom.purple,
+    pointerEvents: "none",
+    zIndex: 1,
+  },
+});
 
 interface SavedSearchMenuProps {
   searchFn?: () => void;
