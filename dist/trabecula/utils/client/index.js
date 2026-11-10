@@ -7238,6 +7238,7 @@ var Input = Comp((rawProps, ref) => {
     color,
     dense = false,
     flex,
+    floatingHelper = false,
     fontFamily = "Karla",
     fontSize,
     fontWeight,
@@ -7279,6 +7280,7 @@ var Input = Comp((rawProps, ref) => {
     "color",
     "dense",
     "flex",
+    "floatingHelper",
     "fontFamily",
     "fontSize",
     "fontWeight",
@@ -7323,6 +7325,7 @@ var Input = Comp((rawProps, ref) => {
     color,
     dense,
     flex,
+    floatingHelper,
     fontFamily,
     fontSize,
     fontWeight,
@@ -7401,7 +7404,7 @@ var useClasses11 = makeClasses((props) => {
     input: __spreadProps(__spreadValues({
       flex: props.flex
     }, makeMargins(__spreadProps(__spreadValues({}, props.margins), {
-      bottom: (_b = (_a = props.margins) == null ? void 0 : _a.bottom) != null ? _b : props.hasHelper && !props.helperText ? "1.3rem" : 0
+      bottom: (_b = (_a = props.margins) == null ? void 0 : _a.bottom) != null ? _b : props.hasHelper && (props.floatingHelper || !props.helperText) ? "1.3rem" : 0
     }))), {
       minWidth: props.minWidth,
       width: "100%",
@@ -7459,7 +7462,14 @@ var useClasses11 = makeClasses((props) => {
         color: (_g = (_f = props.helperTextProps) == null ? void 0 : _f.color) != null ? _g : props.color,
         fontSize: "0.75em",
         lineHeight: 1,
-        textAlign: "center"
+        textAlign: "center",
+        // The field's root is positioned, so floating text sits just below it, over what follows.
+        position: props.floatingHelper ? "absolute" : void 0,
+        top: props.floatingHelper ? "100%" : void 0,
+        left: props.floatingHelper ? 0 : void 0,
+        right: props.floatingHelper ? 0 : void 0,
+        zIndex: props.floatingHelper ? 1 : void 0,
+        pointerEvents: props.floatingHelper ? "none" : void 0
       }
     })
   };
@@ -8312,7 +8322,7 @@ var import_jsx_runtime27 = require("react/jsx-runtime");
 var NumInput = Comp(
   (_a, ref) => {
     var _b = _a, {
-      hasHelper,
+      color,
       maxValue,
       minValue,
       setValue,
@@ -8320,7 +8330,7 @@ var NumInput = Comp(
       value,
       valueDisplay
     } = _b, props = __objRest(_b, [
-      "hasHelper",
+      "color",
       "maxValue",
       "minValue",
       "setValue",
@@ -8337,18 +8347,12 @@ var NumInput = Comp(
       } else if (setValueDisplay) {
         setValueDisplay(val);
       } else if (isNaN(+val)) {
-        toast.error("Must be a number");
+        setError("Must be a number");
       } else {
         setValue == null ? void 0 : setValue(+val);
-        if (maxValue != null && +val > maxValue) {
-          if (hasHelper) setError(`Max: ${maxValue}`);
-          else toast.error(`Max: ${maxValue}`);
-        } else if (minValue != null && +val < minValue) {
-          if (hasHelper) setError(`Min: ${minValue}`);
-          else toast.error(`Min: ${minValue}`);
-        } else {
-          setError(null);
-        }
+        if (maxValue != null && +val > maxValue) setError(`Max: ${maxValue}`);
+        else if (minValue != null && +val < minValue) setError(`Min: ${minValue}`);
+        else setError(null);
       }
     };
     return /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
@@ -8357,9 +8361,9 @@ var NumInput = Comp(
         ref,
         value: valueDisplay != null ? valueDisplay : value !== null && !isNaN(+value) ? String(value) : "",
         setValue: handleChange,
-        error: hasHelper && !!error,
-        helperText: hasHelper ? error : null,
-        hasHelper
+        color: error ? colors.custom.red : color,
+        helperText: error,
+        floatingHelper: true
       }, props)
     );
   }

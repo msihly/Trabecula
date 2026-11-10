@@ -379,6 +379,8 @@ interface InputProps extends Omit<TextFieldProps, "color" | "fullWidth" | "helpe
     color?: CssColor;
     dense?: boolean;
     flex?: CSS["flex"];
+    /** Floats the helper text below the input, taking no space, so it never shifts the layout. */
+    floatingHelper?: boolean;
     fontFamily?: CSS["fontFamily"];
     fontSize?: CSS["fontSize"];
     fontWeight?: CSS["fontWeight"];
@@ -471,6 +473,7 @@ interface NumInputProps extends Omit<InputProps, "setValue" | "value"> {
     value?: number;
     valueDisplay?: string;
 }
+/** Shows invalid entries as error text below the input, which never shifts the layout. */
 declare const NumInput: react.ForwardRefExoticComponent<Omit<NumInputProps, "ref"> & react.RefAttributes<HTMLDivElement>>;
 
 interface NumRangeProps {

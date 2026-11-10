@@ -39,6 +39,8 @@ export interface InputProps extends Omit<
   color?: CssColor;
   dense?: boolean;
   flex?: CSS["flex"];
+  /** Floats the helper text below the input, taking no space, so it never shifts the layout. */
+  floatingHelper?: boolean;
   fontFamily?: CSS["fontFamily"];
   fontSize?: CSS["fontSize"];
   fontWeight?: CSS["fontWeight"];
@@ -78,6 +80,7 @@ export const Input = Comp((rawProps: InputProps, ref?: MutableRefObject<HTMLDivE
     color,
     dense = false,
     flex,
+    floatingHelper = false,
     fontFamily = "Karla",
     fontSize,
     fontWeight,
@@ -137,6 +140,7 @@ export const Input = Comp((rawProps: InputProps, ref?: MutableRefObject<HTMLDivE
     color,
     dense,
     flex,
+    floatingHelper,
     fontFamily,
     fontSize,
     fontWeight,
@@ -245,6 +249,7 @@ interface ClassesProps extends Pick<
   | "color"
   | "dense"
   | "flex"
+  | "floatingHelper"
   | "fontFamily"
   | "fontSize"
   | "fontWeight"
@@ -268,9 +273,12 @@ interface ClassesProps extends Pick<
 const useClasses = makeClasses((props: ClassesProps) => ({
   input: {
     flex: props.flex,
+    // Floating helper text keeps the reserved space, since it takes none of its own.
     ...makeMargins({
       ...props.margins,
-      bottom: props.margins?.bottom ?? (props.hasHelper && !props.helperText ? "1.3rem" : 0),
+      bottom:
+        props.margins?.bottom ??
+        (props.hasHelper && (props.floatingHelper || !props.helperText) ? "1.3rem" : 0),
     }),
     minWidth: props.minWidth,
     width: "100%",
@@ -336,6 +344,13 @@ const useClasses = makeClasses((props: ClassesProps) => ({
       fontSize: "0.75em",
       lineHeight: 1,
       textAlign: "center",
+      // The field's root is positioned, so floating text sits just below it, over what follows.
+      position: props.floatingHelper ? "absolute" : undefined,
+      top: props.floatingHelper ? "100%" : undefined,
+      left: props.floatingHelper ? 0 : undefined,
+      right: props.floatingHelper ? 0 : undefined,
+      zIndex: props.floatingHelper ? 1 : undefined,
+      pointerEvents: props.floatingHelper ? "none" : undefined,
     },
   },
 }));

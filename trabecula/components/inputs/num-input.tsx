@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Comp, Input, InputProps } from "trabecula/components";
-import { toast } from "trabecula/utils/client";
+import { colors } from "trabecula/utils/client";
 
 export interface NumInputProps extends Omit<InputProps, "setValue" | "value"> {
   maxValue?: number;
@@ -11,10 +11,11 @@ export interface NumInputProps extends Omit<InputProps, "setValue" | "value"> {
   valueDisplay?: string;
 }
 
+/** Shows invalid entries as error text below the input, which never shifts the layout. */
 export const NumInput = Comp(
   (
     {
-      hasHelper,
+      color,
       maxValue,
       minValue,
       setValue,
@@ -35,19 +36,13 @@ export const NumInput = Comp(
       } else if (setValueDisplay) {
         setValueDisplay(val);
       } else if (isNaN(+val)) {
-        toast.error("Must be a number");
+        setError("Must be a number");
       } else {
         setValue?.(+val);
 
-        if (maxValue != null && +val > maxValue) {
-          if (hasHelper) setError(`Max: ${maxValue}`);
-          else toast.error(`Max: ${maxValue}`);
-        } else if (minValue != null && +val < minValue) {
-          if (hasHelper) setError(`Min: ${minValue}`);
-          else toast.error(`Min: ${minValue}`);
-        } else {
-          setError(null);
-        }
+        if (maxValue != null && +val > maxValue) setError(`Max: ${maxValue}`);
+        else if (minValue != null && +val < minValue) setError(`Min: ${minValue}`);
+        else setError(null);
       }
     };
 
@@ -56,9 +51,9 @@ export const NumInput = Comp(
         ref={ref}
         value={valueDisplay ?? (value !== null && !isNaN(+value) ? String(value) : "")}
         setValue={handleChange}
-        error={hasHelper && !!error}
-        helperText={hasHelper ? error : null}
-        hasHelper={hasHelper}
+        color={error ? colors.custom.red : color}
+        helperText={error}
+        floatingHelper
         {...props}
       />
     );
