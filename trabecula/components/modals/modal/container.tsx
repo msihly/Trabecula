@@ -1,9 +1,15 @@
-import { useRef } from "react";
+import { createContext, useContext, useRef, useState } from "react";
 import Draggable from "react-draggable";
 // eslint-disable-next-line @typescript-eslint/no-restricted-imports
 import { Dialog, DialogProps, Paper, PaperProps } from "@mui/material";
 import { LoadingOverlay } from "trabecula/components";
 import { colors, CSS, makeClasses } from "trabecula/utils/client";
+
+/**
+ * The group modals open in, such as an app's active tab. A modal joins the group active when it
+ * shows and is hidden, with its contents kept, while another group is active.
+ */
+export const ModalGroupContext = createContext<string | undefined>(undefined);
 
 export interface ContainerProps extends Omit<
   DialogProps,
@@ -28,6 +34,7 @@ export const Container = ({
   draggable = false,
   height,
   isLoading,
+  keepMounted = false,
   margin = "20px",
   maxHeight,
   maxWidth,
@@ -37,7 +44,16 @@ export const Container = ({
   width,
   ...props
 }: ContainerProps) => {
+  const group = useContext(ModalGroupContext);
+
   const { css, cx } = useClasses({ height, margin, maxHeight, maxWidth, width });
+
+  const [ownerGroup, setOwnerGroup] = useState(group);
+
+  // A hidden modal shows again in whichever group is active then.
+  if (!visible && ownerGroup !== group) setOwnerGroup(group);
+
+  const isGroupActive = ownerGroup === group;
 
   const handleClose = (_, reason: "backdropClick" | "escapeKeyDown") => {
     if (reason !== "backdropClick" || closeOnBackdrop) onClose?.();
@@ -46,9 +62,10 @@ export const Container = ({
   return (
     <Dialog
       {...props}
+      keepMounted={keepMounted || !isGroupActive}
       scroll={scroll}
       PaperComponent={draggable ? DraggablePaper : undefined}
-      open={visible}
+      open={visible && isGroupActive}
       onClose={handleClose}
       className={cx(css.modal, className)}
     >

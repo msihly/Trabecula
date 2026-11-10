@@ -131,6 +131,7 @@ __export(components_exports, {
   MULTI_INPUT_ROW_HEIGHT: () => MULTI_INPUT_ROW_HEIGHT,
   MenuButton: () => MenuButton,
   Modal: () => Modal,
+  ModalGroupContext: () => ModalGroupContext,
   MuiProvider: () => MuiProvider,
   MultiActionButton: () => MultiActionButton,
   MultiInput: () => MultiInput,
@@ -8751,6 +8752,7 @@ var import_react19 = require("react");
 var import_react_draggable = __toESM(require("react-draggable"));
 var import_material15 = require("@mui/material");
 var import_jsx_runtime39 = require("react/jsx-runtime");
+var ModalGroupContext = (0, import_react19.createContext)(void 0);
 var Container = (_a) => {
   var _b = _a, {
     children,
@@ -8759,6 +8761,7 @@ var Container = (_a) => {
     draggable = false,
     height,
     isLoading,
+    keepMounted = false,
     margin = "20px",
     maxHeight,
     maxWidth,
@@ -8773,6 +8776,7 @@ var Container = (_a) => {
     "draggable",
     "height",
     "isLoading",
+    "keepMounted",
     "margin",
     "maxHeight",
     "maxWidth",
@@ -8781,16 +8785,21 @@ var Container = (_a) => {
     "visible",
     "width"
   ]);
+  const group = (0, import_react19.useContext)(ModalGroupContext);
   const { css, cx } = useClasses22({ height, margin, maxHeight, maxWidth, width });
+  const [ownerGroup, setOwnerGroup] = (0, import_react19.useState)(group);
+  if (!visible && ownerGroup !== group) setOwnerGroup(group);
+  const isGroupActive = ownerGroup === group;
   const handleClose = (_, reason) => {
     if (reason !== "backdropClick" || closeOnBackdrop) onClose == null ? void 0 : onClose();
   };
   return /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)(
     import_material15.Dialog,
     __spreadProps(__spreadValues({}, props), {
+      keepMounted: keepMounted || !isGroupActive,
       scroll,
       PaperComponent: draggable ? DraggablePaper : void 0,
-      open: visible,
+      open: visible && isGroupActive,
       onClose: handleClose,
       className: cx(css.modal, className),
       children: [
@@ -12352,6 +12361,7 @@ var MuiProvider = ({
   MULTI_INPUT_ROW_HEIGHT,
   MenuButton,
   Modal,
+  ModalGroupContext,
   MuiProvider,
   MultiActionButton,
   MultiInput,

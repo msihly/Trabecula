@@ -3447,10 +3447,11 @@ var ConfirmModal = ({
 };
 
 // trabecula/components/modals/modal/container.tsx
-import { useRef as useRef4 } from "react";
+import { createContext, useContext, useRef as useRef4, useState as useState14 } from "react";
 import Draggable from "react-draggable";
 import { Dialog, Paper } from "@mui/material";
 import { jsx as jsx38, jsxs as jsxs21 } from "react/jsx-runtime";
+var ModalGroupContext = createContext(void 0);
 var Container = (_a) => {
   var _b = _a, {
     children,
@@ -3459,6 +3460,7 @@ var Container = (_a) => {
     draggable = false,
     height,
     isLoading,
+    keepMounted = false,
     margin = "20px",
     maxHeight,
     maxWidth,
@@ -3473,6 +3475,7 @@ var Container = (_a) => {
     "draggable",
     "height",
     "isLoading",
+    "keepMounted",
     "margin",
     "maxHeight",
     "maxWidth",
@@ -3481,16 +3484,21 @@ var Container = (_a) => {
     "visible",
     "width"
   ]);
+  const group = useContext(ModalGroupContext);
   const { css, cx } = useClasses21({ height, margin, maxHeight, maxWidth, width });
+  const [ownerGroup, setOwnerGroup] = useState14(group);
+  if (!visible && ownerGroup !== group) setOwnerGroup(group);
+  const isGroupActive = ownerGroup === group;
   const handleClose = (_, reason) => {
     if (reason !== "backdropClick" || closeOnBackdrop) onClose == null ? void 0 : onClose();
   };
   return /* @__PURE__ */ jsxs21(
     Dialog,
     __spreadProps(__spreadValues({}, props), {
+      keepMounted: keepMounted || !isGroupActive,
       scroll,
       PaperComponent: draggable ? DraggablePaper : void 0,
-      open: visible,
+      open: visible && isGroupActive,
       onClose: handleClose,
       className: cx(css.modal, className),
       children: [
@@ -3715,7 +3723,7 @@ var useClasses25 = makeClasses((props) => ({
 }));
 
 // trabecula/components/table/data-grid.tsx
-import { useEffect as useEffect9, useMemo as useMemo2, useState as useState14 } from "react";
+import { useEffect as useEffect9, useMemo as useMemo2, useState as useState15 } from "react";
 import { jsx as jsx44, jsxs as jsxs24 } from "react/jsx-runtime";
 var DataGrid = ({
   alternatingBgColor = colors.foregroundCard,
@@ -3748,14 +3756,14 @@ var DataGrid = ({
   spacing = "0.3rem",
   textPreset = "default"
 }) => {
-  const [columnResize, setColumnResize] = useState14(null);
-  const [columnWidths, setColumnWidths] = useState14(
+  const [columnResize, setColumnResize] = useState15(null);
+  const [columnWidths, setColumnWidths] = useState15(
     {}
   );
-  const [expandedRows, setExpandedRows] = useState14(/* @__PURE__ */ new Set());
-  const [page, setPage] = useState14(1);
-  const [search, setSearch] = useState14("");
-  const [sort, setSort] = useState14(initialSort != null ? initialSort : null);
+  const [expandedRows, setExpandedRows] = useState15(/* @__PURE__ */ new Set());
+  const [page, setPage] = useState15(1);
+  const [search, setSearch] = useState15("");
+  const [sort, setSort] = useState15(initialSort != null ? initialSort : null);
   useEffect9(() => {
     if (isExpanded === false) setExpandedRows(/* @__PURE__ */ new Set());
   }, [isExpanded]);
@@ -3969,7 +3977,7 @@ var getDataGridPixelValue = (value) => {
 // trabecula/components/table/data-grid-header.tsx
 import {
   useRef as useRef5,
-  useState as useState15
+  useState as useState16
 } from "react";
 import { jsx as jsx45, jsxs as jsxs25 } from "react/jsx-runtime";
 var DataGridHeader = ({
@@ -3986,7 +3994,7 @@ var DataGridHeader = ({
   textPreset
 }) => {
   const { css, cx } = useClasses26(null);
-  const [hoveredColumnKey, setHoveredColumnKey] = useState15(null);
+  const [hoveredColumnKey, setHoveredColumnKey] = useState16(null);
   const suppressSortClickRef = useRef5(false);
   return /* @__PURE__ */ jsxs25(
     View,
@@ -4245,7 +4253,7 @@ var useClasses27 = makeClasses({
 });
 
 // trabecula/components/table/pagination.tsx
-import { useState as useState16 } from "react";
+import { useState as useState17 } from "react";
 import {
   Pagination as PaginationBase,
   PaginationItem
@@ -4271,8 +4279,8 @@ var Pagination = Comp(
       "viewProps"
     ]);
     const { css, cx } = useClasses28({ inline });
-    const [isJumpModalOpen, setIsJumpModalOpen] = useState16(false);
-    const [jumpPage, setJumpPage] = useState16(null);
+    const [isJumpModalOpen, setIsJumpModalOpen] = useState17(false);
+    const [jumpPage, setJumpPage] = useState17(null);
     const hasError = !Number.isInteger(jumpPage) || jumpPage < 1 || jumpPage > count;
     const handleChange = (_, page) => onChange(page);
     const handleJump = () => {
@@ -4388,7 +4396,7 @@ var useClasses28 = makeClasses((props) => ({
 }));
 
 // trabecula/components/table/table.tsx
-import { useMemo as useMemo3, useState as useState17 } from "react";
+import { useMemo as useMemo3, useState as useState18 } from "react";
 import {
   Paper as Paper2,
   Table as MuiTable,
@@ -4410,8 +4418,8 @@ var Table = ({
   rowCountOptions = [10, 25, 50],
   rows
 }) => {
-  const [page, setPage] = useState17(0);
-  const [rowsPerPage, setRowsPerPage] = useState17(rowCountOptions[0]);
+  const [page, setPage] = useState18(0);
+  const [rowsPerPage, setRowsPerPage] = useState18(rowCountOptions[0]);
   const displayedRows = useMemo3(
     () => rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
     [page, rowsPerPage, rows]
@@ -4888,7 +4896,7 @@ var useClasses32 = makeClasses((props) => ({
 }));
 
 // trabecula/components/toggles/accordion.tsx
-import { useState as useState18 } from "react";
+import { useState as useState19 } from "react";
 import {
   Accordion as MuiAccordion
 } from "@mui/material";
@@ -4948,7 +4956,7 @@ var Accordion = (rawProps) => {
     "toggleButtonProps",
     "width"
   ]);
-  const [internalExpanded, setInternalExpanded] = useState18(expanded != null ? expanded : false);
+  const [internalExpanded, setInternalExpanded] = useState19(expanded != null ? expanded : false);
   const effectiveExpanded = isExpanded != null ? isExpanded : internalExpanded;
   const contentExpanded = showExpandToggle ? effectiveExpanded : true;
   const hasHeaderWrapper = title !== void 0 || headerBgColor !== void 0 || headerBorderColor !== void 0 || headerPadding !== void 0;
@@ -5070,15 +5078,15 @@ var useClasses33 = makeClasses((props) => {
 });
 
 // trabecula/components/toggles/accordion-group.tsx
-import { createContext, useContext, useEffect as useEffect10, useMemo as useMemo4, useState as useState19 } from "react";
+import { createContext as createContext2, useContext as useContext2, useEffect as useEffect10, useMemo as useMemo4, useState as useState20 } from "react";
 import { jsx as jsx56 } from "react/jsx-runtime";
-var AccordionGroupContext = createContext(null);
+var AccordionGroupContext = createContext2(null);
 var AccordionGroup = ({
   children,
   defaultExpanded = true,
   sectionIds
 }) => {
-  const [expandedSections, setExpandedSections] = useState19(
+  const [expandedSections, setExpandedSections] = useState20(
     () => getInitialExpandedSections(sectionIds, defaultExpanded)
   );
   useEffect10(() => {
@@ -5135,7 +5143,7 @@ var useAccordionGroupSection = (sectionId) => {
   };
 };
 var useAccordionGroupContext = () => {
-  const context = useContext(AccordionGroupContext);
+  const context = useContext2(AccordionGroupContext);
   if (!context) {
     throw new Error("AccordionGroup hooks must be used within an AccordionGroup");
   }
@@ -5723,7 +5731,7 @@ var FooterText = (props) => {
 };
 
 // trabecula/components/wrappers/card-base/image.tsx
-import { useEffect as useEffect11, useState as useState20 } from "react";
+import { useEffect as useEffect11, useState as useState21 } from "react";
 import { jsx as jsx66, jsxs as jsxs32 } from "react/jsx-runtime";
 var Image = ({
   autoAnimate = false,
@@ -5741,10 +5749,10 @@ var Image = ({
   title
 }) => {
   var _a;
-  const [hasError, setHasError] = useState20(false);
-  const [imagePos, setImagePos] = useState20(null);
-  const [isHovered, setIsHovered] = useState20(false);
-  const [thumbIndex, setThumbIndex] = useState20(0);
+  const [hasError, setHasError] = useState21(false);
+  const [imagePos, setImagePos] = useState21(null);
+  const [isHovered, setIsHovered] = useState21(false);
+  const [thumbIndex, setThumbIndex] = useState21(0);
   const { css, cx } = useClasses41({ fit, height, imagePos, rounded });
   const thumbPath = (_a = thumbPaths == null ? void 0 : thumbPaths[thumbIndex]) != null ? _a : thumbPaths == null ? void 0 : thumbPaths[0];
   useEffect11(() => {
@@ -6071,14 +6079,14 @@ var ConditionalWrap = ({
 }) => condition ? wrap(children) : /* @__PURE__ */ jsx70(Fragment8, { children });
 
 // trabecula/components/wrappers/context-menu.tsx
-import { useState as useState21 } from "react";
+import { useState as useState22 } from "react";
 import { Menu as Menu2 } from "@mui/material";
 import { jsx as jsx71, jsxs as jsxs35 } from "react/jsx-runtime";
 var ContextMenu = (_a) => {
   var _b = _a, { children, disabled, id, menuItems } = _b, props = __objRest(_b, ["children", "disabled", "id", "menuItems"]);
   const { css } = useClasses44(null);
-  const [mouseX, setMouseX] = useState21(null);
-  const [mouseY, setMouseY] = useState21(null);
+  const [mouseX, setMouseX] = useState22(null);
+  const [mouseY, setMouseY] = useState22(null);
   const handleContext = (event) => {
     event.preventDefault();
     if (disabled) return;
@@ -6472,7 +6480,7 @@ var Pill = Comp(
 );
 
 // trabecula/components/wrappers/server-status-sync.tsx
-import { useEffect as useEffect12, useRef as useRef6, useState as useState22 } from "react";
+import { useEffect as useEffect12, useRef as useRef6, useState as useState23 } from "react";
 import { Fragment as Fragment11, jsx as jsx79, jsxs as jsxs40 } from "react/jsx-runtime";
 var joinStatusLabels = (statuses) => statuses.map(({ label }) => label).join(" / ");
 var ServerStatusSync = ({
@@ -6483,9 +6491,9 @@ var ServerStatusSync = ({
   onStatusMessage,
   restartInstruction
 }) => {
-  const [hasStarted, setHasStarted] = useState22(false);
-  const [serverToaster] = useState22(() => new Toaster());
-  const [startupMessage, setStartupMessage] = useState22(`Starting ${appName} services...`);
+  const [hasStarted, setHasStarted] = useState23(false);
+  const [serverToaster] = useState23(() => new Toaster());
+  const [startupMessage, setStartupMessage] = useState23(`Starting ${appName} services...`);
   const pollInterval = useRef6(null);
   const previousStatusMessage = useRef6(null);
   const wasApplyingConfig = useRef6(false);
@@ -6595,12 +6603,12 @@ var ServerStatusSync = ({
 };
 
 // trabecula/components/wrappers/side-scroller.tsx
-import { useEffect as useEffect13, useRef as useRef7, useState as useState23 } from "react";
+import { useEffect as useEffect13, useRef as useRef7, useState as useState24 } from "react";
 import { jsx as jsx80, jsxs as jsxs41 } from "react/jsx-runtime";
 var SideScroller = ({ children, className, innerClassName }) => {
   const ref = useRef7(null);
   const { width } = useElementResize(ref);
-  const [buttonVisibility, setButtonVisibility] = useState23({
+  const [buttonVisibility, setButtonVisibility] = useState24({
     isLeftButtonVisible: false,
     isRightButtonVisible: false
   });
@@ -6700,7 +6708,7 @@ var useClasses49 = makeClasses((props) => ({
 }));
 
 // trabecula/components/wrappers/tab-container.tsx
-import { useState as useState24 } from "react";
+import { useState as useState25 } from "react";
 import { Tab, Tabs } from "@mui/material";
 import Color11 from "color";
 import { jsx as jsx81, jsxs as jsxs42 } from "react/jsx-runtime";
@@ -6727,7 +6735,7 @@ var TabContainer = ({
     tabHeight,
     withBorder
   });
-  const [selectedTab, setSelectedTab] = useState24("0");
+  const [selectedTab, setSelectedTab] = useState25("0");
   const currentTab = activeTab != null ? activeTab : selectedTab;
   const pillBgColor = Color11(color).isDark() ? "rgba(255, 255, 255, 0.12)" : "rgba(0, 0, 0, 0.25)";
   const handleChange = (_event, tabIndex) => {
@@ -6984,14 +6992,14 @@ var useClasses52 = makeClasses((props) => {
 });
 
 // trabecula/views/mui-provider.tsx
-import { createContext as createContext2, StrictMode, useContext as useContext2, useState as useState25 } from "react";
+import { createContext as createContext3, StrictMode, useContext as useContext3, useState as useState26 } from "react";
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 import { createTheme, ThemeProvider } from "@mui/material";
 import { TssCacheProvider } from "tss-react";
 import { jsx as jsx83 } from "react/jsx-runtime";
-var PortalContainerContext = createContext2(void 0);
-var usePortalContainer = () => useContext2(PortalContainerContext);
+var PortalContainerContext = createContext3(void 0);
+var usePortalContainer = () => useContext3(PortalContainerContext);
 var makeTheme = ({ portalContainer, titleBarHeight } = {}) => createTheme({
   components: {
     MuiDialog: { styleOverrides: { root: { top: titleBarHeight } } },
@@ -7007,11 +7015,11 @@ var MuiProvider = ({
   portalContainer,
   styleContainer
 }) => {
-  const [theme] = useState25(() => makeTheme({ portalContainer }));
-  const [muiCache] = useState25(
+  const [theme] = useState26(() => makeTheme({ portalContainer }));
+  const [muiCache] = useState26(
     () => createCache({ container: styleContainer, key: "mui", prepend: true, stylisPlugins: [] })
   );
-  const [tssCache] = useState25(
+  const [tssCache] = useState26(
     () => createCache({ container: styleContainer, key: "tss", stylisPlugins: [] })
   );
   return /* @__PURE__ */ jsx83(StrictMode, { children: /* @__PURE__ */ jsx83(CacheProvider, { value: muiCache, children: /* @__PURE__ */ jsx83(TssCacheProvider, { value: tssCache, children: /* @__PURE__ */ jsx83(ThemeProvider, { theme, children: /* @__PURE__ */ jsx83(PortalContainerContext.Provider, { value: portalContainer, children }) }) }) }) });
@@ -7186,6 +7194,7 @@ export {
   ListItem,
   Icon,
   ConfirmModal,
+  ModalGroupContext,
   Modal,
   ProgressBar,
   ProgressCircle,
@@ -7239,4 +7248,4 @@ export {
   makeTheme,
   MuiProvider
 };
-//# sourceMappingURL=chunk-QPDL5DZO.mjs.map
+//# sourceMappingURL=chunk-5MDAOIE4.mjs.map
