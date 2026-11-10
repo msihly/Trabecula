@@ -261,16 +261,20 @@ export type CssNamedColor =
 
 export type CssColor = "inherit" | HexColor | RgbColor | HslColor | CssNamedColor;
 
+/** The primary blue of progress bars, badges, and every other blue accent. */
+const PRIMARY_BLUE = "#3b6fd1";
+
 const customColors = {
   black: "#131313",
-  blue: "#3b6fd1",
+  blue: PRIMARY_BLUE,
   blueGrey: "#546e7a",
   brown: "#6d4c41",
   darkGrey: "#2b2b2b",
   green: "#3d8b45",
   /** Recedes on the app's dark surfaces, too dark for text meant to be read; use lightGrey. */
   grey: "#4b4b4b",
-  lightBlue: "#8fb0ee",
+  /** The primary blue too, so no paler blue resembling MUI's default ever shows. */
+  lightBlue: PRIMARY_BLUE,
   lightGrey: "#bdbdbd",
   orange: "#b9772f",
   purple: "#7e4d9f",

@@ -92,7 +92,8 @@ declare const colors: {
         readonly green: "#3d8b45";
         /** Recedes on the app's dark surfaces, too dark for text meant to be read; use lightGrey. */
         readonly grey: "#4b4b4b";
-        readonly lightBlue: "#8fb0ee";
+        /** The primary blue too, so no paler blue resembling MUI's default ever shows. */
+        readonly lightBlue: "#3b6fd1";
         readonly lightGrey: "#bdbdbd";
         readonly orange: "#b9772f";
         readonly purple: "#7e4d9f";

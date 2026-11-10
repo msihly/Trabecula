@@ -25,7 +25,8 @@ export const makeTheme = ({ portalContainer, titleBarHeight }: MakeThemeOptions 
       MuiPopover: { defaultProps: { container: portalContainer } },
       MuiPopper: { defaultProps: { container: portalContainer } },
     },
-    palette: { divider: colors.border, mode: "dark" },
+    // MUI parts that default to its primary color, such as focused fields, use the app's blue.
+    palette: { divider: colors.border, mode: "dark", primary: { main: colors.custom.blue } },
     typography: { fontFamily: "Karla" },
   });
 

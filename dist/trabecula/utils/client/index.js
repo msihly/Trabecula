@@ -712,16 +712,18 @@ var makeClasses = (fnOrObj) => {
     return { css, cx };
   };
 };
+var PRIMARY_BLUE = "#3b6fd1";
 var customColors = {
   black: "#131313",
-  blue: "#3b6fd1",
+  blue: PRIMARY_BLUE,
   blueGrey: "#546e7a",
   brown: "#6d4c41",
   darkGrey: "#2b2b2b",
   green: "#3d8b45",
   /** Recedes on the app's dark surfaces, too dark for text meant to be read; use lightGrey. */
   grey: "#4b4b4b",
-  lightBlue: "#8fb0ee",
+  /** The primary blue too, so no paler blue resembling MUI's default ever shows. */
+  lightBlue: PRIMARY_BLUE,
   lightGrey: "#bdbdbd",
   orange: "#b9772f",
   purple: "#7e4d9f",
@@ -7879,7 +7881,7 @@ var FilterMenu = Comp(
         width,
         text: /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(View, { row: true, align: "center", spacing: "0.5rem", children: [
           /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(Icon, { name: "FilterAlt", size: "1.15em" }),
-          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(Text, { children: "Filter Results" })
+          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(Text, { children: "Filter" })
         ] })
       })
     );

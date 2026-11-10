@@ -97,7 +97,7 @@ export const FilterMenu = Comp(
           <View row align="center" spacing="0.5rem">
             <Icon name="FilterAlt" size="1.15em" />
 
-            <Text>{"Filter Results"}</Text>
+            <Text>{"Filter"}</Text>
           </View>
         }
       />
