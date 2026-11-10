@@ -2397,12 +2397,10 @@ var FilterMenu = Comp(
         /* @__PURE__ */ jsx22(
           Button,
           {
-            text: "Search",
             icon: "Search",
             onClick: handleSearch,
             disabled: store.isLoading,
-            color: store.hasChanges ? colors.custom.purple : colors.custom.blue,
-            width: "100%"
+            color: store.hasChanges ? colors.custom.purple : colors.custom.blue
           }
         ),
         /* @__PURE__ */ jsx22(
@@ -7264,4 +7262,4 @@ export {
   makeTheme,
   MuiProvider
 };
-//# sourceMappingURL=chunk-T4PTNJVD.mjs.map
+//# sourceMappingURL=chunk-QPH44IHC.mjs.map

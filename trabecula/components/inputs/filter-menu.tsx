@@ -113,12 +113,10 @@ export const FilterMenu = Comp(
         <View column padding={{ all: "0.5rem" }} spacing="0.5rem" overflow="auto" {...viewProps}>
           <View row spacing="0.5rem" width="100%">
             <Button
-              text="Search"
               icon="Search"
               onClick={handleSearch}
               disabled={store.isLoading}
               color={store.hasChanges ? colors.custom.purple : colors.custom.blue}
-              width="100%"
             />
 
             <Button

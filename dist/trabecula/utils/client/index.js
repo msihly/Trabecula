@@ -7901,12 +7901,10 @@ var FilterMenu = Comp(
         /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
           Button,
           {
-            text: "Search",
             icon: "Search",
             onClick: handleSearch,
             disabled: store.isLoading,
-            color: store.hasChanges ? colors.custom.purple : colors.custom.blue,
-            width: "100%"
+            color: store.hasChanges ? colors.custom.purple : colors.custom.blue
           }
         ),
         /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
