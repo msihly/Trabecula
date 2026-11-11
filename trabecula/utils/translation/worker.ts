@@ -73,7 +73,8 @@ export const createTranslator = () => {
 
     await dispose();
 
-    transformers ??= (await import("@huggingface/transformers")) as unknown as TransformersModule;
+    // Packaged apps reach node_modules via NODE_PATH, which require follows and import() doesn't.
+    transformers ??= require("@huggingface/transformers") as TransformersModule;
 
     // The model comes only from the cache unless the app's settings allow downloading it.
     transformers.env.allowRemoteModels = config.modelDownloads;

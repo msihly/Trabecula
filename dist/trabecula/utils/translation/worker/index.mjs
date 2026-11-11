@@ -3,8 +3,9 @@ import {
   makeTranslationPrompt
 } from "../../../chunk-C6QGUCXR.mjs";
 import {
-  __async
-} from "../../../chunk-OJBUL6U5.mjs";
+  __async,
+  __require
+} from "../../../chunk-5Q6I7MMU.mjs";
 
 // trabecula/utils/translation/worker.ts
 import path from "path";
@@ -24,7 +25,7 @@ var createTranslator = () => {
     const key = `${config.device}:${config.modelCachePath}:${config.quantization}`;
     if (generator && generatorKey === key) return generator;
     yield dispose();
-    transformers != null ? transformers : transformers = yield import("@huggingface/transformers");
+    transformers != null ? transformers : transformers = __require("@huggingface/transformers");
     transformers.env.allowRemoteModels = config.modelDownloads;
     transformers.env.cacheDir = path.resolve(config.modelCachePath);
     let reportedProgress = -1;

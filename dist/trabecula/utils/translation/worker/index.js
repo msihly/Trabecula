@@ -149,7 +149,7 @@ var createTranslator = () => {
     const key = `${config.device}:${config.modelCachePath}:${config.quantization}`;
     if (generator && generatorKey === key) return generator;
     yield dispose();
-    transformers != null ? transformers : transformers = yield import("@huggingface/transformers");
+    transformers != null ? transformers : transformers = require("@huggingface/transformers");
     transformers.env.allowRemoteModels = config.modelDownloads;
     transformers.env.cacheDir = import_path.default.resolve(config.modelCachePath);
     let reportedProgress = -1;

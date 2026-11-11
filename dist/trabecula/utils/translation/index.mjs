@@ -6,7 +6,7 @@ import {
   getTranslationLanguage,
   makeTranslationPrompt
 } from "../../chunk-C6QGUCXR.mjs";
-import "../../chunk-OJBUL6U5.mjs";
+import "../../chunk-5Q6I7MMU.mjs";
 export {
   TRANSLATION_DEVICE_OPTIONS,
   TRANSLATION_LANGUAGES,
