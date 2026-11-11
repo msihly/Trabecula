@@ -19,7 +19,6 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 // trabecula/utils/translation/index.ts
 var translation_exports = {};
 __export(translation_exports, {
-  TRANSLATION_DEVICE_OPTIONS: () => TRANSLATION_DEVICE_OPTIONS,
   TRANSLATION_LANGUAGES: () => TRANSLATION_LANGUAGES,
   TRANSLATION_MODEL: () => TRANSLATION_MODEL,
   TRANSLATION_QUANTIZATION_OPTIONS: () => TRANSLATION_QUANTIZATION_OPTIONS,
@@ -28,10 +27,6 @@ __export(translation_exports, {
 });
 module.exports = __toCommonJS(translation_exports);
 var TRANSLATION_MODEL = "onnx-community/HY-MT1.5-1.8B-ONNX";
-var TRANSLATION_DEVICE_OPTIONS = [
-  { label: "CPU", value: "cpu" },
-  { label: "DirectML", value: "dml" }
-];
 var TRANSLATION_LANGUAGES = [
   { chineseName: "\u963F\u62C9\u4F2F\u8BED", label: "Arabic", value: "ar" },
   { chineseName: "\u5B5F\u52A0\u62C9\u8BED", label: "Bengali", value: "bn" },
@@ -115,7 +110,6 @@ ${text}`;
 };
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  TRANSLATION_DEVICE_OPTIONS,
   TRANSLATION_LANGUAGES,
   TRANSLATION_MODEL,
   TRANSLATION_QUANTIZATION_OPTIONS,

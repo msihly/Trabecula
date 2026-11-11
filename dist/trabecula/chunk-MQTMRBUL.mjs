@@ -1,9 +1,5 @@
 // trabecula/utils/translation/index.ts
 var TRANSLATION_MODEL = "onnx-community/HY-MT1.5-1.8B-ONNX";
-var TRANSLATION_DEVICE_OPTIONS = [
-  { label: "CPU", value: "cpu" },
-  { label: "DirectML", value: "dml" }
-];
 var TRANSLATION_LANGUAGES = [
   { chineseName: "\u963F\u62C9\u4F2F\u8BED", label: "Arabic", value: "ar" },
   { chineseName: "\u5B5F\u52A0\u62C9\u8BED", label: "Bengali", value: "bn" },
@@ -88,10 +84,9 @@ ${text}`;
 
 export {
   TRANSLATION_MODEL,
-  TRANSLATION_DEVICE_OPTIONS,
   TRANSLATION_LANGUAGES,
   TRANSLATION_QUANTIZATION_OPTIONS,
   getTranslationLanguage,
   makeTranslationPrompt
 };
-//# sourceMappingURL=chunk-C6QGUCXR.mjs.map
+//# sourceMappingURL=chunk-MQTMRBUL.mjs.map

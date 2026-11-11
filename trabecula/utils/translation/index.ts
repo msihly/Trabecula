@@ -1,9 +1,6 @@
-export type TranslationDevice = "cpu" | "dml";
-
 export type TranslationQuantization = "fp16" | "fp32" | "q4" | "q4f16";
 
 export interface TranslationConfig {
-  device: TranslationDevice;
   modelCachePath: string;
   /** Downloads the model from Hugging Face when it isn't in the model cache. */
   modelDownloads: boolean;
@@ -19,11 +16,6 @@ export interface TranslationLanguage {
 
 /** Tencent's HY-MT1.5-1.8B, exported to ONNX for Transformers.js. */
 export const TRANSLATION_MODEL = "onnx-community/HY-MT1.5-1.8B-ONNX";
-
-export const TRANSLATION_DEVICE_OPTIONS: Array<{ label: string; value: TranslationDevice }> = [
-  { label: "CPU", value: "cpu" },
-  { label: "DirectML", value: "dml" },
-];
 
 /** The languages HY-MT1.5 translates between, as its model card names them. */
 export const TRANSLATION_LANGUAGES: TranslationLanguage[] = [

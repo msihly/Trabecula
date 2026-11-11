@@ -146,7 +146,7 @@ var createTranslator = () => {
     generatorKey = "";
   });
   const getGenerator = (config, onProgress) => __async(null, null, function* () {
-    const key = `${config.device}:${config.modelCachePath}:${config.quantization}`;
+    const key = `${config.modelCachePath}:${config.quantization}`;
     if (generator && generatorKey === key) return generator;
     yield dispose();
     transformers != null ? transformers : transformers = require("@huggingface/transformers");
@@ -154,12 +154,12 @@ var createTranslator = () => {
     transformers.env.cacheDir = import_path.default.resolve(config.modelCachePath);
     let reportedProgress = -1;
     onProgress == null ? void 0 : onProgress("Preparing translation model.");
-    const loadGenerator = (device) => transformers.pipeline("text-generation", TRANSLATION_MODEL, {
-      device,
+    generator = yield transformers.pipeline("text-generation", TRANSLATION_MODEL, {
+      device: "cpu",
       dtype: config.quantization,
       progress_callback: ({ file, progress, status }) => {
         if (status === "ready") {
-          onProgress == null ? void 0 : onProgress(`Translation model loaded on ${device === "dml" ? "GPU" : "CPU"}.`);
+          onProgress == null ? void 0 : onProgress("Translation model loaded.");
         } else if (status === "progress" && progress !== void 0) {
           const percent = Math.round(progress);
           if (reportedProgress !== percent) {
@@ -170,16 +170,6 @@ var createTranslator = () => {
         }
       }
     });
-    if (config.device === "cpu") generator = yield loadGenerator("cpu");
-    else {
-      try {
-        generator = yield loadGenerator(config.device);
-      } catch (error) {
-        console.warn("Failed to initialize GPU translation. Falling back to CPU.", error);
-        onProgress == null ? void 0 : onProgress("GPU translation unavailable. Falling back to CPU.");
-        generator = yield loadGenerator("cpu");
-      }
-    }
     generatorKey = key;
     return generator;
   });

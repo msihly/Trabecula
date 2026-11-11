@@ -3,7 +3,6 @@ import {
   makeTranslationPrompt,
   TRANSLATION_MODEL,
   TranslationConfig,
-  TranslationDevice,
 } from "trabecula/utils/translation";
 
 interface ModelProgress {
@@ -39,7 +38,7 @@ interface TransformersModule {
     task: "text-generation",
     model: string,
     options: {
-      device: TranslationDevice;
+      device: "cpu";
       dtype: TranslationConfig["quantization"];
       progress_callback: (progress: ModelProgress) => void;
     },
@@ -77,7 +76,7 @@ export const createTranslator = () => {
   };
 
   const getGenerator = async (config: TranslationConfig, onProgress?: TranslationProgress) => {
-    const key = `${config.device}:${config.modelCachePath}:${config.quantization}`;
+    const key = `${config.modelCachePath}:${config.quantization}`;
 
     if (generator && generatorKey === key) return generator;
 
@@ -94,36 +93,25 @@ export const createTranslator = () => {
 
     onProgress?.("Preparing translation model.");
 
-    const loadGenerator = (device: TranslationDevice) =>
-      transformers.pipeline("text-generation", TRANSLATION_MODEL, {
-        device,
-        dtype: config.quantization,
-        progress_callback: ({ file, progress, status }) => {
-          if (status === "ready") {
-            onProgress?.(`Translation model loaded on ${device === "dml" ? "GPU" : "CPU"}.`);
-          } else if (status === "progress" && progress !== undefined) {
-            const percent = Math.round(progress);
+    // On DirectML, the model's Q4 and Q4F16 builds returned broken translations, so it runs on CPU.
+    generator = await transformers.pipeline("text-generation", TRANSLATION_MODEL, {
+      device: "cpu",
+      dtype: config.quantization,
+      progress_callback: ({ file, progress, status }) => {
+        if (status === "ready") {
+          onProgress?.("Translation model loaded.");
+        } else if (status === "progress" && progress !== undefined) {
+          const percent = Math.round(progress);
 
-            if (reportedProgress !== percent) {
-              reportedProgress = percent;
+          if (reportedProgress !== percent) {
+            reportedProgress = percent;
 
-              if (percent === 100) onProgress?.("Loading translation model.");
-              else onProgress?.(`Downloading translation model: ${file}.`, percent);
-            }
+            if (percent === 100) onProgress?.("Loading translation model.");
+            else onProgress?.(`Downloading translation model: ${file}.`, percent);
           }
-        },
-      });
-
-    if (config.device === "cpu") generator = await loadGenerator("cpu");
-    else {
-      try {
-        generator = await loadGenerator(config.device);
-      } catch (error) {
-        console.warn("Failed to initialize GPU translation. Falling back to CPU.", error);
-        onProgress?.("GPU translation unavailable. Falling back to CPU.");
-        generator = await loadGenerator("cpu");
-      }
-    }
+        }
+      },
+    });
 
     generatorKey = key;
 
