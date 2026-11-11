@@ -5,7 +5,7 @@ import {
   TRANSLATION_QUANTIZATION_OPTIONS,
   getTranslationLanguage,
   makeTranslationPrompt
-} from "../../chunk-W3RHUJUU.mjs";
+} from "../../chunk-C6QGUCXR.mjs";
 import "../../chunk-OJBUL6U5.mjs";
 export {
   TRANSLATION_DEVICE_OPTIONS,

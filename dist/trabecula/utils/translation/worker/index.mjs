@@ -1,7 +1,7 @@
 import {
   TRANSLATION_MODEL,
   makeTranslationPrompt
-} from "../../../chunk-W3RHUJUU.mjs";
+} from "../../../chunk-C6QGUCXR.mjs";
 import {
   __async
 } from "../../../chunk-OJBUL6U5.mjs";
@@ -25,6 +25,7 @@ var createTranslator = () => {
     if (generator && generatorKey === key) return generator;
     yield dispose();
     transformers != null ? transformers : transformers = yield import("@huggingface/transformers");
+    transformers.env.allowRemoteModels = config.modelDownloads;
     transformers.env.cacheDir = path.resolve(config.modelCachePath);
     let reportedProgress = -1;
     onProgress == null ? void 0 : onProgress("Preparing translation model.");

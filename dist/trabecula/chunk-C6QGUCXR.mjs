@@ -94,4 +94,4 @@ export {
   getTranslationLanguage,
   makeTranslationPrompt
 };
-//# sourceMappingURL=chunk-W3RHUJUU.mjs.map
+//# sourceMappingURL=chunk-C6QGUCXR.mjs.map

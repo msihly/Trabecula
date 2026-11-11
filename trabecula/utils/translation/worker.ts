@@ -24,7 +24,7 @@ interface TextGenerator {
 }
 
 interface TransformersModule {
-  env: { cacheDir: string };
+  env: { allowRemoteModels: boolean; cacheDir: string };
   pipeline: (
     task: "text-generation",
     model: string,
@@ -74,6 +74,9 @@ export const createTranslator = () => {
     await dispose();
 
     transformers ??= (await import("@huggingface/transformers")) as unknown as TransformersModule;
+
+    // The model comes only from the cache unless the app's settings allow downloading it.
+    transformers.env.allowRemoteModels = config.modelDownloads;
     transformers.env.cacheDir = path.resolve(config.modelCachePath);
 
     let reportedProgress = -1;

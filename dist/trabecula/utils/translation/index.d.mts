@@ -3,6 +3,8 @@ type TranslationQuantization = "fp16" | "fp32" | "q4" | "q4f16";
 interface TranslationConfig {
     device: TranslationDevice;
     modelCachePath: string;
+    /** Downloads the model from Hugging Face when it isn't in the model cache. */
+    modelDownloads: boolean;
     quantization: TranslationQuantization;
 }
 interface TranslationLanguage {

@@ -150,6 +150,7 @@ var createTranslator = () => {
     if (generator && generatorKey === key) return generator;
     yield dispose();
     transformers != null ? transformers : transformers = yield import("@huggingface/transformers");
+    transformers.env.allowRemoteModels = config.modelDownloads;
     transformers.env.cacheDir = import_path.default.resolve(config.modelCachePath);
     let reportedProgress = -1;
     onProgress == null ? void 0 : onProgress("Preparing translation model.");
