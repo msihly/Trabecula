@@ -6,8 +6,6 @@ import {
   TranslationDevice,
 } from "trabecula/utils/translation";
 
-type Chat = Array<{ content: string; role: "assistant" | "user" }>;
-
 interface ModelProgress {
   file?: string;
   progress?: number;
@@ -16,11 +14,23 @@ interface ModelProgress {
 
 interface TextGenerator {
   (
-    chat: Chat,
-    options: { do_sample: false; max_new_tokens: number; repetition_penalty: number },
-  ): Promise<Array<{ generated_text: Chat }>>;
+    prompt: string,
+    options: {
+      add_special_tokens: false;
+      do_sample: false;
+      max_new_tokens: number;
+      repetition_penalty: number;
+      return_full_text: false;
+    },
+  ): Promise<Array<{ generated_text: string }>>;
   dispose: () => Promise<void>;
-  tokenizer: { encode: (text: string) => number[] };
+  tokenizer: {
+    apply_chat_template: (
+      chat: Array<{ content: string; role: "user" }>,
+      options: { add_generation_prompt: false; tokenize: false },
+    ) => string;
+    encode: (text: string) => number[];
+  };
 }
 
 interface TransformersModule {
@@ -120,6 +130,11 @@ export const createTranslator = () => {
     return generator;
   };
 
+  /** Loads the model ahead of translating, so loading reports its progress apart from translation. */
+  const load = async (config: TranslationConfig, onProgress?: TranslationProgress) => {
+    await getGenerator(config, onProgress);
+  };
+
   const translate = async (
     { config, language, texts }: TranslateInput,
     onProgress?: TranslationProgress,
@@ -132,23 +147,29 @@ export const createTranslator = () => {
       else {
         const source = text.trim();
 
-        const [output] = await generate(
+        // Tencent's usage renders the chat without a generation prompt, so it ends in the template's
+        // placeholder token rather than the assistant turn the pipeline's chat input adds.
+        const prompt = generate.tokenizer.apply_chat_template(
           [{ content: makeTranslationPrompt(source, language), role: "user" }],
-          {
-            do_sample: false,
-            max_new_tokens:
-              generate.tokenizer.encode(source).length * MAX_NEW_TOKENS_PER_SOURCE_TOKEN +
-              MIN_NEW_TOKENS,
-            repetition_penalty: REPETITION_PENALTY,
-          },
+          { add_generation_prompt: false, tokenize: false },
         );
 
-        translations.push(output.generated_text.at(-1).content.trim());
+        const [output] = await generate(prompt, {
+          add_special_tokens: false,
+          do_sample: false,
+          max_new_tokens:
+            generate.tokenizer.encode(source).length * MAX_NEW_TOKENS_PER_SOURCE_TOKEN +
+            MIN_NEW_TOKENS,
+          repetition_penalty: REPETITION_PENALTY,
+          return_full_text: false,
+        });
+
+        translations.push(output.generated_text.trim());
       }
     }
 
     return translations;
   };
 
-  return { dispose, translate };
+  return { dispose, load, translate };
 };

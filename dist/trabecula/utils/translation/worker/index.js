@@ -183,6 +183,9 @@ var createTranslator = () => {
     generatorKey = key;
     return generator;
   });
+  const load = (config, onProgress) => __async(null, null, function* () {
+    yield getGenerator(config, onProgress);
+  });
   const translate = (_0, _1) => __async(null, [_0, _1], function* ({ config, language, texts }, onProgress) {
     const generate = yield getGenerator(config, onProgress);
     const translations = [];
@@ -190,20 +193,23 @@ var createTranslator = () => {
       if (!text.trim()) translations.push(text);
       else {
         const source = text.trim();
-        const [output] = yield generate(
+        const prompt = generate.tokenizer.apply_chat_template(
           [{ content: makeTranslationPrompt(source, language), role: "user" }],
-          {
-            do_sample: false,
-            max_new_tokens: generate.tokenizer.encode(source).length * MAX_NEW_TOKENS_PER_SOURCE_TOKEN + MIN_NEW_TOKENS,
-            repetition_penalty: REPETITION_PENALTY
-          }
+          { add_generation_prompt: false, tokenize: false }
         );
-        translations.push(output.generated_text.at(-1).content.trim());
+        const [output] = yield generate(prompt, {
+          add_special_tokens: false,
+          do_sample: false,
+          max_new_tokens: generate.tokenizer.encode(source).length * MAX_NEW_TOKENS_PER_SOURCE_TOKEN + MIN_NEW_TOKENS,
+          repetition_penalty: REPETITION_PENALTY,
+          return_full_text: false
+        });
+        translations.push(output.generated_text.trim());
       }
     }
     return translations;
   });
-  return { dispose, translate };
+  return { dispose, load, translate };
 };
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {

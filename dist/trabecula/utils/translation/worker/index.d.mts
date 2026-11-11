@@ -13,6 +13,7 @@ type TranslationProgress = (message: string, percent?: number) => void;
  */
 declare const createTranslator: () => {
     dispose: () => Promise<void>;
+    load: (config: TranslationConfig, onProgress?: TranslationProgress) => Promise<void>;
     translate: ({ config, language, texts }: TranslateInput, onProgress?: TranslationProgress) => Promise<string[]>;
 };
 
