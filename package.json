@@ -105,6 +105,7 @@
     "tss-react": "^4.9.21"
   },
   "devDependencies": {
+    "@huggingface/transformers": "4.3.2",
     "@types/node": "^24.9.0",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
@@ -129,6 +130,7 @@
     "vite": "8.3.5"
   },
   "peerDependencies": {
+    "@huggingface/transformers": "^4.3.2",
     "electron": "^45.1.0",
     "mongodb-memory-server": "^11.3.0",
     "mongoose": "^9.11.4",
@@ -136,6 +138,9 @@
     "socket.io-client": "^4.6.2"
   },
   "peerDependenciesMeta": {
+    "@huggingface/transformers": {
+      "optional": true
+    },
     "electron": {
       "optional": true
     },
